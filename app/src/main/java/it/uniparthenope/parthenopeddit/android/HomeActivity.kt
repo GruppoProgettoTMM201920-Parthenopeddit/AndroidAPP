@@ -9,11 +9,11 @@ import androidx.navigation.ui.setupWithNavController
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 
-class MainActivity : BasicActivity() {
+class HomeActivity : BasicActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_home)
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
         val navController = findNavController(R.id.nav_host_fragment)

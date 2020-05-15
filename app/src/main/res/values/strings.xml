@@ -1,6 +1,18 @@
 <resources>
     <string name="app_name">Parthenopeddit</string>
+
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+
+    <string name="welcome_it">Benvenuto.</string>
+    <string name="auth_help_it">Effettua il login con le tue credenziali Esse3.</string>
+    <string name="shared_preferences_auth_file">package it.uniparthenope.studenti.marco.sautto001.progettotmm</string>
+    <string name="login">Login</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="errore_non_specificato">Errore non specificato</string>
+    <string name="logout">Logout</string>
+    <string name="login_error">Email o password errate.</string>
+    <string name="title_activity_home">HomeActivity</string>
 </resources>
