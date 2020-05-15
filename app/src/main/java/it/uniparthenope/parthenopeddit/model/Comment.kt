@@ -2,7 +2,6 @@ package it.uniparthenope.parthenopeddit.model
 
 import it.uniparthenope.parthenopeddit.util.JSONConvertable
 
-//TODO implement
 data class Comment(
     val id: Int,
     val body: String,
@@ -15,7 +14,7 @@ data class Comment(
     var author: User? = null,
     var commented_post: Post? = null,
     var commented_comment: Comment? = null,
-    var comments: List<Comment>? = null,
+    var comments: ArrayList<Comment>? = null,
 
     /* aggregated data */
     var comments_num: Int? = null

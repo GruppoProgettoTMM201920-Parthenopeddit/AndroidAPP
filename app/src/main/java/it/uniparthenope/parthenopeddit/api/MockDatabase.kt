@@ -17,9 +17,9 @@ class MockDatabase private constructor() {
         val instance: MockDatabase by lazy { HOLDER.INSTANCE }
     }
 
-    private val users_table = ArrayList<User>()
-    private val posts_table = ArrayList<Post>()
-    private val comments_table = ArrayList<Comment>()
+    val users_table = ArrayList<User>()
+    val posts_table = ArrayList<Post>()
+    val comments_table = ArrayList<Comment>()
 
     init {
         /* Popolamento tabelle fittizie. */

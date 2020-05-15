@@ -2,15 +2,14 @@ package it.uniparthenope.parthenopeddit.model
 
 import it.uniparthenope.parthenopeddit.util.JSONConvertable
 
-//TODO implement
 data class User (
     val id: String,
     val nome_visualizzato: String? = null,
     val registrato_il: String, /* TODO STRING type as DateTime decode not yet implemented */
 
     /* relationships */
-    var posts: List<Post>? = null,
-    var comments: List<Comment>? = null,
+    var posts: ArrayList<Post>? = null,
+    var comments: ArrayList<Comment>? = null,
 
     /* aggregated data */
     var posts_num: Int? = null,
