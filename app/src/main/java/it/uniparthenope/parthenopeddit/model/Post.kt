@@ -6,7 +6,7 @@ data class Post (
     val id: Int,
     val title: String,
     val body: String? = null,
-    val timestamp: String, /* TODO STRING type as DaetTime decode not yet implemented */
+    val timestamp: String, /* TODO STRING type as DateTime decode not yet implemented */
     val author_id: String,
 
     /* relationships */
