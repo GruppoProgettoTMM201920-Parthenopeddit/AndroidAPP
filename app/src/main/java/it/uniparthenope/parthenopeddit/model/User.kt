@@ -6,7 +6,7 @@ import it.uniparthenope.parthenopeddit.util.JSONConvertable
 data class User (
     val id: String,
     val nome_visualizzato: String? = null,
-    val registrato_il: String, /* TODO STRING type as DaetTime decode not yet implemented */
+    val registrato_il: String, /* TODO STRING type as DateTime decode not yet implemented */
 
     /* relationships */
     var posts: List<Post>? = null,
