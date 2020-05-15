@@ -5,14 +5,14 @@ import it.uniparthenope.parthenopeddit.util.JSONConvertable
 data class Post (
     val id: Int,
     val title: String,
-    val body: String?,
+    val body: String? = null,
     val timestamp: String, /* TODO STRING type as DaetTime decode not yet implemented */
     val author_id: String,
 
     /* relationships */
-    val author: User?,
-    val comments: List<Comment>?,
+    var author: User? = null,
+    var comments: List<Comment>? = null,
 
     /* aggregated data */
-    val comments_num: Int?
+    var comments_num: Int? = null
 ) : JSONConvertable

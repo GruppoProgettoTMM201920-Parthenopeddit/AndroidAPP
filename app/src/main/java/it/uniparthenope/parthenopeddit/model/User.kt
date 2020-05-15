@@ -5,14 +5,14 @@ import it.uniparthenope.parthenopeddit.util.JSONConvertable
 //TODO implement
 data class User (
     val id: String,
-    val nome_visualizzato: String?,
+    val nome_visualizzato: String? = null,
     val registrato_il: String, /* TODO STRING type as DaetTime decode not yet implemented */
 
     /* relationships */
-    val posts: List<Post>?,
-    val comments: List<Comment>?,
+    var posts: List<Post>? = null,
+    var comments: List<Comment>? = null,
 
     /* aggregated data */
-    val posts_num: Int?,
-    val comments_num: Int?
+    var posts_num: Int? = null,
+    var comments_num: Int? = null
 ) : JSONConvertable

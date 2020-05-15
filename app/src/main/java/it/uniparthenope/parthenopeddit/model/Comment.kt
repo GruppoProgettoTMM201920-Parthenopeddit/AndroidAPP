@@ -8,15 +8,15 @@ data class Comment(
     val body: String,
     val timestamp: String, /* TODO STRING type as DaetTime decode not yet implemented */
     val author_id: String,
-    val commented_post_id: Int?,
-    val commented_comment_id: Int?,
+    val commented_post_id: Int? = null,
+    val commented_comment_id: Int? = null,
 
     /* relationships */
-    val author: User?,
-    val commented_post: Post?,
-    val commented_comment: Comment?,
-    val comments: List<Comment>?,
+    var author: User? = null,
+    var commented_post: Post? = null,
+    var commented_comment: Comment? = null,
+    var comments: List<Comment>? = null,
 
     /* aggregated data */
-    val comments_num: Int?
+    var comments_num: Int? = null
 ) : JSONConvertable
