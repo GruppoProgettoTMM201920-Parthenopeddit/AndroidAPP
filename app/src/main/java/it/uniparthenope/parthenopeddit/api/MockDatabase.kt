@@ -57,7 +57,9 @@ class MockDatabase private constructor() {
             author = u1
         )
         u1.posts = ArrayList<Post>(listOf(p1,p3))
+        u1.posts_num = u1.posts?.size
         u2.posts = ArrayList<Post>(listOf(p2))
+        u2.posts_num = u2.posts?.size
 
         users_table.addAll(listOf(u1,u2))
         posts_table.addAll(listOf(p1,p2,p3))
