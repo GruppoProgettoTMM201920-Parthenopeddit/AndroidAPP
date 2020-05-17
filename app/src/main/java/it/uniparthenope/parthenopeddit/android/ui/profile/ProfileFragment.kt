@@ -8,11 +8,14 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.preference.Preference
+import androidx.preference.PreferenceFragmentCompat
 import it.uniparthenope.parthenopeddit.R
+import it.uniparthenope.parthenopeddit.android.ui.settings.SettingsFragment
 
 
 //TO-DO: implementare PreferenceFragmentCompat
-class ProfileFragment : Fragment() {
+class ProfileFragment : Fragment(), PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
     private lateinit var profileViewModel: ProfileViewModel
 
@@ -24,11 +27,24 @@ class ProfileFragment : Fragment() {
         profileViewModel =
             ViewModelProviders.of(this).get(ProfileViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_profile, container, false)
-        val textView: TextView = root.findViewById(R.id.text_profile)
+
         profileViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
+
         })
+
+        /*supportFragmentManager
+            .beginTransaction()
+            .replace(R.id.settings_container, SettingsFragment())
+            .commit()
+        */
         return root
+    }
+
+    override fun onPreferenceStartFragment(
+        caller: PreferenceFragmentCompat?,
+        pref: Preference?
+    ): Boolean {
+        TODO("Not yet implemented")
     }
 
 }

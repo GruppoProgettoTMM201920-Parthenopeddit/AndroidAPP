@@ -29,4 +29,9 @@
     <string name="hint_group_name_it">Nome gruppo</string>
     <string name="username_user">Username</string>
 
+    //PROFILE FRAGMENT
+    <string name="user_activity_text_it">Visualizza le tue attività</string>
+    <string name="darkmode">Dark mode</string>
+    <string name="about_it">Informazioni</string>
+
 </resources>

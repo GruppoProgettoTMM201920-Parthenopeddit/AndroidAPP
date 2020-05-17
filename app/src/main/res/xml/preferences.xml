@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Preference
+        app:key="preference_example"
+        app:title="title"
+        app:summary="summary"
+        app:icon="@drawable/ic_launcher_background"/>
+
+    <SwitchPreferenceCompat
+        app:key="switch_example"
+        app:title="title2"
+        app:summary="summary2"/>
+
+    <Preference>
+            <!-- preference2 -->
+    </Preference>
+
+
+</PreferenceScreen>
