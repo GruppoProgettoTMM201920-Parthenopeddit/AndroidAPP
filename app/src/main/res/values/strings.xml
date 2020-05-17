@@ -27,5 +27,6 @@
     <string name="title_messages_it">Messaggi</string>
 
     <string name="hint_group_name_it">Nome gruppo</string>
+    <string name="username_user">Username</string>
 
 </resources>
