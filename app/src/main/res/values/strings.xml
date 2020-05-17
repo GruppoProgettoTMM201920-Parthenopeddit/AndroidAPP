@@ -15,4 +15,5 @@
     <string name="logout">Logout</string>
     <string name="login_error">Email o password errate.</string>
     <string name="title_activity_home">HomeActivity</string>
+
 </resources>
