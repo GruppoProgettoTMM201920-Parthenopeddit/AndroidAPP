@@ -21,14 +21,14 @@
 
         <com.mancj.materialsearchbar.MaterialSearchBar
             android:id="@+id/searchBar"
+            style="@style/MaterialSearchBarLight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#595959"
             app:mt_hint="Ricerca..."
             app:mt_maxSuggestionsCount="5"
             app:mt_speechMode="true"
-            app:mt_placeholder="Ricerca..."
-            app:mt_speechIconDrawable="@drawable/ic_search_themecolor_24dp"/>
+            app:mt_placeholder="Ricerca..."/>
 
         <ListView
             android:id="@+id/search_listview"

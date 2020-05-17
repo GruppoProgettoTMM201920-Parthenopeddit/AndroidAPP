@@ -67,8 +67,8 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         //MATERIALSEARCHBAR
         val lv = root.findViewById(R.id.search_listview) as ListView
         val searchBar = root.findViewById(R.id.searchBar) as MaterialSearchBar
-        searchBar.setHint("Search..")
-        searchBar.setSpeechMode(true)
+        searchBar.setHint("Ricerca...")
+        searchBar.setSpeechMode(false)
 
         var galaxies = arrayOf("Sombrero", "Cartwheel", "Pinwheel", "StarBust", "Whirlpool", "Ring Nebular", "Own Nebular", "Centaurus A", "Virgo Stellar Stream", "Canis Majos Overdensity", "Mayall's Object", "Leo", "Milky Way", "IC 1011", "Messier 81", "Andromeda", "Messier 87")
 
@@ -76,26 +76,38 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         val adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_list_item_1, galaxies)
         lv.setAdapter(adapter)
 
-        //SEARCHBAR TEXT CHANGE LISTENER
+
+
+
+        searchBar.text = "Hello World!"
+        searchBar.setCardViewElevation(10)
         searchBar.addTextChangeListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
 
-            }
-
-            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-                //SEARCH FILTER
-                adapter.getFilter().filter(charSequence)
-            }
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
 
             override fun afterTextChanged(editable: Editable) {
 
             }
-        })
 
-        //LISTVIEW ITEM CLICKED
-        lv.setOnItemClickListener(object : AdapterView.OnItemClickListener {
-            override fun onItemClick(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
-                Toast.makeText(requireContext(), adapter.getItem(i)!!.toString(), Toast.LENGTH_SHORT).show()
+        })
+        searchBar.setOnSearchActionListener(object : MaterialSearchBar.OnSearchActionListener {
+            override fun onSearchStateChanged(enabled: Boolean) {
+
+            }
+
+            override fun onSearchConfirmed(text: CharSequence) {
+
+            }
+
+            override fun onButtonClicked(buttonCode: Int) {
+                when (buttonCode) {
+                    MaterialSearchBar.BUTTON_NAVIGATION -> {
+                    }
+                    MaterialSearchBar.BUTTON_SPEECH -> {
+                    }
+                    MaterialSearchBar.BUTTON_BACK -> searchBar.closeSearch()
+                }
             }
         })
 
