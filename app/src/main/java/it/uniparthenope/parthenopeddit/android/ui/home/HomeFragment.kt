@@ -78,8 +78,6 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
 
 
-
-        searchBar.text = "Hello World!"
         searchBar.setCardViewElevation(10)
         searchBar.addTextChangeListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
