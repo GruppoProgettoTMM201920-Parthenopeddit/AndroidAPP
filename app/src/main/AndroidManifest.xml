@@ -12,6 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".android.ui.newGroup.NewGroupActivity"></activity>
+        <activity android:name=".android.ui.newPost.NewPostActivity"></activity>
         <activity
             android:name=".android.HomeActivity"
             android:label="@string/app_name">
@@ -21,9 +23,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".android.CommentActivity">
-        </activity>
+        <activity android:name=".android.CommentActivity"></activity>
     </application>
 
 </manifest>

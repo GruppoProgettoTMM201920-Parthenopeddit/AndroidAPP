@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +15,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.CommentActivity
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
+import it.uniparthenope.parthenopeddit.android.ui.newGroup.NewGroupActivity
+import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
 import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.auth.Auth
 import it.uniparthenope.parthenopeddit.model.Post
@@ -30,6 +33,8 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         val fab = root.findViewById(R.id.fab) as FloatingActionButton
         val fab_new_post = root.findViewById(R.id.fab_new_post) as FloatingActionButton
         val fab_new_group = root.findViewById(R.id.fab_new_group) as FloatingActionButton
+        val fab_new_post_textview = root.findViewById(R.id.fab_new_post_textview) as TextView
+        val fab_new_group_textview = root.findViewById(R.id.fab_new_group_textview) as TextView
 
         recycler_view = root.findViewById(R.id.recycler_view) as RecyclerView
 
@@ -50,6 +55,8 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
         val fabOpen_1 = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_open_1)
         val fabOpen_2 = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_open_2)
+        val fabTextViewOpen = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_textview_open)
+        val fabTextViewClose = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_textview_close)
         val fabClose_1 = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_close_1)
         val fabClose_2 = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_close_2)
         val rotateClockwise = AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_clockwise)
@@ -60,19 +67,31 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
                 fab.startAnimation(rotateClockwise)
                 fab_new_post.startAnimation(fabClose_1)
                 fab_new_group.startAnimation(fabClose_2)
-               // fab_new_post.visibility = View.INVISIBLE
-               // fab_new_group.visibility = View.INVISIBLE
+                fab_new_post_textview.startAnimation(fabTextViewClose)
+                fab_new_group_textview.startAnimation(fabTextViewClose)
+                fab_new_post.visibility = View.GONE
+                fab_new_group.visibility = View.GONE
+                fab_new_post.visibility = View.GONE
+                fab_new_group.visibility = View.GONE
                 isOpen = false
             } else{
                 fab_new_post.visibility = View.VISIBLE
                 fab_new_group.visibility = View.VISIBLE
+                fab_new_post_textview.visibility = View.VISIBLE
+                fab_new_group_textview.visibility = View.VISIBLE
                 fab.startAnimation(rotateAnticlockwise)
                 fab_new_post.startAnimation(fabOpen_1)
                 fab_new_group.startAnimation(fabOpen_2)
+                fab_new_post_textview.startAnimation(fabTextViewOpen)
+                fab_new_group_textview.startAnimation(fabTextViewOpen)
                 isOpen = true
             }
         }
 
+        fab_new_post.setOnClickListener{ onClickNewPost() }
+        fab_new_post_textview.setOnClickListener{ onClickNewPost() }
+        fab_new_group.setOnClickListener{ onClickNewGroup() }
+        fab_new_group_textview.setOnClickListener{ onClickNewGroup() }
         return root
     }
 
@@ -89,6 +108,16 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
     override fun onClickComments(id_post: Int) {
         val intent = Intent(requireContext(), CommentActivity::class.java)
         intent.putExtra("idPost", id_post)
+        startActivity(intent)
+    }
+
+    fun onClickNewPost(){
+        val intent = Intent(requireContext(), NewPostActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun onClickNewGroup(){
+        val intent = Intent(requireContext(), NewGroupActivity::class.java)
         startActivity(intent)
     }
 }

@@ -28,17 +28,7 @@ class ProfileFragment : Fragment() {
         profileViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
-
-        if (fragmentManager?.findFragmentById(android.R.id.content) == null) {
-            fragmentManager?.beginTransaction()
-                ?.add(android.R.id.content, ProfileFragment())?.commit()
-        }
-
-
-
         return root
     }
 
-
-    
 }
