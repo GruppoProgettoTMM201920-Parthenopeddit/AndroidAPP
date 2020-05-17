@@ -2,16 +2,18 @@ package it.uniparthenope.parthenopeddit.android.ui.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.mancj.materialsearchbar.MaterialSearchBar
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.CommentActivity
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
@@ -61,6 +63,42 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         val fabClose_2 = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_close_2)
         val rotateClockwise = AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_clockwise)
         val rotateAnticlockwise = AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_anticlockwise)
+
+        //MATERIALSEARCHBAR
+        val lv = root.findViewById(R.id.search_listview) as ListView
+        val searchBar = root.findViewById(R.id.searchBar) as MaterialSearchBar
+        searchBar.setHint("Search..")
+        searchBar.setSpeechMode(true)
+
+        var galaxies = arrayOf("Sombrero", "Cartwheel", "Pinwheel", "StarBust", "Whirlpool", "Ring Nebular", "Own Nebular", "Centaurus A", "Virgo Stellar Stream", "Canis Majos Overdensity", "Mayall's Object", "Leo", "Milky Way", "IC 1011", "Messier 81", "Andromeda", "Messier 87")
+
+        //ADAPTER
+        val adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_list_item_1, galaxies)
+        lv.setAdapter(adapter)
+
+        //SEARCHBAR TEXT CHANGE LISTENER
+        searchBar.addTextChangeListener(object : TextWatcher {
+            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+
+            }
+
+            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
+                //SEARCH FILTER
+                adapter.getFilter().filter(charSequence)
+            }
+
+            override fun afterTextChanged(editable: Editable) {
+
+            }
+        })
+
+        //LISTVIEW ITEM CLICKED
+        lv.setOnItemClickListener(object : AdapterView.OnItemClickListener {
+            override fun onItemClick(adapterView: AdapterView<*>, view: View, i: Int, l: Long) {
+                Toast.makeText(requireContext(), adapter.getItem(i)!!.toString(), Toast.LENGTH_SHORT).show()
+            }
+        })
+
 
         fab.setOnClickListener{
             if(isOpen){

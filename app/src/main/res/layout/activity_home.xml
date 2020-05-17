@@ -22,7 +22,7 @@
         app:layout_constraintEnd_toEndOf="@+id/nav_host_fragment"
         app:layout_insetEdge="bottom" />-->
 
-    <!--<TODO: add scrollview>-->
+    <!---<TODO: add scrollview>-->
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
@@ -45,7 +45,8 @@
         app:layout_constraintTop_toTopOf="parent"
         android:background="@drawable/expandable_list_shape"
         android:layout_margin="8dp"
-        android:padding="8dp"/>
+        android:padding="8dp"
+        android:visibility="invisible"/>
 
 
 

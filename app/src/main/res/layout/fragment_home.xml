@@ -7,93 +7,135 @@
     android:background="#595959"
     tools:context=".android.ui.home.HomeFragment">
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:id="@+id/main_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <LinearLayout
+        android:id="@+id/Search_LinearLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
-        android:clipChildren="false"
-        android:padding="4dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:padding="8dp"
+        tools:context=".HomeFragment">
+
+        <com.mancj.materialsearchbar.MaterialSearchBar
+            android:id="@+id/searchBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#595959"
+            app:mt_hint="Ricerca..."
+            app:mt_maxSuggestionsCount="5"
+            app:mt_speechMode="true"
+            app:mt_placeholder="Ricerca..."
+            app:mt_speechIconDrawable="@drawable/ic_search_themecolor_24dp"/>
+
+        <ListView
+            android:id="@+id/search_listview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        tools:listitem="@layout/cardview_post" />
+        app:layout_constraintTop_toBottomOf="@+id/Search_LinearLayout">
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/main_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
 
-        <TextView
-            android:id="@+id/fab_new_post_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_marginRight="65dp"
-            android:layout_marginBottom="105dp"
-            android:background="@drawable/fab_textview_bubble"
-            android:text="@string/new_post_it"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textSize="17dp"
-            android:padding="5dp"
-            android:visibility="gone"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:clipChildren="false"
+                android:padding="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:listitem="@layout/cardview_post" />
 
-        <TextView
-            android:id="@+id/fab_new_group_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_marginRight="65dp"
-            android:layout_marginBottom="180dp"
-            android:background="@drawable/fab_textview_bubble"
-            android:text="@string/new_group_it"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textSize="17dp"
-            android:padding="5dp"
-            android:visibility="gone"/>
+            <TextView
+                android:id="@+id/fab_new_post_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_marginRight="65dp"
+                android:layout_marginBottom="105dp"
+                android:background="@drawable/fab_textview_bubble"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/new_post_it"
+                android:textColor="@color/white"
+                android:textSize="17dp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/fab_new_group_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_marginRight="65dp"
+                android:layout_marginBottom="180dp"
+                android:background="@drawable/fab_textview_bubble"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/new_group_it"
+                android:textColor="@color/white"
+                android:textSize="17dp"
+                android:textStyle="bold"
+                android:visibility="gone" />
 
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_new_post"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="16dp"
-            android:contentDescription="hello"
-            android:elevation="2dp"
-            android:src="@drawable/ic_call_to_action_themecolor_24dp"
-            android:backgroundTint="@color/white"
-            android:visibility="gone"/>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_new_post"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="@color/white"
+                android:contentDescription="hello"
+                android:elevation="2dp"
+                android:src="@drawable/ic_call_to_action_themecolor_24dp"
+                android:visibility="gone" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_new_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="16dp"
-            android:contentDescription="hello"
-            android:elevation="2dp"
-            android:src="@drawable/ic_group_add_themecolor_24dp"
-            android:backgroundTint="@color/white"
-            android:visibility="gone"/>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_new_group"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp"
+                android:backgroundTint="@color/white"
+                android:contentDescription="hello"
+                android:elevation="2dp"
+                android:src="@drawable/ic_group_add_themecolor_24dp"
+                android:visibility="gone" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_margin="16dp"
-            android:contentDescription="hello"
-            android:elevation="2dp"
-            android:src="@drawable/ic_add_white_24dp"
-            android:backgroundTint="@color/colorPrimary"/>
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_margin="16dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:contentDescription="hello"
+                android:elevation="2dp"
+                android:src="@drawable/ic_add_white_24dp" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
