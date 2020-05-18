@@ -2,18 +2,19 @@ package it.uniparthenope.parthenopeddit.model
 
 import it.uniparthenope.parthenopeddit.util.JSONConvertable
 
-class Post(
+class Review(
     val id: Int,
     val body: String,
     val timestamp: String,
     val author_id: String,
-    val title: String,
-    val posted_to_board_id: Int,
+    val reviewed_course_id: Int,
+    val score_liking: Int,
+    val score_difficulty: Int,
 
     /* relationships */
     var author: User? = null,
     var comments: ArrayList<Comment>? = null,
-    var posted_to_board: Board?,
+    var reviewed_course: Course?,
 
     /* aggregated data */
     var comments_num: Int? = null,

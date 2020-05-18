@@ -5,17 +5,17 @@ import it.uniparthenope.parthenopeddit.util.JSONConvertable
 data class Comment(
     val id: Int,
     val body: String,
-    val timestamp: String, /* TODO STRING type as DateTime decode not yet implemented */
+    val timestamp: String,
     val author_id: String,
-    val commented_post_id: Int? = null,
-    val commented_comment_id: Int? = null,
+    val commented_content_id: Int,
 
     /* relationships */
     var author: User? = null,
-    var commented_post: Post? = null,
-    var commented_comment: Comment? = null,
     var comments: ArrayList<Comment>? = null,
+    var commented_content: Content?,
 
     /* aggregated data */
-    var comments_num: Int? = null
-) : JSONConvertable
+    var comments_num: Int? = null,
+    var likes_num: Int? = null,
+    var dislikes_num: Int? = null
+) : Content(), JSONConvertable
