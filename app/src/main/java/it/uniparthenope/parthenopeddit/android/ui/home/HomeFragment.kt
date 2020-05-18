@@ -16,6 +16,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mancj.materialsearchbar.MaterialSearchBar
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.CommentActivity
+import it.uniparthenope.parthenopeddit.android.adapters.ExpandableListAdapter
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.ui.newGroup.NewGroupActivity
 import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
@@ -23,6 +24,7 @@ import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.auth.Auth
 import it.uniparthenope.parthenopeddit.model.Post
 import kotlinx.android.synthetic.main.cardview_post.*
+import kotlinx.android.synthetic.main.fragment_home_content.view.*
 
 class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
@@ -37,6 +39,23 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         val fab_new_group = root.findViewById(R.id.fab_new_group) as FloatingActionButton
         val fab_new_post_textview = root.findViewById(R.id.fab_new_post_textview) as TextView
         val fab_new_group_textview = root.findViewById(R.id.fab_new_group_textview) as TextView
+
+        val listHeader = listOf("I tuoi corsi di studio", "I tuoi gruppi")
+
+        val coursesList = listOf("Corso 1","Corso 2","Corso 3","Corso 4")
+        val groupsList = listOf("Gruppo1","Gruppo 2","Gruppo 3","Gruppo 4")
+
+        //val groupList = resources.getStringArray(R.array.groups)
+
+
+        val listChild = HashMap<String, List<String>>()
+        listChild.put(listHeader[0], coursesList)
+        listChild.put(listHeader[1], groupsList)
+
+        val expandableListAdapter : ExpandableListAdapter = ExpandableListAdapter(requireContext(), listHeader, listChild)
+        root.expandable_list_view.setAdapter(expandableListAdapter)
+        expandableListAdapter.notifyDataSetChanged()
+        //root.expandable_list_view
 
         recycler_view = root.findViewById(R.id.recycler_view) as RecyclerView
 
