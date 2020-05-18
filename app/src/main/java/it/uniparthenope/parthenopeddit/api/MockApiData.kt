@@ -21,8 +21,10 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace {
         TODO("Not yet implemented")
     }
 
-    override fun getAllPost(token: String) {
-        TODO("Not yet implemented")
+    override fun getAllPost(
+        token: String,
+        completion: (postList: List<Post>?, error: String?) -> Unit) {
+        completion.invoke(MockDatabase.instance.posts_table, null)
     }
 
     override fun publishNewPost(
@@ -39,7 +41,13 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace {
         postId: Int,
         completion: (post: Post?, error: String?) -> Unit
     ) {
-        TODO("Not yet implemented")
+        for (post in MockDatabase.instance.posts_table) {
+            if( post.id == postId ) {
+                completion.invoke(post, null)
+                return
+            }
+        }
+        completion.invoke(null, "no post with id $postId")
     }
 
     override fun getComment(

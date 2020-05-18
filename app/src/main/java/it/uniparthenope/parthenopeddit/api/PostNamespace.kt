@@ -13,7 +13,7 @@ interface PostNamespace {
      * GET ALL POST
      * Retrieves data of all posts visible to the user
      */
-    fun getAllPost(token:String)
+    fun getAllPost(token:String, completion: (postList: List<Post>?, error: String?) -> Unit)
 
     /**
      * PUBLISH NEW POST

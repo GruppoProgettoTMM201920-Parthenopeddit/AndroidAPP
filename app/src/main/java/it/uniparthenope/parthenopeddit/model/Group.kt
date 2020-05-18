@@ -1,5 +1,29 @@
 package it.uniparthenope.parthenopeddit.model
 
-import it.uniparthenope.parthenopeddit.util.JSONConvertable
+class Group(var isHeaderArg: Boolean, var nameArg: String) {
+        private var isHeader: Boolean
+        private var name: String
 
-class Group() : Board(), JSONConvertable
+    init {
+        isHeader = isHeaderArg
+        name = nameArg
+    }
+
+    fun isHeader(): Boolean {
+        return isHeader
+    }
+
+    fun setHeader(header: Boolean){
+        isHeader = header
+    }
+
+    fun getName(): String {
+        return name
+    }
+
+    fun setName(name: String) {
+        this.name = name
+    }
+
+
+}

@@ -12,14 +12,14 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="it.uniparthenope.parthenopeddit.android.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        android:id="@+id/navigation_profile"
+        android:name="it.uniparthenope.parthenopeddit.android.ui.profile.ProfileFragment"
+        android:label="@string/title_profile_it"
+        tools:layout="@layout/fragment_profile" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="it.uniparthenope.parthenopeddit.android.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_messages"
+        android:name="it.uniparthenope.parthenopeddit.android.ui.messages.MessagesFragment"
+        android:label="@string/title_messages_it"
+        tools:layout="@layout/fragment_messages" />
 </navigation>

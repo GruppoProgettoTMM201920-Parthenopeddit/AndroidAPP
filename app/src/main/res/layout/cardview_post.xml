@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="4dp"
+    app:cardCornerRadius="20dp"
+    app:cardElevation="20dp"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp">
+
+        <ImageView
+            android:id="@+id/image_view"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_home_black_24dp" />
+
+        <TextView
+            android:id="@+id/username_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/image_view"
+            android:text="username"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/group_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/username_textview"
+            android:layout_toEndOf="@+id/image_view"
+            android:layout_marginTop="10dp"
+            android:text="group" />
+
+        <TextView
+            android:id="@+id/posttext_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/group_textview"
+            android:layout_toEndOf="@+id/image_view"
+            android:layout_marginTop="10dp"
+            android:text="textpost" />
+
+
+
+        <Button
+            android:id="@+id/comments_btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/posttext_textview"
+            android:layout_marginTop="50dp"
+            android:layout_alignParentLeft="true"
+            />
+
+
+        <Button
+            android:id="@+id/upvote_btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/posttext_textview"
+            android:layout_marginTop="50dp"
+            android:layout_toLeftOf="@+id/downvote_textview"
+            android:layout_marginRight="20dp"
+            />
+
+        <Button
+            android:id="@+id/downvote_btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/posttext_textview"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="50dp"
+            />
+
+        <TextView
+            android:id="@+id/comments_textview"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:layout_below="@+id/posttext_textview"
+            android:layout_marginTop="60dp"
+            android:layout_toRightOf="@+id/comments_btn"
+            android:text="0"
+            android:gravity="right"/>
+
+        <TextView
+            android:id="@+id/upvote_textview"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:layout_below="@+id/posttext_textview"
+            android:layout_marginTop="60dp"
+            android:layout_toLeftOf="@+id/upvote_btn"
+            android:text="0"
+            android:gravity="right"/>
+
+        <TextView
+            android:id="@+id/downvote_textview"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:layout_below="@+id/posttext_textview"
+            android:layout_marginTop="60dp"
+            android:layout_toLeftOf="@+id/downvote_btn"
+            android:text="0"
+            android:gravity="right"/>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
