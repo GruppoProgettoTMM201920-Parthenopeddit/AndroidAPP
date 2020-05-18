@@ -14,9 +14,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:orientation="vertical"
+        android:padding="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:padding="8dp"
         tools:context=".HomeFragment">
 
         <com.mancj.materialsearchbar.MaterialSearchBar
@@ -27,8 +27,8 @@
             android:background="#595959"
             app:mt_hint="Ricerca..."
             app:mt_maxSuggestionsCount="5"
-            app:mt_speechMode="true"
-            app:mt_placeholder="Ricerca..."/>
+            app:mt_placeholder="Ricerca..."
+            app:mt_speechMode="true" />
 
         <ListView
             android:id="@+id/search_listview"
@@ -38,28 +38,39 @@
 
     </LinearLayout>
 
+    <ExpandableListView
+        android:id="@+id/expandable_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:background="@drawable/expandable_list_shape"
+        android:padding="8dp"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Search_LinearLayout">
+        app:layout_constraintStart_toStartOf="parent">
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/main_content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="0dp">
 
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="300dp"
                 android:layout_marginTop="8dp"
                 android:clipChildren="false"
+                android:isScrollContainer="false"
                 android:padding="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

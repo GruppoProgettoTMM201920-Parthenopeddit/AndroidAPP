@@ -36,10 +36,10 @@ class MessagesFragment : Fragment() {
 
         recycler_view = root.findViewById(R.id.recycler_view) as RecyclerView
 
-        val postAdapter = MessagesAdapter(ArrayList<Chat>(), this)
-        recycler_view.adapter = postAdapter
-        recycler_view.layoutManager = LinearLayoutManager(requireContext())
-        recycler_view.setHasFixedSize(true)
+        //val postAdapter = MessagesAdapter(ArrayList<Chat>(), this)
+        //recycler_view.adapter = postAdapter
+       // recycler_view.layoutManager = LinearLayoutManager(requireContext())
+       // recycler_view.setHasFixedSize(true)
 
         return root
     }
