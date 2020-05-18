@@ -25,6 +25,7 @@ import it.uniparthenope.parthenopeddit.auth.Auth
 import it.uniparthenope.parthenopeddit.model.Post
 import kotlinx.android.synthetic.main.cardview_post.*
 import kotlinx.android.synthetic.main.fragment_home_content.view.*
+import kotlinx.android.synthetic.main.post_list_container.view.*
 
 class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
@@ -40,6 +41,7 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         val fab_new_post_textview = root.findViewById(R.id.fab_new_post_textview) as TextView
         val fab_new_group_textview = root.findViewById(R.id.fab_new_group_textview) as TextView
 
+        /*
         val listHeader = listOf("I tuoi corsi di studio", "I tuoi gruppi")
 
         val coursesList = listOf("Corso 1","Corso 2","Corso 3","Corso 4")
@@ -56,6 +58,8 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         root.expandable_list_view.setAdapter(expandableListAdapter)
         expandableListAdapter.notifyDataSetChanged()
         //root.expandable_list_view
+
+         */
 
         recycler_view = root.findViewById(R.id.recycler_view) as RecyclerView
 
