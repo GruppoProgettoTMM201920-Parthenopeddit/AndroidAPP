@@ -7,14 +7,17 @@
     android:background="#595959"
     tools:context=".android.ui.profile.ProfileFragment">
 
+
+
+
     <LinearLayout
         android:id="@+id/user_detail_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/post_shape"
         android:gravity="center_horizontal"
         android:orientation="vertical"
@@ -23,57 +26,68 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/user_image"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_marginTop="20dp"
-            android:foreground="@drawable/circle_user_image"
-            app:srcCompat="@drawable/ic_launcher_background" />
+
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="250dp"
             android:text="@string/username_user"
             android:textSize="24sp" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <fragment
+            android:id="@+id/fragment"
+            android:name="it.uniparthenope.parthenopeddit.android.SettingsActivity$SettingsFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <Switch
-                android:id="@+id/darkmode_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="33dp"
-                android:text="@string/darkmode"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView8" />
-
-            <TextView
-                android:id="@+id/textView8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="50dp"
-                android:text="@string/user_activity_text_it"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textView9"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
-                android:layout_marginTop="34dp"
-                android:text="@string/about_it"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/darkmode_switch" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/user_image"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:foreground="@drawable/circle_user_image"
+        app:srcCompat="@drawable/ic_launcher_background"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="30dp"
+        tools:layout_editor_absoluteX="110dp"
+        tools:layout_editor_absoluteY="116dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_user_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
+        app:layout_constraintStart_toEndOf="@id/user_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="180dp"
+        android:layout_marginEnd="100dp"
+        android:contentDescription="hello"
+        android:elevation="2dp"
+        android:src="@drawable/ic_edit_white_24dp"
+        app:fabSize="mini"
+        tools:layout_editor_absoluteX="411dp"
+        tools:layout_editor_absoluteY="30dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_new_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
+        app:layout_constraintStart_toEndOf="@id/user_image"
+        app:layout_constraintTop_toBottomOf="@id/fab_user_image"
+        android:layout_marginTop="35dp"
+        android:layout_marginEnd="100dp"
+        android:contentDescription="hello"
+        android:elevation="2dp"
+        android:src="@drawable/ic_edit_white_24dp"
+        app:fabSize="mini"
+        tools:layout_editor_absoluteX="411dp"
+        tools:layout_editor_absoluteY="30dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

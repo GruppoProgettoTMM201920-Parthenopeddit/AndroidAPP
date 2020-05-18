@@ -33,5 +33,8 @@
     <string name="user_activity_text_it">Visualizza le tue attività</string>
     <string name="darkmode">Dark mode</string>
     <string name="about_it">Informazioni</string>
+    <string name="title_activity_user">UserActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
 
 </resources>

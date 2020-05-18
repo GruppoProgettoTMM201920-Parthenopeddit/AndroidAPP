@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.android.ui.settings.SettingsFragment
+import kotlinx.android.synthetic.main.fragment_profile.*
 
 
 //TO-DO: implementare PreferenceFragmentCompat
@@ -29,6 +29,10 @@ class ProfileFragment : Fragment(), PreferenceFragmentCompat.OnPreferenceStartFr
         val root = inflater.inflate(R.layout.fragment_profile, container, false)
 
         profileViewModel.text.observe(viewLifecycleOwner, Observer {
+
+            fab_new_username.setOnClickListener {
+                
+            }
 
         })
 

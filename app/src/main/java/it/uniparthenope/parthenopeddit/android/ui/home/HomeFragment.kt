@@ -53,7 +53,7 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         listChild.put(listHeader[1], groupsList)
 
         val expandableListAdapter : ExpandableListAdapter = ExpandableListAdapter(requireContext(), listHeader, listChild)
-        root.expandable_list_view.setAdapter(expandableListAdapter)
+        //root.expandable_list_view.setAdapter(expandableListAdapter)
         expandableListAdapter.notifyDataSetChanged()
         //root.expandable_list_view
 
@@ -76,8 +76,10 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
         val fabOpen_1 = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_open_1)
         val fabOpen_2 = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_open_2)
-        val fabTextViewOpen = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_textview_open)
-        val fabTextViewClose = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_textview_close)
+        val fabTextViewOpen_1 = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_textview_open_1)
+        val fabTextViewOpen_2 = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_textview_open_2)
+        val fabTextViewClose_1 = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_textview_close_1)
+        val fabTextViewClose_2 = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_textview_close_2)
         val fabClose_1 = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_close_1)
         val fabClose_2 = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_close_2)
         val rotateClockwise = AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_clockwise)
@@ -134,8 +136,8 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
                 fab.startAnimation(rotateClockwise)
                 fab_new_post.startAnimation(fabClose_1)
                 fab_new_group.startAnimation(fabClose_2)
-                fab_new_post_textview.startAnimation(fabTextViewClose)
-                fab_new_group_textview.startAnimation(fabTextViewClose)
+                fab_new_post_textview.startAnimation(fabTextViewClose_1)
+                fab_new_group_textview.startAnimation(fabTextViewClose_2)
                 fab_new_post.visibility = View.GONE
                 fab_new_group.visibility = View.GONE
                 fab_new_post.visibility = View.GONE
@@ -149,8 +151,8 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
                 fab.startAnimation(rotateAnticlockwise)
                 fab_new_post.startAnimation(fabOpen_1)
                 fab_new_group.startAnimation(fabOpen_2)
-                fab_new_post_textview.startAnimation(fabTextViewOpen)
-                fab_new_group_textview.startAnimation(fabTextViewOpen)
+                fab_new_post_textview.startAnimation(fabTextViewOpen_1)
+                fab_new_group_textview.startAnimation(fabTextViewOpen_2)
                 isOpen = true
             }
         }
