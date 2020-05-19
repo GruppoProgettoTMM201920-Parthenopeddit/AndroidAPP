@@ -3,7 +3,9 @@ package it.uniparthenope.parthenopeddit.android.ui.profile
 import android.Manifest
 import android.app.Activity
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
@@ -28,6 +30,7 @@ import kotlinx.android.synthetic.main.change_username_dialog.view.*
 import kotlinx.android.synthetic.main.change_username_dialog.view.error_textview
 import kotlinx.android.synthetic.main.fragment_profile.*
 
+private val sharedPrefFile = "kotlinsharedpreference"
 
 class ProfileFragment : Fragment(), PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
@@ -41,8 +44,14 @@ class ProfileFragment : Fragment(), PreferenceFragmentCompat.OnPreferenceStartFr
         profileViewModel =
             ViewModelProviders.of(this).get(ProfileViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_profile, container, false)
+        val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences(sharedPrefFile,Context.MODE_PRIVATE)
 
+        val sharedNameValue = sharedPreferences.getString("USERNAME","userdef")
         profileViewModel.text.observe(viewLifecycleOwner, Observer {
+
+            username_shown_textview.text = sharedNameValue
+
+
 
             fab_new_username.setOnClickListener {val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.change_username_dialog, null)
                 //AlertDialogBuilder
@@ -54,12 +63,17 @@ class ProfileFragment : Fragment(), PreferenceFragmentCompat.OnPreferenceStartFr
                     val username = mDialogView.dialogUsernameEt.text.toString()
                     val error_textview = mDialogView.error_textview
                     if(username.isNotBlank()){
-                        username_textview.setText(username)
+                        username_shown_textview.setText(username)
                         //TODO: send username to database through API
+
+                        //SAVE PREFERENCE
+                        val editor:SharedPreferences.Editor =  sharedPreferences.edit()
+                        editor.putString("USERNAME",username)
+                        editor.apply()
+                        editor.commit()
                         mAlertDialog.dismiss()
                     } else{
                         error_textview.visibility = View.VISIBLE
-                        Toast.makeText(requireContext(),"ao",Toast.LENGTH_SHORT)
 
                     }
                 }
@@ -83,13 +97,8 @@ class ProfileFragment : Fragment(), PreferenceFragmentCompat.OnPreferenceStartFr
                 }
             }
 
-        })
 
-        /*supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.settings_container, SettingsFragment())
-            .commit()
-        */
+        })
         return root
     }
 
