@@ -2,33 +2,33 @@ package it.uniparthenope.parthenopeddit.android.ui.profile
 
 import android.Manifest
 import android.app.Activity
-import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
+import android.util.Base64
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
-import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.Keep
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat.checkSelfPermission
+import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import it.uniparthenope.parthenopeddit.R
-import kotlinx.android.synthetic.main.change_username_dialog.*
 import kotlinx.android.synthetic.main.change_username_dialog.view.*
-import kotlinx.android.synthetic.main.change_username_dialog.view.error_textview
 import kotlinx.android.synthetic.main.fragment_profile.*
+import java.io.ByteArrayOutputStream
 
 private val sharedPrefFile = "kotlinsharedpreference"
 
@@ -46,10 +46,13 @@ class ProfileFragment : Fragment(), PreferenceFragmentCompat.OnPreferenceStartFr
         val root = inflater.inflate(R.layout.fragment_profile, container, false)
         val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences(sharedPrefFile,Context.MODE_PRIVATE)
 
-        val sharedNameValue = sharedPreferences.getString("USERNAME","userdef")
+
+        val sharedNameValue = sharedPreferences.getString("USERNAME","Username")
         profileViewModel.text.observe(viewLifecycleOwner, Observer {
 
+            val myImage = decodeBase64(sharedPreferences.getString("imagePreferance","000"))
             username_shown_textview.text = sharedNameValue
+            user_image.setImageBitmap(myImage)
 
 
 
@@ -90,6 +93,11 @@ class ProfileFragment : Fragment(), PreferenceFragmentCompat.OnPreferenceStartFr
                         } else{
                         //PERMISSION ALREADY GRANTED
                         pickImageFromGallery()
+                        val editor:SharedPreferences.Editor =  sharedPreferences.edit()
+                        editor.putString("namePreferance", "imagename");
+                        editor.putString("imagePreferance", encodeTobase64(user_image.drawable.toBitmap()));
+                        editor.apply()
+                        editor.commit();
                     }
                 } else{
                     //OS > 6.0
@@ -142,6 +150,22 @@ class ProfileFragment : Fragment(), PreferenceFragmentCompat.OnPreferenceStartFr
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
             user_image.setImageURI(data?.data)
         }
+    }
+
+    fun encodeTobase64(image: Bitmap): String? {
+        val immage: Bitmap = image
+        val baos = ByteArrayOutputStream()
+        immage.compress(Bitmap.CompressFormat.PNG, 100, baos)
+        val b: ByteArray = baos.toByteArray()
+        val imageEncoded: String = Base64.encodeToString(b, Base64.DEFAULT)
+        Log.d("Image Log:", imageEncoded)
+        return imageEncoded
+    }
+
+    fun decodeBase64(input: String?): Bitmap? {
+        val decodedByte = Base64.decode(input, 0)
+        return BitmapFactory
+            .decodeByteArray(decodedByte, 0, decodedByte.size)
     }
 
 }

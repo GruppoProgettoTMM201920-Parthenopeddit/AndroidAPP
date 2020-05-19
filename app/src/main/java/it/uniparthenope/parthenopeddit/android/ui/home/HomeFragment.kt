@@ -1,5 +1,6 @@
 package it.uniparthenope.parthenopeddit.android.ui.home
 
+import android.animation.Animator
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -8,7 +9,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.*
+import android.view.animation.DecelerateInterpolator
+import android.widget.ArrayAdapter
+import android.widget.ListView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -16,7 +21,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mancj.materialsearchbar.MaterialSearchBar
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.CommentActivity
-import it.uniparthenope.parthenopeddit.android.adapters.ExpandableListAdapter
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.ui.newGroup.NewGroupActivity
 import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
@@ -24,8 +28,7 @@ import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.auth.Auth
 import it.uniparthenope.parthenopeddit.model.Post
 import kotlinx.android.synthetic.main.cardview_post.*
-import kotlinx.android.synthetic.main.fragment_home_content.view.*
-import kotlinx.android.synthetic.main.post_list_container.view.*
+
 
 class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
@@ -78,14 +81,6 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
             }
         }
 
-        val fabOpen_1 = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_open_1)
-        val fabOpen_2 = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_open_2)
-        val fabTextViewOpen_1 = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_textview_open_1)
-        val fabTextViewOpen_2 = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_textview_open_2)
-        val fabTextViewClose_1 = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_textview_close_1)
-        val fabTextViewClose_2 = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_textview_close_2)
-        val fabClose_1 = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_close_1)
-        val fabClose_2 = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_close_2)
         val rotateClockwise = AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_clockwise)
         val rotateAnticlockwise = AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_anticlockwise)
 
@@ -138,25 +133,32 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         fab.setOnClickListener{
             if(isOpen){
                 fab.startAnimation(rotateClockwise)
-                fab_new_post.startAnimation(fabClose_1)
-                fab_new_group.startAnimation(fabClose_2)
-                fab_new_post_textview.startAnimation(fabTextViewClose_1)
-                fab_new_group_textview.startAnimation(fabTextViewClose_2)
-                fab_new_post.visibility = View.GONE
-                fab_new_group.visibility = View.GONE
-                fab_new_post.visibility = View.GONE
-                fab_new_group.visibility = View.GONE
+
+                fab_new_post.animate().translationY(200F)
+                fab_new_group.animate().translationY(400F)
+                fab_new_post_textview.animate().translationY(200F)
+                fab_new_group_textview.animate().translationY(400F)
+                fab_new_post_textview.animate().alpha(0F)
+                fab_new_group_textview.animate().alpha(0F)
+                fab_new_post_textview.visibility = View.GONE
+                fab_new_group_textview.visibility = View.GONE
+
+
                 isOpen = false
             } else{
-                fab_new_post.visibility = View.VISIBLE
-                fab_new_group.visibility = View.VISIBLE
+                fab.startAnimation(rotateAnticlockwise)
+
+                fab_new_post.animate().translationY(-200F)
+                fab_new_group.animate().translationY(-400F)
+
+                fab_new_post_textview.animate().translationY(-200F)
+                fab_new_group_textview.animate().translationY(-400F)
+
                 fab_new_post_textview.visibility = View.VISIBLE
                 fab_new_group_textview.visibility = View.VISIBLE
-                fab.startAnimation(rotateAnticlockwise)
-                fab_new_post.startAnimation(fabOpen_1)
-                fab_new_group.startAnimation(fabOpen_2)
-                fab_new_post_textview.startAnimation(fabTextViewOpen_1)
-                fab_new_group_textview.startAnimation(fabTextViewOpen_2)
+
+                fab_new_post_textview.animate().alpha(1F)
+                fab_new_group_textview.animate().alpha(1F)
                 isOpen = true
             }
         }

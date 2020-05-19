@@ -17,58 +17,59 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
-        android:layout_marginRight="65dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginRight="80dp"
+        android:layout_marginBottom="25dp"
         android:background="@drawable/fab_textview_bubble"
         android:gravity="center"
         android:padding="5dp"
         android:text="@string/new_post_it"
         android:textColor="@color/white"
-        android:textSize="17dp"
+        android:textSize="15dp"
         android:textStyle="bold"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/fab_new_group_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
-        android:layout_marginRight="65dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginRight="80dp"
+        android:layout_marginBottom="30dp"
         android:background="@drawable/fab_textview_bubble"
         android:gravity="center"
         android:padding="5dp"
         android:text="@string/new_group_it"
         android:textColor="@color/white"
-        android:textSize="17dp"
+        android:textSize="15dp"
         android:textStyle="bold"
-        android:visibility="gone" />
+        android:visibility="gone"/>
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_new_post"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginBottom="25dp"
         android:backgroundTint="@color/white"
         android:contentDescription="hello"
         android:elevation="2dp"
         android:src="@drawable/ic_call_to_action_themecolor_24dp"
-        android:visibility="gone" />
+        app:fabSize="mini"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_new_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginRight="25dp"
+        android:layout_marginBottom="30dp"
         android:backgroundTint="@color/white"
         android:contentDescription="hello"
         android:elevation="2dp"
         android:src="@drawable/ic_group_add_themecolor_24dp"
-        android:visibility="gone" />
+        app:fabSize="mini"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
