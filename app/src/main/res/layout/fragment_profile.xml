@@ -18,7 +18,7 @@
         android:layout_marginTop="10dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="10dp"
-        android:background="@drawable/post_shape"
+        android:background="@drawable/settings_shape"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -34,7 +34,15 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="250dp"
             android:text="@string/username_user"
+            android:textStyle="bold"
             android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/username_shown_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/username_user"
+            android:textSize="15sp" />
 
         <fragment
             android:id="@+id/fragment"
@@ -55,7 +63,8 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="30dp"
         tools:layout_editor_absoluteX="110dp"
-        tools:layout_editor_absoluteY="116dp" />
+        tools:layout_editor_absoluteY="116dp"
+        android:scaleType="centerCrop"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_user_image"

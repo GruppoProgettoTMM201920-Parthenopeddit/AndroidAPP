@@ -10,11 +10,25 @@
             android:action="it.uniparthenope.parthenopeddit.UserActivity"/>
     </Preference>
 
-    <Preference
+    <SwitchPreference
+        app:key="notifications"
+        app:title="Notifiche"
+        app:summary="Abilita o disabilita le notifiche"
+        app:icon="@drawable/ic_darkmode_themecolor_24dp"/>
+
+    <SwitchPreference
         app:key="darkmode"
         app:title="Dark mode"
-        app:summary="Abilita la modalità scura"
+        app:summary="Abilita o disabilita la modalità scura"
         app:icon="@drawable/ic_darkmode_themecolor_24dp"/>
+
+    <Preference
+        android:title="Informazioni"
+        app:icon="@drawable/ic_info_themecolor_24dp">
+        <!--<intent
+            android:action="it.uniparthenope.parthenopeddit.UserActivity"/>-->
+    </Preference>
+
 
 
 
