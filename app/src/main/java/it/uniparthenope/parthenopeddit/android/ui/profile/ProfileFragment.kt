@@ -46,8 +46,8 @@ class ProfileFragment : Fragment(), PreferenceFragmentCompat.OnPreferenceStartFr
         val root = inflater.inflate(R.layout.fragment_profile, container, false)
         val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences(sharedPrefFile,Context.MODE_PRIVATE)
 
-
         val sharedNameValue = sharedPreferences.getString("USERNAME","Username")
+
         profileViewModel.text.observe(viewLifecycleOwner, Observer {
 
             val myImage = decodeBase64(sharedPreferences.getString("imagePreferance","000"))

@@ -1,17 +1,20 @@
 package it.uniparthenope.parthenopeddit.android
 
+import android.content.Intent
 import android.media.RingtoneManager
 import android.net.Uri
 import android.os.Bundle
-import android.preference.PreferenceFragment
 import android.preference.RingtonePreference
 import android.text.TextUtils
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import it.uniparthenope.parthenopeddit.R
+import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
+
 
 class SettingsActivity : AppCompatActivity() {
 
@@ -21,12 +24,21 @@ class SettingsActivity : AppCompatActivity() {
             .beginTransaction()
             .replace(android.R.id.content, SettingsFragment())
             .commit()
+
+
     }
 
 
     class SettingsFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             addPreferencesFromResource(R.xml.preferences)
+            val preference: Preference? = findPreference("useractivity")
+            preference?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                val intent = Intent(requireContext(), UserActivity::class.java)
+                startActivity(intent)
+                true
+            }
+
         }
     }
 

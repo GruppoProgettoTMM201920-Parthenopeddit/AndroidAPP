@@ -3,16 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <Preference
+        app:key="useractivity"
         android:summary="Visualizza le attività nell'app"
         android:title="Visualizza le tue attività"
-        app:icon="@drawable/ic_useractivity_themecolor_24dp">
-        <intent
-            android:action="android.intent.action.VIEW"
-            android:targetPackage="it.uniparthenope.parthenopeddit.android"
-            android:targetClass="it.uniparthenope.parthenopeddit.android.UserActivity" />
-        <!--<intent
-            android:action=".android.UserActivity" />-->
-    </Preference>
+        app:icon="@drawable/ic_useractivity_themecolor_24dp" />
 
     <SwitchPreference
         app:key="notifications"
