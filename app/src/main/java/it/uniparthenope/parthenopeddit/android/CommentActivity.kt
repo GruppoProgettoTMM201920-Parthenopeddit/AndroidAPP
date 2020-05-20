@@ -70,7 +70,7 @@ class CommentActivity : BasicActivity(), CommentAdapter.CommentItemClickListener
         }
 
         var message_edittext = findViewById<EditText>(R.id.message_edittext)
-        val send_btn = findViewById<Button>(R.id.send_btn)
+        val send_btn = findViewById<ImageButton>(R.id.send_btn)
         var message: String
 
         send_btn.setOnClickListener {

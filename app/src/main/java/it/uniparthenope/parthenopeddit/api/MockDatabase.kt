@@ -56,14 +56,32 @@ class MockDatabase private constructor() {
             author_id = u1.id,
             author = u1
         )
-        u1.posts = ArrayList<Post>(listOf(p1,p3))
+
+        val p4 = Post(
+            id=4,
+            title = "User1 second post",
+            timestamp = "2014-08-18 21:11:35.537000",
+            author_id = u1.id,
+            author = u1
+        )
+
+        val p5 = Post(
+            id=5,
+            title = "My title is awesome",
+            body = "And my body too",
+            timestamp = "2014-08-18 21:11:35.537000",
+            author_id = u2.id,
+            author = u2
+        )
+
+        u1.posts = ArrayList<Post>(listOf(p1,p3,p4))
         u1.posts_num = u1.posts?.size
-        u2.posts = ArrayList<Post>(listOf(p2))
+        u2.posts = ArrayList<Post>(listOf(p2,p5))
         u2.posts_num = u2.posts?.size
 
         val c1 = Comment(
             id = 1,
-            body = "Hello world",
+            body = "First!1!1!1",
             timestamp = "2014-08-18 21:11:35.537000",
             author_id = u2.id,
             commented_post_id = 1,
@@ -72,7 +90,7 @@ class MockDatabase private constructor() {
         )
         val c2 = Comment(
             id = 2,
-            body = "Hello world 2",
+            body = "Second comment",
             timestamp = "2014-08-18 21:11:35.537000",
             author_id = u1.id,
             commented_comment_id = 1,
@@ -89,7 +107,7 @@ class MockDatabase private constructor() {
         c2.comments_num = 0
 
         users_table.addAll(listOf(u1,u2))
-        posts_table.addAll(listOf(p1,p2,p3))
+        posts_table.addAll(listOf(p1,p2,p3,p4,p5))
         comments_table.addAll(listOf(c1,c2))
     }
 }
