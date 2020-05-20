@@ -19,7 +19,7 @@ import it.uniparthenope.parthenopeddit.android.CommentActivity
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.ui.newGroup.NewGroupActivity
 import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
-import it.uniparthenope.parthenopeddit.api.MockApiData
+import it.uniparthenope.parthenopeddit.api.MockDatabase
 import it.uniparthenope.parthenopeddit.auth.Auth
 import it.uniparthenope.parthenopeddit.model.Post
 import kotlinx.android.synthetic.main.cardview_post.*
@@ -45,15 +45,7 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         recycler_view.layoutManager = LinearLayoutManager(requireContext())
         recycler_view.setHasFixedSize(true)
 
-        MockApiData().getAllPost( Auth().token ) { postItemList, error ->
-            if( error != null ) {
-                Toast.makeText(requireContext(),"Errore : $error", Toast.LENGTH_LONG).show()
-            } else {
-                postItemList!!
-
-                postAdapter.aggiornaLista( postItemList )
-            }
-        }
+        postAdapter.aggiornaLista( MockDatabase.instance.posts_table )
 
         val fabOpen_1 = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_open_1)
         val fabOpen_2 = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_open_2)

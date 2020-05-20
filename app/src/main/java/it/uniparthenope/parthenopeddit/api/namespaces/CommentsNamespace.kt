@@ -1,4 +1,4 @@
-package it.uniparthenope.parthenopeddit.api
+package it.uniparthenope.parthenopeddit.api.namespaces
 
 import it.uniparthenope.parthenopeddit.model.Comment
 

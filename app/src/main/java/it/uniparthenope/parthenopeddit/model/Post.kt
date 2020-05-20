@@ -18,6 +18,7 @@ class Post(
 
 ) : Content(id, body, timestamp, author_id), JSONConvertable {
 
+
     /* relationships */
 
     @SerializedName("posted_to_board")

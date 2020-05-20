@@ -3,6 +3,9 @@ package it.uniparthenope.parthenopeddit.api
 import it.uniparthenope.parthenopeddit.model.Comment
 import it.uniparthenope.parthenopeddit.model.Post
 import it.uniparthenope.parthenopeddit.model.User
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Contaner class for MOCK data
@@ -24,6 +27,11 @@ class MockDatabase private constructor() {
     init {
         /* Popolamento tabelle fittizie. */
 
+        val df = SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSSSSS", Locale.ITALIAN)
+        val timeZone = TimeZone.getTimeZone("UTC")
+        df.timeZone = timeZone
+
+        /*
         val u1 = User(
             id = "user1",
             nome_visualizzato = "NoobMaster69",
@@ -37,7 +45,7 @@ class MockDatabase private constructor() {
         val p1 = Post(
             id=1,
             title = "Hello World!",
-            timestamp = "2014-08-18 21:11:35.537000",
+            timestamp = Calendar.getInstance().time,
             author_id = u1.id,
             author = u1
         )
@@ -45,14 +53,14 @@ class MockDatabase private constructor() {
             id=2,
             title = "My title is awesome",
             body = "And my body too",
-            timestamp = "2014-08-18 21:11:35.537000",
+            timestamp = Calendar.getInstance().time,
             author_id = u2.id,
             author = u2
         )
         val p3 = Post(
             id=3,
             title = "User1 second post",
-            timestamp = "2014-08-18 21:11:35.537000",
+            timestamp = Calendar.getInstance().time,
             author_id = u1.id,
             author = u1
         )
@@ -91,5 +99,7 @@ class MockDatabase private constructor() {
         users_table.addAll(listOf(u1,u2))
         posts_table.addAll(listOf(p1,p2,p3))
         comments_table.addAll(listOf(c1,c2))
+
+         */
     }
 }
