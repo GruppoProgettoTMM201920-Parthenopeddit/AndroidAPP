@@ -1,21 +1,22 @@
 package it.uniparthenope.parthenopeddit.model
 
+import com.google.gson.annotations.SerializedName
 import it.uniparthenope.parthenopeddit.util.JSONConvertable
+import java.util.*
 
-data class Comment(
-    val id: Int,
-    val body: String,
-    val timestamp: String,
-    val author_id: String,
-    val commented_content_id: Int,
+class Comment(
+    id: Int,
+    body: String,
+    timestamp: Date,
+    author_id: String,
+
+    @SerializedName("commented_content_id")
+    val commented_content_id: Int
+
+) : Content(id, body, timestamp, author_id), JSONConvertable {
 
     /* relationships */
-    var author: User? = null,
-    var comments: ArrayList<Comment>? = null,
-    var commented_content: Content?,
 
-    /* aggregated data */
-    var comments_num: Int? = null,
-    var likes_num: Int? = null,
-    var dislikes_num: Int? = null
-) : Content(), JSONConvertable
+    @SerializedName("commented_content")
+    var commented_content: Content? = null
+}

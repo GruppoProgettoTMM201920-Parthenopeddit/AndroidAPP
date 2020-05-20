@@ -1,3 +1,7 @@
 package it.uniparthenope.parthenopeddit.model
 
-abstract class Board
+import it.uniparthenope.parthenopeddit.util.JSONConvertable
+
+class Board() : JSONConvertable {
+
+}
