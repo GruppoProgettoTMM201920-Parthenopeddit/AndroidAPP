@@ -34,17 +34,25 @@
                 android:layout_toEndOf="@+id/image_view"
                 android:text="username"
                 android:textColor="@android:color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
+                android:textSize="18sp"/>
 
+            <TextView
+                android:id="@+id/timestamp_comment_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/username_textview"
+                android:layout_marginTop="3dp"
+                android:layout_toEndOf="@+id/image_view"
+                android:text="10:00" />
 
             <TextView
                 android:id="@+id/posttext_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/username_textview"
+                android:layout_below="@id/timestamp_comment_textview"
                 android:layout_marginTop="10dp"
                 android:layout_toEndOf="@+id/image_view"
+                android:textColor="@android:color/black"
                 android:text="textpost" />
 
             <ImageButton

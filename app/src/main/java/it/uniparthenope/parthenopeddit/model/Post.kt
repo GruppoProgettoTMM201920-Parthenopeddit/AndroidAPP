@@ -12,6 +12,7 @@ data class Post (
     /* relationships */
     var author: User? = null,
     var comments: ArrayList<Comment>? = null,
+    var group: String? = null,
 
     /* aggregated data */
     var comments_num: Int? = null

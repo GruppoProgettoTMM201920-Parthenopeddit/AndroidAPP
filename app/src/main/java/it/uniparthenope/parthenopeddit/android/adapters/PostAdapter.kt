@@ -44,8 +44,9 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
         val currentItem = postList[position]
 
         holder.imageView.setImageResource(R.drawable.ic_home_black_24dp)
-        holder.username_textview.text = currentItem.author?.id
-        holder.group_textview.text = currentItem.title
+        holder.username_textview.text = currentItem.author?.nome_visualizzato
+        holder.group_textview.text = currentItem.group
+        holder.timestamp_textview.text = currentItem.timestamp
         holder.posttext_textview.text = currentItem.body
         holder.upvote_textview.text = "0"
         holder.downvote_textview.text = "0"
@@ -75,6 +76,7 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
         val imageView: ImageView = itemView.image_view
         val username_textview: TextView = itemView.username_textview
         val group_textview: TextView = itemView.group_textview
+        val timestamp_textview: TextView = itemView.timestamp_textview
         val posttext_textview: TextView = itemView.posttext_textview
         val upvote_btn: ImageButton = itemView.upvote_btn
         val downvote_btn: ImageButton = itemView.downvote_btn

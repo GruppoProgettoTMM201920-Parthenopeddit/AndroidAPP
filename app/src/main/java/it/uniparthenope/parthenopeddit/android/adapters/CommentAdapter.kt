@@ -51,6 +51,7 @@ class CommentAdapter(private val context: Context, private var commentItemsList:
 
         holder.imageView.setImageResource(R.drawable.ic_home_black_24dp)
         holder.username_textview.text = currentItem.author_id
+        holder.timestamp_comment_textview.text = currentItem.timestamp
         holder.posttext_textview.text = currentItem.body
         holder.upvote_textview.text = "0"
         holder.downvote_textview.text = "0"
@@ -100,6 +101,7 @@ class CommentAdapter(private val context: Context, private var commentItemsList:
     class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {     //SINGOLO ELEMENTO DELLA LISTA
         val imageView: ImageView = itemView.image_view
         val username_textview: TextView = itemView.username_textview
+        val timestamp_comment_textview: TextView = itemView.timestamp_comment_textview
         val posttext_textview: TextView = itemView.posttext_textview
         val upvote_btn: ImageButton = itemView.upvote_btn
         val downvote_btn: ImageButton = itemView.downvote_btn

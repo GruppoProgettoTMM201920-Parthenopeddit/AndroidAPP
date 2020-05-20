@@ -35,36 +35,43 @@ class MockDatabase private constructor() {
         )
         val u2 = User(
             id = "user2",
+            nome_visualizzato = "gaussjr",
             registrato_il = "2014-08-18 21:11:35.537000"
         )
 
         val p1 = Post(
             id=1,
             title = "Hello World!",
-            timestamp = "2014-08-18 21:11:35.537000",
+            group = "Generale",
+            timestamp = "10:22",
             author_id = u1.id,
             author = u1
         )
         val p2 = Post(
             id=2,
             title = "My title is awesome",
+            group = "Terminali Mobili 2020",
             body = "And my body too",
-            timestamp = "2014-08-18 21:11:35.537000",
+            timestamp = "9:50",
             author_id = u2.id,
             author = u2
         )
         val p3 = Post(
             id=3,
             title = "User1 second post",
-            timestamp = "2014-08-18 21:11:35.537000",
+            group = "Studenti L-21",
+            body = "body post body post body post body post body post body post ",
+            timestamp = "4:37",
             author_id = u1.id,
             author = u1
         )
 
         val p4 = Post(
             id=4,
-            title = "User1 second post",
-            timestamp = "2014-08-18 21:11:35.537000",
+            title = "User1 third post",
+            group = "Generale",
+            body = "test test",
+            timestamp = "5/5/2055",
             author_id = u1.id,
             author = u1
         )
@@ -72,8 +79,9 @@ class MockDatabase private constructor() {
         val p5 = Post(
             id=5,
             title = "My title is awesome",
+            group = "CS Memes",
             body = "And my body too",
-            timestamp = "2014-08-18 21:11:35.537000",
+            timestamp = "1/1/9999",
             author_id = u2.id,
             author = u2
         )
