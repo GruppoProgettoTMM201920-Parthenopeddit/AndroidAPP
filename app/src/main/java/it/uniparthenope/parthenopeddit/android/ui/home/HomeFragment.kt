@@ -1,6 +1,5 @@
 package it.uniparthenope.parthenopeddit.android.ui.home
 
-import android.animation.Animator
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -9,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.view.animation.DecelerateInterpolator
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.TextView
@@ -66,7 +64,8 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
         recycler_view = root.findViewById(R.id.recycler_view) as RecyclerView
 
-        val postAdapter = PostAdapter(ArrayList<Post>(), this)
+        val postAdapter = PostAdapter()
+        postAdapter.setItemClickListener(this)
         recycler_view.adapter = postAdapter
         recycler_view.layoutManager = LinearLayoutManager(requireContext())
         recycler_view.setHasFixedSize(true)
@@ -77,7 +76,7 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
             } else {
                 postItemList!!
 
-                postAdapter.aggiornaLista( postItemList )
+                postAdapter.aggiungiPost( postItemList )
             }
         }
 
@@ -187,6 +186,10 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
     }
 
     fun onClickNewPost(){
+        //crea dialogo
+            //passi fuonzione da effettuare onSuccess
+        //uploiad to api
+        //notifidatasetchanged()
         val intent = Intent(requireContext(), NewPostActivity::class.java)
         startActivity(intent)
     }

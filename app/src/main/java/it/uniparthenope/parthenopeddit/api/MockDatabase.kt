@@ -1,8 +1,11 @@
 package it.uniparthenope.parthenopeddit.api
 
+import it.uniparthenope.parthenopeddit.model.Chat
 import it.uniparthenope.parthenopeddit.model.Comment
 import it.uniparthenope.parthenopeddit.model.Post
 import it.uniparthenope.parthenopeddit.model.User
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Contaner class for MOCK data
@@ -20,6 +23,7 @@ class MockDatabase private constructor() {
     val users_table = ArrayList<User>()
     val posts_table = ArrayList<Post>()
     val comments_table = ArrayList<Comment>()
+    val chat_table = ArrayList<Chat>()
 
     init {
         /* Popolamento tabelle fittizie. */
@@ -109,5 +113,14 @@ class MockDatabase private constructor() {
         users_table.addAll(listOf(u1,u2))
         posts_table.addAll(listOf(p1,p2,p3,p4,p5))
         comments_table.addAll(listOf(c1,c2))
+
+        val chat1 = Chat(
+            user_id = 1,
+            username = "Pippo",
+            last_message = "Ciao bello, hai ganja?",
+            date = "2019/90/89-89:00:00Z",
+            author = u1
+        )
+        chat_table.add(chat1)
     }
 }

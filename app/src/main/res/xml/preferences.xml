@@ -7,7 +7,11 @@
         android:title="Visualizza le tue attività"
         app:icon="@drawable/ic_useractivity_themecolor_24dp">
         <intent
-            android:action="it.uniparthenope.parthenopeddit.UserActivity"/>
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="it.uniparthenope.parthenopeddit.android"
+            android:targetClass="it.uniparthenope.parthenopeddit.android.UserActivity" />
+        <!--<intent
+            android:action=".android.UserActivity" />-->
     </Preference>
 
     <SwitchPreference

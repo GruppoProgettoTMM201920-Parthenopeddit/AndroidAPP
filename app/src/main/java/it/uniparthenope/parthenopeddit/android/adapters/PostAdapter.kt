@@ -12,7 +12,19 @@ import it.uniparthenope.parthenopeddit.model.Post
 import kotlinx.android.synthetic.main.cardview_post.view.*
 import kotlinx.android.synthetic.main.cardview_post.view.upvote_textview
 
-class PostAdapter(private var exampleList: List<Post>, private var listener:PostItemClickListeners) : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
+class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
+
+    private val postList: ArrayList<Post> = ArrayList()
+    private var listener:PostItemClickListeners? = null
+
+    fun setItemClickListener( listener:PostItemClickListeners? ) {
+        this.listener = listener
+    }
+
+    fun aggiungiPost(postItemList: List<Post>) {
+        this.postList.addAll(postItemList)
+        notifyDataSetChanged()
+    }
 
     interface PostItemClickListeners {
         fun onClickLike(id_post:Int)
@@ -28,7 +40,7 @@ class PostAdapter(private var exampleList: List<Post>, private var listener:Post
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
-        val currentItem = exampleList[position]
+        val currentItem = postList[position]
 
         holder.imageView.setImageResource(R.drawable.ic_home_black_24dp)
         holder.username_textview.text = currentItem.author?.id
@@ -37,27 +49,26 @@ class PostAdapter(private var exampleList: List<Post>, private var listener:Post
         holder.upvote_textview.text = "0"
         holder.downvote_textview.text = "0"
 
-        holder.upvote_btn.setOnClickListener {
-            listener.onClickLike( currentItem.id )
-            holder.upvote_textview.text = (holder.upvote_textview.text.toString().toInt() + 1).toString()
-        }
+        if( listener != null ) {
+            holder.upvote_btn.setOnClickListener {
+                listener!!.onClickLike(currentItem.id)
+                holder.upvote_textview.text =
+                    (holder.upvote_textview.text.toString().toInt() + 1).toString()
+            }
 
-        holder.downvote_btn.setOnClickListener {
-            listener.onClickLike( currentItem.id )
-            holder.downvote_textview.text = (holder.downvote_textview.text.toString().toInt() + 1).toString()
-        }
+            holder.downvote_btn.setOnClickListener {
+                listener!!.onClickLike(currentItem.id)
+                holder.downvote_textview.text =
+                    (holder.downvote_textview.text.toString().toInt() + 1).toString()
+            }
 
-        holder.comment_btn.setOnClickListener {
-            listener.onClickComments( currentItem.id )
+            holder.comment_btn.setOnClickListener {
+                listener!!.onClickComments(currentItem.id)
+            }
         }
     }
 
-    override fun getItemCount() = exampleList.size
-
-    fun aggiornaLista(postItemList: List<Post>) {
-        exampleList = postItemList
-        notifyDataSetChanged()
-    }
+    override fun getItemCount() = postList.size
 
     class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {     //SINGOLO ELEMENTO DELLA LISTA
         val imageView: ImageView = itemView.image_view

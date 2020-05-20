@@ -14,7 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".android.SettingsActivity"/>
-        <activity android:name=".android.UserActivity"/>
+        <activity android:name="it.uniparthenope.parthenopeddit.android.UserActivity">
+            <intent-filter>
+                <action android:name="it.uniparthenope.parthenopeddit.android.UserActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name=".android.ui.newGroup.NewGroupActivity" />
         <activity android:name=".android.ui.newPost.NewPostActivity" />
         <activity
