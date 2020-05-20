@@ -10,6 +10,12 @@ interface CommentsNamespace {
     fun getComment(token: String, commentId:Int, completion: (comment: Comment?, error: String?) -> Unit)
 
     /**
+     * GET USER COMMENT
+     * Retrieves all comments of an user given ID
+     */
+    fun getUserComment(token: String, userId: String, completion: (commentList: List<Comment>?, error: String?) -> Unit)
+
+    /**
      * GET COMMENT WITH COMMENTS
      * Retrieves comment of given ID with a 'comments list' component
      */

@@ -17,7 +17,7 @@ import it.uniparthenope.parthenopeddit.model.Comment
 import it.uniparthenope.parthenopeddit.model.Post
 import kotlinx.android.synthetic.main.activity_comment.*
 
-class CommentActivity : BasicActivity(), CommentAdapter.CommentItemClickListener {
+class CommentActivity : BasicActivity(), CommentAdapter.CommentItemClickListeners {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_comment)

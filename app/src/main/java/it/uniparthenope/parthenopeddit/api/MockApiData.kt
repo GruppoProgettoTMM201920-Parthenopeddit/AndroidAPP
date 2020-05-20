@@ -58,6 +58,13 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace {
         TODO("Not yet implemented")
     }
 
+    override fun getUserComment(
+        token: String,
+        userId: String,
+        completion: (commentList: List<Comment>?, error: String?) -> Unit) {
+        completion.invoke(MockDatabase.instance.comments_table.filter { it.author_id == userId }, null)
+    }
+
     override fun getCommentWithComments(
         token: String,
         commentId: Int,

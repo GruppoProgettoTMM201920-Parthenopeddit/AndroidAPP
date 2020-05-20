@@ -24,12 +24,21 @@ import kotlinx.android.synthetic.main.cardview_post.view.upvote_btn
 import kotlinx.android.synthetic.main.cardview_post.view.upvote_textview
 import kotlinx.android.synthetic.main.cardview_post.view.username_textview
 
-class CommentAdapter(private val context: Context, private var commentItemsList: ArrayList<Comment>, private var listener:CommentItemClickListener) : RecyclerView.Adapter<CommentAdapter.CommentViewHolder>() {
+class CommentAdapter(private val context: Context, private var commentItemsList: ArrayList<Comment>, private var listener:CommentItemClickListeners?) : RecyclerView.Adapter<CommentAdapter.CommentViewHolder>() {
 
-    interface CommentItemClickListener {
+    interface CommentItemClickListeners {
         fun onClickLike(id_Commento:Int)
         fun onClickDislike(id_Commento:Int)
         fun onClickComments(id_Commento:Int)
+    }
+
+    fun setItemClickListener( listener:CommentItemClickListeners? ) {
+        this.listener = listener
+    }
+
+    fun aggiungiCommento(postItemList: List<Comment>) {
+        this.commentItemsList.addAll(postItemList)
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {
@@ -50,17 +59,17 @@ class CommentAdapter(private val context: Context, private var commentItemsList:
         holder.downvote_textview.text = "0"
 
         holder.upvote_btn.setOnClickListener {
-            listener.onClickLike( currentItem.id )
+            listener?.onClickLike( currentItem.id )
             holder.upvote_textview.text = (holder.upvote_textview.text.toString().toInt() + 1).toString()
         }
 
         holder.downvote_btn.setOnClickListener {
-            listener.onClickLike( currentItem.id )
+            listener?.onClickLike( currentItem.id )
             holder.downvote_textview.text = (holder.downvote_textview.text.toString().toInt() + 1).toString()
         }
 
         holder.comment_btn.setOnClickListener {
-            listener.onClickComments( currentItem.id )
+            listener?.onClickComments( currentItem.id )
         }
 
         Log.d("DEBUG","settando la lista di commenti del commento ${currentItem.id}")
