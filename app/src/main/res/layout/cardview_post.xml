@@ -42,6 +42,27 @@
             android:text="group" />
 
         <TextView
+            android:id="@+id/divider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/username_textview"
+            android:layout_marginTop="10dp"
+
+            android:layout_marginLeft="10dp"
+            android:layout_toEndOf="@+id/group_textview"
+            android:text="•" />
+
+        <TextView
+            android:id="@+id/timestamp_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/username_textview"
+            android:layout_toEndOf="@+id/divider"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="10:00" />
+
+        <TextView
             android:id="@+id/posttext_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,33 +73,38 @@
 
 
 
-        <Button
+        <ImageButton
             android:id="@+id/comments_btn"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_below="@+id/posttext_textview"
             android:layout_marginTop="50dp"
             android:layout_alignParentLeft="true"
+            android:background="@drawable/ic_comment_themecolor_24dp"
             />
 
 
-        <Button
+        <ImageButton
             android:id="@+id/upvote_btn"
-            android:layout_width="40dp"
+            android:layout_width="50dp"
             android:layout_height="40dp"
             android:layout_below="@+id/posttext_textview"
             android:layout_marginTop="50dp"
             android:layout_toLeftOf="@+id/downvote_textview"
             android:layout_marginRight="20dp"
+            android:backgroundTint="@color/colorPrimary"
+            app:srcCompat="@drawable/ic_upvote_white_24dp"
             />
 
-        <Button
+        <ImageButton
             android:id="@+id/downvote_btn"
-            android:layout_width="40dp"
+            android:layout_width="50dp"
             android:layout_height="40dp"
             android:layout_below="@+id/posttext_textview"
             android:layout_alignParentRight="true"
             android:layout_marginTop="50dp"
+            android:backgroundTint="@color/light_red"
+            app:srcCompat="@drawable/ic_downvote_white_24dp"
             />
 
         <TextView

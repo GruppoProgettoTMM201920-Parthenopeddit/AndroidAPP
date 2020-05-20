@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -75,10 +76,10 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
         val username_textview: TextView = itemView.username_textview
         val group_textview: TextView = itemView.group_textview
         val posttext_textview: TextView = itemView.posttext_textview
-        val upvote_btn: Button = itemView.upvote_btn
-        val downvote_btn: Button = itemView.downvote_btn
+        val upvote_btn: ImageButton = itemView.upvote_btn
+        val downvote_btn: ImageButton = itemView.downvote_btn
         val upvote_textview: TextView = itemView.upvote_textview
         val downvote_textview: TextView = itemView.downvote_textview
-        val comment_btn: Button = itemView.comments_btn
+        val comment_btn: ImageButton = itemView.comments_btn
     }
 }

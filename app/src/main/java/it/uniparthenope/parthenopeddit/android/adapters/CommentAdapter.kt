@@ -5,10 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.R
@@ -104,11 +101,11 @@ class CommentAdapter(private val context: Context, private var commentItemsList:
         val imageView: ImageView = itemView.image_view
         val username_textview: TextView = itemView.username_textview
         val posttext_textview: TextView = itemView.posttext_textview
-        val upvote_btn: Button = itemView.upvote_btn
-        val downvote_btn: Button = itemView.downvote_btn
+        val upvote_btn: ImageButton = itemView.upvote_btn
+        val downvote_btn: ImageButton = itemView.downvote_btn
         val upvote_textview: TextView = itemView.upvote_textview
         val downvote_textview: TextView = itemView.downvote_textview
-        val comment_btn: Button = itemView.comments_btn
+        val comment_btn: ImageButton = itemView.comments_btn
 
         val commentsLayoutContainer: LinearLayout = itemView.commentsLayoutContainer
         val commentsListContainer: RecyclerView = itemView.commentsListContainer
