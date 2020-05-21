@@ -4,8 +4,8 @@ import android.content.Context
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.util.SingletonHolder
 
-class Auth( private var context: Context) : AuthManager {
-    companion object : SingletonHolder<Auth, Context>(::Auth) {
+class SharedPreferencesAuth(private var context: Context) : AuthManager {
+    companion object : SingletonHolder<SharedPreferencesAuth, Context>(::SharedPreferencesAuth) {
         private const val TOKEN = "token"
         private const val USERNAME = "username"
     }
