@@ -3,7 +3,7 @@
     package="it.uniparthenope.parthenopeddit">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".App"
@@ -13,10 +13,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".android.SettingsActivity"/>
-        <activity android:name="it.uniparthenope.parthenopeddit.android.UserActivity">
+        <activity
+            android:name=".android.CourseActivity"
+            android:label="@string/title_activity_review"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".android.SettingsActivity" />
+        <activity android:name=".android.UserActivity">
             <intent-filter>
                 <action android:name="it.uniparthenope.parthenopeddit.android.UserActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

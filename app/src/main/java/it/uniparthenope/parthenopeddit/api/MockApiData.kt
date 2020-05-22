@@ -2,9 +2,10 @@ package it.uniparthenope.parthenopeddit.api
 
 import it.uniparthenope.parthenopeddit.model.Comment
 import it.uniparthenope.parthenopeddit.model.Post
+import it.uniparthenope.parthenopeddit.model.Review
 import it.uniparthenope.parthenopeddit.model.User
 
-class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace {
+class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNamespace {
     override fun login(
         username: String,
         password: String,
@@ -89,5 +90,12 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace {
         completion: (comment: Comment?, error: String?) -> Unit
     ) {
         TODO("Not yet implemented")
+    }
+
+    override fun getAllReview(
+        token: String,
+        completion: (reviewList: List<Review>?, error: String?) -> Unit
+    ) {
+        completion.invoke(MockDatabase.instance.reviews_table, null)
     }
 }

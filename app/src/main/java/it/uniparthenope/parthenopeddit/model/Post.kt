@@ -13,6 +13,7 @@ data class Post (
     var author: User? = null,
     var comments: ArrayList<Comment>? = null,
     var group: String? = null,
+    var group_type: Int = 0,        //0: GENERALE - 1: CORSO - 2: GRUPPO
 
     /* aggregated data */
     var comments_num: Int? = null

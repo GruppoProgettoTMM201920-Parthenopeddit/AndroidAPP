@@ -19,12 +19,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mancj.materialsearchbar.MaterialSearchBar
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.CommentActivity
+import it.uniparthenope.parthenopeddit.android.CourseActivity
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.ui.newGroup.NewGroupActivity
 import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
 import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.auth.Auth
 import it.uniparthenope.parthenopeddit.model.Post
+import it.uniparthenope.parthenopeddit.model.Review
 import kotlinx.android.synthetic.main.cardview_post.*
 
 
@@ -39,8 +41,10 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         val fab = root.findViewById(R.id.fab) as FloatingActionButton
         val fab_new_post = root.findViewById(R.id.fab_new_post) as FloatingActionButton
         val fab_new_group = root.findViewById(R.id.fab_new_group) as FloatingActionButton
+        val fab_new_review = root.findViewById(R.id.fab_new_review) as FloatingActionButton
         val fab_new_post_textview = root.findViewById(R.id.fab_new_post_textview) as TextView
         val fab_new_group_textview = root.findViewById(R.id.fab_new_group_textview) as TextView
+        val fab_new_review_textview = root.findViewById(R.id.fab_new_review_textview) as TextView
 
         /*
         val listHeader = listOf("I tuoi corsi di studio", "I tuoi gruppi")
@@ -135,12 +139,17 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
                 fab_new_post.animate().translationY(200F)
                 fab_new_group.animate().translationY(400F)
+                fab_new_review.animate().translationY(600F)
                 fab_new_post_textview.animate().translationY(200F)
                 fab_new_group_textview.animate().translationY(400F)
+                fab_new_review_textview.animate().translationY(600F)
                 fab_new_post_textview.animate().alpha(0F)
                 fab_new_group_textview.animate().alpha(0F)
+                fab_new_review_textview.animate().alpha(0F)
                 fab_new_post_textview.visibility = View.GONE
                 fab_new_group_textview.visibility = View.GONE
+                fab_new_review_textview.visibility = View.GONE
+
 
 
                 isOpen = false
@@ -149,15 +158,19 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
                 fab_new_post.animate().translationY(-200F)
                 fab_new_group.animate().translationY(-400F)
+                fab_new_review.animate().translationY(-600F)
 
                 fab_new_post_textview.animate().translationY(-200F)
                 fab_new_group_textview.animate().translationY(-400F)
+                fab_new_review_textview.animate().translationY(-600F)
 
                 fab_new_post_textview.visibility = View.VISIBLE
                 fab_new_group_textview.visibility = View.VISIBLE
+                fab_new_review_textview.visibility = View.VISIBLE
 
                 fab_new_post_textview.animate().alpha(1F)
                 fab_new_group_textview.animate().alpha(1F)
+                fab_new_review.animate().alpha(1F)
                 isOpen = true
             }
         }
@@ -166,6 +179,9 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         fab_new_post_textview.setOnClickListener{ onClickNewPost() }
         fab_new_group.setOnClickListener{ onClickNewGroup() }
         fab_new_group_textview.setOnClickListener{ onClickNewGroup() }
+        fab_new_review_textview.setOnClickListener{ onClickNewReview() }
+        fab_new_review_textview.setOnClickListener{ onClickNewReview() }
+
         return root
     }
 
@@ -196,6 +212,11 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
     fun onClickNewGroup(){
         val intent = Intent(requireContext(), NewGroupActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun onClickNewReview(){
+        val intent = Intent(requireContext(), CourseActivity::class.java)
         startActivity(intent)
     }
 }
