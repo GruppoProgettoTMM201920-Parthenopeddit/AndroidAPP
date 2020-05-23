@@ -146,7 +146,6 @@ class MockDatabase private constructor() {
             id = 1,
             body = "First!1!1!1",
             timestamp = "2014-08-18 21:11:35.537000",
-            author_id = u2.id,
             commented_post_id = 1,
             author = u2,
             commented_post = p1
@@ -155,7 +154,6 @@ class MockDatabase private constructor() {
             id = 2,
             body = "Second comment",
             timestamp = "2014-08-18 21:11:35.537000",
-            author_id = u1.id,
             commented_comment_id = 1,
             author = u1,
             commented_comment = c1

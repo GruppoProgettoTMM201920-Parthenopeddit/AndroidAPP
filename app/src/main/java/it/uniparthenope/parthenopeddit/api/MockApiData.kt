@@ -67,7 +67,7 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
         completion: (commentList: List<Comment>?, error: String?) -> Unit
     ) {
         completion.invoke(
-            MockDatabase.instance.comments_table.filter { it.author_id == userId },
+            MockDatabase.instance.comments_table.filter { it.author?.id == userId },
             null
         )
     }

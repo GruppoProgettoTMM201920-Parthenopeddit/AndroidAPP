@@ -6,7 +6,6 @@ data class Comment(
     val id: Int,
     val body: String,
     val timestamp: String, /* TODO STRING type as DateTime decode not yet implemented */
-    val author_id: String,
     val commented_post_id: Int? = null,
     val commented_comment_id: Int? = null,
 
