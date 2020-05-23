@@ -52,6 +52,7 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
 
         holder.imageView.setImageResource(R.drawable.ic_home_black_24dp)
         holder.username_textview.text = currentItem.author?.nome_visualizzato
+        holder.title_textview.text = currentItem.title
         holder.group_textview.text = currentItem.group.getName()
         holder.timestamp_textview.text = currentItem.timestamp
         holder.posttext_textview.text = currentItem.body
@@ -96,6 +97,7 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
     class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {     //SINGOLO ELEMENTO DELLA LISTA
         val imageView: ImageView = itemView.image_view
         val username_textview: TextView = itemView.username_textview
+        val title_textview: TextView = itemView.title_textview
         val group_textview: TextView = itemView.group_textview
         val timestamp_textview: TextView = itemView.timestamp_textview
         val posttext_textview: TextView = itemView.posttext_textview

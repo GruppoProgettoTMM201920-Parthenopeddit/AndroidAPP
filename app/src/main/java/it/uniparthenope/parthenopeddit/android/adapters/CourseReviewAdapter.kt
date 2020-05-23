@@ -54,7 +54,7 @@ class CourseReviewAdapter() : RecyclerView.Adapter<CourseReviewAdapter.CourseRev
         val currentItem = reviewList[position]
 
         holder.imageView.setImageResource(R.drawable.ic_home_black_24dp)
-        holder.username_textview.text = currentItem.author_id
+        holder.username_textview.text = currentItem.author.nome_visualizzato
         holder.title_textview_r.text = currentItem.title
         holder.timestamp_textview.text = currentItem.timestamp
         holder.posttext_textview.text = currentItem.body

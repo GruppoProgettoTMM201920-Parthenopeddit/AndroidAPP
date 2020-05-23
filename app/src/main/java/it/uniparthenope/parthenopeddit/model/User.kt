@@ -10,6 +10,7 @@ data class User (
     /* relationships */
     var posts: ArrayList<Post>? = null,
     var comments: ArrayList<Comment>? = null,
+    var reviews: ArrayList<Review>? = null,
 
     /* aggregated data */
     var posts_num: Int? = null,

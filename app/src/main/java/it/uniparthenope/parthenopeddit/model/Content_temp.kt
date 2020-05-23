@@ -7,5 +7,5 @@ open class Content_temp (
     val title: String,
     val body: String? = null,
     val timestamp: String,
-    val author_id: String
+    val author: User
 ) : JSONConvertable

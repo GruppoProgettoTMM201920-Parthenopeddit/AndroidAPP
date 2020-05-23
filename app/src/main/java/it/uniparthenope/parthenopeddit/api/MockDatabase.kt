@@ -190,7 +190,7 @@ class MockDatabase private constructor() {
             title = "Ottimo corso",
             body = "Ricetta della pasta e patate: 1/2kg di pasta mista, 1/2kg di patate, pomodorini qb, sale extra vergine d'oliva, sale",
             timestamp = "22/05/2020",
-            author_id = "user1",
+            author = u1,
             score_liking = 5,
             score_difficulty = 2,
             reviewed_course_id = C1.id
@@ -201,7 +201,7 @@ class MockDatabase private constructor() {
             title = "Troppe dimostrazioni",
             body = "Non puoi criticare chi mangia la pizza sull'ananas se poi mangi quella merda di prosciutto e melone",
             timestamp = "22/05/2020",
-            author_id = "user1",
+            author = u2,
             score_liking = 2,
             score_difficulty = 5,
             reviewed_course_id = C1.id
@@ -212,7 +212,7 @@ class MockDatabase private constructor() {
             title = "Ottime spiegazioni del professore",
             body = "I Ryzen sono migliori degli Intel",
             timestamp = "23/05/2020",
-            author_id = "user2",
+            author = u1,
             score_liking = 5,
             score_difficulty = 2,
             reviewed_course_id = C2.id
@@ -223,7 +223,7 @@ class MockDatabase private constructor() {
             title = "Nobono",
             body = "E' stato Mattarella",
             timestamp = "23/05/2020",
-            author_id = "user2",
+            author = u2,
             score_liking = 3,
             score_difficulty = 5,
             reviewed_course_id = C2.id
@@ -234,7 +234,7 @@ class MockDatabase private constructor() {
             title = "Noioso",
             body = "Il prof non si è mai presentato",
             timestamp = "23/05/2020",
-            author_id = "user5",
+            author = u1,
             score_liking = 1,
             score_difficulty = 1,
             reviewed_course_id = C3.id
@@ -244,6 +244,9 @@ class MockDatabase private constructor() {
 
         u2.comments = ArrayList<Comment>(listOf(c1))
         u1.comments = ArrayList<Comment>(listOf(c2))
+
+        u1.reviews = ArrayList<Review>(listOf(r1,r3,r5))
+        u2.reviews = ArrayList<Review>(listOf(r2,r4))
 
         p1.comments = ArrayList<Comment>(listOf(c1))
         c1.comments = ArrayList<Comment>(listOf(c2))
@@ -258,7 +261,7 @@ class MockDatabase private constructor() {
         posts_table.addAll(listOf(p1,p2,p3,p4,p5,p6))
         comments_table.addAll(listOf(c1,c2))
         course_table.addAll(listOf(C1,C2,C3))
-        reviews_table.addAll(listOf(r1,r2))
+        reviews_table.addAll(listOf(r1,r2,r3,r4,r5))
 
         val chat1 = Chat(
             user_id = 1,
