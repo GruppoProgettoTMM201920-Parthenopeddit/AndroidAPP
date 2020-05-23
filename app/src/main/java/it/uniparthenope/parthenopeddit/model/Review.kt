@@ -8,7 +8,7 @@ import kotlin.collections.ArrayList
 
 class Review(
     id: Int,
-    title: String? = null,
+    title: String,
     body: String? = null,
     timestamp: String,
     author_id: String,
@@ -22,7 +22,7 @@ class Review(
     @SerializedName("score_difficulty")
     val score_difficulty: Int
 
-) : Content_temp(id, body, timestamp, author_id), JSONConvertable {
+) : Content_temp(id, title, body, timestamp, author_id), JSONConvertable {
 
     /* relationships */
 
