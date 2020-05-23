@@ -54,10 +54,14 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
         holder.upvote_textview.text = "0"
         holder.downvote_textview.text = "0"
 
-        if(currentItem.group_type == 0){ holder.group_textview.setBackgroundResource(R.drawable.general_textview_bubble)
-        holder.group_textview.setTextColor(Color.BLACK)}
-        else if(currentItem.group_type == 1){ holder.group_textview.setBackgroundResource(R.drawable.fab_textview_bubble) }
-        else if(currentItem.group_type == 2){ holder.group_textview.setBackgroundResource(R.drawable.group_textview_bubble) }
+
+        when (currentItem.group_type){
+            0 -> { holder.group_textview.setBackgroundResource(R.drawable.general_textview_bubble)
+                holder.group_textview.setTextColor(Color.BLACK) }
+            1 -> { holder.group_textview.setBackgroundResource(R.drawable.fab_textview_bubble) }
+            else -> { holder.group_textview.setBackgroundResource(R.drawable.group_textview_bubble) }
+
+        }
 
         if( listener != null ) {
             holder.upvote_btn.setOnClickListener {
