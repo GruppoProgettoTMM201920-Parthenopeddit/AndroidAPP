@@ -170,7 +170,7 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
                 fab_new_post_textview.animate().alpha(1F)
                 fab_new_group_textview.animate().alpha(1F)
-                fab_new_review.animate().alpha(1F)
+                fab_new_review_textview.animate().alpha(1F)
                 isOpen = true
             }
         }

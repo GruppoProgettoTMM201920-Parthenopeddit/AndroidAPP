@@ -27,6 +27,30 @@ class MockDatabase private constructor() {
     init {
         /* Popolamento tabelle fittizie. */
 
+        val g1 = Group(
+            isHeaderArg = false,
+            nameArg = "Generale",
+            typeArg = 0
+        )
+
+        val g2 = Group(
+            isHeaderArg = false,
+            nameArg = "Terminali Mobili e Multimedialità",
+            typeArg = 1
+        )
+
+        val g3 = Group(
+            isHeaderArg = false,
+            nameArg = "Studenti L-21",
+            typeArg = 2
+        )
+
+        val g4 = Group(
+            isHeaderArg = false,
+            nameArg = "CS Memes",
+            typeArg = 2
+        )
+
         val u1 = User(
             id = "user1",
             nome_visualizzato = "NoobMaster69",
@@ -41,8 +65,8 @@ class MockDatabase private constructor() {
         val p1 = Post(
             id=1,
             title = "Hello World!",
-            group = "Generale",
-            group_type = 0,
+            group = g1.getName(),
+            group_type = g1.getType(),
             timestamp = "10:22",
             author_id = u1.id,
             author = u1
@@ -50,8 +74,8 @@ class MockDatabase private constructor() {
         val p2 = Post(
             id=2,
             title = "My title is awesome",
-            group = "Terminali Mobili 2020",
-            group_type = 1,
+            group = g2.getName(),
+            group_type = g2.getType(),
             body = "And my body too",
             timestamp = "9:50",
             author_id = u2.id,
@@ -60,8 +84,8 @@ class MockDatabase private constructor() {
         val p3 = Post(
             id=3,
             title = "User1 second post",
-            group = "Studenti L-21",
-            group_type = 2,
+            group = g3.getName(),
+            group_type = g3.getType(),
             body = "body post body post body post body post body post body post ",
             timestamp = "4:37",
             author_id = u1.id,
@@ -71,8 +95,8 @@ class MockDatabase private constructor() {
         val p4 = Post(
             id=4,
             title = "User1 third post",
-            group = "Generale",
-            group_type = 0,
+            group = g1.getName(),
+            group_type = g1.getType(),
             body = "test test",
             timestamp = "5/5/2055",
             author_id = u1.id,
@@ -82,8 +106,8 @@ class MockDatabase private constructor() {
         val p5 = Post(
             id=5,
             title = "My title is awesome",
-            group = "CS Memes",
-            group_type = 2,
+            group = g3.getName(),
+            group_type = g3.getType(),
             body = "And my body too",
             timestamp = "1/1/9999",
             author_id = u2.id,
