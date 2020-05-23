@@ -59,7 +59,8 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
             0 -> { holder.group_textview.setBackgroundResource(R.drawable.general_textview_bubble)
                 holder.group_textview.setTextColor(Color.BLACK) }
             1 -> { holder.group_textview.setBackgroundResource(R.drawable.fab_textview_bubble) }
-            else -> { holder.group_textview.setBackgroundResource(R.drawable.group_textview_bubble) }
+            2 -> { holder.group_textview.setBackgroundResource(R.drawable.group_textview_bubble) }
+            else -> {  }
 
         }
 
