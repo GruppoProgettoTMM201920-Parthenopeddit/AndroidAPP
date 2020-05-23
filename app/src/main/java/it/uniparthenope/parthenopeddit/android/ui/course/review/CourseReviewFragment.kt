@@ -15,10 +15,11 @@ import it.uniparthenope.parthenopeddit.android.adapters.CourseReviewAdapter
 import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.auth.Auth
 
-class CourseReviewFragment : Fragment(), CourseReviewAdapter.CourseReviewItemClickListeners{
+class CourseReviewFragment(courseID: Int) : Fragment(), CourseReviewAdapter.CourseReviewItemClickListeners{
 
     private lateinit var recycler_view: RecyclerView
     private lateinit var courseReviewViewModel: CourseReviewViewModel
+    var courseId = courseID
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_course_review, container, false)
@@ -31,7 +32,8 @@ class CourseReviewFragment : Fragment(), CourseReviewAdapter.CourseReviewItemCli
         recycler_view.layoutManager = LinearLayoutManager(requireContext())
         recycler_view.setHasFixedSize(true)
 
-        MockApiData().getAllReview( Auth().token ) { reviewItemList, error ->
+
+        MockApiData().getCourseReviews( Auth().token, courseId ) { reviewItemList, error ->
             if( error != null ) {
                 Toast.makeText(requireContext(),"Errore : $error", Toast.LENGTH_LONG).show()
             } else {

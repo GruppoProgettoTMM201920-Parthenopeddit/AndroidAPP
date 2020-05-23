@@ -33,7 +33,7 @@
                 android:layout_gravity="left"
                 android:inputType="textMultiLine"
                 android:maxWidth="250dp"
-                android:text="Terminali Mobili e Multimedialità"
+                android:text="Nome corso"
                 android:textSize="20dp" />
 
             <TextView
@@ -76,6 +76,14 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:src="@drawable/ic_star_half_24dp"/>
+            <TextView
+                android:id="@+id/num_reviews_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginEnd="20dp"
+                android:text="0 recensioni"
+                android:textSize="10dp" />
 
 
 

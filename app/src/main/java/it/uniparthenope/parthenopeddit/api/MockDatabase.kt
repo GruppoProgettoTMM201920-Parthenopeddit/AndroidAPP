@@ -20,6 +20,7 @@ class MockDatabase private constructor() {
     val users_table = ArrayList<User>()
     val posts_table = ArrayList<Post>()
     val comments_table = ArrayList<Comment>()
+    val course_table = ArrayList<Course>()
     val reviews_table = ArrayList<Review>()
     val chat_table = ArrayList<Chat>()
 
@@ -113,6 +114,27 @@ class MockDatabase private constructor() {
             commented_comment = c1
         )
 
+        val C1 = Course(
+            id = 1,
+            course_name = "Terminali Mobili e Multimedialità",
+            rating = 4.5F,
+            numReview = 2
+        )
+
+        val C2 = Course(
+            id = 2,
+            course_name = "Programmazione 3",
+            rating = 3.4F,
+            numReview = 10
+        )
+
+        val C3 = Course(
+            id = 3,
+            course_name = "Tecnologie Web",
+            rating = 4.2F,
+            numReview = 8
+        )
+
         val r1 = Review(
             id = 1,
             title = "Ottimo corso",
@@ -121,7 +143,7 @@ class MockDatabase private constructor() {
             author_id = "user1",
             score_liking = 5,
             score_difficulty = 2,
-            reviewed_course_id = 1
+            reviewed_course_id = C1.id
         )
 
         val r2 = Review(
@@ -132,8 +154,43 @@ class MockDatabase private constructor() {
             author_id = "user1",
             score_liking = 2,
             score_difficulty = 5,
-            reviewed_course_id = 1
+            reviewed_course_id = C1.id
         )
+
+        val r3 = Review(
+            id = 3,
+            title = "Ottime spiegazioni del professore",
+            body = "I Ryzen sono migliori degli Intel",
+            timestamp = "23/05/2020",
+            author_id = "user2",
+            score_liking = 5,
+            score_difficulty = 2,
+            reviewed_course_id = C2.id
+        )
+
+        val r4 = Review(
+            id = 4,
+            title = "Nobono",
+            body = "E' stato Mattarella",
+            timestamp = "23/05/2020",
+            author_id = "user2",
+            score_liking = 3,
+            score_difficulty = 5,
+            reviewed_course_id = C2.id
+        )
+
+        val r5 = Review(
+            id = 5,
+            title = "Noioso",
+            body = "Il prof non si è mai presentato",
+            timestamp = "23/05/2020",
+            author_id = "user5",
+            score_liking = 1,
+            score_difficulty = 1,
+            reviewed_course_id = C3.id
+        )
+
+
 
         u2.comments = ArrayList<Comment>(listOf(c1))
         u1.comments = ArrayList<Comment>(listOf(c2))
@@ -143,9 +200,14 @@ class MockDatabase private constructor() {
         c1.comments_num = c1.comments?.size
         c2.comments_num = 0
 
+        C1.reviews = ArrayList<Review>(listOf(r1,r2))
+        C2.reviews = ArrayList<Review>(listOf(r3,r4))
+        C3.reviews = ArrayList<Review>(listOf(r5))
+
         users_table.addAll(listOf(u1,u2))
         posts_table.addAll(listOf(p1,p2,p3,p4,p5))
         comments_table.addAll(listOf(c1,c2))
+        course_table.addAll(listOf(C1,C2,C3))
         reviews_table.addAll(listOf(r1,r2))
 
         val chat1 = Chat(
