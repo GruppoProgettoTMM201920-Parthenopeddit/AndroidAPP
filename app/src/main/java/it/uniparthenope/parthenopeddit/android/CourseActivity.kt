@@ -1,5 +1,6 @@
 package it.uniparthenope.parthenopeddit.android
 
+import android.content.Intent
 import android.os.Bundle
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -21,7 +22,8 @@ class CourseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_course)
-        val courseId = 3        //TODO(DEVE ESSERE OTTENUTO DA QUERY)
+        var intent: Intent = getIntent()
+        val courseId = intent.getIntExtra("id_group",0)        //TODO(DEVE ESSERE OTTENUTO DA QUERY)
 
         val sectionsPagerAdapter = CourseAdapter(supportFragmentManager,courseId)
         val viewPager: ViewPager = findViewById(R.id.view_pager)

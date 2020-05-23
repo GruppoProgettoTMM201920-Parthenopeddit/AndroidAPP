@@ -69,4 +69,8 @@ class PostActivitiesFragment : Fragment(), PostAdapter.PostItemClickListeners {
     override fun onClickComments(id_post: Int) {
         //TODO("Not yet implemented")
     }
+
+    override fun onGroupClick(group_type: Int, id_group: Int) {
+        //TODO("Not yet implemented")
+    }
 }

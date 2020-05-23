@@ -1,6 +1,7 @@
 package it.uniparthenope.parthenopeddit.android.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
@@ -10,8 +11,10 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.R
+import it.uniparthenope.parthenopeddit.android.CourseActivity
 import it.uniparthenope.parthenopeddit.model.Post
 import kotlinx.android.synthetic.main.cardview_post.view.*
 import kotlinx.android.synthetic.main.cardview_post.view.upvote_textview
@@ -34,6 +37,7 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
         fun onClickLike(id_post:Int)
         fun onClickDislike(id_post:Int)
         fun onClickComments(id_post:Int)
+        fun onGroupClick(group_type:Int, id_group:Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
@@ -48,14 +52,14 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
 
         holder.imageView.setImageResource(R.drawable.ic_home_black_24dp)
         holder.username_textview.text = currentItem.author?.nome_visualizzato
-        holder.group_textview.text = currentItem.group
+        holder.group_textview.text = currentItem.group.getName()
         holder.timestamp_textview.text = currentItem.timestamp
         holder.posttext_textview.text = currentItem.body
         holder.upvote_textview.text = "0"
         holder.downvote_textview.text = "0"
 
 
-        when (currentItem.group_type){
+        when (currentItem.group.getType()){
             0 -> { holder.group_textview.setBackgroundResource(R.drawable.general_textview_bubble)
                 holder.group_textview.setTextColor(Color.BLACK) }
             1 -> { holder.group_textview.setBackgroundResource(R.drawable.fab_textview_bubble) }
@@ -79,6 +83,10 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
 
             holder.comment_btn.setOnClickListener {
                 listener!!.onClickComments(currentItem.id)
+            }
+
+            holder.group_textview.setOnClickListener {
+                listener!!.onGroupClick(currentItem.group.getType(), currentItem.group.getId())
             }
         }
     }

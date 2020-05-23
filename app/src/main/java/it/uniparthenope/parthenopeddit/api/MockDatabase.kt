@@ -28,24 +28,42 @@ class MockDatabase private constructor() {
         /* Popolamento tabelle fittizie. */
 
         val g1 = Group(
+            idArg = 0,
             isHeaderArg = false,
             nameArg = "Generale",
             typeArg = 0
         )
 
         val g2 = Group(
+            idArg = 1,
             isHeaderArg = false,
             nameArg = "Terminali Mobili e Multimedialità",
             typeArg = 1
         )
 
         val g3 = Group(
+            idArg = 2,
+            isHeaderArg = false,
+            nameArg = "Programmazione 3",
+            typeArg = 1
+        )
+
+        val g4 = Group(
+            idArg = 3,
+            isHeaderArg = false,
+            nameArg = "Tecnologie Web",
+            typeArg = 1
+        )
+
+        val g5 = Group(
+            idArg = 4,
             isHeaderArg = false,
             nameArg = "Studenti L-21",
             typeArg = 2
         )
 
-        val g4 = Group(
+        val g6 = Group(
+            idArg = 5,
             isHeaderArg = false,
             nameArg = "CS Memes",
             typeArg = 2
@@ -65,8 +83,7 @@ class MockDatabase private constructor() {
         val p1 = Post(
             id=1,
             title = "Hello World!",
-            group = g1.getName(),
-            group_type = g1.getType(),
+            group = g1,
             timestamp = "10:22",
             author_id = u1.id,
             author = u1
@@ -74,8 +91,7 @@ class MockDatabase private constructor() {
         val p2 = Post(
             id=2,
             title = "My title is awesome",
-            group = g2.getName(),
-            group_type = g2.getType(),
+            group = g2,
             body = "And my body too",
             timestamp = "9:50",
             author_id = u2.id,
@@ -84,8 +100,7 @@ class MockDatabase private constructor() {
         val p3 = Post(
             id=3,
             title = "User1 second post",
-            group = g3.getName(),
-            group_type = g3.getType(),
+            group = g3,
             body = "body post body post body post body post body post body post ",
             timestamp = "4:37",
             author_id = u1.id,
@@ -95,8 +110,7 @@ class MockDatabase private constructor() {
         val p4 = Post(
             id=4,
             title = "User1 third post",
-            group = g1.getName(),
-            group_type = g1.getType(),
+            group = g6,
             body = "test test",
             timestamp = "5/5/2055",
             author_id = u1.id,
@@ -106,8 +120,17 @@ class MockDatabase private constructor() {
         val p5 = Post(
             id=5,
             title = "My title is awesome",
-            group = g3.getName(),
-            group_type = g3.getType(),
+            group = g4,
+            body = "And my body too",
+            timestamp = "1/1/9999",
+            author_id = u2.id,
+            author = u2
+        )
+
+        val p6 = Post(
+            id=5,
+            title = "My title is awesome",
+            group = g5,
             body = "And my body too",
             timestamp = "1/1/9999",
             author_id = u2.id,
@@ -116,7 +139,7 @@ class MockDatabase private constructor() {
 
         u1.posts = ArrayList<Post>(listOf(p1,p3,p4))
         u1.posts_num = u1.posts?.size
-        u2.posts = ArrayList<Post>(listOf(p2,p5))
+        u2.posts = ArrayList<Post>(listOf(p2,p5,p6))
         u2.posts_num = u2.posts?.size
 
         val c1 = Comment(
@@ -229,7 +252,7 @@ class MockDatabase private constructor() {
         C3.reviews = ArrayList<Review>(listOf(r5))
 
         users_table.addAll(listOf(u1,u2))
-        posts_table.addAll(listOf(p1,p2,p3,p4,p5))
+        posts_table.addAll(listOf(p1,p2,p3,p4,p5,p6))
         comments_table.addAll(listOf(c1,c2))
         course_table.addAll(listOf(C1,C2,C3))
         reviews_table.addAll(listOf(r1,r2))
