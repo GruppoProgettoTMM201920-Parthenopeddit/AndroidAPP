@@ -251,7 +251,7 @@ class MockDatabase private constructor() {
         c1.comments_num = c1.comments?.size
         c2.comments_num = 0
 
-        C1.reviews = ArrayList<Review>(listOf(r1,r2))
+        C1.reviews = ArrayList<Review>(listOf(r1,r1,r1,r1,r1,r1,r1,r1,r1,r1,r2))
         C2.reviews = ArrayList<Review>(listOf(r3,r4))
         C3.reviews = ArrayList<Review>(listOf(r5))
 

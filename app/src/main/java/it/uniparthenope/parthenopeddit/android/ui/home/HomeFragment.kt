@@ -180,7 +180,7 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         fab_new_post_textview.setOnClickListener{ onClickNewPost() }
         fab_new_group.setOnClickListener{ onClickNewGroup() }
         fab_new_group_textview.setOnClickListener{ onClickNewGroup() }
-        fab_new_review_textview.setOnClickListener{ onClickNewReview() }
+        fab_new_review.setOnClickListener{ onClickNewReview() }
         fab_new_review_textview.setOnClickListener{ onClickNewReview() }
 
         return root
