@@ -165,6 +165,7 @@ class MockDatabase private constructor() {
             id = 1,
             course_name = "Terminali Mobili e Multimedialità",
             rating = 4.5F,
+            difficulty = 3.0F,
             numReview = 2
         )
 
@@ -172,6 +173,7 @@ class MockDatabase private constructor() {
             id = 2,
             course_name = "Programmazione 3",
             rating = 3.4F,
+            difficulty = 4.0F,
             numReview = 10
         )
 
@@ -179,6 +181,7 @@ class MockDatabase private constructor() {
             id = 3,
             course_name = "Tecnologie Web",
             rating = 4.2F,
+            difficulty = 3.5F,
             numReview = 8
         )
 

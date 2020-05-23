@@ -32,13 +32,15 @@ class CourseActivity : AppCompatActivity() {
         tabLayout.setupWithViewPager(viewPager)
         val fab: FloatingActionButton = findViewById(R.id.fab)
 
-        MockApiData().getCourseInfo( Auth().token, courseId) { courseRating:Float, numReviews: Int, courseName: String?, error: String? ->
+        MockApiData().getCourseInfo( Auth().token, courseId) { courseRating:Float, courseDifficulty:Float, numReviews: Int, courseName: String?, error: String? ->
             course_name_textview.text = courseName
-            course_rating_textview.text = courseRating.toString()+"/5"
+            course_enjoyment_rating.text = courseRating.toString()+"/5"
+            course_difficulty_rating.text = courseDifficulty.toString()+"/5"
             if(numReviews>1 || numReviews!=0){num_reviews_textview.text = numReviews.toString()+" recensioni"} else{num_reviews_textview.text = numReviews.toString()+" recensione"}
 
 
-            setStars(courseRating)
+            setEnjoymentStars(courseRating)
+            setDifficultyStars(courseDifficulty)
         }
 
         fab.setOnClickListener { view ->
@@ -47,71 +49,137 @@ class CourseActivity : AppCompatActivity() {
         }
     }
 
-    fun setStars(score_liking: Float){
+    fun setEnjoymentStars(score_liking: Float){
         if(score_liking == 1.0F){
-            star_1.setImageResource(R.drawable.ic_star_full_24dp)
-            star_2.setImageResource(R.drawable.ic_star_empty_24dp)
-            star_3.setImageResource(R.drawable.ic_star_empty_24dp)
-            star_4.setImageResource(R.drawable.ic_star_empty_24dp)
-            star_5.setImageResource(R.drawable.ic_star_empty_24dp)
+            star_enj_1.setImageResource(R.drawable.ic_star_full_24dp)
+            star_enj_2.setImageResource(R.drawable.ic_star_empty_24dp)
+            star_enj_3.setImageResource(R.drawable.ic_star_empty_24dp)
+            star_enj_4.setImageResource(R.drawable.ic_star_empty_24dp)
+            star_enj_5.setImageResource(R.drawable.ic_star_empty_24dp)
         }
         else if(score_liking >1 && score_liking <2){
-            star_1.setImageResource(R.drawable.ic_star_full_24dp)
-            star_2.setImageResource(R.drawable.ic_star_half_24dp)
-            star_3.setImageResource(R.drawable.ic_star_empty_24dp)
-            star_4.setImageResource(R.drawable.ic_star_empty_24dp)
-            star_5.setImageResource(R.drawable.ic_star_empty_24dp)
+            star_enj_1.setImageResource(R.drawable.ic_star_full_24dp)
+            star_enj_2.setImageResource(R.drawable.ic_star_half_24dp)
+            star_enj_3.setImageResource(R.drawable.ic_star_empty_24dp)
+            star_enj_4.setImageResource(R.drawable.ic_star_empty_24dp)
+            star_enj_5.setImageResource(R.drawable.ic_star_empty_24dp)
         }
         else if(score_liking == 2.0F){
-            star_1.setImageResource(R.drawable.ic_star_full_24dp)
-            star_2.setImageResource(R.drawable.ic_star_full_24dp)
-            star_3.setImageResource(R.drawable.ic_star_empty_24dp)
-            star_4.setImageResource(R.drawable.ic_star_empty_24dp)
-            star_5.setImageResource(R.drawable.ic_star_empty_24dp)
+            star_enj_1.setImageResource(R.drawable.ic_star_full_24dp)
+            star_enj_2.setImageResource(R.drawable.ic_star_full_24dp)
+            star_enj_3.setImageResource(R.drawable.ic_star_empty_24dp)
+            star_enj_4.setImageResource(R.drawable.ic_star_empty_24dp)
+            star_enj_5.setImageResource(R.drawable.ic_star_empty_24dp)
         }
         else if(score_liking >2 && score_liking <3){
-            star_1.setImageResource(R.drawable.ic_star_full_24dp)
-            star_2.setImageResource(R.drawable.ic_star_full_24dp)
-            star_3.setImageResource(R.drawable.ic_star_half_24dp)
-            star_4.setImageResource(R.drawable.ic_star_empty_24dp)
-            star_5.setImageResource(R.drawable.ic_star_empty_24dp)
+            star_enj_1.setImageResource(R.drawable.ic_star_full_24dp)
+            star_enj_2.setImageResource(R.drawable.ic_star_full_24dp)
+            star_enj_3.setImageResource(R.drawable.ic_star_half_24dp)
+            star_enj_4.setImageResource(R.drawable.ic_star_empty_24dp)
+            star_enj_5.setImageResource(R.drawable.ic_star_empty_24dp)
         }
         else if(score_liking == 3.0F){
-            star_1.setImageResource(R.drawable.ic_star_full_24dp)
-            star_2.setImageResource(R.drawable.ic_star_full_24dp)
-            star_3.setImageResource(R.drawable.ic_star_full_24dp)
-            star_4.setImageResource(R.drawable.ic_star_empty_24dp)
-            star_5.setImageResource(R.drawable.ic_star_empty_24dp)
+            star_enj_1.setImageResource(R.drawable.ic_star_full_24dp)
+            star_enj_2.setImageResource(R.drawable.ic_star_full_24dp)
+            star_enj_3.setImageResource(R.drawable.ic_star_full_24dp)
+            star_enj_4.setImageResource(R.drawable.ic_star_empty_24dp)
+            star_enj_5.setImageResource(R.drawable.ic_star_empty_24dp)
         }
         else if(score_liking >3 && score_liking <4){
-            star_1.setImageResource(R.drawable.ic_star_full_24dp)
-            star_2.setImageResource(R.drawable.ic_star_full_24dp)
-            star_3.setImageResource(R.drawable.ic_star_full_24dp)
-            star_4.setImageResource(R.drawable.ic_star_half_24dp)
-            star_5.setImageResource(R.drawable.ic_star_empty_24dp)
+            star_enj_1.setImageResource(R.drawable.ic_star_full_24dp)
+            star_enj_2.setImageResource(R.drawable.ic_star_full_24dp)
+            star_enj_3.setImageResource(R.drawable.ic_star_full_24dp)
+            star_enj_4.setImageResource(R.drawable.ic_star_half_24dp)
+            star_enj_5.setImageResource(R.drawable.ic_star_empty_24dp)
         }
         else if(score_liking == 4.0F){
-            star_1.setImageResource(R.drawable.ic_star_full_24dp)
-            star_2.setImageResource(R.drawable.ic_star_full_24dp)
-            star_3.setImageResource(R.drawable.ic_star_full_24dp)
-            star_4.setImageResource(R.drawable.ic_star_full_24dp)
-            star_5.setImageResource(R.drawable.ic_star_empty_24dp)
+            star_enj_1.setImageResource(R.drawable.ic_star_full_24dp)
+            star_enj_2.setImageResource(R.drawable.ic_star_full_24dp)
+            star_enj_3.setImageResource(R.drawable.ic_star_full_24dp)
+            star_enj_4.setImageResource(R.drawable.ic_star_full_24dp)
+            star_enj_5.setImageResource(R.drawable.ic_star_empty_24dp)
         }
         else if(score_liking >4 && score_liking <5){
-            star_1.setImageResource(R.drawable.ic_star_full_24dp)
-            star_2.setImageResource(R.drawable.ic_star_full_24dp)
-            star_3.setImageResource(R.drawable.ic_star_full_24dp)
-            star_4.setImageResource(R.drawable.ic_star_full_24dp)
-            star_5.setImageResource(R.drawable.ic_star_half_24dp)
+            star_enj_1.setImageResource(R.drawable.ic_star_full_24dp)
+            star_enj_2.setImageResource(R.drawable.ic_star_full_24dp)
+            star_enj_3.setImageResource(R.drawable.ic_star_full_24dp)
+            star_enj_4.setImageResource(R.drawable.ic_star_full_24dp)
+            star_enj_5.setImageResource(R.drawable.ic_star_half_24dp)
         }
         else if(score_liking == 5.0F){
-            star_1.setImageResource(R.drawable.ic_star_full_24dp)
-            star_2.setImageResource(R.drawable.ic_star_full_24dp)
-            star_3.setImageResource(R.drawable.ic_star_full_24dp)
-            star_4.setImageResource(R.drawable.ic_star_full_24dp)
-            star_5.setImageResource(R.drawable.ic_star_full_24dp)
+            star_enj_1.setImageResource(R.drawable.ic_star_full_24dp)
+            star_enj_2.setImageResource(R.drawable.ic_star_full_24dp)
+            star_enj_3.setImageResource(R.drawable.ic_star_full_24dp)
+            star_enj_4.setImageResource(R.drawable.ic_star_full_24dp)
+            star_enj_5.setImageResource(R.drawable.ic_star_full_24dp)
         }
 
     }
-    
+
+    fun setDifficultyStars(score_difficulty: Float){
+        if(score_difficulty == 1.0F){
+            star_dif_1.setImageResource(R.drawable.ic_star_full_24dp)
+            star_dif_2.setImageResource(R.drawable.ic_star_empty_24dp)
+            star_dif_3.setImageResource(R.drawable.ic_star_empty_24dp)
+            star_dif_4.setImageResource(R.drawable.ic_star_empty_24dp)
+            star_dif_5.setImageResource(R.drawable.ic_star_empty_24dp)
+        }
+        else if(score_difficulty >1 && score_difficulty <2){
+            star_dif_1.setImageResource(R.drawable.ic_star_full_24dp)
+            star_dif_2.setImageResource(R.drawable.ic_star_half_24dp)
+            star_dif_3.setImageResource(R.drawable.ic_star_empty_24dp)
+            star_dif_4.setImageResource(R.drawable.ic_star_empty_24dp)
+            star_dif_5.setImageResource(R.drawable.ic_star_empty_24dp)
+        }
+        else if(score_difficulty == 2.0F){
+            star_dif_1.setImageResource(R.drawable.ic_star_full_24dp)
+            star_dif_2.setImageResource(R.drawable.ic_star_full_24dp)
+            star_dif_3.setImageResource(R.drawable.ic_star_empty_24dp)
+            star_dif_4.setImageResource(R.drawable.ic_star_empty_24dp)
+            star_dif_5.setImageResource(R.drawable.ic_star_empty_24dp)
+        }
+        else if(score_difficulty >2 && score_difficulty <3){
+            star_dif_1.setImageResource(R.drawable.ic_star_full_24dp)
+            star_dif_2.setImageResource(R.drawable.ic_star_full_24dp)
+            star_dif_3.setImageResource(R.drawable.ic_star_half_24dp)
+            star_dif_4.setImageResource(R.drawable.ic_star_empty_24dp)
+            star_dif_5.setImageResource(R.drawable.ic_star_empty_24dp)
+        }
+        else if(score_difficulty == 3.0F){
+            star_dif_1.setImageResource(R.drawable.ic_star_full_24dp)
+            star_dif_2.setImageResource(R.drawable.ic_star_full_24dp)
+            star_dif_3.setImageResource(R.drawable.ic_star_full_24dp)
+            star_dif_4.setImageResource(R.drawable.ic_star_empty_24dp)
+            star_dif_5.setImageResource(R.drawable.ic_star_empty_24dp)
+        }
+        else if(score_difficulty >3 && score_difficulty <4){
+            star_dif_1.setImageResource(R.drawable.ic_star_full_24dp)
+            star_dif_2.setImageResource(R.drawable.ic_star_full_24dp)
+            star_dif_3.setImageResource(R.drawable.ic_star_full_24dp)
+            star_dif_4.setImageResource(R.drawable.ic_star_half_24dp)
+            star_dif_5.setImageResource(R.drawable.ic_star_empty_24dp)
+        }
+        else if(score_difficulty == 4.0F){
+            star_dif_1.setImageResource(R.drawable.ic_star_full_24dp)
+            star_dif_2.setImageResource(R.drawable.ic_star_full_24dp)
+            star_dif_3.setImageResource(R.drawable.ic_star_full_24dp)
+            star_dif_4.setImageResource(R.drawable.ic_star_full_24dp)
+            star_dif_5.setImageResource(R.drawable.ic_star_empty_24dp)
+        }
+        else if(score_difficulty >4 && score_difficulty <5){
+            star_dif_1.setImageResource(R.drawable.ic_star_full_24dp)
+            star_dif_2.setImageResource(R.drawable.ic_star_full_24dp)
+            star_dif_3.setImageResource(R.drawable.ic_star_full_24dp)
+            star_dif_4.setImageResource(R.drawable.ic_star_full_24dp)
+            star_dif_5.setImageResource(R.drawable.ic_star_half_24dp)
+        }
+        else if(score_difficulty == 5.0F){
+            star_dif_1.setImageResource(R.drawable.ic_star_full_24dp)
+            star_dif_2.setImageResource(R.drawable.ic_star_full_24dp)
+            star_dif_3.setImageResource(R.drawable.ic_star_full_24dp)
+            star_dif_4.setImageResource(R.drawable.ic_star_full_24dp)
+            star_dif_5.setImageResource(R.drawable.ic_star_full_24dp)
+        }
+
+    }
 }
