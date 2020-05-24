@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".android.ui.newReview.NewReviewActivity"
     android:background="#595959">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/ConstraintLayoutGroup"
@@ -25,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
-            android:text="Selezione il corso che vuoi recensire"
+            android:text="Seleziona il corso che vuoi recensire"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -70,39 +74,55 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/experience_rating_textview">
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/star_exp_1"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/ic_star_full_24dp" />
+                android:scaleType="centerCrop"
+                android:padding="0dp"
+                android:backgroundTint="@color/white"
+                android:src="@drawable/ic_star_empty_24dp" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/star_exp_2"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/ic_star_full_24dp" />
+                android:scaleType="centerCrop"
+                android:padding="0dp"
+                android:backgroundTint="@color/white"
+                android:src="@drawable/ic_star_empty_24dp" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/star_exp_3"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/ic_star_full_24dp" />
+                android:scaleType="centerCrop"
+                android:padding="0dp"
+                android:backgroundTint="@color/white"
+                android:src="@drawable/ic_star_empty_24dp" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/star_exp_4"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/ic_star_full_24dp" />
+                android:scaleType="centerCrop"
+                android:padding="0dp"
+                android:backgroundTint="@color/white"
+                android:src="@drawable/ic_star_empty_24dp" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/star_exp_5"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/ic_star_half_24dp" />
+                android:scaleType="centerCrop"
+                android:padding="0dp"
+                android:backgroundTint="@color/white"
+                android:src="@drawable/ic_star_empty_24dp" />
         </LinearLayout>
 
         <TextView
@@ -111,7 +131,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
-            android:text="Chegrado di difficoltà hai riscontrato?"
+            android:text="Che grado di difficoltà hai riscontrato?"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/experience_rating_linearlayout" />
 
@@ -120,39 +140,55 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
             android:orientation="horizontal"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/difficulty_rating_textview">
 
-            <ImageView
-                android:id="@+id/star_1r"
+            <ImageButton
+                android:id="@+id/star_dif_1"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/ic_star_full_24dp" />
+                android:scaleType="centerCrop"
+                android:padding="0dp"
+                android:backgroundTint="@color/white"
+                android:src="@drawable/ic_star_empty_24dp" />
 
-            <ImageView
-                android:id="@+id/star_2r"
+            <ImageButton
+                android:id="@+id/star_dif_2"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/ic_star_full_24dp" />
+                android:scaleType="centerCrop"
+                android:padding="0dp"
+                android:backgroundTint="@color/white"
+                android:src="@drawable/ic_star_empty_24dp" />
 
-            <ImageView
-                android:id="@+id/star_3r"
+            <ImageButton
+                android:id="@+id/star_dif_3"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/ic_star_full_24dp" />
+                android:scaleType="centerCrop"
+                android:padding="0dp"
+                android:backgroundTint="@color/white"
+                android:src="@drawable/ic_star_empty_24dp" />
 
-            <ImageView
-                android:id="@+id/star_4r"
+            <ImageButton
+                android:id="@+id/star_dif_4"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/ic_star_full_24dp" />
+                android:scaleType="centerCrop"
+                android:padding="0dp"
+                android:backgroundTint="@color/white"
+                android:src="@drawable/ic_star_empty_24dp" />
 
-            <ImageView
-                android:id="@+id/star_5r"
+            <ImageButton
+                android:id="@+id/star_dif_5"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:src="@drawable/ic_star_half_24dp" />
+                android:scaleType="centerCrop"
+                android:padding="0dp"
+                android:backgroundTint="@color/white"
+                android:src="@drawable/ic_star_empty_24dp" />
         </LinearLayout>
 
         <TextView
@@ -185,17 +221,15 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="298dp"
-            android:text="@string/write_post_it"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:text="Scrivi la recensione"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title_edittext" />
 
         <EditText
-            android:id="@+id/user_group_edittext"
+            android:id="@+id/user_review_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="300dp"
+            android:minHeight="100dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
@@ -222,4 +256,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ConstraintLayoutPost" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

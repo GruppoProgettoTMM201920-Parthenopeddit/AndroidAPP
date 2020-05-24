@@ -95,7 +95,7 @@
             android:layout_height="wrap_content"
             android:layout_toEndOf="@id/image_view"
             android:layout_below="@id/user_rating"
-            android:text="Gradimento:"
+            android:text="Difficoltà:"
             android:textSize="12sp"/>
         
         <LinearLayout

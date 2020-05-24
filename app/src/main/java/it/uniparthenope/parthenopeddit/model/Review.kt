@@ -14,13 +14,13 @@ class Review(
     author: User,
 
     @SerializedName("reviewed_course_id")
-    val reviewed_course_id: Int,
+    var reviewed_course_id: Int,
 
     @SerializedName("score_liking")
-    val score_liking: Int,
+    var score_liking: Int,
 
     @SerializedName("score_difficulty")
-    val score_difficulty: Int
+    var score_difficulty: Int
 
 ) : Content_temp(id, title, body, timestamp, author), JSONConvertable {
 

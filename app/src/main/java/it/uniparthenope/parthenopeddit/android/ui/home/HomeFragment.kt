@@ -24,6 +24,7 @@ import it.uniparthenope.parthenopeddit.android.HomeActivity
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.ui.newGroup.NewGroupActivity
 import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
+import it.uniparthenope.parthenopeddit.android.ui.newReview.NewReviewActivity
 import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.auth.Auth
 import it.uniparthenope.parthenopeddit.model.Post
@@ -230,7 +231,7 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
     }
 
     fun onClickNewReview(){
-        val intent = Intent(requireContext(), CourseActivity::class.java)
+        val intent = Intent(requireContext(), NewReviewActivity::class.java)
         startActivity(intent)
     }
 }
