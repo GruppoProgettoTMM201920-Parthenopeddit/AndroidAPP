@@ -8,7 +8,13 @@ import android.widget.Button
 import android.widget.Spinner
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.HomeActivity
+import it.uniparthenope.parthenopeddit.api.MockDatabase
 import it.uniparthenope.parthenopeddit.model.Group
+import it.uniparthenope.parthenopeddit.model.Post
+import kotlinx.android.synthetic.main.activity_new_post.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class NewPostActivity : AppCompatActivity() {
 
@@ -39,6 +45,17 @@ class NewPostActivity : AppCompatActivity() {
 
         publish_button.setOnClickListener {
             //TODO: Send post through API
+            //var date = Date()
+            //val formatter = SimpleDateFormat("dd MMM yyyy HH:mma")
+            //var newPost: Post? = Post(
+            //    MockDatabase.instance.reviews_table.maxBy { it -> it.id  }?.id!! + 1,
+            //    title_edittext.text.toString(), user_post_edittext.text.toString(), formatter.format(date), MockDatabase.instance.users_table.find { it.id == "user1" }!!, null, MockDatabase.instance.course_table.find { it.id == 1 }, difficulty_rating)
+            //newPost?.reviewed_course =  MockDatabase.instance.course_table.find { it.id == 1 }
+
+
+            //MockDatabase.instance.reviews_table.add(newPost!!)
+            //MockDatabase.instance.course_table.find { it.id == 1 }?.reviews?.add(newPost)
+            //MockDatabase.instance.users_table.find{ it.id == "user1" }!!.reviews?.add(newPost)
 
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)

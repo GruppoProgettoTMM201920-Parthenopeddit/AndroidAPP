@@ -2,6 +2,7 @@ package it.uniparthenope.parthenopeddit.android.ui.newReview
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.HomeActivity
@@ -48,19 +49,34 @@ class NewReviewActivity : AppCompatActivity()  {
         publish_button.setOnClickListener {
             //TODO: Send review through API
 
-            var date = Date()
-            val formatter = SimpleDateFormat("dd MMM yyyy")
-            var newReview: Review? = Review(MockDatabase.instance.reviews_table.maxBy { it -> it.id  }?.id!! + 1,
-                title_edittext.text.toString(), user_review_edittext.text.toString(), formatter.format(date), MockDatabase.instance.users_table.find { it.id == "user1" }!!, 1, enjoy_rating, difficulty_rating)
-            newReview?.reviewed_course =  MockDatabase.instance.course_table.find { it.id == 1 }
+            if(enjoy_rating==0){ empty_enj_textview.visibility = View.VISIBLE }
+            else if(difficulty_rating==0){ empty_dif_textview.visibility = View.VISIBLE }
+            else if(title_edittext.text.isEmpty()){ empty_title_textview.visibility = View.VISIBLE }
+            else if(user_review_edittext.text.isEmpty()){ empty_review_textview.visibility = View.VISIBLE }
+            else {
+
+                var date = Date()
+                val formatter = SimpleDateFormat("dd MMM yyyy")
+                var newReview: Review? =
+                    Review(MockDatabase.instance.reviews_table.maxBy { it -> it.id }?.id!! + 1,
+                        title_edittext.text.toString(),
+                        user_review_edittext.text.toString(),
+                        formatter.format(date),
+                        MockDatabase.instance.users_table.find { it.id == "user1" }!!,
+                        1,
+                        enjoy_rating,
+                        difficulty_rating
+                    )
+                newReview?.reviewed_course = MockDatabase.instance.course_table.find { it.id == 1 }
 
 
-            MockDatabase.instance.reviews_table.add(newReview!!)
-            MockDatabase.instance.course_table.find { it.id == 1 }?.reviews?.add(newReview)
-            MockDatabase.instance.users_table.find{ it.id == "user1" }!!.reviews?.add(newReview)
+                MockDatabase.instance.reviews_table.add(newReview!!)
+                MockDatabase.instance.course_table.find { it.id == 1 }?.reviews?.add(newReview)
+                MockDatabase.instance.users_table.find { it.id == "user1" }!!.reviews?.add(newReview)
 
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
+                val intent = Intent(this, HomeActivity::class.java)
+                startActivity(intent)
+            }
         }
 
     }

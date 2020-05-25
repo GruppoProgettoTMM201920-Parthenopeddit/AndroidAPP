@@ -126,6 +126,20 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/empty_enj_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="20dp"
+            android:text="Per favore, inserisci l'indice di gradimento"
+            android:textColor="@color/red"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/experience_rating_linearlayout"
+            android:visibility="gone"/>
+
+
+        <TextView
             android:id="@+id/difficulty_rating_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -192,6 +206,19 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/empty_dif_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="20dp"
+            android:text="Per favore, inserisci l'indice di difficoltà"
+            android:textColor="@color/red"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/difficulty_rating_linearlayout"
+            android:visibility="gone"/>
+
+        <TextView
             android:id="@+id/title_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -200,6 +227,18 @@
             android:text="Titolo"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/difficulty_rating_linearlayout" />
+
+        <TextView
+            android:id="@+id/empty_title_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="20dp"
+            android:text="Inserisci un titolo"
+            android:textColor="@color/red"
+            app:layout_constraintStart_toEndOf="@+id/title_textview"
+            app:layout_constraintTop_toBottomOf="@id/difficulty_rating_linearlayout"
+            android:visibility="gone"/>
 
         <EditText
             android:id="@+id/title_edittext"
@@ -224,6 +263,18 @@
             android:text="Scrivi la recensione"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title_edittext" />
+
+        <TextView
+            android:id="@+id/empty_review_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="20dp"
+            android:text="Post vuoto"
+            android:textColor="@color/red"
+            app:layout_constraintStart_toEndOf="@+id/posttext_textview"
+            app:layout_constraintTop_toBottomOf="@id/title_edittext"
+            android:visibility="gone"/>
 
         <EditText
             android:id="@+id/user_review_edittext"

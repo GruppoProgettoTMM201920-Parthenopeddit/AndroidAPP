@@ -3,7 +3,7 @@ package it.uniparthenope.parthenopeddit.model
 import it.uniparthenope.parthenopeddit.util.JSONConvertable
 
 data class Course(
-    val id: Int,
+    var id: Int,
     val course_name: String? = null,
     var rating: Float,
     var difficulty: Float,
