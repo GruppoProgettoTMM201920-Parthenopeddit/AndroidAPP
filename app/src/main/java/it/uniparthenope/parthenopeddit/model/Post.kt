@@ -7,7 +7,7 @@ import java.util.*
 class Post(
     id: Int,
     body: String? = null,
-    timestamp: Date,
+    timestamp: String,
     author_id: String,
 
     @SerializedName("title")

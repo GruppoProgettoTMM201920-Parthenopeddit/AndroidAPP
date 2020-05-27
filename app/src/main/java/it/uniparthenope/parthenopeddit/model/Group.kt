@@ -1,29 +1,25 @@
 package it.uniparthenope.parthenopeddit.model
 
-class Group(var isHeaderArg: Boolean, var nameArg: String) {
-        private var isHeader: Boolean
-        private var name: String
+import com.google.gson.annotations.SerializedName
+import it.uniparthenope.parthenopeddit.util.JSONConvertable
+import java.util.*
 
-    init {
-        isHeader = isHeaderArg
-        name = nameArg
-    }
+class Group(
+    id: Int,
+    name: String,
 
-    fun isHeader(): Boolean {
-        return isHeader
-    }
+    @SerializedName("created_on")
+    val created_on: Date
+) : Board(id, name), JSONConvertable {
 
-    fun setHeader(header: Boolean){
-        isHeader = header
-    }
+    @SerializedName("members")
+    var members: ArrayList<User>? = null
 
-    fun getName(): String {
-        return name
-    }
+    /*
+    @SerializedName("chat")
+    var chat: GroupChat? = null
+     */
 
-    fun setName(name: String) {
-        this.name = name
-    }
-
-
+    @SerializedName("members_num")
+    var members_num: Int? = null
 }

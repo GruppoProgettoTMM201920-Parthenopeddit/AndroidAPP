@@ -1,6 +1,7 @@
 package it.uniparthenope.parthenopeddit.auth
 
 import android.content.Context
+import android.util.Base64
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.util.SingletonHolder
 
@@ -23,22 +24,38 @@ class SharedPreferencesAuth(private var context: Context) : AuthManager {
         }
     }
 
-    var username:String?
+    private var onLoginListener: ((username: String)->Unit)? = null
+    private var onLogoutListener: (()->Unit)? = null
+
+    fun setEventListener(onLogin: ((username: String) -> Unit)?, onLogout: (() -> Unit)?) {
+        onLoginListener = onLogin
+        onLogoutListener = onLogout
+    }
+
+    override var username:String?
         get() = getValue(USERNAME)
         set(newUsername) = setValue(USERNAME, newUsername)
 
-    private var token:String?
+    override var token:String?
         get() = getValue(TOKEN)
         set(newToken) = setValue(TOKEN, newToken)
 
     override fun login(token:String, username:String) {
         this.username = username
         this.token = token
+
+        onLoginListener?.invoke(username)
     }
 
     override fun logout() {
         this.username = null
         this.token = null
+
+        onLogoutListener?.invoke()
+    }
+
+    override fun getToken(username: String, password: String): String {
+        return Base64.encodeToString("${username}:${password}".toByteArray(), Base64.NO_WRAP)
     }
 
     override fun isUserLogged(): Boolean {

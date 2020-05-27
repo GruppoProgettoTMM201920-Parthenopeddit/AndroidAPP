@@ -2,7 +2,7 @@ package it.uniparthenope.parthenopeddit.api
 
 import com.android.volley.Request
 
-sealed class ApiRoute {
+abstract class ApiRoute {
     val timeOut: Int
         get() {
             return 3000
@@ -25,16 +25,5 @@ sealed class ApiRoute {
         headers["Accept"] = "application/json"
         headers["authorization"] = "Basic ${token}"
         return headers
-    }
-
-    class Login(val token: String) : ApiRoute() {
-        override val url: String
-            get() = "$baseUrl/auth/login"
-        override val httpMethod: Int
-            get() = Request.Method.GET
-        override val params: HashMap<String, String>
-            get() = getParamsMap()
-        override val headers: HashMap<String, String>
-            get() = getHeadersMap(token)
     }
 }

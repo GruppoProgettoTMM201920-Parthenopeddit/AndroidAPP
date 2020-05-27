@@ -4,13 +4,13 @@ import android.content.Context
 import com.android.volley.*
 import com.android.volley.toolbox.Volley
 
-class APIRequestsQueue constructor(context: Context) {
+class ApiClient constructor(context: Context) {
     companion object {
         @Volatile
-        private var INSTANCE: APIRequestsQueue? = null
+        private var INSTANCE: ApiClient? = null
         fun getInstance(context: Context) =
             INSTANCE ?: synchronized(this) {
-                INSTANCE ?: APIRequestsQueue(context).also {
+                INSTANCE ?: ApiClient(context).also {
                     INSTANCE = it
                 }
             }

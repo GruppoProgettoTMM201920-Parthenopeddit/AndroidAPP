@@ -7,7 +7,7 @@ import java.util.*
 class Comment(
     id: Int,
     body: String,
-    timestamp: Date,
+    timestamp: String,
     author_id: String,
 
     @SerializedName("commented_content_id")

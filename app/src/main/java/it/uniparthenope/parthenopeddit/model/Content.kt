@@ -12,7 +12,7 @@ open class Content (
     val body: String? = null,
 
     @SerializedName("timestamp")
-    val timestamp: Date,
+    val timestamp: String,
 
     @SerializedName("author_id")
     val author_id: String

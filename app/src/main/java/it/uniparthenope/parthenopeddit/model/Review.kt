@@ -9,7 +9,7 @@ import kotlin.collections.ArrayList
 class Review(
     id: Int,
     body: String? = null,
-    timestamp: Date,
+    timestamp: String,
     author_id: String,
 
     @SerializedName("reviewed_course_id")
