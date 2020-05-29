@@ -3,12 +3,9 @@ package it.uniparthenope.parthenopeddit.model
 import com.google.gson.annotations.SerializedName
 import it.uniparthenope.parthenopeddit.util.JSONConvertable
 
-open class Board(
+open class Chat(
     val id: Int,
-    val name: String,
     val type: String
 ) : JSONConvertable {
-
-    var posts: ArrayList<Post>? = null
-    var posts_num: Int? = null
+    var received_messages: ArrayList<Message>? = null
 }

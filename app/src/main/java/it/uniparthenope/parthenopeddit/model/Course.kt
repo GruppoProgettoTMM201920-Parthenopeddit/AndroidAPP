@@ -5,4 +5,4 @@ import it.uniparthenope.parthenopeddit.util.JSONConvertable
 class Course(
     id: Int,
     name: String
-) : Board(id, name), JSONConvertable
+) : Board(id, name, "course"), JSONConvertable

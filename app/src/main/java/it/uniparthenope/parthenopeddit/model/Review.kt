@@ -8,23 +8,16 @@ import kotlin.collections.ArrayList
 
 class Review(
     id: Int,
-    body: String? = null,
+    body: String,
     timestamp: String,
     author_id: String,
 
-    @SerializedName("reviewed_course_id")
     val reviewed_course_id: Int,
-
-    @SerializedName("score_liking")
     val score_liking: Int,
-
-    @SerializedName("score_difficulty")
     val score_difficulty: Int
 
-) : Content(id, body, timestamp, author_id), JSONConvertable {
+) : Content(id, body, timestamp, author_id, "review"), JSONConvertable {
 
     /* relationships */
-
-    @SerializedName("reviewed_course")
     var reviewed_course: Course? = null
 }

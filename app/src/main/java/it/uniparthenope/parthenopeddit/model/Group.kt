@@ -3,23 +3,17 @@ package it.uniparthenope.parthenopeddit.model
 import com.google.gson.annotations.SerializedName
 import it.uniparthenope.parthenopeddit.util.JSONConvertable
 import java.util.*
+import kotlin.collections.ArrayList
 
 class Group(
     id: Int,
     name: String,
 
-    @SerializedName("created_on")
     val created_on: Date
-) : Board(id, name), JSONConvertable {
+) : Board(id, name, "group"), JSONConvertable {
 
-    @SerializedName("members")
-    var members: ArrayList<User>? = null
-
-    /*
-    @SerializedName("chat")
+    var members: ArrayList<GroupMember>? = null
     var chat: GroupChat? = null
-     */
-
-    @SerializedName("members_num")
+    var invites: ArrayList<GroupInvite>? = null
     var members_num: Int? = null
 }

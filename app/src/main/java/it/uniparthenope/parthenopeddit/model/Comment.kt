@@ -10,13 +10,12 @@ class Comment(
     timestamp: String,
     author_id: String,
 
-    @SerializedName("commented_content_id")
-    val commented_content_id: Int
+    val commented_content_id: Int,
+    val root_content_id: Int
 
-) : Content(id, body, timestamp, author_id), JSONConvertable {
+) : Content(id, body, timestamp, author_id, "comment"), JSONConvertable {
 
     /* relationships */
-
-    @SerializedName("commented_content")
     var commented_content: Content? = null
+    val root_content: Content? = null
 }
