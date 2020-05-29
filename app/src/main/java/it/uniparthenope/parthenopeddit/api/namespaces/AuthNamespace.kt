@@ -14,4 +14,11 @@ interface AuthNamespace {
         onFirstLogin: (user: User) -> Unit,
         onFail: (error: String) -> Unit
     )
+
+    fun registerDeviceToken(
+        deviceToken: String,
+        onRegister: () -> Unit,
+        onUpdate: () -> Unit,
+        onFail: () -> Unit
+    )
 }

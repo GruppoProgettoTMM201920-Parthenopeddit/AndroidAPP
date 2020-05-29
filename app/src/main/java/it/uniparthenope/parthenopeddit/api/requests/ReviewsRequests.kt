@@ -5,44 +5,45 @@ import android.util.Log
 import com.android.volley.Request
 import it.uniparthenope.parthenopeddit.api.ApiClient
 import it.uniparthenope.parthenopeddit.api.ApiRoute
-import it.uniparthenope.parthenopeddit.api.namespaces.PostsNamespace
+import it.uniparthenope.parthenopeddit.api.namespaces.ReviewsNamespace
 import it.uniparthenope.parthenopeddit.auth.AuthManager
-import it.uniparthenope.parthenopeddit.model.Post
+import it.uniparthenope.parthenopeddit.model.Review
 import it.uniparthenope.parthenopeddit.util.TAG
 import it.uniparthenope.parthenopeddit.util.toObject
-import org.json.HTTP
 
-class PostsRequests(private val ctx: Context, private val auth: AuthManager) : PostsNamespace {
+class ReviewsRequests(private val ctx: Context, private val auth: AuthManager) : ReviewsNamespace {
 
-    override fun publishNewPost(
-        title: String,
+    override fun publishNewReview(
         body: String,
-        board_id: Int,
-        onSuccess: (post: Post) -> Unit,
+        reviewed_course_id: Int,
+        score_liking: Int,
+        score_difficulty: Int,
+        onSuccess: (review: Review) -> Unit,
         onFail: (error: String) -> Unit
     ) {
-        ApiClient.getInstance(ctx).performRequest(
+        ApiClient(ctx).performRequest(
             object : ApiRoute() {
                 override val url: String
-                    get() = "$baseUrl/posts/"
+                    get() = "$baseUrl/reviews/"
                 override val httpMethod: Int
                     get() = Request.Method.POST
                 override val params: HashMap<String, String>
                     get() {
                         val params = getParamsMap()
-                        params["title"] = title
                         params["body"] = body
-                        params["board_id"] = board_id.toString()
+                        params["reviewed_course_id"] = reviewed_course_id.toString()
+                        params["score_liking"] = score_liking.toString()
+                        params["score_difficulty"] = score_difficulty.toString()
                         return params
                     }
                 override val headers: HashMap<String, String>
                     get() = getHeadersMap(auth.token!!)
             }, { resultCode: Int, resultJson: String ->
-                if( resultCode == 201 ) {
+                if (resultCode == 201) {
                     try {
                         onSuccess(resultJson.toObject())
                     } catch (e: Exception) {
-                        onFail("Could not parse request result as post data")
+                        onFail("Could not parse request result as review data")
                         Log.d(TAG, resultJson)
                         return@performRequest
                     }
@@ -50,33 +51,32 @@ class PostsRequests(private val ctx: Context, private val auth: AuthManager) : P
                     onFail("Error : $resultCode")
                 }
             }, { _, error: String ->
-                onFail.invoke(error)
+                onFail(error)
             }
         )
     }
 
-    override fun getPost(
-        postId: Int,
-        onSuccess: (post: Post) -> Unit,
+    override fun getReview(
+        reviewId: Int,
+        onSuccess: (review: Review) -> Unit,
         onFail: (error: String) -> Unit
     ) {
         ApiClient(ctx).performRequest(
             object : ApiRoute() {
                 override val url: String
-                    get() = "$baseUrl/posts/$postId"
+                    get() = "$baseUrl/reviews/$reviewId"
                 override val httpMethod: Int
                     get() = Request.Method.GET
                 override val params: HashMap<String, String>
                     get() = getParamsMap()
                 override val headers: HashMap<String, String>
                     get() = getHeadersMap(auth.token!!)
-
             }, { resultCode: Int, resultJson: String ->
                 if( resultCode == 200 ) {
                     try {
                         onSuccess(resultJson.toObject())
                     } catch (e: Exception) {
-                        onFail("Could not parse request result as post data")
+                        onFail("Could not parse request result as review data")
                         Log.d(TAG, resultJson)
                         return@performRequest
                     }
@@ -89,29 +89,27 @@ class PostsRequests(private val ctx: Context, private val auth: AuthManager) : P
         )
     }
 
-    override fun getPostWithComments(
-        postId: Int,
-        onSuccess: (post: Post) -> Unit,
+    override fun getReviewWithComments(
+        reviewId: Int,
+        onSuccess: (review: Review) -> Unit,
         onFail: (error: String) -> Unit
     ) {
         ApiClient(ctx).performRequest(
             object : ApiRoute() {
                 override val url: String
-                    get() = "$baseUrl/posts/$postId/comments"
+                    get() = "$baseUrl/reviews/$reviewId/comments"
                 override val httpMethod: Int
                     get() = Request.Method.GET
                 override val params: HashMap<String, String>
                     get() = getParamsMap()
                 override val headers: HashMap<String, String>
                     get() = getHeadersMap(auth.token!!)
-
             }, { resultCode: Int, resultJson: String ->
                 if( resultCode == 200 ) {
-                    Log.d(TAG, resultJson)
                     try {
                         onSuccess(resultJson.toObject())
                     } catch (e: Exception) {
-                        onFail("Could not parse request result as post data")
+                        onFail("Could not parse request result as review data")
                         Log.d(TAG, resultJson)
                         return@performRequest
                     }
@@ -124,8 +122,8 @@ class PostsRequests(private val ctx: Context, private val auth: AuthManager) : P
         )
     }
 
-    override fun likePost(
-        postId: Int,
+    override fun likeReview(
+        reviewId: Int,
         onLikePlaced: () -> Unit,
         onLikeRemoved: () -> Unit,
         onDislikeRemovedAndLikePlaced: () -> Unit,
@@ -134,14 +132,13 @@ class PostsRequests(private val ctx: Context, private val auth: AuthManager) : P
         ApiClient(ctx).performRequest(
             object : ApiRoute() {
                 override val url: String
-                    get() = "$baseUrl/posts/$postId/like"
+                    get() = "$baseUrl/reviews/$reviewId/like"
                 override val httpMethod: Int
                     get() = Request.Method.POST
                 override val params: HashMap<String, String>
                     get() = getParamsMap()
                 override val headers: HashMap<String, String>
                     get() = getHeadersMap(auth.token!!)
-
             }, { resultCode: Int, resultJson: String ->
                 if( resultCode == 210 ) {
                     onLikePlaced()
@@ -158,8 +155,8 @@ class PostsRequests(private val ctx: Context, private val auth: AuthManager) : P
         )
     }
 
-    override fun dislikePost(
-        postId: Int,
+    override fun dislikeReview(
+        reviewId: Int,
         onDislikePlaced: () -> Unit,
         onDislikeRemoved: () -> Unit,
         onLikeRemovedAndDislikePlaced: () -> Unit,
@@ -168,14 +165,13 @@ class PostsRequests(private val ctx: Context, private val auth: AuthManager) : P
         ApiClient(ctx).performRequest(
             object : ApiRoute() {
                 override val url: String
-                    get() = "$baseUrl/posts/$postId/dislike"
+                    get() = "$baseUrl/reviews/$reviewId/dislike"
                 override val httpMethod: Int
                     get() = Request.Method.POST
                 override val params: HashMap<String, String>
                     get() = getParamsMap()
                 override val headers: HashMap<String, String>
                     get() = getHeadersMap(auth.token!!)
-
             }, { resultCode: Int, resultJson: String ->
                 if( resultCode == 210 ) {
                     onDislikePlaced()

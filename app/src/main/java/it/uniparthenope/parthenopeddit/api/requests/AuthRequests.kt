@@ -11,26 +11,24 @@ import it.uniparthenope.parthenopeddit.util.toObject
 import java.lang.Exception
 
 class AuthRequests(private val ctx:Context, private val auth: AuthManager) : AuthNamespace {
-
-    class Login(val token: String) : ApiRoute() {
-        override val url: String
-            get() = "$baseUrl/auth/login"
-        override val httpMethod: Int
-            get() = Request.Method.GET
-        override val params: HashMap<String, String>
-            get() = getParamsMap()
-        override val headers: HashMap<String, String>
-            get() = getHeadersMap(token)
-    }
-
     override fun login(
         token:String,
         onLogin: (user: User) -> Unit,
         onFirstLogin: (user: User) -> Unit,
         onFail: (error: String) -> Unit
     ) {
-        ApiClient.getInstance(ctx).performRequest( Login(token),
-            { resultCode: Int, resultJson: String ->
+        ApiClient.getInstance(ctx).performRequest(
+            object : ApiRoute() {
+                override val url: String
+                    get() = "$baseUrl/auth/login"
+                override val httpMethod: Int
+                    get() = Request.Method.GET
+                override val params: HashMap<String, String>
+                    get() = getParamsMap()
+                override val headers: HashMap<String, String>
+                    get() = getHeadersMap(token)
+            }, {
+                resultCode: Int, resultJson: String ->
                 if( resultCode == 200 || resultCode == 201 ) {
                     lateinit var user: User
                     try {
@@ -50,6 +48,40 @@ class AuthRequests(private val ctx:Context, private val auth: AuthManager) : Aut
                 }
             }, { _, error: String ->
                 onFail.invoke(error)
+            }
+        )
+    }
+
+    override fun registerDeviceToken(
+        deviceToken: String,
+        onRegister: () -> Unit,
+        onUpdate: () -> Unit,
+        onFail: () -> Unit
+    ) {
+        ApiClient.getInstance(ctx).performRequest(
+            object : ApiRoute() {
+                override val url: String
+                    get() = "$baseUrl/auth/register_device_token"
+                override val httpMethod: Int
+                    get() = Request.Method.POST
+                override val params: HashMap<String, String>
+                    get() {
+                        val params = getParamsMap()
+                        params["token"] = deviceToken
+                        return params
+                    }
+                override val headers: HashMap<String, String>
+                    get() = getHeadersMap(auth.token!!)
+            }, { resultCode: Int, _ ->
+                if( resultCode == 201 || resultCode == 200 ) {
+                    onRegister()
+                } else if (resultCode == 202 ) {
+                    onUpdate()
+                } else {
+                    onFail()
+                }
+            }, { _, _ ->
+                onFail()
             }
         )
     }

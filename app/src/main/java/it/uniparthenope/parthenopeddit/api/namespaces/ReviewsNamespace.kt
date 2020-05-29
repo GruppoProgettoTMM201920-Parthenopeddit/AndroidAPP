@@ -1,40 +1,42 @@
 package it.uniparthenope.parthenopeddit.api.namespaces
 
 import it.uniparthenope.parthenopeddit.model.Comment
-import it.uniparthenope.parthenopeddit.model.Post
+import it.uniparthenope.parthenopeddit.model.Review
 
-interface CommentsNamespace {
-    fun publishNewComment(
+interface ReviewsNamespace {
+    fun publishNewReview(
         body:String,
-        commented_content_id: Int,
+        reviewed_course_id: Int,
+        score_liking: Int,
+        score_difficulty: Int,
 
-        onSuccess: (comment: Comment) -> Unit,
+        onSuccess: (review: Review) -> Unit,
         onFail: (error: String) -> Unit
     )
 
-    fun getComment(
-        commentId:Int,
+    fun getReview(
+        reviewId:Int,
 
-        onSuccess: (comment: Comment) -> Unit,
+        onSuccess: (review: Review) -> Unit,
         onFail: (error: String) -> Unit
     )
-    fun getCommentWithComments(
-        commentId:Int,
+    fun getReviewWithComments(
+        reviewId:Int,
 
-        onSuccess: (comment: Comment) -> Unit,
+        onSuccess: (review: Review) -> Unit,
         onFail: (error: String) -> Unit
     )
 
-    fun likeComment(
-        commentId:Int,
+    fun likeReview(
+        reviewId:Int,
 
         onLikePlaced: () -> Unit,
         onLikeRemoved: () -> Unit,
         onDislikeRemovedAndLikePlaced: () -> Unit,
         onFail: (error: String) -> Unit
     )
-    fun dislikeComment(
-        commentId:Int,
+    fun dislikeReview(
+        reviewId:Int,
 
         onDislikePlaced: () -> Unit,
         onDislikeRemoved: () -> Unit,

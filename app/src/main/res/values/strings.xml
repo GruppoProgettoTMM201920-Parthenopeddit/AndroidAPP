@@ -33,5 +33,7 @@
     <string name="user_activity_text_it">Visualizza le tue attività</string>
     <string name="darkmode">Dark mode</string>
     <string name="about_it">Informazioni</string>
+    <string name="msg_token_fmt"><![CDATA[test -> %s]]></string>
+    <string name="testing_notification_channel_id">TESTING_CHANNEL</string>
 
 </resources>

@@ -5,44 +5,41 @@ import android.util.Log
 import com.android.volley.Request
 import it.uniparthenope.parthenopeddit.api.ApiClient
 import it.uniparthenope.parthenopeddit.api.ApiRoute
-import it.uniparthenope.parthenopeddit.api.namespaces.PostsNamespace
+import it.uniparthenope.parthenopeddit.api.namespaces.CommentsNamespace
 import it.uniparthenope.parthenopeddit.auth.AuthManager
-import it.uniparthenope.parthenopeddit.model.Post
+import it.uniparthenope.parthenopeddit.model.Comment
 import it.uniparthenope.parthenopeddit.util.TAG
 import it.uniparthenope.parthenopeddit.util.toObject
-import org.json.HTTP
 
-class PostsRequests(private val ctx: Context, private val auth: AuthManager) : PostsNamespace {
+class CommentsRequests(private val ctx: Context, private val auth: AuthManager) : CommentsNamespace {
 
-    override fun publishNewPost(
-        title: String,
+    override fun publishNewComment(
         body: String,
-        board_id: Int,
-        onSuccess: (post: Post) -> Unit,
+        commented_content_id: Int,
+        onSuccess: (comment: Comment) -> Unit,
         onFail: (error: String) -> Unit
     ) {
-        ApiClient.getInstance(ctx).performRequest(
+        ApiClient(ctx).performRequest(
             object : ApiRoute() {
                 override val url: String
-                    get() = "$baseUrl/posts/"
+                    get() = "$baseUrl/comments/"
                 override val httpMethod: Int
                     get() = Request.Method.POST
                 override val params: HashMap<String, String>
                     get() {
                         val params = getParamsMap()
-                        params["title"] = title
                         params["body"] = body
-                        params["board_id"] = board_id.toString()
+                        params["commented_content_id"] = commented_content_id.toString()
                         return params
                     }
                 override val headers: HashMap<String, String>
                     get() = getHeadersMap(auth.token!!)
             }, { resultCode: Int, resultJson: String ->
-                if( resultCode == 201 ) {
+                if (resultCode == 201) {
                     try {
                         onSuccess(resultJson.toObject())
                     } catch (e: Exception) {
-                        onFail("Could not parse request result as post data")
+                        onFail("Could not parse request result as comment data")
                         Log.d(TAG, resultJson)
                         return@performRequest
                     }
@@ -50,20 +47,20 @@ class PostsRequests(private val ctx: Context, private val auth: AuthManager) : P
                     onFail("Error : $resultCode")
                 }
             }, { _, error: String ->
-                onFail.invoke(error)
+                onFail(error)
             }
         )
     }
 
-    override fun getPost(
-        postId: Int,
-        onSuccess: (post: Post) -> Unit,
+    override fun getComment(
+        commentId: Int,
+        onSuccess: (comment: Comment) -> Unit,
         onFail: (error: String) -> Unit
     ) {
         ApiClient(ctx).performRequest(
             object : ApiRoute() {
                 override val url: String
-                    get() = "$baseUrl/posts/$postId"
+                    get() = "$baseUrl/comments/$commentId"
                 override val httpMethod: Int
                     get() = Request.Method.GET
                 override val params: HashMap<String, String>
@@ -76,7 +73,7 @@ class PostsRequests(private val ctx: Context, private val auth: AuthManager) : P
                     try {
                         onSuccess(resultJson.toObject())
                     } catch (e: Exception) {
-                        onFail("Could not parse request result as post data")
+                        onFail("Could not parse request result as comment data")
                         Log.d(TAG, resultJson)
                         return@performRequest
                     }
@@ -89,15 +86,15 @@ class PostsRequests(private val ctx: Context, private val auth: AuthManager) : P
         )
     }
 
-    override fun getPostWithComments(
-        postId: Int,
-        onSuccess: (post: Post) -> Unit,
+    override fun getCommentWithComments(
+        commentId: Int,
+        onSuccess: (comment: Comment) -> Unit,
         onFail: (error: String) -> Unit
     ) {
         ApiClient(ctx).performRequest(
             object : ApiRoute() {
                 override val url: String
-                    get() = "$baseUrl/posts/$postId/comments"
+                    get() = "$baseUrl/comments/$commentId/comments"
                 override val httpMethod: Int
                     get() = Request.Method.GET
                 override val params: HashMap<String, String>
@@ -107,11 +104,10 @@ class PostsRequests(private val ctx: Context, private val auth: AuthManager) : P
 
             }, { resultCode: Int, resultJson: String ->
                 if( resultCode == 200 ) {
-                    Log.d(TAG, resultJson)
                     try {
                         onSuccess(resultJson.toObject())
                     } catch (e: Exception) {
-                        onFail("Could not parse request result as post data")
+                        onFail("Could not parse request result as comment data")
                         Log.d(TAG, resultJson)
                         return@performRequest
                     }
@@ -124,8 +120,8 @@ class PostsRequests(private val ctx: Context, private val auth: AuthManager) : P
         )
     }
 
-    override fun likePost(
-        postId: Int,
+    override fun likeComment(
+        commentId: Int,
         onLikePlaced: () -> Unit,
         onLikeRemoved: () -> Unit,
         onDislikeRemovedAndLikePlaced: () -> Unit,
@@ -134,7 +130,7 @@ class PostsRequests(private val ctx: Context, private val auth: AuthManager) : P
         ApiClient(ctx).performRequest(
             object : ApiRoute() {
                 override val url: String
-                    get() = "$baseUrl/posts/$postId/like"
+                    get() = "$baseUrl/comments/$commentId/like"
                 override val httpMethod: Int
                     get() = Request.Method.POST
                 override val params: HashMap<String, String>
@@ -158,8 +154,8 @@ class PostsRequests(private val ctx: Context, private val auth: AuthManager) : P
         )
     }
 
-    override fun dislikePost(
-        postId: Int,
+    override fun dislikeComment(
+        commentId: Int,
         onDislikePlaced: () -> Unit,
         onDislikeRemoved: () -> Unit,
         onLikeRemovedAndDislikePlaced: () -> Unit,
@@ -168,7 +164,7 @@ class PostsRequests(private val ctx: Context, private val auth: AuthManager) : P
         ApiClient(ctx).performRequest(
             object : ApiRoute() {
                 override val url: String
-                    get() = "$baseUrl/posts/$postId/dislike"
+                    get() = "$baseUrl/comments/$commentId/dislike"
                 override val httpMethod: Int
                     get() = Request.Method.POST
                 override val params: HashMap<String, String>
