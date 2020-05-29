@@ -252,7 +252,7 @@
         android:backgroundTint="@color/white"
         android:contentDescription="hello"
         android:elevation="2dp"
-        android:src="@drawable/ic_star_white_24dp"
+        android:src="@drawable/ic_star_themecolor_24dp_24dp"
         app:fabSize="mini"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
