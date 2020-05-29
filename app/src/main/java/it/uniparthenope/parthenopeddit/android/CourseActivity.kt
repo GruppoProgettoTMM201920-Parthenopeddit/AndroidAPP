@@ -9,15 +9,22 @@ import androidx.viewpager.widget.ViewPager
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.view.animation.AnimationUtils
+import android.widget.TextView
 import android.widget.Toast
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.adapters.CourseAdapter
+import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
+import it.uniparthenope.parthenopeddit.android.ui.newReview.NewReviewActivity
 import it.uniparthenope.parthenopeddit.android.ui.ui.main.SectionsPagerAdapter
 import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.auth.Auth
 import kotlinx.android.synthetic.main.activity_course.*
 
 class CourseActivity : AppCompatActivity() {
+
+    var isOpen = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +37,15 @@ class CourseActivity : AppCompatActivity() {
         viewPager.adapter = sectionsPagerAdapter
         val tabLayout: TabLayout = findViewById(R.id.tabLayout)
         tabLayout.setupWithViewPager(viewPager)
-        val fab: FloatingActionButton = findViewById(R.id.fab)
+
+        val fab = findViewById(R.id.fab) as FloatingActionButton
+        val fab_new_post = findViewById(R.id.fab_new_post) as FloatingActionButton
+        val fab_new_review = findViewById(R.id.fab_new_review) as FloatingActionButton
+        val fab_new_post_textview = findViewById(R.id.fab_new_post_textview) as TextView
+        val fab_new_review_textview = findViewById(R.id.fab_new_review_textview) as TextView
+        val rotateClockwise = AnimationUtils.loadAnimation(this, R.anim.rotate_clockwise)
+        val rotateAnticlockwise = AnimationUtils.loadAnimation(this, R.anim.rotate_anticlockwise)
+
 
         MockApiData().getCourseInfo( Auth().token, courseId) { courseRating:Float, courseDifficulty:Float, numReviews: Int, courseName: String?, error: String? ->
             course_name_textview.text = courseName
@@ -43,10 +58,41 @@ class CourseActivity : AppCompatActivity() {
             setDifficultyStars(courseDifficulty)
         }
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+        fab.setOnClickListener{
+            if(isOpen){
+                fab.startAnimation(rotateClockwise)
+
+                fab_new_post.animate().translationY(200F)
+                fab_new_review.animate().translationY(400F)
+                fab_new_post_textview.animate().translationY(200F)
+                fab_new_review_textview.animate().translationY(400F)
+                fab_new_post_textview.animate().alpha(0F)
+                fab_new_review_textview.animate().alpha(0F)
+                fab_new_post_textview.visibility = View.GONE
+                fab_new_review_textview.visibility = View.GONE
+                isOpen = false
+            } else{
+                fab.startAnimation(rotateAnticlockwise)
+
+                fab_new_post.animate().translationY(-200F)
+                fab_new_review.animate().translationY(-400F)
+
+                fab_new_post_textview.animate().translationY(-200F)
+                fab_new_review_textview.animate().translationY(-400F)
+
+                fab_new_post_textview.visibility = View.VISIBLE
+                fab_new_review_textview.visibility = View.VISIBLE
+
+                fab_new_post_textview.animate().alpha(1F)
+                fab_new_review_textview.animate().alpha(1F)
+                isOpen = true
+            }
         }
+
+        fab_new_post.setOnClickListener{ onClickNewPost() }
+        fab_new_post_textview.setOnClickListener{ onClickNewPost() }
+        fab_new_review.setOnClickListener{ onClickNewReview() }
+        fab_new_review_textview.setOnClickListener{ onClickNewReview() }
     }
 
     fun setEnjoymentStars(score_liking: Float){
@@ -181,5 +227,19 @@ class CourseActivity : AppCompatActivity() {
             star_dif_5.setImageResource(R.drawable.ic_star_full_24dp)
         }
 
+    }
+
+    fun onClickNewPost(){
+        //crea dialogo
+        //passi fuonzione da effettuare onSuccess
+        //uploiad to api
+        //notifidatasetchanged()
+        val intent = Intent(this, NewPostActivity::class.java)
+        startActivity(intent)
+    }
+
+    fun onClickNewReview(){
+        val intent = Intent(this, NewReviewActivity::class.java)
+        startActivity(intent)
     }
 }

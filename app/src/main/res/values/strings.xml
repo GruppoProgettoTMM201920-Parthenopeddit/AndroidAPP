@@ -17,6 +17,7 @@
     <string name="title_activity_home">HomeActivity</string>
     <string name="new_group_it">Crea un nuovo gruppo</string>
     <string name="new_post_it">Crea un nuovo post</string>
+    <string name="new_review_it">Crea nuova recensione</string>
     <string name="select_group_post_it">Seleziona il gruppo in cui pubblicare</string>
     <string name="write_post_it">Scrivi il post</string>
     <string name="publish_it">Pubblica</string>
