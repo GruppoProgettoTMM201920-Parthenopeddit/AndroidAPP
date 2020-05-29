@@ -50,7 +50,7 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
         val currentItem = postList[position]
 
-        holder.imageView.setImageResource(R.drawable.ic_home_black_24dp)
+        holder.imageView.setImageResource(R.drawable.default_user_image)
         holder.username_textview.text = currentItem.author?.nome_visualizzato
         holder.title_textview.text = currentItem.title
         holder.group_textview.text = currentItem.group.getName()

@@ -49,7 +49,7 @@ class CommentAdapter(private val context: Context, private var commentItemsList:
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
         val currentItem = commentItemsList[position]
 
-        holder.imageView.setImageResource(R.drawable.ic_home_black_24dp)
+        holder.imageView.setImageResource(R.drawable.default_user_image)
         holder.username_textview.text = currentItem.author?.nome_visualizzato
         holder.timestamp_comment_textview.text = currentItem.timestamp
         holder.posttext_textview.text = currentItem.body

@@ -32,9 +32,17 @@ class SettingsActivity : AppCompatActivity() {
     class SettingsFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             addPreferencesFromResource(R.xml.preferences)
-            val preference: Preference? = findPreference("useractivity")
-            preference?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+
+            val userActivityPreference: Preference? = findPreference("useractivity")
+            userActivityPreference?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 val intent = Intent(requireContext(), UserActivity::class.java)
+                startActivity(intent)
+                true
+            }
+
+            val aboutActivityPreference: Preference? = findPreference("about")
+            aboutActivityPreference?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                val intent = Intent(requireContext(), AboutActivity::class.java)
                 startActivity(intent)
                 true
             }

@@ -21,6 +21,7 @@
         app:icon="@drawable/ic_darkmode_themecolor_24dp"/>
 
     <Preference
+        app:key="about"
         android:title="Informazioni"
         app:icon="@drawable/ic_info_themecolor_24dp">
         <!--<intent
