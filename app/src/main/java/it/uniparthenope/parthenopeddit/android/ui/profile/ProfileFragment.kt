@@ -56,8 +56,9 @@ class ProfileFragment : Fragment(), PreferenceFragmentCompat.OnPreferenceStartFr
         profileViewModel.text.observe(viewLifecycleOwner, Observer {
 
             username_shown_textview.text = sharedNameValue
-            user_image.setImageURI(sharedImageValue?.toUri())
-
+            if(sharedImageValue == "0"){ user_image.setImageDrawable(resources.getDrawable(R.drawable.default_user_image)) } else {
+                user_image.setImageURI(sharedImageValue?.toUri())
+            }
 
 
             fab_new_username.setOnClickListener {val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.change_username_dialog, null)
