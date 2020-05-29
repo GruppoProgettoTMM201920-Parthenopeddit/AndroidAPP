@@ -8,8 +8,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import it.uniparthenope.parthenopeddit.R
 
-class AboutAdapter(private val context: Activity, private val devs: ArrayList<String>, private val email: ArrayList<String>, private val image: ArrayList<Int>)
-    : ArrayAdapter<String>(context, R.layout.item_email, devs) {
+class AboutTPAdapter(private val context: Activity, private val libName: ArrayList<String>, private val libAuthor: ArrayList<String>)
+    : ArrayAdapter<String>(context, R.layout.item_email, libName) {
 
     override fun getView(position: Int, view: View?, parent: ViewGroup): View {
         val inflater = context.layoutInflater
@@ -19,9 +19,9 @@ class AboutAdapter(private val context: Activity, private val devs: ArrayList<St
         val email_textview = rowView.findViewById(R.id.dev_email) as TextView
         val image_imageview = rowView.findViewById(R.id.dev_image) as ImageView
 
-        dev_textview.text = devs[position]
-        email_textview.text = email[position]
-        image_imageview.setImageResource(image[position])
+        dev_textview.text = libName[position]
+        email_textview.text = libAuthor[position]
+        image_imageview.setImageResource(R.drawable.github_logo)
 
         return rowView
     }

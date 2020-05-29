@@ -20,4 +20,16 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/item_email" />
 
+    <ListView
+        android:id="@+id/thirdparty_listView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/settings_shape"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/listView"
+        tools:listitem="@layout/item_email"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
