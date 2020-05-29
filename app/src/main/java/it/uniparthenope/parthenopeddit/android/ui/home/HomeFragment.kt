@@ -20,6 +20,7 @@ import com.mancj.materialsearchbar.MaterialSearchBar
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.CommentActivity
 import it.uniparthenope.parthenopeddit.android.CourseActivity
+import it.uniparthenope.parthenopeddit.android.GroupActivity
 import it.uniparthenope.parthenopeddit.android.HomeActivity
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.ui.newGroup.NewGroupActivity
@@ -210,7 +211,9 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
             1 -> { val intent = Intent(requireContext(), CourseActivity::class.java)        //CORSO
                 intent.putExtra("id_group", id_group)
                 startActivity(intent) }
-            2 -> { Toast.makeText(requireContext(), "Pagina dei gruppi ancora da implementare", Toast.LENGTH_LONG) }          //GRUPPO
+            2 -> { Toast.makeText(requireContext(), "Pagina dei gruppi ancora da implementare", Toast.LENGTH_LONG)
+                val intent = Intent(requireContext(), GroupActivity::class.java)
+                startActivity(intent)}          //GRUPPO
             else -> {  }
 
         }

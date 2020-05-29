@@ -21,6 +21,7 @@ class MockDatabase private constructor() {
     val posts_table = ArrayList<Post>()
     val comments_table = ArrayList<Comment>()
     val course_table = ArrayList<Course>()
+    val group_table = ArrayList<Group>()
     val reviews_table = ArrayList<Review>()
     val chat_table = ArrayList<Chat>()
 
@@ -259,6 +260,7 @@ class MockDatabase private constructor() {
         posts_table.addAll(listOf(p1,p2,p3,p4,p5,p6))
         comments_table.addAll(listOf(c1,c2))
         course_table.addAll(listOf(C1,C2,C3))
+        group_table.addAll(listOf(g5,g6))
         reviews_table.addAll(listOf(r1,r2,r3,r4,r5))
 
         val chat1 = Chat(

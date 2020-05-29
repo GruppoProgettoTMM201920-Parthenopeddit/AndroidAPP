@@ -26,6 +26,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".android.AboutActivity"/>
+        <activity
+            android:name=".android.GroupActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".android.ui.newGroup.NewGroupActivity" />
         <activity android:name=".android.ui.newPost.NewPostActivity" />
         <activity android:name=".android.ui.newReview.NewReviewActivity" />
