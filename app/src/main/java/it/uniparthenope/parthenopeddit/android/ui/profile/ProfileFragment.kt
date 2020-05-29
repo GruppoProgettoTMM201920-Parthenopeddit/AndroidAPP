@@ -20,6 +20,7 @@ import androidx.annotation.Keep
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -36,6 +37,9 @@ class ProfileFragment : Fragment(), PreferenceFragmentCompat.OnPreferenceStartFr
 
     private lateinit var profileViewModel: ProfileViewModel
 
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var editor:SharedPreferences.Editor
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,15 +48,15 @@ class ProfileFragment : Fragment(), PreferenceFragmentCompat.OnPreferenceStartFr
         profileViewModel =
             ViewModelProviders.of(this).get(ProfileViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_profile, container, false)
-        val sharedPreferences: SharedPreferences = requireContext().getSharedPreferences(sharedPrefFile,Context.MODE_PRIVATE)
 
+        sharedPreferences = requireContext().getSharedPreferences(sharedPrefFile,Context.MODE_PRIVATE)
         val sharedNameValue = sharedPreferences.getString("USERNAME","Username")
+        val sharedImageValue = sharedPreferences.getString("user_image_uri", "0")
 
         profileViewModel.text.observe(viewLifecycleOwner, Observer {
 
-            val myImage = decodeBase64(sharedPreferences.getString("imagePreferance","000"))
             username_shown_textview.text = sharedNameValue
-            user_image.setImageBitmap(myImage)
+            user_image.setImageURI(sharedImageValue?.toUri())
 
 
 
@@ -70,7 +74,7 @@ class ProfileFragment : Fragment(), PreferenceFragmentCompat.OnPreferenceStartFr
                         //TODO: send username to database through API
 
                         //SAVE PREFERENCE
-                        val editor:SharedPreferences.Editor =  sharedPreferences.edit()
+                        editor = sharedPreferences.edit()
                         editor.putString("USERNAME",username)
                         editor.apply()
                         editor.commit()
@@ -93,11 +97,6 @@ class ProfileFragment : Fragment(), PreferenceFragmentCompat.OnPreferenceStartFr
                         } else{
                         //PERMISSION ALREADY GRANTED
                         pickImageFromGallery()
-                        val editor:SharedPreferences.Editor =  sharedPreferences.edit()
-                        editor.putString("namePreferance", "imagename");
-                        editor.putString("imagePreferance", encodeTobase64(user_image.drawable.toBitmap()));
-                        editor.apply()
-                        editor.commit();
                     }
                 } else{
                     //OS > 6.0
@@ -148,24 +147,13 @@ class ProfileFragment : Fragment(), PreferenceFragmentCompat.OnPreferenceStartFr
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
+            sharedPreferences = requireContext().getSharedPreferences(sharedPrefFile,Context.MODE_PRIVATE)
             user_image.setImageURI(data?.data)
+            editor =  sharedPreferences.edit()
+            editor.putString("user_image_uri", data?.data.toString())
+            editor.apply()
+            editor.commit();
         }
-    }
-
-    fun encodeTobase64(image: Bitmap): String? {
-        val immage: Bitmap = image
-        val baos = ByteArrayOutputStream()
-        immage.compress(Bitmap.CompressFormat.PNG, 100, baos)
-        val b: ByteArray = baos.toByteArray()
-        val imageEncoded: String = Base64.encodeToString(b, Base64.DEFAULT)
-        Log.d("Image Log:", imageEncoded)
-        return imageEncoded
-    }
-
-    fun decodeBase64(input: String?): Bitmap? {
-        val decodedByte = Base64.decode(input, 0)
-        return BitmapFactory
-            .decodeByteArray(decodedByte, 0, decodedByte.size)
     }
 
 }
