@@ -11,17 +11,20 @@ class Review(
     body: String,
     timestamp: String,
     author_id: String,
-    author: User? = null,
-    comments: ArrayList<Comment>? = null,
-    comments_num: Int? = null,
-    likes_num: Int? = null,
-    dislikes_num: Int? = null,
 
     val reviewed_course_id: Int,
     val score_liking: Int,
     val score_difficulty: Int,
-    var reviewed_course: Course? = null
 
+    /* relationships */
+    author: User? = null,
+    comments: java.util.ArrayList<Comment>? = null,
+    var reviewed_course: Course? = null,
+
+    /* aggregated data */
+    comments_num: Int? = null,
+    likes_num: Int? = null,
+    dislikes_num: Int? = null
 ) : Content(
     id, body, timestamp, author_id,
     "review",

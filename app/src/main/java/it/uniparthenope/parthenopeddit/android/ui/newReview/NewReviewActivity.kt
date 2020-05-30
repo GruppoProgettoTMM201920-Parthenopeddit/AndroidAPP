@@ -54,23 +54,6 @@ class NewReviewActivity : AppCompatActivity()  {
             else if(title_edittext.text.isEmpty()){ empty_title_textview.visibility = View.VISIBLE }
             else if(user_review_edittext.text.isEmpty()){ empty_review_textview.visibility = View.VISIBLE }
             else {
-
-                Review(
-                    1,
-                    "body",
-                    "when",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                )
-
                 var date = Date()
                 val formatter = SimpleDateFormat("dd MMM yyyy")
                 var newReview: Review? =

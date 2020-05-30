@@ -11,8 +11,4 @@ class Course(
     var reviews_count: Int? = null,
     var reviews: ArrayList<Review>? = null,
     var followers : ArrayList<User>? = null
-) : Board(id, name, "course"), JSONConvertable{
-
-
-
-}
+) : Board(id, name, "course"), JSONConvertable

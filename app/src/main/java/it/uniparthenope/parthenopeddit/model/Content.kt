@@ -21,5 +21,4 @@ open class Content (
     var likes_num: Int? = null,
     var dislikes_num: Int? = null
 
-) : JSONConvertable {
-}
+) : JSONConvertable
