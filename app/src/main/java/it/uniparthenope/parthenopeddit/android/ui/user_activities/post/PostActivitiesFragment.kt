@@ -18,6 +18,7 @@ import it.uniparthenope.parthenopeddit.android.ui.user_activities.post.PostActiv
 import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.api.MockDatabase
 import it.uniparthenope.parthenopeddit.auth.Auth
+import it.uniparthenope.parthenopeddit.model.Board
 import kotlinx.android.synthetic.main.fragment_messages.*
 
 class PostActivitiesFragment : Fragment(), PostAdapter.PostItemClickListeners {
@@ -69,7 +70,7 @@ class PostActivitiesFragment : Fragment(), PostAdapter.PostItemClickListeners {
         //TODO("Not yet implemented")
     }
 
-    override fun onBoardClick(group_type: Int, id_group: Int) {
-        //TODO("Not yet implemented")
+    override fun onBoardClick(board_id: Int?, board: Board?) {
+        TODO("Not yet implemented")
     }
 }
