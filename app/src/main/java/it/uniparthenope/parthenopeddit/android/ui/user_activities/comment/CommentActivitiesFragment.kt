@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.android.adapters.ChatListAdapter
+//import it.uniparthenope.parthenopeddit.android.adapters.ChatListAdapter
 import it.uniparthenope.parthenopeddit.android.adapters.CommentAdapter
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.ui.user_activities.comment.CommentActivitiesViewModel

@@ -46,97 +46,6 @@ class MockDatabase private constructor() {
             created_on = "01/01/1970"
         )
 
-        val u1 = User(
-            id = "user1",
-            display_name = "NoobMaster69",
-            registered_on = "2014-08-18 21:11:35.537000"
-        )
-        val u2 = User(
-            id = "user2",
-            display_name = "gaussjr",
-            registered_on = "2014-08-18 21:11:35.537000"
-        )
-
-        val p1 = Post(
-            id=1,
-            title = "Hello World!",
-            body = "This is a test post",
-            posted_to_board_id = 1,
-            timestamp = "10:22",
-            author_id = u1.id,
-            author = u1,
-            comments_num = 2,
-            likes_num = 10,
-            dislikes_num = 2
-        )
-        val p2 = Post(
-            id=2,
-            title = "My title is awesome",
-            body = "And my body too",
-            posted_to_board_id = 2,
-            timestamp = "9:50",
-            author_id = u2.id,
-            author = u2
-        )
-        val p3 = Post(
-            id=3,
-            title = "User1 second post",
-            body = "body post body post body post body post body post body post ",
-            posted_to_board_id = 3,
-            timestamp = "4:37",
-            author_id = u1.id,
-            author = u1
-        )
-
-        val p4 = Post(
-            id=4,
-            title = "User1 third post",
-            body = "test test",
-            posted_to_board_id = 6,
-            timestamp = "5/5/2055",
-            author_id = u1.id,
-            author = u1
-        )
-
-        val p5 = Post(
-            id=5,
-            title = "My title is awesome",
-            body = "And my body too",
-            posted_to_board_id = 4,
-            timestamp = "1/1/9999",
-            author_id = u2.id,
-            author = u2
-        )
-
-        val p6 = Post(
-            id=6,
-            title = "My title is awesome",
-            body = "And my body too",
-            posted_to_board_id = 5,
-            timestamp = "1/1/9999",
-            author_id = u2.id,
-            author = u2
-        )
-
-        val c1 = Comment(
-            id = 7,
-            body = "First!1!1!1",
-            timestamp = "2014-08-18 21:11:35.537000",
-            commented_content_id = 1,
-            author_id = u2.id,
-            author = u2,
-            root_content_id = 1
-        )
-        val c2 = Comment(
-            id = 8,
-            body = "Second comment",
-            timestamp = "2014-08-18 21:11:35.537000",
-            commented_content_id = 7,
-            author_id = u1.id,
-            author = u1,
-            root_content_id = 1
-        )
-
         val C1 = Course(
             id = 4,
             name = "Terminali Mobili e Multimedialità",
@@ -164,59 +73,166 @@ class MockDatabase private constructor() {
             reviews_count = 8
         )
 
+        val u1 = User(
+            id = "user1",
+            display_name = "NoobMaster69",
+            registered_on = "2014-08-18 21:11:35.537000"
+        )
+        val u2 = User(
+            id = "user2",
+            display_name = "gaussjr",
+            registered_on = "2014-08-18 21:11:35.537000"
+        )
+
+        val p1 = Post(
+            id=1,
+            title = "Hello World!",
+            body = "This is a test post",
+            posted_to_board_id = 1,
+            timestamp = "10:22",
+            author_id = u1.id,
+            author = u1,
+            comments_num = 2,
+            likes_num = 10,
+            dislikes_num = 2,
+            posted_to_board = g1
+        )
+        val p2 = Post(
+            id=2,
+            title = "My title is awesome",
+            body = "And my body too",
+            posted_to_board_id = 2,
+            timestamp = "9:50",
+            author_id = u2.id,
+            author = u2,
+            posted_to_board = g2
+        )
+        val p3 = Post(
+            id=3,
+            title = "User1 second post",
+            body = "body post body post body post body post body post body post ",
+            posted_to_board_id = 3,
+            timestamp = "4:37",
+            author_id = u1.id,
+            author = u1,
+            posted_to_board = g3
+        )
+
+        val p4 = Post(
+            id=4,
+            title = "User1 third post",
+            body = "test test",
+            posted_to_board_id = 6,
+            timestamp = "5/5/2055",
+            author_id = u1.id,
+            author = u1,
+            posted_to_board = C3
+        )
+
+        val p5 = Post(
+            id=5,
+            title = "My title is awesome",
+            body = "And my body too",
+            posted_to_board_id = 4,
+            timestamp = "1/1/9999",
+            author_id = u2.id,
+            author = u2,
+            posted_to_board = C1
+
+        )
+
+        val p6 = Post(
+            id=6,
+            title = "My title is awesome",
+            body = "And my body too",
+            posted_to_board_id = 5,
+            timestamp = "1/1/9999",
+            author_id = u2.id,
+            author = u2,
+            posted_to_board = C2
+        )
+
+        val c1 = Comment(
+            id = 7,
+            body = "First!1!1!1",
+            timestamp = "2014-08-18 21:11:35.537000",
+            commented_content_id = 1,
+            root_content_id = 1,
+            author_id = u2.id,
+            author = u2,
+            commented_content = p1,
+            root_content = p1
+        )
+        val c2 = Comment(
+            id = 8,
+            body = "Second comment",
+            timestamp = "2014-08-18 21:11:35.537000",
+            commented_content_id = 7,
+            author_id = u1.id,
+            author = u1,
+            root_content_id = 1,
+            commented_content = c1,
+            root_content = p1
+        )
+
         val r1 = Review(
-            id = 1,
+            id = 9,
             body = "Ricetta della pasta e patate: 1/2kg di pasta mista, 1/2kg di patate, pomodorini qb, sale extra vergine d'oliva, sale",
             timestamp = "22/05/2020",
             author = u1,
             author_id = u1.id,
             score_liking = 5,
             score_difficulty = 2,
-            reviewed_course_id = C1.id
+            reviewed_course_id = C1.id,
+            reviewed_course = C1
         )
 
         val r2 = Review(
-            id = 2,
+            id = 10,
             body = "Non puoi criticare chi mangia la pizza sull'ananas se poi mangi quella merda di prosciutto e melone",
             timestamp = "22/05/2020",
             author = u2,
             author_id = u2.id,
             score_liking = 2,
             score_difficulty = 5,
-            reviewed_course_id = C1.id
+            reviewed_course_id = C1.id,
+            reviewed_course = C1
         )
 
         val r3 = Review(
-            id = 3,
+            id = 11,
             body = "I Ryzen sono migliori degli Intel",
             timestamp = "23/05/2020",
             author = u1,
             author_id = u1.id,
             score_liking = 5,
             score_difficulty = 2,
-            reviewed_course_id = C2.id
+            reviewed_course_id = C2.id,
+            reviewed_course = C2
         )
 
         val r4 = Review(
-            id = 4,
+            id = 12,
             body = "E' stato Mattarella",
             timestamp = "23/05/2020",
             author = u2,
             author_id = u2.id,
             score_liking = 3,
             score_difficulty = 5,
-            reviewed_course_id = C2.id
+            reviewed_course_id = C2.id,
+            reviewed_course =C2
         )
 
         val r5 = Review(
-            id = 5,
+            id = 13,
             body = "Il prof non si è mai presentato",
             timestamp = "23/05/2020",
             author = u1,
             author_id = u1.id,
             score_liking = 1,
             score_difficulty = 1,
-            reviewed_course_id = C3.id
+            reviewed_course_id = C3.id,
+            reviewed_course = C3
         )
 
 

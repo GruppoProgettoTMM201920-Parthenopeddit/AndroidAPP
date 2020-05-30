@@ -6,11 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import it.uniparthenope.parthenopeddit.R
 
-import com.xwray.groupie.kotlinandroidextensions.GroupieViewHolder
+import com.xwray.groupie.GroupieViewHolder
 import it.uniparthenope.parthenopeddit.model.Group
 import it.uniparthenope.parthenopeddit.model.User
 import kotlinx.android.synthetic.main.chat_fragment.*
@@ -22,12 +23,20 @@ class UserChatFragment(private val user: User) : Fragment() {
     }
 
     private lateinit var viewModel: UserChatViewModel
+    private lateinit var recyclerview_chat_log: RecyclerView
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val view: View = inflater.inflate(R.layout.chat_fragment, container, false)
+
 
         val adapter = GroupAdapter<GroupieViewHolder>()
 
@@ -39,8 +48,9 @@ class UserChatFragment(private val user: User) : Fragment() {
         adapter.add(ChatToItem())
         adapter.add(ChatFromItem())
         adapter.add(ChatToItem())
-        recyclerview_chat_log.adapter = adapter
+        recyclerview_chat_log = view.findViewById(R.id.recyclerview_chat_log) as RecyclerView
 
+        recyclerview_chat_log.adapter = adapter
 
         return view
     }

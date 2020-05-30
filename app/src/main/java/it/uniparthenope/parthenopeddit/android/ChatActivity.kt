@@ -33,5 +33,6 @@ class ChatActivity : BasicActivity() {
         supportActionBar?.title = user.display_name
 
 
+
     }
 }
