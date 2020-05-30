@@ -10,12 +10,12 @@ import kotlin.concurrent.withLock
 
 class ReviewsRequestsTest : ApiRequestsTest() {
 
-    lateinit var commentsRequests: CommentsRequests
+    lateinit var reviewsRequests: ReviewsRequests
 
     @Before
     override fun setUp() {
         super.setUp()
-        commentsRequests = CommentsRequests(app, app.auth)
+        reviewsRequests = ReviewsRequests(app, app.auth)
     }
 
     @After
@@ -23,19 +23,23 @@ class ReviewsRequestsTest : ApiRequestsTest() {
     }
 
     @Test
-    fun publishNewComment() {
+    fun publishNewReview() {
         val username = "user3"
         logUser(app.auth, username)
 
-        val commented_content_id = 1 //post1
-        val body = "Body of test comment"
-        commentsRequests.publishNewComment(
+        val reviewed_course_id = 1 //course 1
+        val body = "Body of test review"
+        val liking_score = 4
+        val difficulty_score = 2
+        reviewsRequests.publishNewReview(
             body,
-            commented_content_id,
+            reviewed_course_id,
+            liking_score,
+            difficulty_score,
             {
                 assertEquals(username, it.author!!.id)
                 assertEquals(body, it.body)
-                assertEquals(1, it.commented_content_id)
+                assertEquals(1, it.reviewed_course_id)
 
                 lock.withLock {
                     condition.signal()
@@ -51,18 +55,18 @@ class ReviewsRequestsTest : ApiRequestsTest() {
     }
 
     @Test
-    fun getComment() {
+    fun getReview() {
         val username = "user1"
         logUser(app.auth, username)
 
-        val comment_id = 11
+        val review_id = 3
 
-        commentsRequests.getComment(
-            comment_id,
+        reviewsRequests.getReview(
+            review_id,
             {
-                assertEquals("Test commento top level a post 1", it.body)
+                assertEquals("Il miglior corso di sempre", it.body)
 
-                assertEquals(1, it.commented_content_id)
+                assertEquals(1, it.reviewed_course_id)
 
                 lock.withLock {
                     condition.signal()
@@ -78,23 +82,23 @@ class ReviewsRequestsTest : ApiRequestsTest() {
     }
 
     @Test
-    fun getCommentWithComments() {
+    fun getReviewWithComments() {
         val username = "user1"
         logUser(app.auth, username)
 
-        val comment_id = 11
+        val review_id = 3
 
-        commentsRequests.getCommentWithComments(
-            comment_id,
+        reviewsRequests.getReviewWithComments(
+            review_id,
             {
-                assertEquals("Test commento top level a post 1", it.body)
+                assertEquals("Il miglior corso di sempre", it.body)
 
-                assertEquals(1, it.commented_content_id)
+                assertEquals(1, it.reviewed_course_id)
 
                 assertNotNull(it.comments)
                 assertEquals(1, it.comments!!.size)
-                val comment12 = it.comments!![0] as Comment
-                assertEquals(12, comment12.id)
+                val comment_r_1 = it.comments!![0] as Comment
+                assertEquals(12, comment_r_1.id)
 
                 lock.withLock {
                     condition.signal()
@@ -110,17 +114,14 @@ class ReviewsRequestsTest : ApiRequestsTest() {
     }
 
     @Test
-    fun likeAndDislikeComment() {
+    fun likeAndDislikeReview() {
         val username = "user1"
         logUser(app.auth, username)
 
-        val comment_id = 11
-        /**
-         * assuming comment 11 already has like as in mockdata
-         */
+        val review_id = 3
 
-        commentsRequests.likeComment(
-            comment_id,
+        reviewsRequests.likeReview(
+            review_id,
             {
                 throw Exception()
             }, {
@@ -138,8 +139,8 @@ class ReviewsRequestsTest : ApiRequestsTest() {
             condition.await()
         }
 
-        commentsRequests.likeComment(
-            comment_id,
+        reviewsRequests.likeReview(
+            review_id,
             {
                 lock.withLock {
                     condition.signal()
@@ -157,8 +158,8 @@ class ReviewsRequestsTest : ApiRequestsTest() {
             condition.await()
         }
 
-        commentsRequests.dislikeComment(
-            comment_id,
+        reviewsRequests.dislikeReview(
+            review_id,
             {
                 throw Exception()
             }, {
@@ -176,14 +177,33 @@ class ReviewsRequestsTest : ApiRequestsTest() {
             condition.await()
         }
 
-        commentsRequests.dislikeComment(
-            comment_id,
+        reviewsRequests.dislikeReview(
+            review_id,
             {
                 throw Exception()
             }, {
                 lock.withLock {
                     condition.signal()
                 }
+            }, {
+                throw Exception()
+            }, {
+                throw Exception(it)
+            }
+        )
+
+        lock.withLock {
+            condition.await()
+        }
+
+        reviewsRequests.likeReview(
+            review_id,
+            {
+                lock.withLock {
+                    condition.signal()
+                }
+            }, {
+                throw Exception()
             }, {
                 throw Exception()
             }, {

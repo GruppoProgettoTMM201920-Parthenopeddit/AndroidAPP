@@ -94,7 +94,7 @@ class CommentsRequestsTest : ApiRequestsTest() {
                 assertNotNull(it.comments)
                 assertEquals(1, it.comments!!.size)
                 val comment12 = it.comments!![0] as Comment
-                assertEquals(12, comment12.id)
+                assertEquals(13, comment12.id)
 
                 lock.withLock {
                     condition.signal()
