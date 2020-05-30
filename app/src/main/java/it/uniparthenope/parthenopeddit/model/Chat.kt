@@ -5,7 +5,6 @@ import it.uniparthenope.parthenopeddit.util.JSONConvertable
 
 open class Chat(
     val id: Int,
-    val type: String
-) : JSONConvertable {
+    val type: String,
     var received_messages: ArrayList<Message>? = null
-}
+) : JSONConvertable
