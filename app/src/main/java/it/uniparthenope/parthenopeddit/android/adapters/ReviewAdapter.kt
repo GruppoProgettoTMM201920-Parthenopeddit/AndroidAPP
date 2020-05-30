@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.cardview_post.view.upvote_textview
 import kotlinx.android.synthetic.main.cardview_post.view.username_textview
 import kotlinx.android.synthetic.main.cardview_review.view.*
 
-class CourseReviewAdapter() : RecyclerView.Adapter<CourseReviewAdapter.CourseReviewViewHolder>() {
+class ReviewAdapter() : RecyclerView.Adapter<CourseReviewAdapter.CourseReviewViewHolder>() {
 
     private val reviewList: ArrayList<Review> = ArrayList()
     private var listener:CourseReviewItemClickListeners? = null
