@@ -8,17 +8,31 @@ android:layout_width="match_parent"
 android:layout_height="wrap_content"
 android:layout_marginBottom="12dp">
 
+    <Space
+        android:id="@+id/space2"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_margin="4dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
         android:clickable="true"
         android:foreground="?android:attr/selectableItemBackground"
         android:maxWidth="240dp"
         app:cardCornerRadius="20dp"
         app:cardElevation="20dp"
+        app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/space2"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -36,17 +50,17 @@ android:layout_marginBottom="12dp">
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:inputType="textMultiLine"
-                android:textColor="@color/black"
-                android:text="This is a received message" />
+                android:text="This is a received message"
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/date_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
                 android:layout_gravity="end"
-                android:textSize="9dp"
-                android:text="10:00" />
+                android:layout_marginTop="5dp"
+                android:text="10:00"
+                android:textSize="9dp" />
 
         </LinearLayout>
 
