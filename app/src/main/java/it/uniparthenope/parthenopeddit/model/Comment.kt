@@ -9,6 +9,7 @@ class Comment(
     body: String,
     timestamp: String,
     author_id: String,
+    author: User? = null,
 
     val commented_content_id: Int,
     val root_content_id: Int
