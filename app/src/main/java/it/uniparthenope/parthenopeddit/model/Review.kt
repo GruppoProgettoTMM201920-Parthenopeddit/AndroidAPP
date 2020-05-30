@@ -11,6 +11,7 @@ class Review(
     body: String,
     timestamp: String,
     author_id: String,
+    author: User,
 
     val reviewed_course_id: Int,
     val score_liking: Int,
