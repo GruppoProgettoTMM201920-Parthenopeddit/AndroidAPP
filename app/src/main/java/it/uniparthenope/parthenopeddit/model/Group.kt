@@ -9,7 +9,7 @@ class Group(
     id: Int,
     name: String,
 
-    val created_on: Date
+    val created_on: String
 ) : Board(id, name, "group"), JSONConvertable {
 
     var members: ArrayList<GroupMember>? = null

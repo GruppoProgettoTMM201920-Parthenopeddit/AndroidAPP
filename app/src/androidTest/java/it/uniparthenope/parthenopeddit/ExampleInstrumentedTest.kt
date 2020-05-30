@@ -21,4 +21,6 @@ class ExampleInstrumentedTest {
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
         assertEquals("it.uniparthenope.parthenopeddit", appContext.packageName)
     }
+
+
 }

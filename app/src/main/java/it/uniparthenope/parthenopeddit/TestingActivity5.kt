@@ -99,5 +99,9 @@ class TestingActivity5 : BasicActivity() {
                 Toast.makeText(this, "Need review id", Toast.LENGTH_SHORT).show()
             }
         }
+
+        next_test.setOnClickListener {
+            goToActivity(TestingActivity6::class.java)
+        }
     }
 }

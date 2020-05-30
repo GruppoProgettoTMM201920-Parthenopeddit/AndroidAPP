@@ -4,7 +4,7 @@ import it.uniparthenope.parthenopeddit.model.*
 
 interface GroupsNamespace {
     fun getUserGroups(
-        onSuccess: (groups: ArrayList<Group>) -> Unit,
+        onSuccess: (groupMemberships: ArrayList<GroupMember>) -> Unit,
         onFail: (error: String) -> Unit
     )
 

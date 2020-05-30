@@ -41,12 +41,6 @@ class TestingActivity : BasicActivity() {
                 output.text = it
             })
         }
-
-        next_test.setOnClickListener {
-            goToActivity(TestingActivity2::class.java)
-        }
-
-
     }
 
     fun onLogin() {

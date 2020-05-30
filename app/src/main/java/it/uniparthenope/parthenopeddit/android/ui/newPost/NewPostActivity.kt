@@ -6,11 +6,13 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
+import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.HomeActivity
+import it.uniparthenope.parthenopeddit.api.requests.PostsRequests
 import it.uniparthenope.parthenopeddit.model.Group
 
-class NewPostActivity : AppCompatActivity() {
+class NewPostActivity : BasicActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,11 +40,8 @@ class NewPostActivity : AppCompatActivity() {
             }
 
         publish_button.setOnClickListener {
-            //TODO: Send post through API
-
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
         }
-
     }
 }

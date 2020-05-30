@@ -14,8 +14,4 @@ class Comment(
     val root_content_id: Int
 
 ) : Content(id, body, timestamp, author_id, "comment"), JSONConvertable {
-
-    /* relationships */
-    var commented_content: Content? = null
-    val root_content: Content? = null
 }
