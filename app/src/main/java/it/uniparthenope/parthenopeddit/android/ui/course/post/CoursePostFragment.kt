@@ -13,12 +13,12 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.android.adapters.ChatListAdapter
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.ui.user_activities.post.PostActivitiesViewModel
 import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.api.MockDatabase
 import it.uniparthenope.parthenopeddit.auth.Auth
+import it.uniparthenope.parthenopeddit.model.Board
 import kotlinx.android.synthetic.main.fragment_messages.*
 
 class CoursePostFragment(courseID: Int) : Fragment(), PostAdapter.PostItemClickListeners {
@@ -50,7 +50,7 @@ class CoursePostFragment(courseID: Int) : Fragment(), PostAdapter.PostItemClickL
             } else {
                 postItemList!!
 
-                postAdapter.aggiungiPost( postItemList.filter{ it.group.getId() == courseId} )
+                postAdapter.aggiungiPost( postItemList.filter{ it.posted_to_board_id == courseId} )
             }
         }
 
@@ -71,7 +71,7 @@ class CoursePostFragment(courseID: Int) : Fragment(), PostAdapter.PostItemClickL
         //TODO("Not yet implemented")
     }
 
-    override fun onGroupClick(group_type: Int, id_group: Int) {
-        //TODO("Not yet implemented")
+    override fun onBoardClick(board_id: Int?, board: Board?) {
+        TODO("Not yet implemented")
     }
 }

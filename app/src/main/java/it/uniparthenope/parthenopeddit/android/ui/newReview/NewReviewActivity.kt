@@ -55,24 +55,42 @@ class NewReviewActivity : AppCompatActivity()  {
             else if(user_review_edittext.text.isEmpty()){ empty_review_textview.visibility = View.VISIBLE }
             else {
 
+                Review(
+                    1,
+                    "body",
+                    "when",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                )
+
                 var date = Date()
                 val formatter = SimpleDateFormat("dd MMM yyyy")
                 var newReview: Review? =
-                    Review(MockDatabase.instance.reviews_table.maxBy { it -> it.id }?.id!! + 1,
-                        title_edittext.text.toString(),
-                        user_review_edittext.text.toString(),
-                        formatter.format(date),
-                        MockDatabase.instance.users_table.find { it.id == "user1" }!!,
-                        1,
-                        enjoy_rating,
-                        difficulty_rating
+                    Review(
+                        id = MockDatabase.instance.reviews_table.maxBy { it -> it.id }?.id!! + 1,
+                        body = user_review_edittext.text.toString(),
+                        timestamp = formatter.format(date),
+                        author_id = "user1",
+                        author = MockDatabase.instance.users_table.find { it.id == "user1" }!!,
+                        reviewed_course_id = 1,
+                        reviewed_course = MockDatabase.instance.course_table.find { it.id == 1 }!!,
+                        score_liking = enjoy_rating,
+                        score_difficulty = difficulty_rating
                     )
                 newReview?.reviewed_course = MockDatabase.instance.course_table.find { it.id == 1 }
 
 
                 MockDatabase.instance.reviews_table.add(newReview!!)
                 MockDatabase.instance.course_table.find { it.id == 1 }?.reviews?.add(newReview)
-                MockDatabase.instance.users_table.find { it.id == "user1" }!!.reviews?.add(newReview)
+                MockDatabase.instance.users_table.find { it.id == "user1" }!!.published_reviews?.add(newReview)
 
                 val intent = Intent(this, HomeActivity::class.java)
                 startActivity(intent)

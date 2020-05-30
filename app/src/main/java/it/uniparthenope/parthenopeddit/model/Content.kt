@@ -9,16 +9,10 @@ open class Content (
     val body: String? = null,
     val timestamp: String,
     val author_id: String,
-    val type: String
-
-) : JSONConvertable {
-
-    /* relationships */
-    var author: User? = null
-    var comments: ArrayList<Comment>? = null
-
-    /* aggregated data */
-    var comments_num: Int? = null
-    var likes_num: Int? = null
+    val type: String,
+    var author: User? = null,
+    var comments: ArrayList<Comment>? = null,
+    var comments_num: Int? = null,
+    var likes_num: Int? = null,
     var dislikes_num: Int? = null
-}
+) : JSONConvertable

@@ -1,20 +1,15 @@
 package it.uniparthenope.parthenopeddit.android.adapters
 
-import android.content.Context
-import android.content.Intent
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.android.CourseActivity
+import it.uniparthenope.parthenopeddit.model.Board
 import it.uniparthenope.parthenopeddit.model.Post
 import kotlinx.android.synthetic.main.cardview_post.view.*
 import kotlinx.android.synthetic.main.cardview_post.view.upvote_textview
@@ -37,7 +32,7 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
         fun onClickLike(id_post:Int)
         fun onClickDislike(id_post:Int)
         fun onClickComments(id_post:Int)
-        fun onGroupClick(group_type:Int, id_group:Int)
+        fun onBoardClick(board_id: Int?, board: Board?)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
@@ -51,22 +46,23 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
         val currentItem = postList[position]
 
         holder.imageView.setImageResource(R.drawable.default_user_image)
-        holder.username_textview.text = currentItem.author?.nome_visualizzato
+        holder.username_textview.text = currentItem.author?.display_name?:currentItem.author_id
         holder.title_textview.text = currentItem.title
-        holder.group_textview.text = currentItem.group.getName()
+        holder.board_textview.text = currentItem.posted_to_board?.name?:"Generale"
         holder.timestamp_textview.text = currentItem.timestamp
         holder.posttext_textview.text = currentItem.body
         holder.upvote_textview.text = "0"
         holder.downvote_textview.text = "0"
 
-
-        when (currentItem.group.getType()){
-            0 -> { holder.group_textview.setBackgroundResource(R.drawable.general_textview_bubble)
-                holder.group_textview.setTextColor(Color.BLACK) }
-            1 -> { holder.group_textview.setBackgroundResource(R.drawable.fab_textview_bubble) }
-            2 -> { holder.group_textview.setBackgroundResource(R.drawable.group_textview_bubble) }
-            else -> {  }
-
+        if( currentItem.posted_to_board == null ) {
+            holder.board_textview.setBackgroundResource(R.drawable.general_textview_bubble)
+            holder.board_textview.setTextColor(Color.BLACK)
+        } else {
+            when (currentItem.posted_to_board!!.type) {
+                "course" -> holder.board_textview.setBackgroundResource(R.drawable.fab_textview_bubble)
+                "group" -> holder.board_textview.setBackgroundResource(R.drawable.group_textview_bubble)
+                else -> holder.board_textview.visibility = View.GONE
+            }
         }
 
         if( listener != null ) {
@@ -86,8 +82,8 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
                 listener!!.onClickComments(currentItem.id)
             }
 
-            holder.group_textview.setOnClickListener {
-                listener!!.onGroupClick(currentItem.group.getType(), currentItem.group.getId())
+            holder.board_textview.setOnClickListener {
+                listener!!.onBoardClick(currentItem.posted_to_board_id, currentItem.posted_to_board)
             }
         }
     }
@@ -98,7 +94,7 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
         val imageView: ImageView = itemView.image_view
         val username_textview: TextView = itemView.username_textview
         val title_textview: TextView = itemView.title_textview
-        val group_textview: TextView = itemView.group_textview
+        val board_textview: TextView = itemView.group_textview
         val timestamp_textview: TextView = itemView.timestamp_textview
         val posttext_textview: TextView = itemView.posttext_textview
         val upvote_btn: ImageButton = itemView.upvote_btn

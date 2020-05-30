@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mancj.materialsearchbar.MaterialSearchBar
+import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.CommentActivity
 import it.uniparthenope.parthenopeddit.android.CourseActivity
@@ -28,6 +29,7 @@ import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
 import it.uniparthenope.parthenopeddit.android.ui.newReview.NewReviewActivity
 import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.auth.Auth
+import it.uniparthenope.parthenopeddit.model.Board
 import it.uniparthenope.parthenopeddit.model.Post
 import it.uniparthenope.parthenopeddit.model.Review
 import kotlinx.android.synthetic.main.cardview_post.*
@@ -204,18 +206,23 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         startActivity(intent)
     }
 
-    override fun onGroupClick(group_type: Int, id_group: Int) {
-        when (group_type){
-            0 -> { val intent = Intent(requireContext(), HomeActivity::class.java)        //HOME
-                startActivity(intent) }
-            1 -> { val intent = Intent(requireContext(), CourseActivity::class.java)        //CORSO
-                intent.putExtra("id_group", id_group)
-                startActivity(intent) }
-            2 -> { Toast.makeText(requireContext(), "Pagina dei gruppi ancora da implementare", Toast.LENGTH_LONG)
-                val intent = Intent(requireContext(), GroupActivity::class.java)
-                startActivity(intent)}          //GRUPPO
-            else -> {  }
-
+    override fun onBoardClick(board_id: Int?, board: Board?) {
+        if (board == null) {
+            (activity as BasicActivity).goToActivity(HomeActivity::class.java) //HOME
+        } else {
+            when (board.type) {
+                "course" -> {
+                    val intent = Intent(requireContext(), CourseActivity::class.java)  //CORSO
+                    intent.putExtra("id_group", board_id)
+                    startActivity(intent)
+                }
+                "group" -> {
+                    Toast.makeText(requireContext(), "Pagina dei gruppi ancora da implementare", Toast.LENGTH_LONG)  //GRUPPO
+                    val intent = Intent(requireContext(), GroupActivity::class.java)
+                    startActivity(intent)
+                }
+                else -> {  }
+            }
         }
     }
 

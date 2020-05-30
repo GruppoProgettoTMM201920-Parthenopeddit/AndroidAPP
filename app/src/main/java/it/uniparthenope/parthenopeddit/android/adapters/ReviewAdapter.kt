@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.cardview_post.view.upvote_textview
 import kotlinx.android.synthetic.main.cardview_post.view.username_textview
 import kotlinx.android.synthetic.main.cardview_review.view.*
 
-class ReviewAdapter() : RecyclerView.Adapter<CourseReviewAdapter.CourseReviewViewHolder>() {
+class ReviewAdapter() : RecyclerView.Adapter<ReviewAdapter.CourseReviewViewHolder>() {
 
     private val reviewList: ArrayList<Review> = ArrayList()
     private var listener:CourseReviewItemClickListeners? = null
@@ -55,7 +55,6 @@ class ReviewAdapter() : RecyclerView.Adapter<CourseReviewAdapter.CourseReviewVie
 
         holder.imageView.setImageResource(R.drawable.ic_home_black_24dp)
         holder.username_textview.text = currentItem.author?.display_name?:currentItem.author_id
-        holder.title_textview_r.text = currentItem.title
         holder.timestamp_textview.text = currentItem.timestamp
         holder.posttext_textview.text = currentItem.body
         holder.upvote_textview.text = "0"
@@ -221,7 +220,6 @@ class ReviewAdapter() : RecyclerView.Adapter<CourseReviewAdapter.CourseReviewVie
     class CourseReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {     //SINGOLO ELEMENTO DELLA LISTA
         val imageView: ImageView = itemView.image_view
         val username_textview: TextView = itemView.username_textview
-        val title_textview_r: TextView = itemView.title_textview_r
         val timestamp_textview: TextView = itemView.timestamp_textview
         val posttext_textview: TextView = itemView.posttext_textview
         val upvote_btn: ImageButton = itemView.upvote_btn
