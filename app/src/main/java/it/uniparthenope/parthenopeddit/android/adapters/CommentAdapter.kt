@@ -50,7 +50,7 @@ class CommentAdapter(private val context: Context, private var commentItemsList:
         val currentItem = commentItemsList[position]
 
         holder.imageView.setImageResource(R.drawable.default_user_image)
-        holder.username_textview.text = currentItem.author?.nome_visualizzato
+        holder.username_textview.text = currentItem.author?.display_name?:currentItem.author_id
         holder.timestamp_comment_textview.text = currentItem.timestamp
         holder.posttext_textview.text = currentItem.body
         holder.upvote_textview.text = "0"

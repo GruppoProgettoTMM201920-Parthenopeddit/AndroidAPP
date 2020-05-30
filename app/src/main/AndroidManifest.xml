@@ -13,10 +13,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".android.ChatActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
         <activity
             android:name=".android.CourseActivity"
             android:label="@string/title_activity_review"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".android.SettingsActivity" />
         <activity android:name=".android.UserActivity">
             <intent-filter>
@@ -25,21 +33,17 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".android.AboutActivity"/>
+        <activity android:name=".android.AboutActivity" />
         <activity
             android:name=".android.GroupActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".android.ui.newGroup.NewGroupActivity" />
         <activity android:name=".android.ui.newPost.NewPostActivity" />
         <activity android:name=".android.ui.newReview.NewReviewActivity" />
         <activity
             android:name=".android.HomeActivity"
             android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".android.CommentActivity" />
     </application>

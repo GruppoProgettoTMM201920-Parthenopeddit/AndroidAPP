@@ -1,17 +1,19 @@
 package it.uniparthenope.parthenopeddit.model
 
+import android.content.BroadcastReceiver
 import it.uniparthenope.parthenopeddit.util.JSONConvertable
 
-class Message (
+class Message(
     val id: Int,
     val body: String,
     val timestamp: String,
-    val isRead: Boolean,
-    val messageType: Int
 
-) : JSONConvertable{
-    companion object {
-        const val TYPE_MY_MESSAGE = 0
-        const val TYPE_FRIEND_MESSAGE = 1
-    }
+    val replies_to_message_id: Int? = null,
+    val sender_id: String,
+    val receiver_id: Int
+) : JSONConvertable {
+
+    var sender_uder: User? = null
+    var receiver_chat: Chat? = null
+    var replies_to_message: Message? = null
 }

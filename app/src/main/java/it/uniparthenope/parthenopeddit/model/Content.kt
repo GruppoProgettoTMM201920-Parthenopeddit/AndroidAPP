@@ -1,18 +1,24 @@
 package it.uniparthenope.parthenopeddit.model
+import com.google.gson.annotations.SerializedName
 import it.uniparthenope.parthenopeddit.util.JSONConvertable
+import java.util.*
+import kotlin.collections.ArrayList
 
 open class Content (
     val id: Int,
     val body: String? = null,
-    val timestamp: String, /* TODO STRING type as DateTime decode not yet implemented */
+    val timestamp: String,
     val author_id: String,
+    val type: String
+
+) : JSONConvertable {
 
     /* relationships */
-    var author: User? = null,
-    var comments: ArrayList<Comment>? = null,
+    var author: User? = null
+    var comments: ArrayList<Comment>? = null
 
     /* aggregated data */
-    var comments_num: Int? = null,
-    var upvotes_num: Int,
-    var downvotes_num: Int
-) : JSONConvertable
+    var comments_num: Int? = null
+    var likes_num: Int? = null
+    var dislikes_num: Int? = null
+}

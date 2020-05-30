@@ -1,19 +1,20 @@
 package it.uniparthenope.parthenopeddit.model
 
+import com.google.gson.annotations.SerializedName
 import it.uniparthenope.parthenopeddit.util.JSONConvertable
+import java.util.*
 
-data class Post (
-    val id: Int,
+class Post(
+    id: Int,
+    body: String,
+    timestamp: String,
+    author_id: String,
+
     val title: String,
-    val body: String? = null,
-    val timestamp: String, /* TODO STRING type as DateTime decode not yet implemented */
-    val author_id: String,
+    val posted_to_board_id: Int? = null
+
+) : Content(id, body, timestamp, author_id, "post"), JSONConvertable {
 
     /* relationships */
-    var author: User? = null,
-    var comments: ArrayList<Comment>? = null,
-    var group: Group,
-
-    /* aggregated data */
-    var comments_num: Int? = null
-) : JSONConvertable
+    var posted_to_board: Board? = null
+}

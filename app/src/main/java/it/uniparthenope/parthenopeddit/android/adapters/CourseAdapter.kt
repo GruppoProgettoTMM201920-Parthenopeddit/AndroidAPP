@@ -54,7 +54,7 @@ class CourseAdapter(fm: FragmentManager, courseId: Int) : FragmentPagerAdapter(f
     ) {
         for (course in MockDatabase.instance.course_table) {
             if (course.id == courseId) {
-                completion.invoke(course.rating, course.difficulty, course.numReview, course.course_name, null)
+                completion.invoke(course.average_liking_score!!.toFloat(), course.average_difficulty_score!!.toFloat(), course.reviews_count!!, course.name, null)
                 return
             }
         }
