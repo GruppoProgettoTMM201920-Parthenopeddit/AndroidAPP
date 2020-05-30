@@ -9,6 +9,7 @@ import it.uniparthenope.parthenopeddit.android.ui.chat.UserChatFragment
 import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.auth.Auth
 import it.uniparthenope.parthenopeddit.model.User
+import kotlinx.android.synthetic.main.chat_activity.*
 
 class ChatActivity : BasicActivity() {
 
@@ -26,11 +27,6 @@ class ChatActivity : BasicActivity() {
                     UserChatFragment.newInstance(user))
                 .commitNow()
         }
-
-
-
-
-        supportActionBar?.title = user.display_name
 
 
 
