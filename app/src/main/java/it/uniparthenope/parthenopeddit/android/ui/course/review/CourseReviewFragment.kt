@@ -8,14 +8,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.android.adapters.CourseAdapter
-import it.uniparthenope.parthenopeddit.android.adapters.CourseReviewAdapter
+import it.uniparthenope.parthenopeddit.android.adapters.ReviewAdapter
 import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.auth.Auth
 
-class CourseReviewFragment(courseID: Int) : Fragment(), CourseReviewAdapter.CourseReviewItemClickListeners{
+class CourseReviewFragment(courseID: Int) : Fragment(), ReviewAdapter.CourseReviewItemClickListeners{
 
     private lateinit var recycler_view: RecyclerView
     private lateinit var courseReviewViewModel: CourseReviewViewModel
@@ -26,7 +24,7 @@ class CourseReviewFragment(courseID: Int) : Fragment(), CourseReviewAdapter.Cour
         //val fab = root.findViewById(R.id.fab) as FloatingActionButton
         recycler_view = root.findViewById(R.id.recycler_view2) as RecyclerView
 
-        val courseReviewAdapter = CourseReviewAdapter()
+        val courseReviewAdapter = ReviewAdapter()
         courseReviewAdapter.setItemClickListener(this)
         recycler_view.adapter = courseReviewAdapter
         recycler_view.layoutManager = LinearLayoutManager(requireContext())

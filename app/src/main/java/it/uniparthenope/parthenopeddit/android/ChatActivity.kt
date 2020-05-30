@@ -1,23 +1,37 @@
 package it.uniparthenope.parthenopeddit.android
 
-import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.widget.Toast
+import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
+import it.uniparthenope.parthenopeddit.android.ui.chat.UserChatFragment
+import it.uniparthenope.parthenopeddit.api.MockApiData
+import it.uniparthenope.parthenopeddit.auth.Auth
+import it.uniparthenope.parthenopeddit.model.User
 
-import kotlinx.android.synthetic.main.activity_chat.*
-
-class ChatActivity : AppCompatActivity() {
+class ChatActivity : BasicActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_chat)
-        setSupportActionBar(toolbar)
+        setContentView(R.layout.chat_activity)
+        val type = "user"//= intent.getParcelableExtra<String>(NewMessageActivity.USER_KEY)
+        val user = User("user2", "Marco Bottino", "01/01/1970") //intent.getParcelableExtra<String>(NewMessageActivity.USER_KEY)
+        val groupID = null//intent.getParcelableExtra<Int>(NewMessageActivity.USER_KEY)
+        if (savedInstanceState == null) {
 
-        send_btn.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.container,
+                    //if(type=="user") UserChatFragment.newInstance(user) else GroupChatFragment.newInstance(groupID))
+                    UserChatFragment.newInstance(user))
+                .commitNow()
         }
-    }
 
+
+
+
+        supportActionBar?.title = user.display_name
+
+
+    }
 }
