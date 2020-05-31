@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.recyclerview.widget.RecyclerView
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
@@ -51,6 +52,7 @@ class UserChatFragment(private val user: User) : Fragment() {
         recyclerview_chat_log = view.findViewById(R.id.recyclerview_chat_log) as RecyclerView
 
         recyclerview_chat_log.adapter = adapter
+        recyclerview_chat_log.scrollToPosition(adapter.itemCount - 1)
 
         return view
     }

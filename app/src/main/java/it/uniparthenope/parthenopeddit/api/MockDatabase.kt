@@ -23,7 +23,7 @@ class MockDatabase private constructor() {
     val course_table = ArrayList<Course>()
     val group_table = ArrayList<Group>()
     val reviews_table = ArrayList<Review>()
-    val chat_table = ArrayList<Chat>()
+    val chats_table = ArrayList<UsersChat>()
 
     init {
         /* Popolamento tabelle fittizie. */
@@ -235,6 +235,28 @@ class MockDatabase private constructor() {
             reviewed_course = C3
         )
 
+        val us_1_2 = UsersChat(
+            id = 1,
+            of_user_id = u1.id,
+            latest_message = "Ciao bello, hai ganja?",
+            last_opened_on = "2019/90/89-89:00:00Z",
+            other_user_chat_id = 2,
+            other_user = u2,
+            of_user = u1
+        )
+
+        val us_2_1 = UsersChat(
+            id = 2,
+            of_user_id = u2.id,
+            latest_message = "Ciao bello, hai ganja?",
+            last_opened_on = "2019/90/89-89:00:00Z",
+            other_user_chat_id = 1,
+            other_user = u1,
+            of_user = u2
+        )
+
+        us_1_2.other_user_chat = us_2_1
+        us_2_1.other_user_chat = us_1_2
 
         u1.published_posts = ArrayList<Post>(listOf(p1,p3,p4))
         u1.published_comments = ArrayList<Comment>(listOf(c2))
@@ -259,27 +281,8 @@ class MockDatabase private constructor() {
         course_table.addAll(listOf(C1,C2,C3))
         group_table.addAll(listOf(g1,g2,g3))
         reviews_table.addAll(listOf(r1,r2,r3,r4,r5))
+        chats_table.addAll(listOf(us_1_2,us_2_1))
 
-        val us_1_2 = UsersChat(
-            id = 1,
-            of_user_id = u1.id,
-            last_message = "Ciao bello, hai ganja?",
-            last_opened_on = "2019/90/89-89:00:00Z",
-            other_user_chat_id = 2,
-            of_user = u1
-        )
 
-        val us_2_1 = UsersChat(
-            id = 2,
-            of_user_id = u2.id,
-            last_message = "Ciao bello, hai ganja?",
-            last_opened_on = "2019/90/89-89:00:00Z",
-            other_user_chat_id = 1,
-            of_user = u2
-        )
-        
-        us_1_2.other_user_chat = us_2_1
-        us_2_1.other_user_chat = us_1_2
-        
     }
 }

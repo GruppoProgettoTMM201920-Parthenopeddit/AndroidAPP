@@ -206,6 +206,12 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         startActivity(intent)
     }
 
+    override fun onPostClick(id_post: Int) {
+        val intent = Intent(requireContext(), CommentActivity::class.java)
+        intent.putExtra("idPost", id_post)
+        startActivity(intent)
+    }
+
     override fun onBoardClick(board_id: Int?, board: Board?) {
         if (board == null) {
             (activity as BasicActivity).goToActivity(HomeActivity::class.java) //HOME

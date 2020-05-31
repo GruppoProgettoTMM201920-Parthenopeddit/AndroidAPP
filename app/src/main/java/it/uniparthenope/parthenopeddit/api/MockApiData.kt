@@ -1,12 +1,8 @@
 package it.uniparthenope.parthenopeddit.api
 
-import it.uniparthenope.parthenopeddit.model.Comment
-import it.uniparthenope.parthenopeddit.model.Post
-import it.uniparthenope.parthenopeddit.model.Review
-import it.uniparthenope.parthenopeddit.model.User
-import it.uniparthenope.parthenopeddit.model.Course
+import it.uniparthenope.parthenopeddit.model.*
 
-class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNamespace {
+class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNamespace, ChatNamespace {
     override fun login(
         username: String,
         password: String,
@@ -132,6 +128,26 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
         }
 
         completion.invoke(null, "course not found")
+    }
+
+    override fun getChat(
+        token: String,
+        userId: Int,
+        completion: (chat: ArrayList<UsersChat>?, error: String?) -> Unit
+    ) {
+        var user_chats : ArrayList<UsersChat>? = ArrayList()
+        for(chat in MockDatabase.instance.chats_table){
+            if(chat.of_user_id == "user1"){
+                user_chats?.add(chat)
+            }
+        }
+
+        if(user_chats?.isEmpty()!!){
+            completion.invoke(null, "L'utente non ha chat")
+        } else {
+            completion.invoke(user_chats, null)
+        }
+        return
     }
 
 }

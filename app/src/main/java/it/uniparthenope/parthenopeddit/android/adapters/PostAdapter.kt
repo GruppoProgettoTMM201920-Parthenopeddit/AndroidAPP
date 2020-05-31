@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.R
@@ -33,6 +34,7 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
         fun onClickDislike(id_post:Int)
         fun onClickComments(id_post:Int)
         fun onBoardClick(board_id: Int?, board: Board?)
+        fun onPostClick(id_post: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
@@ -85,6 +87,10 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
             holder.board_textview.setOnClickListener {
                 listener!!.onBoardClick(currentItem.posted_to_board_id, currentItem.posted_to_board)
             }
+
+            holder.relativeLayout.setOnClickListener {
+                listener!!.onPostClick(currentItem.id)
+            }
         }
     }
 
@@ -102,5 +108,6 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
         val upvote_textview: TextView = itemView.upvote_textview
         val downvote_textview: TextView = itemView.downvote_textview
         val comment_btn: ImageButton = itemView.comments_btn
+        val relativeLayout: RelativeLayout = itemView.relativelayout
     }
 }

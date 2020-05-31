@@ -7,9 +7,10 @@ class UsersChat(
     id: Int,
 
     val of_user_id: String,
-    var last_message: String? = null,
+    var latest_message: String? = null,
     val last_opened_on: String,
     val other_user_chat_id: Int,
+    val other_user: User,
     var of_user: User? = null,
     var other_user_chat: UsersChat? = null
 ) : Chat(id, "users_chat"), JSONConvertable {

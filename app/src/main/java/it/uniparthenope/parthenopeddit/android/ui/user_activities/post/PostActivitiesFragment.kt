@@ -1,5 +1,6 @@
 package it.uniparthenope.parthenopeddit.android.ui.messages
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.R
+import it.uniparthenope.parthenopeddit.android.CommentActivity
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.ui.user_activities.post.PostActivitiesViewModel
 import it.uniparthenope.parthenopeddit.api.MockApiData
@@ -72,5 +74,11 @@ class PostActivitiesFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
     override fun onBoardClick(board_id: Int?, board: Board?) {
         TODO("Not yet implemented")
+    }
+
+    override fun onPostClick(id_post: Int) {
+        val intent = Intent(requireContext(), CommentActivity::class.java)
+        intent.putExtra("idPost", id_post)
+        startActivity(intent)
     }
 }
