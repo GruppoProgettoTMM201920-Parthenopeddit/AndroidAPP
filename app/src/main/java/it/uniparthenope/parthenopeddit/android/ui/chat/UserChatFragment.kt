@@ -98,6 +98,7 @@ class UserChatFragment(private val user: User) : Fragment() {
                 adapter.add(ChatToItem(myMessage))
                 adapter.notifyDataSetChanged()
                 recyclerview_chat_log.scrollToPosition(adapter.itemCount - 1)
+                edittext_chat_log.text.clear()
             }
         }
         //TODO: send last message to messagesfragment
