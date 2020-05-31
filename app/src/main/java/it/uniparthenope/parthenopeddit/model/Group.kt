@@ -9,11 +9,10 @@ class Group(
     id: Int,
     name: String,
 
-    val created_on: String
-) : Board(id, name, "group"), JSONConvertable {
-
-    var members: ArrayList<GroupMember>? = null
-    var chat: GroupChat? = null
-    var invites: ArrayList<GroupInvite>? = null
+    val created_on: String,
+    var members: ArrayList<GroupMember>? = null,
+    var chat: GroupChat? = null,
+    var invites: ArrayList<GroupInvite>? = null,
     var members_num: Int? = null
+) : Board(id, name, "group"), JSONConvertable {
 }

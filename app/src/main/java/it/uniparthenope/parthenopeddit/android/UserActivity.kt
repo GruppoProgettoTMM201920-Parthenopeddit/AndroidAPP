@@ -14,11 +14,8 @@ class UserActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        try {
-            this.supportActionBar!!.hide()
-        } catch (e: NullPointerException) {
-        }
         setContentView(R.layout.activity_user)
+        supportActionBar!!.title = "Le tue attività"
         val sectionsPagerAdapter = UserActivityAdapter(supportFragmentManager)
         val viewPager: ViewPager = findViewById(R.id.view_pager)
         viewPager.adapter = sectionsPagerAdapter

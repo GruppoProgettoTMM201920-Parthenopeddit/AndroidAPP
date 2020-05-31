@@ -4,71 +4,80 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".android.CourseActivity">
+    tools:context=".android.CourseActivity"
+    android:background="#595959">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/group_info_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/group_image"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginEnd="8dp"
-                android:src="@drawable/default_user_image" />
-
-            <TextView
-                android:id="@+id/group_name_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="left"
-                android:inputType="textMultiLine"
-                android:maxWidth="250dp"
-                android:text="Nome gruppo"
-                android:textSize="20dp" />
-
-
-            <TextView
-                android:id="@+id/num_participants"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginEnd="25dp"
-                android:text="0 utenti"
-                android:textSize="12dp" />
-
-
-        </androidx.appcompat.widget.Toolbar>
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/view_pager"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/fab_new_post_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_marginRight="80dp"
-        android:layout_marginBottom="25dp"
-        android:background="@drawable/fab_textview_bubble"
-        android:gravity="center"
-        android:padding="5dp"
-        android:text="@string/new_post_it"
-        android:textColor="@color/white"
-        android:textSize="15dp"
-        android:textStyle="bold"
-        android:elevation="2dp"
-        android:visibility="gone"/>
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/group_info_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/group_image"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/default_user_image" />
+
+                <TextView
+                    android:id="@+id/group_name_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:inputType="textMultiLine"
+                    android:maxWidth="250dp"
+                    android:text="Nome gruppo"
+                    android:textSize="20dp" />
+
+
+                <TextView
+                    android:id="@+id/num_members"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:layout_marginEnd="25dp"
+                    android:text="0 utenti"
+                    android:textSize="12dp" />
+
+
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+        <TextView
+            android:id="@+id/fab_new_post_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_marginRight="80dp"
+            android:layout_marginBottom="25dp"
+            android:background="@drawable/fab_textview_bubble"
+            android:elevation="2dp"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="@string/new_post_it"
+            android:textColor="@color/white"
+            android:textSize="15dp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/group_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/cardview_post" />
+    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_new_post"

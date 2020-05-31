@@ -30,8 +30,6 @@ import it.uniparthenope.parthenopeddit.android.ui.newReview.NewReviewActivity
 import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.auth.Auth
 import it.uniparthenope.parthenopeddit.model.Board
-import it.uniparthenope.parthenopeddit.model.Post
-import it.uniparthenope.parthenopeddit.model.Review
 import kotlinx.android.synthetic.main.cardview_post.*
 
 
@@ -223,8 +221,8 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
                     startActivity(intent)
                 }
                 "group" -> {
-                    Toast.makeText(requireContext(), "Pagina dei gruppi ancora da implementare", Toast.LENGTH_LONG)  //GRUPPO
                     val intent = Intent(requireContext(), GroupActivity::class.java)
+                    intent.putExtra("id_group", board_id)
                     startActivity(intent)
                 }
                 else -> {  }

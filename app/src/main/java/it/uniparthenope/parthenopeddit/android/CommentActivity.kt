@@ -25,13 +25,8 @@ class CommentActivity : BasicActivity(), CommentAdapter.CommentItemClickListener
         val extras = intent.extras
         var id_post:Int = extras?.getInt("idPost")?:0
 
-        if( id_post == 0 ) {
-            Log.d("DEBUG","id post was 0")
-            id_post = 1
-        }
-
         MockApiData().getPostWithComments( "token", id_post ) { post: Post?, error: String? ->
-            Log.d("DEBUG","Fetched post")
+            Log.d("DEBUG","Fetched post ${id_post}")
 
             if ( post == null ) {
                 Log.d("DEBUG","Post was null")

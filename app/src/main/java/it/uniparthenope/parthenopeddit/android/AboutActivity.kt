@@ -21,6 +21,8 @@ class AboutActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_about)
 
+        supportActionBar!!.title = "Informazioni"
+
         //DEVS ADAPTER
         var devs = ArrayList<String>(listOf("Francesco Bottino", "Marco Sautto"))
         var email = ArrayList<String>(listOf("francesco.bottino001@studenti.uniparthenope.it", "marco.sautto@gmail.com"))

@@ -32,19 +32,22 @@ class MockDatabase private constructor() {
         val g1 = Group(
             id = 1,
             name = "Generale",
-            created_on = "01/01/1970"
+            created_on = "01/01/1970",
+            members_num = 2000
         )
 
         val g2 = Group(
             id = 2,
             name = "Studenti L-21",
-            created_on = "01/01/1970"
+            created_on = "01/01/1970",
+            members_num = 180
         )
 
         val g3 = Group(
             id = 3,
             name = "CS Memes",
-            created_on = "01/01/1970"
+            created_on = "01/01/1970",
+            members_num = 70
         )
 
         val C1 = Course(
@@ -156,6 +159,17 @@ class MockDatabase private constructor() {
             author_id = u2.id,
             author = u2,
             posted_to_board = C2
+        )
+
+        val p7 = Post(
+            id=7,
+            title = "I'm sexy",
+            body = "And I know it",
+            posted_to_board_id = 3,
+            timestamp = "1/1/9999",
+            author_id = u2.id,
+            author = u2,
+            posted_to_board = g3
         )
 
         val c1 = Comment(
@@ -305,7 +319,7 @@ class MockDatabase private constructor() {
         u1.published_comments = ArrayList<Comment>(listOf(c2))
         u1.published_reviews = ArrayList<Review>(listOf(r1,r3,r5))
 
-        u2.published_posts = ArrayList<Post>(listOf(p2,p5,p6))
+        u2.published_posts = ArrayList<Post>(listOf(p2,p5,p6,p7))
         u2.published_comments = ArrayList<Comment>(listOf(c1))
         u2.published_reviews = ArrayList<Review>(listOf(r2,r4))
 
@@ -319,7 +333,7 @@ class MockDatabase private constructor() {
         C3.reviews = ArrayList<Review>(listOf(r5))
 
         users_table.addAll(listOf(u1,u2))
-        posts_table.addAll(listOf(p1,p2,p3,p4,p5,p6))
+        posts_table.addAll(listOf(p1,p2,p3,p4,p5,p6,p7))
         comments_table.addAll(listOf(c1,c2))
         course_table.addAll(listOf(C1,C2,C3))
         group_table.addAll(listOf(g1,g2,g3))

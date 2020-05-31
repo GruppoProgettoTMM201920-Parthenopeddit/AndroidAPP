@@ -2,7 +2,7 @@ package it.uniparthenope.parthenopeddit.api
 
 import it.uniparthenope.parthenopeddit.model.*
 
-class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNamespace, ChatNamespace {
+class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNamespace, ChatNamespace, GroupNamespace {
     override fun login(
         username: String,
         password: String,
@@ -47,6 +47,37 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
             }
         }
         completion.invoke(null, "no post with id $postId")
+    }
+
+    override fun getGroupPost(
+        token: String,
+        id_group: Int,
+        completion: (postList: List<Post>?, error: String?) -> Unit
+    ) {
+        completion.invoke(
+            MockDatabase.instance.posts_table.filter { it.posted_to_board?.id == id_group },
+            null
+        )
+    }
+
+    override fun getGroupInfo(
+        token: String,
+        id_group: Int,
+        completion: (name: String?, num_members: Int?, created: String?, members: ArrayList<GroupMember>?, error: String?) -> Unit
+    ) {
+        var group : Group = MockDatabase.instance.group_table.filter { it.id == id_group }.single()
+        if(group != null) {
+            completion.invoke(
+                group.name,
+                group.members_num,
+                group.created_on,
+                group.members,
+                null
+            )
+        } else{
+            completion.invoke(null,null,null,null,"Gruppo non trovato")
+        }
+        return
     }
 
     override fun getComment(
