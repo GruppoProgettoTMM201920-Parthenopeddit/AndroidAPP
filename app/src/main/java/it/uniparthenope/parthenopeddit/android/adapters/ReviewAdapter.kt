@@ -3,10 +3,7 @@ package it.uniparthenope.parthenopeddit.android.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.R
@@ -41,6 +38,7 @@ class ReviewAdapter() : RecyclerView.Adapter<ReviewAdapter.CourseReviewViewHolde
     interface CourseReviewItemClickListeners {
         fun onClickLike(id_post:Int)
         fun onClickDislike(id_post:Int)
+        fun onReviewClick(id_course: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CourseReviewViewHolder {
@@ -73,6 +71,10 @@ class ReviewAdapter() : RecyclerView.Adapter<ReviewAdapter.CourseReviewViewHolde
                 listener!!.onClickLike(currentItem.id)
                 holder.downvote_textview.text =
                     (holder.downvote_textview.text.toString().toInt() + 1).toString()
+            }
+
+            holder.review_relativelayout.setOnClickListener {
+                listener!!.onReviewClick( currentItem.reviewed_course_id )
             }
         }
     }
@@ -226,6 +228,7 @@ class ReviewAdapter() : RecyclerView.Adapter<ReviewAdapter.CourseReviewViewHolde
         val downvote_btn: ImageButton = itemView.downvote_btn
         val upvote_textview: TextView = itemView.upvote_textview
         val downvote_textview: TextView = itemView.downvote_textview
+        val review_relativelayout: RelativeLayout = itemView.review_relativelayout
         val star_1r: ImageView = itemView.star_1r
         val star_2r: ImageView = itemView.star_2r
         val star_3r: ImageView = itemView.star_3r

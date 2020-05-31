@@ -91,4 +91,8 @@ class CommentActivity : BasicActivity(), CommentAdapter.CommentItemClickListener
 
     override fun onClickComments(id_Commento: Int) {
     }
+
+    override fun onCommentClick(id_post: Int) {
+        //must do nothing to not be recursive
+    }
 }

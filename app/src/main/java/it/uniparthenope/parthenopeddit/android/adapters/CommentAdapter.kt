@@ -27,6 +27,7 @@ class CommentAdapter(private val context: Context, private var commentItemsList:
         fun onClickLike(id_Commento:Int)
         fun onClickDislike(id_Commento:Int)
         fun onClickComments(id_Commento:Int)
+        fun onCommentClick(id_post: Int)
     }
 
     fun setItemClickListener( listener:CommentItemClickListeners? ) {
@@ -70,6 +71,10 @@ class CommentAdapter(private val context: Context, private var commentItemsList:
             listener?.onClickComments( currentItem.id )
         }
 
+        holder.comment_relativelayout.setOnClickListener {
+            listener?.onCommentClick( currentItem.root_content_id )
+        }
+
         Log.d("DEBUG","settando la lista di commenti del commento ${currentItem.id}")
         Log.d("DEBUG","comments num : ${currentItem.comments_num?:0}")
 
@@ -108,6 +113,7 @@ class CommentAdapter(private val context: Context, private var commentItemsList:
         val upvote_textview: TextView = itemView.upvote_textview
         val downvote_textview: TextView = itemView.downvote_textview
         val comment_btn: ImageButton = itemView.comments_btn
+        val comment_relativelayout: RelativeLayout = itemView.comment_relativelayout
 
         val commentsLayoutContainer: LinearLayout = itemView.commentsLayoutContainer
         val commentsListContainer: RecyclerView = itemView.commentsListContainer

@@ -1,5 +1,6 @@
 package it.uniparthenope.parthenopeddit.android.ui.messages
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.R
+import it.uniparthenope.parthenopeddit.android.CourseActivity
 import it.uniparthenope.parthenopeddit.android.adapters.ReviewAdapter
 import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.auth.Auth
@@ -57,5 +59,11 @@ class ReviewActivitiesFragment : Fragment(), ReviewAdapter.CourseReviewItemClick
 
     override fun onClickDislike(id_post: Int) {
         //TODO("Not yet implemented")
+    }
+
+    override fun onReviewClick(id_course: Int) {
+        val intent = Intent(requireContext(), CourseActivity::class.java)
+        intent.putExtra("id_group", id_course)
+        startActivity(intent)
     }
 }

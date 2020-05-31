@@ -1,5 +1,6 @@
 package it.uniparthenope.parthenopeddit.android.ui.messages
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.R
+import it.uniparthenope.parthenopeddit.android.CommentActivity
 //import it.uniparthenope.parthenopeddit.android.adapters.ChatListAdapter
 import it.uniparthenope.parthenopeddit.android.adapters.CommentAdapter
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
@@ -69,5 +71,11 @@ class CommentActivitiesFragment : Fragment(), CommentAdapter.CommentItemClickLis
 
     override fun onClickComments(id_Commento: Int) {
         //TODO("Not yet implemented")
+    }
+
+    override fun onCommentClick(id_post: Int) {
+        val intent = Intent(requireContext(), CommentActivity::class.java)
+        intent.putExtra("idPost", id_post)
+        startActivity(intent)
     }
 }

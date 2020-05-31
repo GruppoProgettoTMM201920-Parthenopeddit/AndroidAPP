@@ -52,4 +52,8 @@ class CourseReviewFragment(courseID: Int) : Fragment(), ReviewAdapter.CourseRevi
     override fun onClickDislike(id_post: Int) {
         //TODO("Not yet implemented")
     }
+
+    override fun onReviewClick(id_course: Int) {
+        TODO("Not yet implemented")
+    }
 }
