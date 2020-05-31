@@ -50,7 +50,7 @@ class GroupsRequests(private val ctx: Context, private val auth: AuthManager) : 
     override fun createGroup(
         group_name: String,
         invitedUsersIds: List<String>,
-        onSuccess: (invitedUsers: ArrayList<GroupMember>) -> Unit,
+        onSuccess: (invitedUsers: ArrayList<GroupInvite>) -> Unit,
         onFail: (error: String) -> Unit
     ) {
         ApiClient(ctx).performRequest(
@@ -86,7 +86,7 @@ class GroupsRequests(private val ctx: Context, private val auth: AuthManager) : 
         )
     }
 
-    override fun getInvitesToGroup(
+    override fun getUserInvitesToGroup(
         onSuccess: (invites: ArrayList<GroupInvite>) -> Unit,
         onFail: (error: String) -> Unit
     ) {
@@ -167,7 +167,7 @@ class GroupsRequests(private val ctx: Context, private val auth: AuthManager) : 
                 override val params: HashMap<String, String>
                     get() {
                         val params = getParamsMap()
-                        params["invited_members"] = Gson().toJson(invitedUsersIds)
+                        params["users_list"] = Gson().toJson(invitedUsersIds)
                         return params
                     }
                 override val headers: HashMap<String, String>
@@ -225,11 +225,43 @@ class GroupsRequests(private val ctx: Context, private val auth: AuthManager) : 
 
     override fun answerGroupInvite(
         group_id: Int,
-        answer: Boolean,
-        onSuccess: (membership: GroupMember) -> Unit,
+        accept: Boolean,
+        onDecline: () -> Unit,
+        onAccept: (membership: GroupMember) -> Unit,
         onFail: (error: String) -> Unit
     ) {
-        TODO("Not yet implemented")
+        ApiClient(ctx).performRequest(
+            object : ApiRoute() {
+                override val url: String
+                    get() = "$baseUrl/groups/$group_id/invite/answer"
+                override val httpMethod: Int
+                    get() = Request.Method.POST
+                override val params: HashMap<String, String>
+                    get() {
+                        val params = getParamsMap()
+                        params["answer"] = Gson().toJson(accept)
+                        return params
+                    }
+                override val headers: HashMap<String, String>
+                    get() = getHeadersMap(auth.token!!)
+            }, { resultCode: Int, resultJson: String ->
+                if( resultCode == 201 ) {
+                    onDecline()
+                } else if( resultCode == 202 ) {
+                    try {
+                        onAccept(resultJson.toObject())
+                    } catch (e: Exception) {
+                        onFail("Could not parse request result as group membership data")
+                        Log.d(TAG, resultJson)
+                        return@performRequest
+                    }
+                } else {
+                    onFail("Error : $resultCode")
+                }
+            }, { _, error: String ->
+                onFail.invoke(error)
+            }
+        )
     }
 
     override fun leaveGroup(
@@ -239,7 +271,30 @@ class GroupsRequests(private val ctx: Context, private val auth: AuthManager) : 
         onGroupDisbanded: () -> Unit,
         onFail: (error: String) -> Unit
     ) {
-        TODO("Not yet implemented")
+        ApiClient(ctx).performRequest(
+            object : ApiRoute() {
+                override val url: String
+                    get() = "$baseUrl/groups/$group_id/leave"
+                override val httpMethod: Int
+                    get() = Request.Method.POST
+                override val params: HashMap<String, String>
+                    get() = getParamsMap()
+                override val headers: HashMap<String, String>
+                    get() = getHeadersMap(auth.token!!)
+            }, { resultCode: Int, resultJson: String ->
+                if( resultCode == 201 ) {
+                    onSuccess()
+                } else if( resultCode == 202 ) {
+                    onNewOwnerPromoted()
+                } else if( resultCode == 203 ) {
+                    onGroupDisbanded()
+                } else {
+                    onFail("Error : $resultCode")
+                }
+            }, { _, error: String ->
+                onFail.invoke(error)
+            }
+        )
     }
 
     override fun getGroupMembers(

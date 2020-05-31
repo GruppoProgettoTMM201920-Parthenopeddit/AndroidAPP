@@ -11,11 +11,11 @@ interface GroupsNamespace {
     fun createGroup(
         group_name: String,
         invitedUsersIds: List<String>,
-        onSuccess: (invitedUsers: ArrayList<GroupMember>) -> Unit,
+        onSuccess: (invitedUsers: ArrayList<GroupInvite>) -> Unit,
         onFail: (error: String) -> Unit
     )
 
-    fun getInvitesToGroup(
+    fun getUserInvitesToGroup(
         onSuccess: (invites: ArrayList<GroupInvite>) -> Unit,
         onFail: (error: String) -> Unit
     )
@@ -43,9 +43,10 @@ interface GroupsNamespace {
 
     fun answerGroupInvite(
         group_id: Int,
-        answer: Boolean,
+        accept: Boolean,
 
-        onSuccess: (membership: GroupMember) -> Unit,
+        onDecline: () -> Unit,
+        onAccept: (membership: GroupMember) -> Unit,
         onFail: (error: String) -> Unit
     )
 

@@ -3,7 +3,6 @@ package it.uniparthenope.parthenopeddit.api
 import android.util.Log
 import com.android.volley.*
 import com.android.volley.toolbox.HttpHeaderParser
-import com.android.volley.toolbox.StringRequest
 import java.nio.charset.Charset
 
 class ApiRequest(
@@ -24,6 +23,11 @@ class ApiRequest(
         Log.d("debug", "defined params (${route.params})")
         return route.params
     }
+
+    //override fun getBody(): ByteArray {
+    //    val params = getParams()
+    //    return encodeParameters(params, paramsEncoding)
+    //}
 
     override fun getHeaders(): MutableMap<String, String> = route.headers
 
