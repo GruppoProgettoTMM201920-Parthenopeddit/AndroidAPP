@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.model.Board
 import it.uniparthenope.parthenopeddit.model.Post
+import it.uniparthenope.parthenopeddit.model.User
 import it.uniparthenope.parthenopeddit.model.UsersChat
 import kotlinx.android.synthetic.main.cardview_chat.view.*
 import kotlinx.android.synthetic.main.cardview_post.view.*
@@ -32,7 +33,7 @@ class ChatListAdapter() : RecyclerView.Adapter<ChatListAdapter.ChatListViewHolde
     }
 
     interface ChatListItemClickListeners {
-        fun onChatClick(id_user:Int)
+        fun onChatClick(user: User)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatListViewHolder {
@@ -66,7 +67,7 @@ class ChatListAdapter() : RecyclerView.Adapter<ChatListAdapter.ChatListViewHolde
             }
 
             holder.relativelayout.setOnClickListener {
-                listener!!.onChatClick(currentItem.other_user_chat!!.id)
+                listener!!.onChatClick(currentItem.other_user)
             }
         }
     }

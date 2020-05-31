@@ -150,4 +150,20 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
         return
     }
 
+    override fun getChatMessages(
+        token: String,
+        user1Id: String,
+        user2Id: String,
+        completion: (chat: ArrayList<Message>?, error: String?) -> Unit
+    ) {
+        for(messagelog in MockDatabase.instance.messagelog_table){
+            if (messagelog.user1_id == user1Id && messagelog.user2_id == user2Id) {
+                completion.invoke(messagelog.messages, null)
+                return
+            }
+        }
+        completion.invoke(null, "Questo utente non ha chat con questo destinatario")
+        return
+    }
+
 }

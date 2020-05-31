@@ -24,6 +24,7 @@ class MockDatabase private constructor() {
     val group_table = ArrayList<Group>()
     val reviews_table = ArrayList<Review>()
     val chats_table = ArrayList<UsersChat>()
+    val messagelog_table = ArrayList<MessageLog>()
 
     init {
         /* Popolamento tabelle fittizie. */
@@ -81,6 +82,11 @@ class MockDatabase private constructor() {
         val u2 = User(
             id = "user2",
             display_name = "gaussjr",
+            registered_on = "2014-08-18 21:11:35.537000"
+        )
+        val u3 = User(
+            id = "user3",
+            display_name = "acuto.org",
             registered_on = "2014-08-18 21:11:35.537000"
         )
 
@@ -235,6 +241,20 @@ class MockDatabase private constructor() {
             reviewed_course = C3
         )
 
+        val msg_log_12 = MessageLog(
+            id=1,
+            user1_id = u1.id,
+            user2_id = u2.id,
+            messages = ArrayList<Message>(listOf( Message(0,"Ciao!","18:58",false,null,u2.id,1), Message(1,"Ciao! Come stai?","18:58",true,null,u1.id,2), Message(2,"Diciamo, questi esami mi distruggono","18:59",false,null,u2.id,1), Message(3,"Eh già, ti capisco!","18:59",true,null,u1.id,2)))
+        )
+
+        val msg_log_13 = MessageLog(
+            id=1,
+            user1_id = u1.id,
+            user2_id = u3.id,
+            messages = ArrayList<Message>(listOf( Message(0,"Ao","4:20",false,null,u1.id,3), Message(1,"Che vuoi a quest'ora","4:20",true,null,u3.id,1), Message(2,"Devo darti una buona notizia","4:21",false,null,u1.id,3), Message(3,"Dimmi","4:21",true,null,u3.id,1), Message(3,"E' arrivato il carico di KitKat","4:22",true,null,u1.id,3)))
+        )
+
         val us_1_2 = UsersChat(
             id = 1,
             of_user_id = u1.id,
@@ -255,8 +275,31 @@ class MockDatabase private constructor() {
             of_user = u2
         )
 
+        val us_1_3 = UsersChat(
+            id = 1,
+            of_user_id = u1.id,
+            latest_message = "E' arrivato il carico di KitKat",
+            last_opened_on = "2019/90/89-89:00:00Z",
+            other_user_chat_id = 3,
+            other_user = u3,
+            of_user = u1
+        )
+
+        val us_3_1 = UsersChat(
+            id = 3,
+            of_user_id = u3.id,
+            latest_message = "E' arrivato il carico di KitKat",
+            last_opened_on = "2019/90/89-89:00:00Z",
+            other_user_chat_id = 1,
+            other_user = u1,
+            of_user = u3
+        )
+
+
         us_1_2.other_user_chat = us_2_1
         us_2_1.other_user_chat = us_1_2
+        us_1_3.other_user_chat = us_3_1
+        us_3_1.other_user_chat = us_1_3
 
         u1.published_posts = ArrayList<Post>(listOf(p1,p3,p4))
         u1.published_comments = ArrayList<Comment>(listOf(c2))
@@ -281,7 +324,8 @@ class MockDatabase private constructor() {
         course_table.addAll(listOf(C1,C2,C3))
         group_table.addAll(listOf(g1,g2,g3))
         reviews_table.addAll(listOf(r1,r2,r3,r4,r5))
-        chats_table.addAll(listOf(us_1_2,us_2_1))
+        chats_table.addAll(listOf(us_1_2,us_2_1,us_1_3,us_3_1))
+        messagelog_table.addAll(listOf(msg_log_12, msg_log_13))
 
 
     }

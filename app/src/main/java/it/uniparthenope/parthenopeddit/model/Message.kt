@@ -7,6 +7,7 @@ class Message(
     val id: Int,
     val body: String,
     val timestamp: String,
+    val who: Boolean,           //TRUE: yours   FALSE: other user
 
     val replies_to_message_id: Int? = null,
     val sender_id: String,

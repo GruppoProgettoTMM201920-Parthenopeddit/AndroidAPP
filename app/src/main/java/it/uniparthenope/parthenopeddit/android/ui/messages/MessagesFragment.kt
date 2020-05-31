@@ -69,9 +69,8 @@ class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners 
         return root
     }
 
-    override fun onChatClick(id_user: Int) {
-        val intent = Intent(requireContext(), ChatActivity::class.java)
-        intent.putExtra("idUser", id_user)
+    override fun onChatClick(user: User) {
+        val intent = Intent(requireContext(), ChatActivity(/*user*/)::class.java)
         startActivity(intent)
     }
 
