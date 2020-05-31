@@ -18,6 +18,7 @@ import it.uniparthenope.parthenopeddit.R
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
+import it.uniparthenope.parthenopeddit.android.ChatActivity
 import it.uniparthenope.parthenopeddit.android.adapters.ChatListAdapter
 import it.uniparthenope.parthenopeddit.android.ui.chat.UserChatFragment
 import it.uniparthenope.parthenopeddit.api.MockApiData
@@ -68,20 +69,11 @@ class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners 
         return root
     }
 
-    override fun onClickLike(id_post: Int) {
-        TODO("Not yet implemented")
+    override fun onChatClick(id_user: Int) {
+        val intent = Intent(requireContext(), ChatActivity::class.java)
+        intent.putExtra("idUser", id_user)
+        startActivity(intent)
     }
 
-    override fun onClickDislike(id_post: Int) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onClickComments(id_post: Int) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onBoardClick(board_id: Int?, board: Board?) {
-        TODO("Not yet implemented")
-    }
 
 }

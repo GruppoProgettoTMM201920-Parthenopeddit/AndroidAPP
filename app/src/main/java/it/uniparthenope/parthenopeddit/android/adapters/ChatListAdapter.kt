@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.R
@@ -31,10 +32,7 @@ class ChatListAdapter() : RecyclerView.Adapter<ChatListAdapter.ChatListViewHolde
     }
 
     interface ChatListItemClickListeners {
-        fun onClickLike(id_post:Int)
-        fun onClickDislike(id_post:Int)
-        fun onClickComments(id_post:Int)
-        fun onBoardClick(board_id: Int?, board: Board?)
+        fun onChatClick(id_user:Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatListViewHolder {
@@ -66,6 +64,10 @@ class ChatListAdapter() : RecyclerView.Adapter<ChatListAdapter.ChatListViewHolde
 
             holder.date_textview.setOnClickListener {
             }
+
+            holder.relativelayout.setOnClickListener {
+                listener!!.onChatClick(currentItem.other_user_chat!!.id)
+            }
         }
     }
 
@@ -76,5 +78,6 @@ class ChatListAdapter() : RecyclerView.Adapter<ChatListAdapter.ChatListViewHolde
         val username_textview: TextView = itemView.username_textview
         val latest_message_textview: TextView = itemView.latest_message_textview
         val date_textview: TextView = itemView.date_textview
+        val relativelayout: RelativeLayout = itemView.chat_relativelayout
     }
 }

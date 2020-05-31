@@ -108,6 +108,6 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
         val upvote_textview: TextView = itemView.upvote_textview
         val downvote_textview: TextView = itemView.downvote_textview
         val comment_btn: ImageButton = itemView.comments_btn
-        val relativeLayout: RelativeLayout = itemView.relativelayout
+        val relativeLayout: RelativeLayout = itemView.post_relativelayout
     }
 }
