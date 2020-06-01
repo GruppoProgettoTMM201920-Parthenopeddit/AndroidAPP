@@ -40,7 +40,7 @@ class MockDatabase private constructor() {
         val g2 = Group(
             id = 2,
             name = "Studenti L-21",
-            created_on = "01/01/1970",
+            created_on = "01/06/2020",
             members_num = 180
         )
 

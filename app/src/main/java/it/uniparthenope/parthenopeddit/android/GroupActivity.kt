@@ -1,6 +1,7 @@
 package it.uniparthenope.parthenopeddit.android
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
@@ -9,12 +10,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
+import it.uniparthenope.parthenopeddit.android.ui.group.BackdropFragment
 import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.auth.Auth
+import it.uniparthenope.parthenopeddit.model.GroupMember
 import kotlinx.android.synthetic.main.activity_course.*
 import kotlinx.android.synthetic.main.activity_group.*
 
 class GroupActivity : AppCompatActivity() {
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,6 +27,10 @@ class GroupActivity : AppCompatActivity() {
 
         val extras = intent.extras
         var id_group:Int = extras?.getInt("id_group")?:0
+        var name_group: String?
+        var created_on_group: String?
+        var members_group : ArrayList<GroupMember>?
+        var members_num_group : Int?
 
         val num_members_textview = findViewById<TextView>(R.id.num_members)
 
@@ -33,17 +42,24 @@ class GroupActivity : AppCompatActivity() {
 
 
         MockApiData().getGroupInfo( Auth().token, id_group) { name, num_members, created, members, error ->
+
             if(error != null){
                 //toast
             } else {
                 group_name_textview.text = name!!
+                name_group = group_name_textview.text.toString()
+                created_on_group = created
+                members_group = members
+                members_num_group = members?.size
                 if(num_members!=1){ num_members_textview.text = "${num_members} membri" } else { num_members_textview.text = "${num_members} membri" }
+
+                Log.d("DEBUG", "before cf backdrop")
+                configureBackdrop(id_group, name_group, created_on_group, members_group, members_num_group)
             }
-
-
 
         }
 
+        name_group = group_name_textview.text.toString()
 
         MockApiData().getGroupPost( Auth().token, id_group) { postItemList, error ->
             if( error != null ) {
@@ -55,7 +71,6 @@ class GroupActivity : AppCompatActivity() {
             }
         }
 
-        configureBackdrop()
 
     }
 
@@ -63,9 +78,12 @@ class GroupActivity : AppCompatActivity() {
 
     private var mBottomSheetBehavior: BottomSheetBehavior<View?>? = null
 
-    private fun configureBackdrop() {
+    private fun configureBackdrop(id_group: Int, name_group: String?, created_on_group: String?, members_group: ArrayList<GroupMember>?, members_num_group: Int?) {
         // Get the fragment reference
-        val fragment = supportFragmentManager.findFragmentById(R.id.filter_fragment)
+        Log.d("DEBUG", "before findfragment")
+        val fragment = supportFragmentManager.findFragmentById(R.id.filter_fragment) as BackdropFragment
+        fragment.updateData(id_group,name_group,created_on_group, members_group, members_num_group)
+
 
         fragment?.let {
             // Get the BottomSheetBehavior from the fragment view

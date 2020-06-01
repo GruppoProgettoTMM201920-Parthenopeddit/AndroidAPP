@@ -2,11 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@drawable/backdrop_fragment_background"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".android.ui.group.BackdropFragment">
 
     <TextView
-        android:id="@+id/group_name_textview"
+        android:id="@+id/backdrop_group_name_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
