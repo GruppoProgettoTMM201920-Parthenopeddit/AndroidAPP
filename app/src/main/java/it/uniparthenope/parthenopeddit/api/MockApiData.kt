@@ -1,8 +1,10 @@
 package it.uniparthenope.parthenopeddit.api
 
 import it.uniparthenope.parthenopeddit.model.*
+import kotlinx.android.synthetic.main.chat_fragment.*
+import java.sql.Timestamp
 
-class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNamespace, ChatNamespace, GroupNamespace {
+class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNamespace, GroupNamespace {
     override fun login(
         username: String,
         password: String,
@@ -161,7 +163,7 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
         completion.invoke(null, "course not found")
     }
 
-    override fun getChat(
+    fun getChat(
         token: String,
         userId: Int,
         completion: (chat: ArrayList<UsersChat>?, error: String?) -> Unit
@@ -181,20 +183,79 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
         return
     }
 
-    override fun getChatMessages(
+    fun getChatMessages(
         token: String,
         user1Id: String,
         user2Id: String,
-        completion: (chat: ArrayList<Message>?, error: String?) -> Unit
+        completion: (chatLog: ChatLog?, error: String?) -> Unit
     ) {
-        for(messagelog in MockDatabase.instance.messagelog_table){
-            if (messagelog.user1_id == user1Id && messagelog.user2_id == user2Id) {
-                completion.invoke(messagelog.messages, null)
-                return
+        lateinit var chatUser1: UsersChat
+        lateinit var otherUserChat : UsersChat
+        for ( usersChat in MockDatabase.instance.chats_table ) {
+            if(usersChat.of_user_id == user1Id && usersChat.other_user_chat!!.of_user_id == user2Id) {
+                chatUser1 = usersChat
+                otherUserChat = usersChat.other_user_chat!!
             }
         }
-        completion.invoke(null, "Questo utente non ha chat con questo destinatario")
+
+        val logMessaggi : ArrayList<MessageLog> = ArrayList()
+
+        for( message in MockDatabase.instance.messages_table ) {
+            if( message.sender_id == user1Id && message.receiver_id == otherUserChat.id ) {
+                logMessaggi.add( MessageLog( message, true, true ) )
+            } else if( message.sender_id == user2Id && message.receiver_id == chatUser1.id ) {
+                logMessaggi.add( MessageLog( message, false, true ) )
+            }
+        }
+
+        var chatLog = ChatLog( logMessaggi, otherUserChat.of_user!! )
+        completion.invoke(chatLog, null)
         return
+    }
+
+    fun newMessage(
+        sender: String,
+        receiver: String,
+        body: String,
+        timestamp: String,
+        completion: (messageLog: MessageLog, error: String?) -> Unit
+    ) {
+        lateinit var senderUser: User
+        lateinit var receiverUser: User
+        for ( user in MockDatabase.instance.users_table ) {
+            if(user.id == sender) {
+                senderUser = user
+            } else if(user.id == receiver) {
+                receiverUser = user
+            }
+        }
+
+        lateinit var senderUserChat: UsersChat
+        lateinit var receiverUserChat : UsersChat
+        for ( usersChat in MockDatabase.instance.chats_table ) {
+            if(usersChat.of_user_id == sender && usersChat.other_user_chat!!.of_user_id == receiver) {
+                senderUserChat = usersChat
+                receiverUserChat = usersChat.other_user_chat!!
+            }
+        }
+
+        val newMessage = Message(
+            id = MockDatabase.instance.messages_table.size +1,
+            body = body,
+            timestamp = timestamp,
+            sender_id = sender,
+            sender_user = senderUser,
+            receiver_chat = receiverUserChat,
+            receiver_id = receiverUserChat.id
+        )
+
+        MockDatabase.instance.messages_table.add(newMessage)
+
+        completion.invoke(MessageLog(
+            message = newMessage,
+            inviato = true,
+            letto = true
+        ), null)
     }
 
 }

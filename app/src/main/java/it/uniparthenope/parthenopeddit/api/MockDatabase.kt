@@ -24,7 +24,7 @@ class MockDatabase private constructor() {
     val group_table = ArrayList<Group>()
     val reviews_table = ArrayList<Review>()
     val chats_table = ArrayList<UsersChat>()
-    val messagelog_table = ArrayList<MessageLog>()
+    val messages_table = ArrayList<Message>()
 
     init {
         /* Popolamento tabelle fittizie. */
@@ -255,20 +255,6 @@ class MockDatabase private constructor() {
             reviewed_course = C3
         )
 
-        val msg_log_12 = MessageLog(
-            id=1,
-            user1_id = u1.id,
-            user2_id = u2.id,
-            messages = ArrayList<Message>(listOf( Message(0,"Ciao!","18:58",false,null,u2.id,1), Message(1,"Ciao! Come stai?","18:58",true,null,u1.id,2), Message(2,"Diciamo, questi esami mi distruggono","18:59",false,null,u2.id,1), Message(3,"Eh già, ti capisco!","18:59",true,null,u1.id,2)))
-        )
-
-        val msg_log_13 = MessageLog(
-            id=1,
-            user1_id = u1.id,
-            user2_id = u3.id,
-            messages = ArrayList<Message>(listOf( Message(0,"Ao","4:20",false,null,u1.id,3), Message(1,"Che vuoi a quest'ora","4:20",true,null,u3.id,1), Message(2,"Devo darti una buona notizia","4:21",false,null,u1.id,3), Message(3,"Dimmi","4:21",true,null,u3.id,1), Message(3,"E' arrivato il carico di KitKat","4:22",true,null,u1.id,3)))
-        )
-
         val us_1_2 = UsersChat(
             id = 1,
             of_user_id = u1.id,
@@ -309,6 +295,91 @@ class MockDatabase private constructor() {
             of_user = u3
         )
 
+        /*CHAT TRA U1 E U2*/
+        val m1_u1_to_u2 = Message(
+            id = 0,
+            body = "Ciao!",
+            timestamp = "18:58",
+            sender_id = u1.id,
+            sender_user = u1,
+            receiver_id = us_2_1.id,
+            receiver_chat = us_2_1
+        )
+        val m2_u2_to_u1 = Message(
+            id = 1,
+            body = "Ciao! Come stai?",
+            timestamp = "18:58",
+            sender_id = u2.id,
+            sender_user = u2,
+            receiver_id = us_1_2.id,
+            receiver_chat = us_1_2
+        )
+        val m3_u1_to_u2 = Message(
+            id = 2,
+            body = "Diciamo, questi esami mi distruggono",
+            timestamp = "18:59",
+            sender_id = u1.id,
+            sender_user = u1,
+            receiver_id = us_2_1.id,
+            receiver_chat = us_2_1
+        )
+        val m4_u2_to_u1 = Message(
+            id = 1,
+            body = "Eh già, ti capisco!",
+            timestamp = "18:59",
+            sender_id = u2.id,
+            sender_user = u2,
+            receiver_id = us_1_2.id,
+            receiver_chat = us_1_2
+        )
+
+        /*CHAT TRA U1 E U3*/
+        val m5_u1_to_u3 = Message(
+            id = 5,
+            body = "Ao",
+            timestamp = "4:20",
+            sender_id = u1.id,
+            sender_user = u1,
+            receiver_id = us_3_1.id,
+            receiver_chat = us_3_1
+        )
+        val m6_u3_to_u1 = Message(
+            id = 6,
+            body = "Che vuoi a quest'ora",
+            timestamp = "4:20",
+            sender_id = u3.id,
+            sender_user = u3,
+            receiver_id = us_1_3.id,
+            receiver_chat = us_1_3
+        )
+        val m7_u1_to_u3 = Message(
+            id = 7,
+            body = "Devo darti una buona notizia",
+            timestamp = "4:21",
+            sender_id = u1.id,
+            sender_user = u1,
+            receiver_id = us_3_1.id,
+            receiver_chat = us_3_1
+        )
+        val m8_u3_to_u1 = Message(
+            id = 8,
+            body = "Dimmi",
+            timestamp = "4:21",
+            sender_id = u3.id,
+            sender_user = u3,
+            receiver_id = us_1_3.id,
+            receiver_chat = us_1_3
+        )
+        val m9_u1_to_u3 = Message(
+            id = 9,
+            body = "E' arrivato il carico di KitKat",
+            timestamp = "4:22",
+            sender_id = u1.id,
+            sender_user = u1,
+            receiver_id = us_3_1.id,
+            receiver_chat = us_3_1
+        )
+
 
         us_1_2.other_user_chat = us_2_1
         us_2_1.other_user_chat = us_1_2
@@ -339,8 +410,16 @@ class MockDatabase private constructor() {
         group_table.addAll(listOf(g1,g2,g3))
         reviews_table.addAll(listOf(r1,r2,r3,r4,r5))
         chats_table.addAll(listOf(us_1_2,us_2_1,us_1_3,us_3_1))
-        messagelog_table.addAll(listOf(msg_log_12, msg_log_13))
-
-
+        messages_table.addAll(listOf(
+            m1_u1_to_u2,
+            m2_u2_to_u1,
+            m3_u1_to_u2,
+            m4_u2_to_u1,
+            m5_u1_to_u3,
+            m6_u3_to_u1,
+            m7_u1_to_u3,
+            m8_u3_to_u1,
+            m9_u1_to_u3)
+        )
     }
 }

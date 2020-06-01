@@ -18,7 +18,6 @@ class User (
     @Transient var chats_with_users: ArrayList<UsersChat>? = null,
     @Transient var group_invites: ArrayList<GroupInvite>? = null
 ) : JSONConvertable {
-
     /* TODO
         sent_messages
     */
