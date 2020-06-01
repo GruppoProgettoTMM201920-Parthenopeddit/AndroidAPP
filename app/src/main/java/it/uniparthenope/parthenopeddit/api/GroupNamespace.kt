@@ -1,20 +1,71 @@
 package it.uniparthenope.parthenopeddit.api
 
-import it.uniparthenope.parthenopeddit.model.GroupMember
-import it.uniparthenope.parthenopeddit.model.Post
-import it.uniparthenope.parthenopeddit.model.User
+import it.uniparthenope.parthenopeddit.model.*
 
 interface GroupNamespace {
+    fun getUserGroups(
+        onSuccess: (groupMemberships: ArrayList<GroupMember>) -> Unit,
+        onFail: (error: String) -> Unit
+    )
 
-    /**
-     * GET GROUP POST
-     * Retrieves post of group given ID
-     */
-    fun getGroupPost(token: String, id_group: Int, completion: (postList: List<Post>?, error: String?) -> Unit)
+    fun createGroup(
+        group_name: String,
+        invitedUsersIds: List<String>,
+        onSuccess: (invitedUsers: ArrayList<GroupInvite>) -> Unit,
+        onFail: (error: String) -> Unit
+    )
 
-    /**
-     * GET GROUP INFO
-     * Retrieves info of group given ID
-     */
-    fun getGroupInfo(token: String, id_group: Int, completion: (name: String?, num_members: Int?, created: String?, members: ArrayList<GroupMember>?, error: String?) -> Unit)
+    fun getUserInvitesToGroup(
+        onSuccess: (invites: ArrayList<GroupInvite>) -> Unit,
+        onFail: (error: String) -> Unit
+    )
+
+    fun getGroup(
+        group_id: Int,
+        onSuccess: (group: Group) -> Unit,
+        onFail: (error: String) -> Unit
+    )
+
+    fun inviteUsersToGroup(
+        group_id: Int,
+        invitedUsersIds: List<String>,
+
+        onSuccess: (invites: ArrayList<GroupInvite>) -> Unit,
+        onFail: (error: String) -> Unit
+    )
+
+    fun getGroupInvites(
+        group_id: Int,
+        onSuccess: (invites: ArrayList<GroupInvite>) -> Unit,
+        onFail: (error: String) -> Unit
+    )
+
+    fun answerGroupInvite(
+        group_id: Int,
+        accept: Boolean,
+        onDecline: () -> Unit,
+        onAccept: (membership: GroupMember) -> Unit,
+        onFail: (error: String) -> Unit
+    )
+
+    fun leaveGroup(
+        group_id: Int,
+        onSuccess: () -> Unit,
+        onNewOwnerPromoted: () -> Unit,
+        onGroupDisbanded: () -> Unit,
+        onFail: (error: String) -> Unit
+    )
+
+    fun getGroupMembers(
+        group_id: Int,
+        onSuccess: (newOwners: ArrayList<GroupMember>) -> Unit,
+        onFail: (error: String) -> Unit
+    )
+
+    fun makeMembersOwners(
+        group_id: Int,
+        invitedUsersIds: List<String>,
+        onSuccess: (new_owners: ArrayList<GroupMember>) -> Unit,
+        onFail: (error: String) -> Unit
+    )
 }
