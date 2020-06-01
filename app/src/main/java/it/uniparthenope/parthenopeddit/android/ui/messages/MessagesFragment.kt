@@ -4,32 +4,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.R
-import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.GroupieViewHolder
-import com.xwray.groupie.Item
 import it.uniparthenope.parthenopeddit.android.ChatActivity
 import it.uniparthenope.parthenopeddit.android.adapters.ChatListAdapter
-import it.uniparthenope.parthenopeddit.android.ui.chat.UserChatFragment
 import it.uniparthenope.parthenopeddit.api.MockApiData
-//import it.uniparthenope.parthenopeddit.android.adapters.ChatListAdapter
-import it.uniparthenope.parthenopeddit.api.MockDatabase
 import it.uniparthenope.parthenopeddit.auth.Auth
-import it.uniparthenope.parthenopeddit.model.Board
 import it.uniparthenope.parthenopeddit.model.User
-import it.uniparthenope.parthenopeddit.model.UsersChat
-import kotlinx.android.synthetic.main.cardview_chat.view.*
-import kotlinx.android.synthetic.main.fragment_messages.*
 
 class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners {
 
@@ -70,7 +57,16 @@ class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners 
     }
 
     override fun onChatClick(user: User) {
-        val intent = Intent(requireContext(), ChatActivity(/*user*/)::class.java)
+        val intent = Intent(requireContext(), ChatActivity()::class.java)
+        var myUser: String = ""
+       /* try{
+            myUser = user.toJSON()
+        } catch(e: Exception){
+            Log.d("DEBUG", user.toString())
+        }
+        intent.putExtra("user", myUser)
+        */
+        Log.d("DEBUG", user.toString())
         startActivity(intent)
     }
 

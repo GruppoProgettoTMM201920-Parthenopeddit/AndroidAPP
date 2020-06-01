@@ -5,27 +5,37 @@ import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.ui.chat.UserChatFragment
 import it.uniparthenope.parthenopeddit.model.User
+import it.uniparthenope.parthenopeddit.util.toObject
 import kotlinx.android.synthetic.main.chat_activity.*
 
 
-class ChatActivity(/*private val userChat: User*/) : BasicActivity() {
+class ChatActivity() : BasicActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.chat_activity)
+        val extras = intent.extras
+        var user:User? = extras?.getString("user")?.toObject()
+
         val type = "user"//= intent.getParcelableExtra<String>(NewMessageActivity.USER_KEY)
-        val user : User = User("user2", "Marco Bottino","01/01/1970")//userChat //intent.getParcelableExtra<String>(NewMessageActivity.USER_KEY)
         val groupID = null//intent.getParcelableExtra<Int>(NewMessageActivity.USER_KEY)
 
-        username_chat_textview.text = user.display_name
+        username_chat_textview.text = user?.display_name
 
-        if (savedInstanceState == null) {
+        if(user==null){
+            finish()
+        } else {
 
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container,
-                    //if(type=="user") UserChatFragment.newInstance(user) else GroupChatFragment.newInstance(groupID))
-                    UserChatFragment.newInstance(user))
-                .commitNow()
+            if (savedInstanceState == null) {
+
+                supportFragmentManager.beginTransaction()
+                    .replace(
+                        R.id.container,
+                        //if(type=="user") UserChatFragment.newInstance(user) else GroupChatFragment.newInstance(groupID))
+                        UserChatFragment.newInstance(user)
+                    )
+                    .commitNow()
+            }
         }
 
 
