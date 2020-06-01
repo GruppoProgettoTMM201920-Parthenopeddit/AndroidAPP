@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import it.uniparthenope.parthenopeddit.App
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.CommentActivity
 //import it.uniparthenope.parthenopeddit.android.adapters.ChatListAdapter
@@ -21,7 +22,7 @@ import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.ui.user_activities.comment.CommentActivitiesViewModel
 import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.api.MockDatabase
-import it.uniparthenope.parthenopeddit.auth.Auth
+import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Comment
 import kotlinx.android.synthetic.main.fragment_messages.*
 
@@ -48,7 +49,9 @@ class CommentActivitiesFragment : Fragment(), CommentAdapter.CommentItemClickLis
         recycler_view.layoutManager = LinearLayoutManager(requireContext())
         recycler_view.setHasFixedSize(true)
 
-        MockApiData().getUserComment(Auth().token, "user1") { commentsItemList, error ->
+        val auth: AuthManager = (requireContext().applicationContext as App).auth
+
+        MockApiData().getUserComment( auth.token!!, "user1") { commentsItemList, error ->
             if( error != null ) {
                 Toast.makeText(requireContext(),"Errore : $error", Toast.LENGTH_LONG).show()
             } else {

@@ -8,10 +8,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import it.uniparthenope.parthenopeddit.App
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.adapters.ReviewAdapter
 import it.uniparthenope.parthenopeddit.api.MockApiData
-import it.uniparthenope.parthenopeddit.auth.Auth
+import it.uniparthenope.parthenopeddit.auth.AuthManager
 
 class CourseReviewFragment(courseID: Int) : Fragment(), ReviewAdapter.CourseReviewItemClickListeners{
 
@@ -24,6 +25,8 @@ class CourseReviewFragment(courseID: Int) : Fragment(), ReviewAdapter.CourseRevi
         //val fab = root.findViewById(R.id.fab) as FloatingActionButton
         recycler_view = root.findViewById(R.id.recycler_view2) as RecyclerView
 
+        val auth: AuthManager = (requireContext().applicationContext as App).auth
+
         val courseReviewAdapter = ReviewAdapter()
         courseReviewAdapter.setItemClickListener(this)
         recycler_view.adapter = courseReviewAdapter
@@ -31,7 +34,7 @@ class CourseReviewFragment(courseID: Int) : Fragment(), ReviewAdapter.CourseRevi
         recycler_view.setHasFixedSize(true)
 
 
-        MockApiData().getCourseReviews( Auth().token, courseId ) { reviewItemList, error ->
+        MockApiData().getCourseReviews( auth.token!!, courseId ) { reviewItemList, error ->
             if( error != null ) {
                 Toast.makeText(requireContext(),"Errore : $error", Toast.LENGTH_LONG).show()
             } else {

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mancj.materialsearchbar.MaterialSearchBar
+import it.uniparthenope.parthenopeddit.App
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.CommentActivity
@@ -28,8 +29,11 @@ import it.uniparthenope.parthenopeddit.android.ui.newGroup.NewGroupActivity
 import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
 import it.uniparthenope.parthenopeddit.android.ui.newReview.NewReviewActivity
 import it.uniparthenope.parthenopeddit.api.MockApiData
-import it.uniparthenope.parthenopeddit.auth.Auth
+import it.uniparthenope.parthenopeddit.api.requests.PostsRequests
+import it.uniparthenope.parthenopeddit.api.requests.UserRequests
+import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Board
+import it.uniparthenope.parthenopeddit.model.Post
 import kotlinx.android.synthetic.main.cardview_post.*
 
 
@@ -38,6 +42,8 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
     private lateinit var recycler_view: RecyclerView
     private lateinit var homeViewModel: HomeViewModel
     var isOpen = false
+
+    lateinit var auth: AuthManager
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_home, container, false)
@@ -77,7 +83,23 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         recycler_view.layoutManager = LinearLayoutManager(requireContext())
         recycler_view.setHasFixedSize(true)
 
-        MockApiData().getAllPost( Auth().token ) { postItemList, error ->
+        auth = (requireContext().applicationContext as App).auth
+
+
+        UserRequests(requireContext(), auth).getUserFeed(
+            1,
+            20,
+            {   listaPost: ArrayList<Post> ->
+                postAdapter.aggiungiPost( listaPost )
+                postAdapter.notifyDataSetChanged()
+            }, {
+                Toast.makeText(requireContext(), "errore : $it", Toast.LENGTH_LONG).show()
+            }
+        )
+
+        /*
+
+        MockApiData().getAllPost( auth.token!! ) { postItemList, error ->
             if( error != null ) {
                 Toast.makeText(requireContext(),"Errore : $error", Toast.LENGTH_LONG).show()
             } else {
@@ -86,6 +108,8 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
                 postAdapter.aggiungiPost( postItemList )
             }
         }
+
+         */
 
         val rotateClockwise = AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_clockwise)
         val rotateAnticlockwise = AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_anticlockwise)
@@ -188,14 +212,48 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         return root
     }
 
-    override fun onClickLike(id_post: Int) {
-        Toast.makeText(requireContext(),"you liked post id[$id_post]", Toast.LENGTH_LONG).show()
-        //TODO Send upvote through API
+    override fun onClickLike(
+        id_post: Int,
+        upvoteTextView: TextView,
+        downvoteTextView: TextView
+    ) {
+        PostsRequests(requireContext(), auth).likePost(
+            id_post,
+            {
+                /*Like piazzato */
+                upvoteTextView.text = (upvoteTextView.text.toString().toInt() + 1).toString()
+            }, {
+                /*Like rimosso */
+                upvoteTextView.text = (upvoteTextView.text.toString().toInt() - 1).toString()
+            }, {
+                /* dislike rimosso e piazzato like */
+                upvoteTextView.text = (upvoteTextView.text.toString().toInt() + 1).toString()
+                downvoteTextView.text = (downvoteTextView.text.toString().toInt() - 1).toString()
+            }, {
+            }
+        )
     }
 
-    override fun onClickDislike(id_post: Int) {
-        downvote_textview.text = (downvote_textview.text.toString().toInt() + 1).toString()
-        //TODO: Send downvote through API
+    override fun onClickDislike(
+        id_post: Int,
+        upvoteTextView: TextView,
+        downvoteTextView: TextView
+    ) {
+        PostsRequests(requireContext(), auth).dislikePost(
+            id_post,
+            {
+                /*disLike piazzato */
+                downvoteTextView.text = (downvoteTextView.text.toString().toInt() + 1).toString()
+            }, {
+                /*disLike rimosso */
+                downvoteTextView.text = (downvoteTextView.text.toString().toInt() - 1).toString()
+            }, {
+                /* like rimosso e piazzato disLike */
+                downvoteTextView.text = (downvoteTextView.text.toString().toInt() + 1).toString()
+                upvoteTextView.text = (upvoteTextView.text.toString().toInt() - 1).toString()
+            }, {
+            }
+        )
     }
 
     override fun onClickComments(id_post: Int) {

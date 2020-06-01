@@ -48,8 +48,8 @@ class ChatListAdapter() : RecyclerView.Adapter<ChatListAdapter.ChatListViewHolde
         val currentItem = chatList[position]
 
         holder.user_imageview.setImageResource(R.drawable.default_user_image)
-        holder.username_textview.text = currentItem.other_user.display_name
-        holder.latest_message_textview.text = currentItem.latest_message
+        holder.username_textview.text = currentItem.other_user_chat!!.of_user!!.display_name
+        holder.latest_message_textview.text = "ultimo messaggio"
         holder.date_textview.text = "10:00"
 
         if( listener != null ) {
@@ -67,7 +67,7 @@ class ChatListAdapter() : RecyclerView.Adapter<ChatListAdapter.ChatListViewHolde
             }
 
             holder.relativelayout.setOnClickListener {
-                listener!!.onChatClick(currentItem.other_user)
+                listener!!.onChatClick(currentItem.other_user_chat!!.of_user!!)
             }
         }
     }

@@ -11,11 +11,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import it.uniparthenope.parthenopeddit.App
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.ChatActivity
 import it.uniparthenope.parthenopeddit.android.adapters.ChatListAdapter
 import it.uniparthenope.parthenopeddit.api.MockApiData
-import it.uniparthenope.parthenopeddit.auth.Auth
+import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.User
 
 class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners {
@@ -43,7 +44,9 @@ class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners 
         recyclerview_latest_messages.layoutManager = LinearLayoutManager(requireContext())
         recyclerview_latest_messages.setHasFixedSize(true)
 
-        MockApiData().getChat( Auth().token, 1) { chatItemList, error ->
+        val auth: AuthManager = (requireContext().applicationContext as App).auth
+
+        MockApiData().getChat( auth.token!!, 1) { chatItemList, error ->
             if( error != null ) {
                 Toast.makeText(requireContext(),"Errore : $error", Toast.LENGTH_LONG).show()
             } else {

@@ -20,3 +20,8 @@ open class Content (
     var likes_num: Int? = null,
     var dislikes_num: Int? = null
 ) : JSONConvertable
+
+class LikeDislikeScore(
+    val likes_num: Int,
+    val dislikes_num: Int
+) : JSONConvertable

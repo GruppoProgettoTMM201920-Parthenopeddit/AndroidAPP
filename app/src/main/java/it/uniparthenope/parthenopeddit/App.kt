@@ -12,4 +12,13 @@ class App : Application() {
     var currentActivity: BasicActivity? = null
 
     val auth: AuthManager = SharedPreferencesAuth.getInstance(this)
+
+    override fun onCreate() {
+        super.onCreate()
+
+        /**
+         * Fake login
+         */
+        auth.login( auth.getToken("user1", "123"), "user1" )
+    }
 }

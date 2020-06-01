@@ -7,6 +7,7 @@ import it.uniparthenope.parthenopeddit.api.ApiClient
 import it.uniparthenope.parthenopeddit.api.ApiRoute
 import it.uniparthenope.parthenopeddit.api.namespaces.PostsNamespace
 import it.uniparthenope.parthenopeddit.auth.AuthManager
+import it.uniparthenope.parthenopeddit.model.LikeDislikeScore
 import it.uniparthenope.parthenopeddit.model.Post
 import it.uniparthenope.parthenopeddit.util.TAG
 import it.uniparthenope.parthenopeddit.util.toObject
@@ -125,9 +126,9 @@ class PostsRequests(private val ctx: Context, private val auth: AuthManager) : P
 
     override fun likePost(
         postId: Int,
-        onLikePlaced: () -> Unit,
-        onLikeRemoved: () -> Unit,
-        onDislikeRemovedAndLikePlaced: () -> Unit,
+        onLikePlaced: (score: LikeDislikeScore) -> Unit,
+        onLikeRemoved: (score: LikeDislikeScore) -> Unit,
+        onDislikeRemovedAndLikePlaced: (score: LikeDislikeScore) -> Unit,
         onFail: (error: String) -> Unit
     ) {
         ApiClient(ctx).performRequest(
@@ -143,11 +144,11 @@ class PostsRequests(private val ctx: Context, private val auth: AuthManager) : P
 
             }, { resultCode: Int, resultJson: String ->
                 if( resultCode == 210 ) {
-                    onLikePlaced()
+                    onLikePlaced(resultJson.toObject())
                 } else if( resultCode == 211 ) {
-                    onLikeRemoved()
+                    onLikeRemoved(resultJson.toObject())
                 } else if( resultCode == 212 ) {
-                    onDislikeRemovedAndLikePlaced()
+                    onDislikeRemovedAndLikePlaced(resultJson.toObject())
                 } else {
                     onFail("Error : $resultCode")
                 }
@@ -159,9 +160,9 @@ class PostsRequests(private val ctx: Context, private val auth: AuthManager) : P
 
     override fun dislikePost(
         postId: Int,
-        onDislikePlaced: () -> Unit,
-        onDislikeRemoved: () -> Unit,
-        onLikeRemovedAndDislikePlaced: () -> Unit,
+        onDislikePlaced: (score: LikeDislikeScore) -> Unit,
+        onDislikeRemoved: (score: LikeDislikeScore) -> Unit,
+        onLikeRemovedAndDislikePlaced: (score: LikeDislikeScore) -> Unit,
         onFail: (error: String) -> Unit
     ) {
         ApiClient(ctx).performRequest(
@@ -177,11 +178,11 @@ class PostsRequests(private val ctx: Context, private val auth: AuthManager) : P
 
             }, { resultCode: Int, resultJson: String ->
                 if( resultCode == 210 ) {
-                    onDislikePlaced()
+                    onDislikePlaced(resultJson.toObject())
                 } else if( resultCode == 211 ) {
-                    onDislikeRemoved()
+                    onDislikeRemoved(resultJson.toObject())
                 } else if( resultCode == 212 ) {
-                    onLikeRemovedAndDislikePlaced()
+                    onLikeRemovedAndDislikePlaced(resultJson.toObject())
                 } else {
                     onFail("Error : $resultCode")
                 }

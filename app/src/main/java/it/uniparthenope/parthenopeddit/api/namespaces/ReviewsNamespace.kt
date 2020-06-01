@@ -1,6 +1,7 @@
 package it.uniparthenope.parthenopeddit.api.namespaces
 
 import it.uniparthenope.parthenopeddit.model.Comment
+import it.uniparthenope.parthenopeddit.model.LikeDislikeScore
 import it.uniparthenope.parthenopeddit.model.Review
 
 interface ReviewsNamespace {
@@ -30,17 +31,17 @@ interface ReviewsNamespace {
     fun likeReview(
         reviewId:Int,
 
-        onLikePlaced: () -> Unit,
-        onLikeRemoved: () -> Unit,
-        onDislikeRemovedAndLikePlaced: () -> Unit,
+        onLikePlaced: (score: LikeDislikeScore) -> Unit,
+        onLikeRemoved: (score: LikeDislikeScore) -> Unit,
+        onDislikeRemovedAndLikePlaced: (score: LikeDislikeScore) -> Unit,
         onFail: (error: String) -> Unit
     )
     fun dislikeReview(
         reviewId:Int,
 
-        onDislikePlaced: () -> Unit,
-        onDislikeRemoved: () -> Unit,
-        onLikeRemovedAndDislikePlaced: () -> Unit,
+        onDislikePlaced: (score: LikeDislikeScore) -> Unit,
+        onDislikeRemoved: (score: LikeDislikeScore) -> Unit,
+        onLikeRemovedAndDislikePlaced: (score: LikeDislikeScore) -> Unit,
         onFail: (error: String) -> Unit
     )
 }

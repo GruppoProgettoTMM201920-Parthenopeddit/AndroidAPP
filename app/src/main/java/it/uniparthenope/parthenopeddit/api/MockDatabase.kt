@@ -179,9 +179,7 @@ class MockDatabase private constructor() {
             commented_content_id = 1,
             root_content_id = 1,
             author_id = u2.id,
-            author = u2,
-            commented_content = p1,
-            root_content = p1
+            author = u2
         )
         val c2 = Comment(
             id = 8,
@@ -190,9 +188,7 @@ class MockDatabase private constructor() {
             commented_content_id = 7,
             author_id = u1.id,
             author = u1,
-            root_content_id = 1,
-            commented_content = c1,
-            root_content = p1
+            root_content_id = 1
         )
 
         val r1 = Review(
@@ -258,40 +254,32 @@ class MockDatabase private constructor() {
         val us_1_2 = UsersChat(
             id = 1,
             of_user_id = u1.id,
-            latest_message = "Ciao bello, hai ganja?",
             last_opened_on = "2019/90/89-89:00:00Z",
             other_user_chat_id = 2,
-            other_user = u2,
             of_user = u1
         )
 
         val us_2_1 = UsersChat(
             id = 2,
             of_user_id = u2.id,
-            latest_message = "Ciao bello, hai ganja?",
             last_opened_on = "2019/90/89-89:00:00Z",
             other_user_chat_id = 1,
-            other_user = u1,
             of_user = u2
         )
 
         val us_1_3 = UsersChat(
             id = 1,
             of_user_id = u1.id,
-            latest_message = "E' arrivato il carico di KitKat",
             last_opened_on = "2019/90/89-89:00:00Z",
             other_user_chat_id = 3,
-            other_user = u3,
             of_user = u1
         )
 
         val us_3_1 = UsersChat(
             id = 3,
             of_user_id = u3.id,
-            latest_message = "E' arrivato il carico di KitKat",
             last_opened_on = "2019/90/89-89:00:00Z",
             other_user_chat_id = 1,
-            other_user = u1,
             of_user = u3
         )
 

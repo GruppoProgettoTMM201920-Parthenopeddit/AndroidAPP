@@ -7,14 +7,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.api.MockApiData
-import it.uniparthenope.parthenopeddit.auth.Auth
+import it.uniparthenope.parthenopeddit.auth.AuthManager
 import kotlinx.android.synthetic.main.activity_course.*
 import kotlinx.android.synthetic.main.activity_group.*
 
-class GroupActivity : AppCompatActivity() {
+class GroupActivity : BasicActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +33,7 @@ class GroupActivity : AppCompatActivity() {
         group_recyclerview.setHasFixedSize(true)
 
 
-        MockApiData().getGroupInfo( Auth().token, id_group) { name, num_members, created, members, error ->
+        MockApiData().getGroupInfo( app.auth.token!!, id_group) { name, num_members, created, members, error ->
             if(error != null){
                 //toast
             } else {
@@ -45,7 +46,7 @@ class GroupActivity : AppCompatActivity() {
         }
 
 
-        MockApiData().getGroupPost( Auth().token, id_group) { postItemList, error ->
+        MockApiData().getGroupPost( app.auth.token!!, id_group) { postItemList, error ->
             if( error != null ) {
                 Toast.makeText(this,"Errore : $error", Toast.LENGTH_LONG).show()
             } else {

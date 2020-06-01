@@ -13,16 +13,17 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.TextView
 import android.widget.Toast
+import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.adapters.CourseAdapter
 import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
 import it.uniparthenope.parthenopeddit.android.ui.newReview.NewReviewActivity
 import it.uniparthenope.parthenopeddit.android.ui.ui.main.SectionsPagerAdapter
 import it.uniparthenope.parthenopeddit.api.MockApiData
-import it.uniparthenope.parthenopeddit.auth.Auth
+import it.uniparthenope.parthenopeddit.auth.AuthManager
 import kotlinx.android.synthetic.main.activity_course.*
 
-class CourseActivity : AppCompatActivity() {
+class CourseActivity : BasicActivity() {
 
     var isOpen = false
 
@@ -47,7 +48,7 @@ class CourseActivity : AppCompatActivity() {
         val rotateAnticlockwise = AnimationUtils.loadAnimation(this, R.anim.rotate_anticlockwise)
 
 
-        MockApiData().getCourseInfo( Auth().token, courseId) { courseRating:Float, courseDifficulty:Float, numReviews: Int, courseName: String?, error: String? ->
+        MockApiData().getCourseInfo( app.auth.token!!, courseId) { courseRating:Float, courseDifficulty:Float, numReviews: Int, courseName: String?, error: String? ->
             course_name_textview.text = courseName
             course_enjoyment_rating.text = courseRating.toString()+"/5"
             course_difficulty_rating.text = courseDifficulty.toString()+"/5"

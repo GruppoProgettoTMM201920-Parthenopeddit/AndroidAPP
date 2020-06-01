@@ -4,8 +4,8 @@ import it.uniparthenope.parthenopeddit.model.*
 import kotlinx.android.synthetic.main.chat_fragment.*
 import java.sql.Timestamp
 
-class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNamespace, GroupNamespace {
-    override fun login(
+class MockApiData {
+    fun login(
         username: String,
         password: String,
         completion: (user: User?, error: String?) -> Unit
@@ -13,7 +13,7 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
         TODO("Not yet implemented")
     }
 
-    override fun getPost(
+    fun getPost(
         token: String,
         postId: Int,
         completion: (post: Post?, error: String?) -> Unit
@@ -21,14 +21,14 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
         TODO("Not yet implemented")
     }
 
-    override fun getAllPost(
+    fun getAllPost(
         token: String,
         completion: (postList: List<Post>?, error: String?) -> Unit
     ) {
         completion.invoke(MockDatabase.instance.posts_table, null)
     }
 
-    override fun publishNewPost(
+    fun publishNewPost(
         token: String,
         title: String,
         body: String?,
@@ -37,7 +37,7 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
         TODO("Not yet implemented")
     }
 
-    override fun getPostWithComments(
+    fun getPostWithComments(
         token: String,
         postId: Int,
         completion: (post: Post?, error: String?) -> Unit
@@ -51,7 +51,7 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
         completion.invoke(null, "no post with id $postId")
     }
 
-    override fun getGroupPost(
+    fun getGroupPost(
         token: String,
         id_group: Int,
         completion: (postList: List<Post>?, error: String?) -> Unit
@@ -62,7 +62,7 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
         )
     }
 
-    override fun getGroupInfo(
+    fun getGroupInfo(
         token: String,
         id_group: Int,
         completion: (name: String?, num_members: Int?, created: String?, members: ArrayList<GroupMember>?, error: String?) -> Unit
@@ -82,7 +82,7 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
         return
     }
 
-    override fun getComment(
+    fun getComment(
         token: String,
         commentId: Int,
         completion: (comment: Comment?, error: String?) -> Unit
@@ -90,7 +90,7 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
         TODO("Not yet implemented")
     }
 
-    override fun getUserComment(
+    fun getUserComment(
         token: String,
         userId: String,
         completion: (commentList: List<Comment>?, error: String?) -> Unit
@@ -101,7 +101,7 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
         )
     }
 
-    override fun getCommentWithComments(
+    fun getCommentWithComments(
         token: String,
         commentId: Int,
         completion: (comment: Comment?, error: String?) -> Unit
@@ -109,7 +109,7 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
         TODO("Not yet implemented")
     }
 
-    override fun publishCommentToPost(
+    fun publishCommentToPost(
         token: String,
         postId: Int,
         body: String,
@@ -118,7 +118,7 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
         TODO("Not yet implemented")
     }
 
-    override fun publishCommentToComment(
+    fun publishCommentToComment(
         token: String,
         commentId: Int,
         body: String,
@@ -127,14 +127,14 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
         TODO("Not yet implemented")
     }
 
-    override fun getAllReview(
+    fun getAllReview(
         token: String,
         completion: (reviewList: List<Review>?, error: String?) -> Unit
     ) {
         completion.invoke(MockDatabase.instance.reviews_table, null)
     }
 
-    override fun getCourseInfo(
+    fun getCourseInfo(
         token: String,
         courseId: Int,
         completion: (courseRating: Float, courseDifficulty: Float, numReviews: Int, courseName: String?, error: String?) -> Unit
@@ -148,7 +148,7 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
         completion.invoke(0F, 0F, 0,"no course with id $courseId", "no course with id $courseId")
     }
 
-    override fun getCourseReviews(
+    fun getCourseReviews(
         token: String,
         courseId: Int,
         completion: (reviewList: List<Review>?, error: String?) -> Unit
@@ -257,5 +257,4 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
             letto = true
         ), null)
     }
-
 }

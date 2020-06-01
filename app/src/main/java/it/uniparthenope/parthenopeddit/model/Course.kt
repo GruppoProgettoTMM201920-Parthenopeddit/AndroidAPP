@@ -6,7 +6,7 @@ class Course(
     id: Int,
     name: String,
     posts: ArrayList<Post>? = null,
-    posts_num: Int? = null
+    posts_num: Int? = null,
 
     var average_liking_score: Double? = null,
     var follower_number: Int? = null,

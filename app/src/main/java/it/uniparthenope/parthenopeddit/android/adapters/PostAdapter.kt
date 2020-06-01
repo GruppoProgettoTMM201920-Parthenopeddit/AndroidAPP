@@ -30,8 +30,8 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
     }
 
     interface PostItemClickListeners {
-        fun onClickLike(id_post:Int)
-        fun onClickDislike(id_post:Int)
+        fun onClickLike(id_post:Int, upvoteTextView: TextView, downvoteTextView: TextView)
+        fun onClickDislike(id_post:Int, upvoteTextView: TextView, downvoteTextView: TextView)
         fun onClickComments(id_post:Int)
         fun onBoardClick(board_id: Int?, board: Board?)
         fun onPostClick(id_post: Int)
@@ -53,10 +53,10 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
         holder.board_textview.text = currentItem.posted_to_board?.name?:"Generale"
         holder.timestamp_textview.text = currentItem.timestamp
         holder.posttext_textview.text = currentItem.body
-        holder.upvote_textview.text = "0"
-        holder.downvote_textview.text = "0"
+        holder.upvote_textview.text = currentItem.likes_num.toString()
+        holder.downvote_textview.text = currentItem.dislikes_num.toString()
 
-        if( currentItem.posted_to_board == null ) {
+        if( currentItem.posted_to_board == null || currentItem.posted_to_board_id == null || currentItem.posted_to_board_id == 0 ) {
             holder.board_textview.setBackgroundResource(R.drawable.general_textview_bubble)
             holder.board_textview.setTextColor(Color.BLACK)
         } else {
@@ -69,15 +69,11 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
 
         if( listener != null ) {
             holder.upvote_btn.setOnClickListener {
-                listener!!.onClickLike(currentItem.id)
-                holder.upvote_textview.text =
-                    (holder.upvote_textview.text.toString().toInt() + 1).toString()
+                listener!!.onClickLike(currentItem.id, holder.upvote_textview, holder.downvote_textview)
             }
 
             holder.downvote_btn.setOnClickListener {
-                listener!!.onClickLike(currentItem.id)
-                holder.downvote_textview.text =
-                    (holder.downvote_textview.text.toString().toInt() + 1).toString()
+                listener!!.onClickDislike(currentItem.id, holder.upvote_textview, holder.downvote_textview)
             }
 
             holder.comment_btn.setOnClickListener {

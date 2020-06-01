@@ -12,10 +12,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
+import it.uniparthenope.parthenopeddit.App
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.api.MockDatabase
-import it.uniparthenope.parthenopeddit.auth.Auth
+import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Message
 import it.uniparthenope.parthenopeddit.model.MessageLog
 import it.uniparthenope.parthenopeddit.model.User
@@ -42,8 +43,9 @@ class UserChatFragment(private val user: User) : Fragment() {
         val adapter = GroupAdapter<GroupieViewHolder>()
         var send_button_chat_log = view.findViewById<ImageButton>(R.id.send_button_chat_log)
 
+        val auth: AuthManager = (requireContext().applicationContext as App).auth
 
-        MockApiData().getChatMessages( Auth().token, "user1", user.id) { chatLog, error ->
+        MockApiData().getChatMessages( auth.token!!, "user1", user.id) { chatLog, error ->
             if( error != null ) {
                 Toast.makeText(requireContext(),"Errore : $error", Toast.LENGTH_LONG).show()
             } else {
