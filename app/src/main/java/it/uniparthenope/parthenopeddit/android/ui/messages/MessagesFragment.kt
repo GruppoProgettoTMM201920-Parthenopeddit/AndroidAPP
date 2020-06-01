@@ -58,17 +58,7 @@ class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners 
 
     override fun onChatClick(user: User) {
         val intent = Intent(requireContext(), ChatActivity()::class.java)
-        var myUser: String = ""
-       /* try{
-            myUser = user.toJSON()
-        } catch(e: Exception){
-            Log.d("DEBUG", user.toString())
-        }
-        intent.putExtra("user", myUser)
-        */
-        Log.d("DEBUG", user.toString())
+        intent.putExtra("user", user.toJSON())
         startActivity(intent)
     }
-
-
 }
