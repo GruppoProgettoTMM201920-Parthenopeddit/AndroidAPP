@@ -28,13 +28,11 @@ import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.ui.newGroup.NewGroupActivity
 import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
 import it.uniparthenope.parthenopeddit.android.ui.newReview.NewReviewActivity
-import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.api.requests.PostsRequests
 import it.uniparthenope.parthenopeddit.api.requests.UserRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Board
 import it.uniparthenope.parthenopeddit.model.Post
-import kotlinx.android.synthetic.main.cardview_post.*
 
 
 class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
@@ -55,26 +53,6 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         val fab_new_group_textview = root.findViewById(R.id.fab_new_group_textview) as TextView
         val fab_new_review_textview = root.findViewById(R.id.fab_new_review_textview) as TextView
 
-        /*
-        val listHeader = listOf("I tuoi corsi di studio", "I tuoi gruppi")
-
-        val coursesList = listOf("Corso 1","Corso 2","Corso 3","Corso 4")
-        val groupsList = listOf("Gruppo1","Gruppo 2","Gruppo 3","Gruppo 4")
-
-        //val groupList = resources.getStringArray(R.array.groups)
-
-
-        val listChild = HashMap<String, List<String>>()
-        listChild.put(listHeader[0], coursesList)
-        listChild.put(listHeader[1], groupsList)
-
-        val expandableListAdapter : ExpandableListAdapter = ExpandableListAdapter(requireContext(), listHeader, listChild)
-        //root.expandable_list_view.setAdapter(expandableListAdapter)
-        expandableListAdapter.notifyDataSetChanged()
-        //root.expandable_list_view
-
-         */
-
         recycler_view = root.findViewById(R.id.recycler_view) as RecyclerView
 
         val postAdapter = PostAdapter()
@@ -84,7 +62,6 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         recycler_view.setHasFixedSize(true)
 
         auth = (requireContext().applicationContext as App).auth
-
 
         UserRequests(requireContext(), auth).getUserFeed(
             1,
@@ -97,57 +74,27 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
             }
         )
 
-        /*
-
-        MockApiData().getAllPost( auth.token!! ) { postItemList, error ->
-            if( error != null ) {
-                Toast.makeText(requireContext(),"Errore : $error", Toast.LENGTH_LONG).show()
-            } else {
-                postItemList!!
-
-                postAdapter.aggiungiPost( postItemList )
-            }
-        }
-
-         */
-
         val rotateClockwise = AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_clockwise)
         val rotateAnticlockwise = AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_anticlockwise)
 
+
+        //TODO Ricerca
         //MATERIALSEARCHBAR
-        val lv = root.findViewById(R.id.search_listview) as ListView
+        val searchListView = root.findViewById(R.id.search_listview) as ListView
         val searchBar = root.findViewById(R.id.searchBar) as MaterialSearchBar
-        searchBar.setHint("Ricerca...")
-        searchBar.setSpeechMode(false)
-
-        var galaxies = arrayOf("Sombrero", "Cartwheel", "Pinwheel", "StarBust", "Whirlpool", "Ring Nebular", "Own Nebular", "Centaurus A", "Virgo Stellar Stream", "Canis Majos Overdensity", "Mayall's Object", "Leo", "Milky Way", "IC 1011", "Messier 81", "Andromeda", "Messier 87")
-
-        //ADAPTER
-        val adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_list_item_1, galaxies)
-        lv.setAdapter(adapter)
-
-
 
         searchBar.setCardViewElevation(10)
         searchBar.addTextChangeListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
-
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
-
             override fun afterTextChanged(editable: Editable) {
-
             }
-
         })
         searchBar.setOnSearchActionListener(object : MaterialSearchBar.OnSearchActionListener {
             override fun onSearchStateChanged(enabled: Boolean) {
-
             }
-
             override fun onSearchConfirmed(text: CharSequence) {
-
             }
-
             override fun onButtonClicked(buttonCode: Int) {
                 when (buttonCode) {
                     MaterialSearchBar.BUTTON_NAVIGATION -> {
@@ -221,14 +168,16 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
             id_post,
             {
                 /*Like piazzato */
-                upvoteTextView.text = (upvoteTextView.text.toString().toInt() + 1).toString()
+                upvoteTextView.text = it.likes_num.toString()
+                downvoteTextView.text = it.dislikes_num.toString()
             }, {
                 /*Like rimosso */
-                upvoteTextView.text = (upvoteTextView.text.toString().toInt() - 1).toString()
+                upvoteTextView.text = it.likes_num.toString()
+                downvoteTextView.text = it.dislikes_num.toString()
             }, {
                 /* dislike rimosso e piazzato like */
-                upvoteTextView.text = (upvoteTextView.text.toString().toInt() + 1).toString()
-                downvoteTextView.text = (downvoteTextView.text.toString().toInt() - 1).toString()
+                upvoteTextView.text = it.likes_num.toString()
+                downvoteTextView.text = it.dislikes_num.toString()
             }, {
             }
         )
@@ -243,14 +192,16 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
             id_post,
             {
                 /*disLike piazzato */
-                downvoteTextView.text = (downvoteTextView.text.toString().toInt() + 1).toString()
+                upvoteTextView.text = it.likes_num.toString()
+                downvoteTextView.text = it.dislikes_num.toString()
             }, {
                 /*disLike rimosso */
-                downvoteTextView.text = (downvoteTextView.text.toString().toInt() - 1).toString()
+                upvoteTextView.text = it.likes_num.toString()
+                downvoteTextView.text = it.dislikes_num.toString()
             }, {
                 /* like rimosso e piazzato disLike */
-                downvoteTextView.text = (downvoteTextView.text.toString().toInt() + 1).toString()
-                upvoteTextView.text = (upvoteTextView.text.toString().toInt() - 1).toString()
+                upvoteTextView.text = it.likes_num.toString()
+                downvoteTextView.text = it.dislikes_num.toString()
             }, {
             }
         )

@@ -109,10 +109,13 @@ class PostsRequests(private val ctx: Context, private val auth: AuthManager) : P
                 if( resultCode == 200 ) {
                     Log.d(TAG, resultJson)
                     try {
+                        Log.d(TAG, "TRYING TO PARSE")
                         onSuccess(resultJson.toObject())
                     } catch (e: Exception) {
+                        Log.d(TAG, "ERROR IN PARSING")
+                        Log.d(TAG, e.message?:"error")
+                        e.printStackTrace()
                         onFail("Could not parse request result as post data")
-                        Log.d(TAG, resultJson)
                         return@performRequest
                     }
                 } else {

@@ -45,7 +45,7 @@
 
 
         <TextView
-            android:id="@+id/group_textview"
+            android:id="@+id/board_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/title_textview"
@@ -66,7 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/title_textview"
             android:layout_marginLeft="10dp"
-            android:layout_toEndOf="@+id/group_textview"
+            android:layout_toEndOf="@+id/board_textview"
             android:text="•" />
 
         <TextView
@@ -82,7 +82,7 @@
             android:id="@+id/posttext_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/group_textview"
+            android:layout_below="@+id/board_textview"
             android:layout_toEndOf="@+id/image_view"
             android:layout_marginTop="10dp"
 
@@ -126,7 +126,7 @@
             />
 
         <TextView
-            android:id="@+id/comments_textview"
+            android:id="@+id/comment_comments_textview"
             android:layout_width="30dp"
             android:layout_height="20dp"
             android:layout_below="@+id/posttext_textview"

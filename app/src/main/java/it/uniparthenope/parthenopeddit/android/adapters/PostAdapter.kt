@@ -55,6 +55,7 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
         holder.posttext_textview.text = currentItem.body
         holder.upvote_textview.text = currentItem.likes_num.toString()
         holder.downvote_textview.text = currentItem.dislikes_num.toString()
+        holder.comments_textview.text = currentItem.comments_num.toString()
 
         if( currentItem.posted_to_board == null || currentItem.posted_to_board_id == null || currentItem.posted_to_board_id == 0 ) {
             holder.board_textview.setBackgroundResource(R.drawable.general_textview_bubble)
@@ -96,7 +97,7 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
         val imageView: ImageView = itemView.image_view
         val username_textview: TextView = itemView.username_textview
         val title_textview: TextView = itemView.title_textview
-        val board_textview: TextView = itemView.group_textview
+        val board_textview: TextView = itemView.board_textview
         val timestamp_textview: TextView = itemView.timestamp_textview
         val posttext_textview: TextView = itemView.posttext_textview
         val upvote_btn: ImageButton = itemView.upvote_btn
@@ -104,6 +105,7 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
         val upvote_textview: TextView = itemView.upvote_textview
         val downvote_textview: TextView = itemView.downvote_textview
         val comment_btn: ImageButton = itemView.comments_btn
+        val comments_textview: TextView = itemView.comment_comments_textview
         val relativeLayout: RelativeLayout = itemView.post_relativelayout
     }
 }
