@@ -22,7 +22,8 @@
             android:label="@string/title_activity_review"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".android.SettingsActivity" />
-        <activity android:name=".android.UserActivity">
+        <activity android:name=".android.UserActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="it.uniparthenope.parthenopeddit.android.UserActivity" />
 

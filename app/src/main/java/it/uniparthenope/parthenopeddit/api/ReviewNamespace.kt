@@ -14,7 +14,7 @@ interface ReviewNamespace {
      * GET COURSE RATING
      * Retrieves info of a course given ID
      */
-    fun getCourseInfo(token: String, courseId: Int, completion: (courseRating: Float, courseDifficulty: Float, numReviews: Int, courseName: String?,  error: String?) -> Unit)
+    fun getCourseInfo(token: String, courseId: Int, completion: (courseRating: Float, courseDifficulty: Float, numReviews: Int, courseName: String?, ifFollowed: Boolean,  error: String?) -> Unit)
 
     /**
      * GET COURSE REVIEWS

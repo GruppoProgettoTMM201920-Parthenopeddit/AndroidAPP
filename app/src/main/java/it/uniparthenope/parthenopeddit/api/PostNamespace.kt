@@ -21,7 +21,7 @@ interface PostNamespace {
      * Post needs title and may have a body
      * on completion returns created post
      */
-    fun publishNewPost(token: String, title:String, body:String?, completion: (post: Post?, error: String?) -> Unit)
+    fun publishNewPost(token: String, title:String, body:String, boardId: Int, completion: (post: Post?, error: String?) -> Unit)
 
     /**
      * GET POST WITH COMMENTS

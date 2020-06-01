@@ -24,6 +24,7 @@
                 android:inputType="textMultiLine"
                 android:maxWidth="250dp"
                 android:text="Nome corso"
+                android:textColor="@color/white"
                 android:textSize="20dp" />
 
 
@@ -170,8 +171,28 @@
                     android:text="4.5/5"
                     android:textSize="20dp" />
             </RelativeLayout>
+
         </androidx.appcompat.widget.Toolbar>
-        
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/follow_toolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/follow_button"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:background="@drawable/course_follow_bubble"
+                android:drawableLeft="@drawable/ic_follow_themecolor_24dp"
+                android:drawablePadding="2dip"
+                android:paddingLeft="30dip"
+                android:paddingRight="26dip"
+                android:text="Segui"
+                android:textColor="@color/colorPrimary"/>
+
+        </androidx.appcompat.widget.Toolbar>
+
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
@@ -183,6 +204,7 @@
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#595959"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <TextView

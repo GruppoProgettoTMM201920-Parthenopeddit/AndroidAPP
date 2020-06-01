@@ -50,15 +50,17 @@ class CourseAdapter(fm: FragmentManager, courseId: Int) : FragmentPagerAdapter(f
     override fun getCourseInfo(
         token: String,
         courseId: Int,
-        completion: (courseRating: Float, courseDifficulty: Float, numReviews: Int, courseName: String?, error: String?) -> Unit
+        completion: (courseRating: Float, courseDifficulty: Float, numReviews: Int, courseName: String?, isFollowed: Boolean, error: String?) -> Unit
     ) {
+        var isFollowed: Boolean = false
         for (course in MockDatabase.instance.course_table) {
             if (course.id == courseId) {
-                completion.invoke(course.average_liking_score!!.toFloat(), course.average_difficulty_score!!.toFloat(), course.reviews_count!!, course.name, null)
+                if( MockDatabase.instance.users_table.filter{ it.id == "user1"}.single().followed_courses?.filter { it.id == courseId } != null ){ isFollowed=true }
+                completion.invoke(course.average_liking_score!!.toFloat(), course.average_difficulty_score!!.toFloat(), course.reviews_count!!, course.name, isFollowed, null)
                 return
             }
         }
-        completion.invoke(0F, 0F, 0,"no course with id $courseId", "no course with id $courseId")
+        completion.invoke(0F, 0F, 0,"no course with id $courseId", isFollowed,"no course with id $courseId")
     }
 
     override fun getCourseReviews(

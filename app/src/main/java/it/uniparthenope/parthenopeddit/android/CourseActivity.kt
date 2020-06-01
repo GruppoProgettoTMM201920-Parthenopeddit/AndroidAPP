@@ -2,22 +2,19 @@ package it.uniparthenope.parthenopeddit.android
 
 import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.tabs.TabLayout
-import androidx.viewpager.widget.ViewPager
-import androidx.appcompat.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuItem
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.viewpager.widget.ViewPager
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.tabs.TabLayout
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.adapters.CourseAdapter
 import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
 import it.uniparthenope.parthenopeddit.android.ui.newReview.NewReviewActivity
-import it.uniparthenope.parthenopeddit.android.ui.ui.main.SectionsPagerAdapter
 import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.auth.Auth
 import kotlinx.android.synthetic.main.activity_course.*
@@ -25,12 +22,13 @@ import kotlinx.android.synthetic.main.activity_course.*
 class CourseActivity : AppCompatActivity() {
 
     var isOpen = false
+    var isFollowed: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_course)
         var intent: Intent = getIntent()
-        val courseId = intent.getIntExtra("id_group",0)        //TODO(DEVE ESSERE OTTENUTO DA QUERY)
+        var courseId : Int = intent.getIntExtra("id_group",0)        //TODO(DEVE ESSERE OTTENUTO DA QUERY)
 
         val sectionsPagerAdapter = CourseAdapter(supportFragmentManager,courseId)
         val viewPager: ViewPager = findViewById(R.id.view_pager)
@@ -38,6 +36,7 @@ class CourseActivity : AppCompatActivity() {
         val tabLayout: TabLayout = findViewById(R.id.tabLayout)
         tabLayout.setupWithViewPager(viewPager)
 
+        val follow_button = findViewById(R.id.follow_button) as Button
         val fab = findViewById(R.id.fab) as FloatingActionButton
         val fab_new_post = findViewById(R.id.fab_new_post) as FloatingActionButton
         val fab_new_review = findViewById(R.id.fab_new_review) as FloatingActionButton
@@ -47,7 +46,14 @@ class CourseActivity : AppCompatActivity() {
         val rotateAnticlockwise = AnimationUtils.loadAnimation(this, R.anim.rotate_anticlockwise)
 
 
-        MockApiData().getCourseInfo( Auth().token, courseId) { courseRating:Float, courseDifficulty:Float, numReviews: Int, courseName: String?, error: String? ->
+        MockApiData().getCourseInfo( Auth().token, courseId) { courseRating:Float, courseDifficulty:Float, numReviews: Int, courseName: String?, isFollowedCourse: Boolean, error: String? ->
+
+            if(isFollowedCourse){
+                isFollowed = true
+                follow_button.text = "Non seguire"
+                val imgResource: Int = R.drawable.ic_unfollow_themecolor_24dp
+                follow_button.setCompoundDrawablesWithIntrinsicBounds(imgResource, 0, 0, 0);
+            }
             course_name_textview.text = courseName
             course_enjoyment_rating.text = courseRating.toString()+"/5"
             course_difficulty_rating.text = courseDifficulty.toString()+"/5"
@@ -56,6 +62,24 @@ class CourseActivity : AppCompatActivity() {
 
             setEnjoymentStars(courseRating)
             setDifficultyStars(courseDifficulty)
+        }
+
+        follow_button.setOnClickListener {
+            if(isFollowed){
+                //TODO: unfollow course
+                Toast.makeText(this, "Hai smesso di seguire ${course_name_textview.text}",Toast.LENGTH_LONG).show()
+                follow_button.text = "Segui"
+                val imgResource: Int = R.drawable.ic_follow_themecolor_24dp
+                follow_button.setCompoundDrawablesWithIntrinsicBounds(imgResource, 0, 0, 0)
+                isFollowed = false
+            } else {
+                //TODO: follow course
+                Toast.makeText(this, "Hai seguito ${course_name_textview.text}",Toast.LENGTH_LONG).show()
+                follow_button.text = "Non seguire"
+                val imgResource: Int = R.drawable.ic_unfollow_themecolor_24dp
+                follow_button.setCompoundDrawablesWithIntrinsicBounds(imgResource, 0, 0, 0)
+                isFollowed = true
+            }
         }
 
         fab.setOnClickListener{
@@ -89,10 +113,10 @@ class CourseActivity : AppCompatActivity() {
             }
         }
 
-        fab_new_post.setOnClickListener{ onClickNewPost() }
-        fab_new_post_textview.setOnClickListener{ onClickNewPost() }
-        fab_new_review.setOnClickListener{ onClickNewReview() }
-        fab_new_review_textview.setOnClickListener{ onClickNewReview() }
+        fab_new_post.setOnClickListener{ onClickNewPost(courseId) }
+        fab_new_post_textview.setOnClickListener{ onClickNewPost(courseId) }
+        fab_new_review.setOnClickListener{ onClickNewReview(courseId) }
+        fab_new_review_textview.setOnClickListener{ onClickNewReview(courseId) }
     }
 
     fun setEnjoymentStars(score_liking: Float){
@@ -229,17 +253,19 @@ class CourseActivity : AppCompatActivity() {
 
     }
 
-    fun onClickNewPost(){
+    fun onClickNewPost(courseId: Int){
         //crea dialogo
         //passi fuonzione da effettuare onSuccess
         //uploiad to api
         //notifidatasetchanged()
         val intent = Intent(this, NewPostActivity::class.java)
+        intent.putExtra("id_group", courseId)
         startActivity(intent)
     }
 
-    fun onClickNewReview(){
+    fun onClickNewReview(courseId: Int){
         val intent = Intent(this, NewReviewActivity::class.java)
+        intent.putExtra("id_group", courseId)
         startActivity(intent)
     }
 }

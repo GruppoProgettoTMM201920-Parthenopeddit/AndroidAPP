@@ -22,6 +22,7 @@ class MockDatabase private constructor() {
     val comments_table = ArrayList<Comment>()
     val course_table = ArrayList<Course>()
     val group_table = ArrayList<Group>()
+    val board_table = ArrayList<Board>()
     val reviews_table = ArrayList<Review>()
     val chats_table = ArrayList<UsersChat>()
     val messages_table = ArrayList<Message>()
@@ -389,6 +390,8 @@ class MockDatabase private constructor() {
         u1.published_posts = ArrayList<Post>(listOf(p1,p3,p4))
         u1.published_comments = ArrayList<Comment>(listOf(c2))
         u1.published_reviews = ArrayList<Review>(listOf(r1,r3,r5))
+        u1.followed_courses = ArrayList<Course>(listOf(C1,C2))
+        u1.groups = ArrayList<Group>(listOf(g1,g2,g3))
 
         u2.published_posts = ArrayList<Post>(listOf(p2,p5,p6,p7))
         u2.published_comments = ArrayList<Comment>(listOf(c1))
@@ -408,6 +411,8 @@ class MockDatabase private constructor() {
         comments_table.addAll(listOf(c1,c2))
         course_table.addAll(listOf(C1,C2,C3))
         group_table.addAll(listOf(g1,g2,g3))
+        board_table.addAll(course_table)
+        board_table.addAll(group_table)
         reviews_table.addAll(listOf(r1,r2,r3,r4,r5))
         chats_table.addAll(listOf(us_1_2,us_2_1,us_1_3,us_3_1))
         messages_table.addAll(listOf(

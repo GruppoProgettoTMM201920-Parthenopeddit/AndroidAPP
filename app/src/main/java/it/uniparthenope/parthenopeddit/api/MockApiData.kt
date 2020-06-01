@@ -31,7 +31,8 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
     override fun publishNewPost(
         token: String,
         title: String,
-        body: String?,
+        body: String,
+        boardId: Int,
         completion: (post: Post?, error: String?) -> Unit
     ) {
         TODO("Not yet implemented")
@@ -51,7 +52,7 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
         completion.invoke(null, "no post with id $postId")
     }
 
-    override fun getGroupPost(
+    fun getGroupPost(
         token: String,
         id_group: Int,
         completion: (postList: List<Post>?, error: String?) -> Unit
@@ -62,7 +63,7 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
         )
     }
 
-    override fun getGroupInfo(
+    fun getGroupInfo(
         token: String,
         id_group: Int,
         completion: (name: String?, num_members: Int?, created: String?, members: ArrayList<GroupMember>?, error: String?) -> Unit
@@ -137,15 +138,19 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
     override fun getCourseInfo(
         token: String,
         courseId: Int,
-        completion: (courseRating: Float, courseDifficulty: Float, numReviews: Int, courseName: String?, error: String?) -> Unit
+        completion: (courseRating: Float, courseDifficulty: Float, numReviews: Int, courseName: String?, isFollowed: Boolean, error: String?) -> Unit
     ) {
+        var isFollowed: Boolean = false
         for (course in MockDatabase.instance.course_table) {
             if (course.id == courseId) {
-                completion.invoke(course.average_liking_score!!.toFloat(), course.average_difficulty_score!!.toFloat(), course.reviews_count!!, course.name, null)
+
+                if( MockDatabase.instance.users_table.filter{ it.id == "user1"}.single().followed_courses?.filter { it.id == courseId } != null ){ isFollowed=true }
+
+                completion.invoke(course.average_liking_score!!.toFloat(), course.average_difficulty_score!!.toFloat(), course.reviews_count!!, course.name, isFollowed,null)
                 return
             }
         }
-        completion.invoke(0F, 0F, 0,"no course with id $courseId", "no course with id $courseId")
+        completion.invoke(0F, 0F, 0,"no course with id $courseId", false,"no course with id $courseId")
     }
 
     override fun getCourseReviews(
@@ -256,6 +261,112 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
             inviato = true,
             letto = true
         ), null)
+    }
+
+    override fun getUserGroups(
+        onSuccess: (groupMemberships: ArrayList<GroupMember>) -> Unit,
+        onFail: (error: String) -> Unit
+    ) {
+        TODO("Not yet implemented")
+    }
+
+    override fun createGroup(
+        group_name: String,
+        invitedUsersIds: List<String>,
+        onSuccess: (invitedUsers: ArrayList<GroupInvite>) -> Unit,
+        onFail: (error: String) -> Unit
+    ) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getUserInvitesToGroup(
+        onSuccess: (invites: ArrayList<GroupInvite>) -> Unit,
+        onFail: (error: String) -> Unit
+    ) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getGroup(
+        group_id: Int,
+        onSuccess: (group: Group) -> Unit,
+        onFail: (error: String) -> Unit
+    ) {
+        TODO("Not yet implemented")
+    }
+
+    override fun inviteUsersToGroup(
+        group_id: Int,
+        invitedUsersIds: List<String>,
+        onSuccess: (invites: ArrayList<GroupInvite>) -> Unit,
+        onFail: (error: String) -> Unit
+    ) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getGroupInvites(
+        group_id: Int,
+        onSuccess: (invites: ArrayList<GroupInvite>) -> Unit,
+        onFail: (error: String) -> Unit
+    ) {
+        TODO("Not yet implemented")
+    }
+
+    override fun answerGroupInvite(
+        group_id: Int,
+        accept: Boolean,
+        onDecline: () -> Unit,
+        onAccept: (membership: GroupMember) -> Unit,
+        onFail: (error: String) -> Unit
+    ) {
+        TODO("Not yet implemented")
+    }
+
+    override fun leaveGroup(
+        group_id: Int,
+        onSuccess: () -> Unit,
+        onNewOwnerPromoted: () -> Unit,
+        onGroupDisbanded: () -> Unit,
+        onFail: (error: String) -> Unit
+    ) {
+        TODO("Not yet implemented")
+    }
+
+    override fun getGroupMembers(
+        group_id: Int,
+        onSuccess: (newOwners: ArrayList<GroupMember>) -> Unit,
+        onFail: (error: String) -> Unit
+    ) {
+        TODO("Not yet implemented")
+    }
+
+    fun getUserBoard(
+        token: String,
+        userId: String,
+        completion: (boards: ArrayList<Board>?, error: String?) -> Unit
+    ) {
+        var courses : ArrayList<Course>? = MockDatabase.instance.users_table.filter{it.id == userId}.single().followed_courses
+        var groups : ArrayList<Group>? = MockDatabase.instance.users_table.filter{it.id == userId}.single().groups
+        var boards : ArrayList<Board>? = ArrayList<Board>()
+        if (courses != null) {
+            boards?.addAll(courses)
+        }
+        if (groups != null) {
+            boards?.addAll(groups)
+        }
+        if(boards?.isNotEmpty()!!){
+            completion.invoke(boards, null)
+        } else{
+            completion.invoke(null, "L'utente non segue corsi o gruppi")
+        }
+    }
+
+    override fun makeMembersOwners(
+        group_id: Int,
+        invitedUsersIds: List<String>,
+        onSuccess: (new_owners: ArrayList<GroupMember>) -> Unit,
+        onFail: (error: String) -> Unit
+    ) {
+        TODO("Not yet implemented")
     }
 
 }

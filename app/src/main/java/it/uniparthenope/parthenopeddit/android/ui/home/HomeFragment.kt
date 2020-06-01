@@ -236,6 +236,7 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         //uploiad to api
         //notifidatasetchanged()
         val intent = Intent(requireContext(), NewPostActivity::class.java)
+        intent.putExtra("id_group",-1)
         startActivity(intent)
     }
 
@@ -246,6 +247,7 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
     fun onClickNewReview(){
         val intent = Intent(requireContext(), NewReviewActivity::class.java)
+        intent.putExtra("id_group",-1)
         startActivity(intent)
     }
 }
