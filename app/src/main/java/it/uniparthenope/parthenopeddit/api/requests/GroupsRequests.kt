@@ -299,10 +299,30 @@ class GroupsRequests(private val ctx: Context, private val auth: AuthManager) : 
 
     override fun getGroupMembers(
         group_id: Int,
-        onSuccess: (members: ArrayList<GroupMember>) -> Unit,
+        onSuccess: (newOwners: ArrayList<GroupMember>) -> Unit,
         onFail: (error: String) -> Unit
     ) {
-        TODO("Not yet implemented")
+        ApiClient(ctx).performRequest(
+            object : ApiRoute() {
+                override val url: String
+                    get() = "$baseUrl/groups/$group_id/members"
+                override val httpMethod: Int
+                    get() = Request.Method.GET
+                override val params: HashMap<String, String>
+                    get() = getParamsMap()
+                override val headers: HashMap<String, String>
+                    get() = getHeadersMap(auth.token!!)
+
+            }, { resultCode: Int, resultJson: String ->
+                if( resultCode == 200 ) {
+                    onSuccess(JSONArray(resultJson).toArrayList())
+                } else {
+                    onFail("Error : $resultCode")
+                }
+            }, { _, error: String ->
+                onFail.invoke(error)
+            }
+        )
     }
 
     override fun makeMembersOwners(
@@ -311,15 +331,56 @@ class GroupsRequests(private val ctx: Context, private val auth: AuthManager) : 
         onSuccess: (new_owners: ArrayList<GroupMember>) -> Unit,
         onFail: (error: String) -> Unit
     ) {
-        TODO("Not yet implemented")
+        ApiClient(ctx).performRequest(
+            object : ApiRoute() {
+                override val url: String
+                    get() = "$baseUrl/groups/$group_id/members/make_owner"
+                override val httpMethod: Int
+                    get() = Request.Method.POST
+                override val params: HashMap<String, String>
+                    get() {
+                        val params = getParamsMap()
+                        params["users_list"] = Gson().toJson(invitedUsersIds)
+                        return params
+                    }
+                override val headers: HashMap<String, String>
+                    get() = getHeadersMap(auth.token!!)
+
+            }, { resultCode: Int, resultJson: String ->
+                if( resultCode == 201 ) {
+                    onSuccess(JSONArray(resultJson).toArrayList())
+                } else {
+                    onFail("Error : $resultCode")
+                }
+            }, { _, error: String ->
+                onFail.invoke(error)
+            }
+        )
     }
 
     override fun getGroupPosts(
         group_id: Int,
+        per_page: Int?,
+        page: Int?,
         onSuccess: (posts: ArrayList<Post>) -> Unit,
         onFail: (error: String) -> Unit
     ) {
-        TODO("Not yet implemented")
+        /*
+        ApiClient(ctx).performRequest(
+            object : ApiRoute() {
+                override val url: String
+                    get() = "$baseUrl/groups/$group_id/posts/${ baseUrl }"
+                override val httpMethod: Int
+                    get() = TODO("Not yet implemented")
+                override val params: HashMap<String, String>
+                    get() = TODO("Not yet implemented")
+                override val headers: HashMap<String, String>
+                    get() = TODO("Not yet implemented")
+
+            }
+        )
+
+         */
     }
 
     override fun publishPostToGroup(

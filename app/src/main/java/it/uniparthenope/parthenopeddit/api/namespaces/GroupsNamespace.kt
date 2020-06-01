@@ -67,7 +67,7 @@ interface GroupsNamespace {
     )
     fun makeMembersOwners(
         group_id: Int,
-        invitedUsersIds: List<String>,
+        newOwners: List<String>,
 
         onSuccess: (new_owners: ArrayList<GroupMember>) -> Unit,
         onFail: (error: String) -> Unit
@@ -75,6 +75,8 @@ interface GroupsNamespace {
 
     fun getGroupPosts(
         group_id: Int,
+        per_page: Int? = null,
+        page: Int? = null,
 
         onSuccess: (posts: ArrayList<Post>) -> Unit,
         onFail: (error: String) -> Unit

@@ -271,10 +271,59 @@ class GroupsRequestsTest : ApiRequestsTest() {
 
     @Test
     fun getGroupMembers() {
+        logUser(app.auth, "user2")
+
+        val group_id = 2
+
+        groupsRequests.getGroupMembers(
+            group_id,
+            { members: ArrayList<GroupMember> ->
+                assertNotNull(members)
+                assertEquals(2, members.size)
+                assertEquals("user2", members[0].user_id)
+                assertEquals(true, members[0].is_owner)
+                assertEquals("user3", members[1].user_id)
+                assertEquals(false, members[1].is_owner)
+
+                lock.withLock {
+                    condition.signal()
+                }
+            }, {
+                throw Exception()
+            }
+        )
+
+        lock.withLock {
+            condition.await()
+        }
     }
 
     @Test
     fun makeMembersOwners() {
+        logUser(app.auth, "user2")
+
+        val group_id = 2
+
+        groupsRequests.makeMembersOwners(
+            group_id,
+            listOf("user3"),
+            { newOwners: ArrayList<GroupMember> ->
+                assertNotNull(newOwners)
+                assertEquals(1, newOwners.size)
+                assertEquals("user3", newOwners[0].user_id)
+                assertEquals(true, newOwners[0].is_owner)
+
+                lock.withLock {
+                    condition.signal()
+                }
+            }, {
+                throw Exception()
+            }
+        )
+
+        lock.withLock {
+            condition.await()
+        }
     }
 
     @Test
