@@ -10,7 +10,6 @@ import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Post
 import it.uniparthenope.parthenopeddit.util.TAG
 import it.uniparthenope.parthenopeddit.util.toObject
-import org.json.HTTP
 
 class PostsRequests(private val ctx: Context, private val auth: AuthManager) : PostsNamespace {
 
