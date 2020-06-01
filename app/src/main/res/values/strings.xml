@@ -7,7 +7,7 @@
 
     <string name="welcome_it">Benvenuto.</string>
     <string name="auth_help_it">Effettua il login con le tue credenziali Esse3.</string>
-    <string name="shared_preferences_auth_file">it.uniparthenope.parthenopeddit.auth_file</string>
+    <string name="shared_preferences_auth_file">package it.uniparthenope.studenti.marco.sautto001.progettotmm</string>
     <string name="login">Login</string>
     <string name="username">Username</string>
     <string name="password">Password</string>
@@ -17,6 +17,7 @@
     <string name="title_activity_home">HomeActivity</string>
     <string name="new_group_it">Crea un nuovo gruppo</string>
     <string name="new_post_it">Crea un nuovo post</string>
+    <string name="new_review_it">Crea nuova recensione</string>
     <string name="select_group_post_it">Seleziona il gruppo in cui pubblicare</string>
     <string name="write_post_it">Scrivi il post</string>
     <string name="publish_it">Pubblica</string>
@@ -35,5 +36,9 @@
     <string name="about_it">Informazioni</string>
     <string name="msg_token_fmt"><![CDATA[test -> %s]]></string>
     <string name="testing_notification_channel_id">TESTING_CHANNEL</string>
+    <string name="title_activity_user">UserActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="title_activity_review">ReviewActivity</string>
 
 </resources>

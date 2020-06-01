@@ -3,19 +3,21 @@
     package="it.uniparthenope.parthenopeddit">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".App"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".TestingActivity6"></activity>
-        <activity android:name=".TestingActivity5" />
-        <activity android:name=".TestingActivity4" />
-
+        <activity android:name=".android.ChatActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize">
+        </activity>
         <service
             android:name=".firebase.FCMService"
             android:exported="false">
@@ -23,18 +25,25 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
-        <activity android:name=".TestingActivity3" />
-        <activity android:name=".TestingActivity2" />
-        <activity android:name=".TestingActivity">
+        <activity
+            android:name=".android.CourseActivity"
+            android:label="@string/title_activity_review"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".android.SettingsActivity" />
+        <activity android:name=".android.UserActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="it.uniparthenope.parthenopeddit.android.UserActivity" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".android.AboutActivity" />
+        <activity
+            android:name=".android.GroupActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".android.ui.newGroup.NewGroupActivity" />
         <activity android:name=".android.ui.newPost.NewPostActivity" />
+        <activity android:name=".android.ui.newReview.NewReviewActivity" />
         <activity
             android:name=".android.HomeActivity"
             android:label="@string/app_name">

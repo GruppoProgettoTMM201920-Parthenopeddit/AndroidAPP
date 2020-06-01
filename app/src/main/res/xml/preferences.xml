@@ -3,19 +3,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <Preference
-        app:key="preference_example"
-        app:title="title"
-        app:summary="summary"
-        app:icon="@drawable/ic_launcher_background"/>
+        app:key="useractivity"
+        android:summary="Visualizza le attività nell'app"
+        android:title="Visualizza le tue attività"
+        app:icon="@drawable/ic_useractivity_themecolor_24dp" />
 
-    <SwitchPreferenceCompat
-        app:key="switch_example"
-        app:title="title2"
-        app:summary="summary2"/>
+    <SwitchPreference
+        app:key="notifications"
+        app:title="Notifiche"
+        app:summary="Abilita o disabilita le notifiche"
+        app:icon="@drawable/ic_notifications_themecolor_24dp"/>
 
-    <Preference>
-            <!-- preference2 -->
+    <SwitchPreference
+        app:key="darkmode"
+        app:title="Dark mode"
+        app:summary="Abilita o disabilita la modalità scura"
+        app:icon="@drawable/ic_darkmode_themecolor_24dp"/>
+
+    <Preference
+        app:key="about"
+        android:title="Informazioni"
+        app:icon="@drawable/ic_info_themecolor_24dp">
+        <!--<intent
+            android:action="it.uniparthenope.parthenopeddit.UserActivity"/>-->
     </Preference>
+
+
 
 
 </PreferenceScreen>

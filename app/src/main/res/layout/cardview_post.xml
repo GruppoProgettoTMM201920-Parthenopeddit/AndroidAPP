@@ -11,6 +11,7 @@
 
 
     <RelativeLayout
+        android:id="@+id/post_relativelayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="8dp">
@@ -20,7 +21,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginEnd="8dp"
-            android:src="@drawable/ic_home_black_24dp" />
+            android:src="@drawable/default_user_image" />
 
         <TextView
             android:id="@+id/username_textview"
@@ -28,18 +29,54 @@
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/image_view"
             android:text="username"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/title_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/image_view"
+            android:layout_below="@id/username_textview"
+            android:text="title"
             android:textColor="@android:color/black"
             android:textSize="18sp"
             android:textStyle="bold" />
+
 
         <TextView
             android:id="@+id/group_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/username_textview"
+            android:layout_below="@+id/title_textview"
             android:layout_toEndOf="@+id/image_view"
-            android:layout_marginTop="10dp"
-            android:text="group" />
+            android:text="group"
+            android:inputType="textMultiLine"
+            android:maxWidth="200dp"
+            android:textColor="@color/white"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+        />
+
+        <TextView
+            android:id="@+id/divider"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title_textview"
+            android:layout_marginLeft="10dp"
+            android:layout_toEndOf="@+id/group_textview"
+            android:text="•" />
+
+        <TextView
+            android:id="@+id/timestamp_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title_textview"
+            android:layout_toEndOf="@+id/divider"
+            android:layout_marginLeft="10dp"
+            android:text="10:00" />
 
         <TextView
             android:id="@+id/posttext_textview"
@@ -48,37 +85,44 @@
             android:layout_below="@+id/group_textview"
             android:layout_toEndOf="@+id/image_view"
             android:layout_marginTop="10dp"
+
+            android:textColor="@android:color/black"
             android:text="textpost" />
 
 
 
-        <Button
+        <ImageButton
             android:id="@+id/comments_btn"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_below="@+id/posttext_textview"
             android:layout_marginTop="50dp"
             android:layout_alignParentLeft="true"
+            android:background="@drawable/ic_comment_themecolor_24dp"
             />
 
 
-        <Button
+        <ImageButton
             android:id="@+id/upvote_btn"
-            android:layout_width="40dp"
+            android:layout_width="50dp"
             android:layout_height="40dp"
             android:layout_below="@+id/posttext_textview"
             android:layout_marginTop="50dp"
             android:layout_toLeftOf="@+id/downvote_textview"
             android:layout_marginRight="20dp"
+            android:backgroundTint="@color/colorPrimary"
+            app:srcCompat="@drawable/ic_upvote_white_24dp"
             />
 
-        <Button
+        <ImageButton
             android:id="@+id/downvote_btn"
-            android:layout_width="40dp"
+            android:layout_width="50dp"
             android:layout_height="40dp"
             android:layout_below="@+id/posttext_textview"
             android:layout_alignParentRight="true"
             android:layout_marginTop="50dp"
+            android:backgroundTint="@color/light_red"
+            app:srcCompat="@drawable/ic_downvote_white_24dp"
             />
 
         <TextView
