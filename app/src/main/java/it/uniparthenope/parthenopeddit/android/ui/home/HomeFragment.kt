@@ -211,10 +211,10 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
     }
 
     override fun onBoardClick(board_id: Int?, board: Board?) {
-        if (board == null) {
+        if (board?.id == 1) {
             (activity as BasicActivity).goToActivity(HomeActivity::class.java) //HOME
         } else {
-            when (board.type) {
+            when (board?.type) {
                 "course" -> {
                     val intent = Intent(requireContext(), CourseActivity::class.java)  //CORSO
                     intent.putExtra("id_group", board_id)
