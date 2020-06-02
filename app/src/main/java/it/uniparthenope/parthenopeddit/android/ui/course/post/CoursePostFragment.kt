@@ -16,11 +16,13 @@ import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.CommentActivity
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.ui.user_activities.post.PostActivitiesViewModel
+import it.uniparthenope.parthenopeddit.android.view.CardviewPost
 import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Board
+import it.uniparthenope.parthenopeddit.model.Post
 
-class CoursePostFragment(courseID: Int) : Fragment(), PostAdapter.PostItemClickListeners {
+class CoursePostFragment(courseID: Int) : Fragment(), CardviewPost.PostItemClickListeners {
 
     private lateinit var recycler_view: RecyclerView
     private lateinit var postViewModel: PostActivitiesViewModel
@@ -72,7 +74,7 @@ class CoursePostFragment(courseID: Int) : Fragment(), PostAdapter.PostItemClickL
         //TODO("Not yet implemented")
     }
 
-    override fun onClickComments(id_post: Int) {
+    override fun onClickComments(post: Post) {
         //TODO("Not yet implemented")
     }
 
@@ -80,9 +82,9 @@ class CoursePostFragment(courseID: Int) : Fragment(), PostAdapter.PostItemClickL
         TODO("Not yet implemented")
     }
 
-    override fun onPostClick(id_post: Int) {
+    override fun onPostClick(post: Post) {
         val intent = Intent(requireContext(), CommentActivity::class.java)
-        intent.putExtra("idPost", id_post)
+        intent.putExtra("idPost", post.id)
         startActivity(intent)
     }
 }

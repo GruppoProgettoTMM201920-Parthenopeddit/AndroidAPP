@@ -1,5 +1,6 @@
 package it.uniparthenope.parthenopeddit.android
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
@@ -9,54 +10,52 @@ import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.adapters.CommentAdapter
+import it.uniparthenope.parthenopeddit.android.view.CardviewPost
 import it.uniparthenope.parthenopeddit.api.requests.PostsRequests
+import it.uniparthenope.parthenopeddit.model.Board
+import it.uniparthenope.parthenopeddit.model.Post
+import it.uniparthenope.parthenopeddit.util.toObject
 import kotlinx.android.synthetic.main.activity_comment.*
-import kotlinx.android.synthetic.main.cardview_post.view.*
 
 class CommentActivity : BasicActivity(), CommentAdapter.CommentItemClickListeners {
+
+    private lateinit var imageView: ImageView
+    private lateinit var username_textview: TextView
+    private lateinit var titolo: TextView
+    private lateinit var body: TextView
+    private lateinit var board_textview: TextView
+    private lateinit var timestamp_textview: TextView
+    private lateinit var upvote_textview: TextView
+    private lateinit var downvote_textview: TextView
+    private lateinit var comments_textview: TextView
+    private lateinit var upvote_btn: ImageButton
+    private lateinit var downvote_btn: ImageButton
+    private lateinit var relativeLayout: RelativeLayout
+    private lateinit var cardviewPost: CardviewPost
+
+    private lateinit var post:Post
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_comment)
 
+        val cardviewPost: CardviewPost = findViewById(R.id.post)
+
         val extras = intent.extras
-        var id_post:Int = extras?.getInt("idPost")?:0
+        val id_post:Int = extras?.getInt("idPost")?:0
         if(id_post == 0) finish()
+        val extrasPost: Post? = extras?.getString("post")?.toObject()
+
+        if(extrasPost != null) {
+            cardviewPost.setPost(extrasPost)
+        }
 
         PostsRequests(this, app.auth).getPostWithComments(
             id_post,
-            { post ->
-                val username_textview: TextView = findViewById(R.id.username_textview)
-                val titolo: TextView = findViewById(R.id.title_textview)
-                val body: TextView = findViewById(R.id.posttext_textview)
-                val imageView: ImageView = findViewById(R.id.image_view)
-                val board_textview: TextView = findViewById(R.id.board_textview)
-                val timestamp_textview: TextView = findViewById(R.id.timestamp_textview)
-                val upvote_textview: TextView = findViewById(R.id.upvote_textview)
-                val downvote_textview: TextView = findViewById(R.id.downvote_textview)
-                val comments_textview: TextView = findViewById(R.id.downvote_textview)
+            { fetched_post ->
+                cardviewPost.setPost(fetched_post)
 
-                username_textview.text = post.author?.display_name?:post.author_id
-                titolo.text = post.title
-                body.text = post.body
-                imageView.setImageResource(R.drawable.default_user_image)
-                board_textview.text = post.posted_to_board?.name?:"Generale"
-                timestamp_textview.text = post.timestamp
-                upvote_textview.text = post.likes_num.toString()
-                downvote_textview.text = post.dislikes_num.toString()
-                comments_textview.text = post.comments_num.toString()
-
-                if( post.posted_to_board == null || post.posted_to_board_id == null || post.posted_to_board_id == 0 ) {
-                    board_textview.setBackgroundResource(R.drawable.general_textview_bubble)
-                    board_textview.setTextColor(Color.BLACK)
-                } else {
-                    when (post.posted_to_board!!.type) {
-                        "course" -> board_textview.setBackgroundResource(R.drawable.fab_textview_bubble)
-                        "group" -> board_textview.setBackgroundResource(R.drawable.group_textview_bubble)
-                        else -> board_textview.visibility = View.GONE
-                    }
-                }
-
-                val commenti = post.comments
+                val commenti = fetched_post.comments
                 if(commenti == null) {
                     listaCommenti.visibility = View.GONE
                 } else {
@@ -73,7 +72,7 @@ class CommentActivity : BasicActivity(), CommentAdapter.CommentItemClickListener
             }
         )
 
-        var message_edittext = findViewById<EditText>(R.id.message_edittext)
+        val message_edittext = findViewById<EditText>(R.id.message_edittext)
         val send_btn = findViewById<ImageButton>(R.id.send_btn)
         var message: String
 
@@ -85,6 +84,83 @@ class CommentActivity : BasicActivity(), CommentAdapter.CommentItemClickListener
                 Toast.makeText(this,"Non hai scritto alcun commento.",Toast.LENGTH_SHORT).show()
             }
         }
+
+        cardviewPost.setListeners(
+            object : CardviewPost.PostItemClickListeners {
+                override fun onPostClick(post: Post) {}
+
+                override fun onClickComments(post: Post) {}
+
+                override fun onClickLike(
+                    id_post: Int,
+                    upvoteTextView: TextView,
+                    downvoteTextView: TextView
+                ) {
+                    PostsRequests(this@CommentActivity, app.auth).likePost(
+                        id_post,
+                        {
+                            /*Like piazzato */
+                            upvoteTextView.text = it.likes_num.toString()
+                            downvoteTextView.text = it.dislikes_num.toString()
+                        }, {
+                            /*Like rimosso */
+                            upvoteTextView.text = it.likes_num.toString()
+                            downvoteTextView.text = it.dislikes_num.toString()
+                        }, {
+                            /* dislike rimosso e piazzato like */
+                            upvoteTextView.text = it.likes_num.toString()
+                            downvoteTextView.text = it.dislikes_num.toString()
+                        }, {
+                        }
+                    )
+                }
+
+                override fun onClickDislike(
+                    id_post: Int,
+                    upvoteTextView: TextView,
+                    downvoteTextView: TextView
+                ) {
+                    PostsRequests(this@CommentActivity, app.auth).dislikePost(
+                        id_post,
+                        {
+                            /*disLike piazzato */
+                            upvoteTextView.text = it.likes_num.toString()
+                            downvoteTextView.text = it.dislikes_num.toString()
+                        }, {
+                            /*disLike rimosso */
+                            upvoteTextView.text = it.likes_num.toString()
+                            downvoteTextView.text = it.dislikes_num.toString()
+                        }, {
+                            /* like rimosso e piazzato disLike */
+                            upvoteTextView.text = it.likes_num.toString()
+                            downvoteTextView.text = it.dislikes_num.toString()
+                        }, {
+                        }
+                    )
+                }
+
+                override fun onBoardClick(board_id: Int?, board: Board?) {
+                    if (board == null) {
+                        goToActivity(HomeActivity::class.java) //HOME
+                    } else {
+                        when (board.type) {
+                            "course" -> {
+                                val intent = Intent(this@CommentActivity, CourseActivity::class.java)  //CORSO
+                                intent.putExtra("id_group", board_id)
+                                startActivity(intent)
+                            }
+                            "group" -> {
+                                val intent = Intent(this@CommentActivity, GroupActivity::class.java)
+                                intent.putExtra("id_group", board_id)
+                                startActivity(intent)
+                            }
+                            else -> {  }
+                        }
+                    }
+                }
+
+            }
+        )
     }
 
     override fun onClickLike(id_Commento: Int) {

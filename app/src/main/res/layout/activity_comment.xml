@@ -7,10 +7,8 @@
     tools:context=".android.CommentActivity"
     android:background="#595959">
 
-
-    <include
-        android:id="@+id/include"
-        layout="@layout/cardview_post"
+    <it.uniparthenope.parthenopeddit.android.view.CardviewPost
+        android:id="@+id/post"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="6dp"
@@ -25,7 +23,7 @@
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include"
+        app:layout_constraintTop_toBottomOf="@+id/post"
         tools:listitem="@layout/cardview_commento" />
 
     <LinearLayout

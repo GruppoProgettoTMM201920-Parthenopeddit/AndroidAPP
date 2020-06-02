@@ -28,6 +28,7 @@ import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.ui.newGroup.NewGroupActivity
 import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
 import it.uniparthenope.parthenopeddit.android.ui.newReview.NewReviewActivity
+import it.uniparthenope.parthenopeddit.android.view.CardviewPost
 import it.uniparthenope.parthenopeddit.api.requests.PostsRequests
 import it.uniparthenope.parthenopeddit.api.requests.UserRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
@@ -35,7 +36,7 @@ import it.uniparthenope.parthenopeddit.model.Board
 import it.uniparthenope.parthenopeddit.model.Post
 
 
-class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
+class HomeFragment : Fragment(), CardviewPost.PostItemClickListeners {
 
     private lateinit var recycler_view: RecyclerView
     private lateinit var homeViewModel: HomeViewModel
@@ -207,15 +208,17 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         )
     }
 
-    override fun onClickComments(id_post: Int) {
+    override fun onClickComments(post: Post) {
         val intent = Intent(requireContext(), CommentActivity::class.java)
-        intent.putExtra("idPost", id_post)
+        intent.putExtra("idPost", post.id)
+        intent.putExtra("post", post.toJSON())
         startActivity(intent)
     }
 
-    override fun onPostClick(id_post: Int) {
+    override fun onPostClick(post: Post) {
         val intent = Intent(requireContext(), CommentActivity::class.java)
-        intent.putExtra("idPost", id_post)
+        intent.putExtra("idPost", post.id)
+        intent.putExtra("post", post.toJSON())
         startActivity(intent)
     }
 
