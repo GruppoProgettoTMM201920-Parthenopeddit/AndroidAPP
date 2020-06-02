@@ -23,13 +23,13 @@ class ChatListAdapter() : RecyclerView.Adapter<ChatListAdapter.ChatListViewHolde
     private val chatList: ArrayList<UsersChat> = ArrayList()
     private var listener:ChatListItemClickListeners? = null
 
-    fun setItemClickListener( listener:ChatListItemClickListeners? ) {
-        this.listener = listener
-    }
-
     fun aggiungiChat(chatItemList: List<UsersChat>) {
         this.chatList.addAll(chatItemList)
         notifyDataSetChanged()
+    }
+
+    fun setItemClickListener( listener:ChatListItemClickListeners? ) {
+        this.listener = listener
     }
 
     interface ChatListItemClickListeners {
