@@ -40,6 +40,13 @@ class SettingsActivity : AppCompatActivity() {
                 true
             }
 
+            val userBoardsActivityPreference: Preference? = findPreference("userboardsactivity")
+            userBoardsActivityPreference?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                val intent = Intent(requireContext(), UserBoardsActivity::class.java)
+                startActivity(intent)
+                true
+            }
+
             val aboutActivityPreference: Preference? = findPreference("about")
             aboutActivityPreference?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 val intent = Intent(requireContext(), AboutActivity::class.java)

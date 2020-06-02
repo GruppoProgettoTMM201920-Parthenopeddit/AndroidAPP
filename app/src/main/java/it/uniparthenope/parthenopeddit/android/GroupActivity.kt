@@ -116,14 +116,14 @@ class GroupActivity : AppCompatActivity() {
             if(isFollowed){
                 //TODO: unfollow group
                 Toast.makeText(this, "Hai smesso di seguire ${group_name_textview.text}",Toast.LENGTH_LONG).show()
-                follow_button.text = "Segui"
+                follow_button.text = "Entra"
                 val imgResource: Int = R.drawable.ic_follow_themecolor_24dp
                 follow_button.setCompoundDrawablesWithIntrinsicBounds(imgResource, 0, 0, 0)
                 isFollowed = false
             } else {
                 //TODO: follow group
                 Toast.makeText(this, "Hai seguito ${group_name_textview.text}",Toast.LENGTH_LONG).show()
-                follow_button.text = "Non seguire"
+                follow_button.text = "Lascia"
                 val imgResource: Int = R.drawable.ic_unfollow_themecolor_24dp
                 follow_button.setCompoundDrawablesWithIntrinsicBounds(imgResource, 0, 0, 0)
                 isFollowed = true

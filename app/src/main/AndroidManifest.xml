@@ -13,16 +13,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".android.ChatActivity"
+        <activity
+            android:name=".android.UserBoardsActivity"
+            android:label="@string/title_activity_user_boards"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".android.ChatActivity"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize">
-        </activity>
+            android:windowSoftInputMode="adjustResize"></activity>
         <activity
             android:name=".android.CourseActivity"
             android:label="@string/title_activity_review"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".android.SettingsActivity" />
-        <activity android:name=".android.UserActivity"
+        <activity
+            android:name=".android.UserActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="it.uniparthenope.parthenopeddit.android.UserActivity" />

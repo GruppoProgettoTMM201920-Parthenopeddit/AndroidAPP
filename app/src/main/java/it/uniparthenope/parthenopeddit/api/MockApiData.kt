@@ -369,4 +369,30 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
         TODO("Not yet implemented")
     }
 
+    fun getUserCourse(
+        token: String,
+        userId: String,
+        completion: (course: ArrayList<Course>?, error: String?) -> Unit
+    ) {
+        var courses : ArrayList<Course>? = MockDatabase.instance.users_table.filter{it.id == userId}.single().followed_courses
+        if (courses != null) {
+            completion.invoke(courses, null)
+        } else{
+            completion.invoke(null, "L'utente non segue corsi")
+        }
+    }
+
+    fun getUserGroup(
+        token: String,
+        userId: String,
+        completion: (course: ArrayList<Group>?, error: String?) -> Unit
+    ) {
+        var group : ArrayList<Group>? = MockDatabase.instance.users_table.filter{it.id == userId}.single().groups
+        if (group != null) {
+            completion.invoke(group, null)
+        } else{
+            completion.invoke(null, "L'utente non è iscritto a gruppi")
+        }
+    }
+
 }

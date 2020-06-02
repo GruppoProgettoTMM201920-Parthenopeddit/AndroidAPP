@@ -8,6 +8,12 @@
         android:title="Visualizza le tue attività"
         app:icon="@drawable/ic_useractivity_themecolor_24dp" />
 
+    <Preference
+        app:key="userboardsactivity"
+        android:summary="Visualizza i corsi e gruppi a cui appartieni"
+        android:title="I tuoi corsi e gruppi"
+        app:icon="@drawable/ic_group_themecolor_24dp" />
+
     <SwitchPreference
         app:key="notifications"
         app:title="Notifiche"
