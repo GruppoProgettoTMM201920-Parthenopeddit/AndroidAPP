@@ -20,12 +20,6 @@ class UserActivity : AppCompatActivity() {
         viewPager.adapter = sectionsPagerAdapter
         val tabLayout: TabLayout = findViewById(R.id.tabLayout)
         tabLayout.setupWithViewPager(viewPager)
-        val fab: FloatingActionButton = findViewById(R.id.fab)
-
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
 
 
     }

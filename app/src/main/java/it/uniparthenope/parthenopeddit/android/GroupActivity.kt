@@ -51,6 +51,7 @@ class GroupActivity : AppCompatActivity() {
                 created_on_group = created
                 members_group = members
                 members_num_group = members?.size
+                Log.d("DEBUG", "there are ${members_num_group} members")
                 if(num_members!=1){ num_members_textview.text = "${num_members} membri" } else { num_members_textview.text = "${num_members} membri" }
 
                 Log.d("DEBUG", "before cf backdrop")

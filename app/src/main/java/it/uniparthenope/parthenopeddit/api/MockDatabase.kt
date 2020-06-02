@@ -406,6 +406,12 @@ class MockDatabase private constructor() {
         C2.reviews = ArrayList<Review>(listOf(r3,r4))
         C3.reviews = ArrayList<Review>(listOf(r5))
 
+        g2.members = ArrayList<GroupMember>(listOf(GroupMember(u1.id, 2, "02/06/2020", null, true, u1), GroupMember(u2.id, 2, "03/06/2020", null, false, u2), GroupMember(u3.id, 2, "03/06/2020", null, false, u3) ))
+        g2.members_num = g2.members!!.size
+
+        g3.members = ArrayList<GroupMember>(listOf(GroupMember(u2.id, 3, "02/06/2020", null, true, u1)))
+        g3.members_num = g3.members!!.size
+
         users_table.addAll(listOf(u1,u2))
         posts_table.addAll(listOf(p1,p2,p3,p4,p5,p6,p7))
         comments_table.addAll(listOf(c1,c2))

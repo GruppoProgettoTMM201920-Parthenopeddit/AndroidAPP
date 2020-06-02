@@ -8,8 +8,8 @@ class GroupMember(
     val group_id: Int,
     val join_date: String,
     val last_read_chat: String?,
-    val is_owner: Boolean
-) : JSONConvertable {
+    val is_owner: Boolean,
     var user: User? = null
+) : JSONConvertable {
     var group: Group? = null
 }
