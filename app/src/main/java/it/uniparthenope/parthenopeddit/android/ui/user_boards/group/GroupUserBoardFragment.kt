@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.GroupActivity
+import it.uniparthenope.parthenopeddit.android.HomeActivity
 import it.uniparthenope.parthenopeddit.android.adapters.UserGroupAdapter
 import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.auth.Auth
@@ -54,8 +55,13 @@ class GroupUserBoardFragment : Fragment(), UserGroupAdapter.UserGroupItemClickLi
     }
 
     override fun onBoardClick(id_course: Int?) {
-        val intent = Intent(requireContext(), GroupActivity::class.java)
-        intent.putExtra("id_group", id_course)
-        startActivity(intent)
+        if(id_course==1){
+            val intent = Intent(requireContext(), HomeActivity::class.java)
+            startActivity(intent)
+        } else {
+            val intent = Intent(requireContext(), GroupActivity::class.java)
+            intent.putExtra("id_group", id_course)
+            startActivity(intent)
+        }
     }
 }
