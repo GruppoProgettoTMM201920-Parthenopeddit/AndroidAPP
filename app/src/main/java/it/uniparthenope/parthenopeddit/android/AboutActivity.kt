@@ -37,8 +37,8 @@ class AboutActivity : AppCompatActivity() {
         listView.addHeaderView(header_listview)
 
         //THIRD-PARTY LIBS ADAPTER
-        var libName = ArrayList<String>(listOf("Material Searchbar"))
-        var libAuthor = ArrayList<String>(listOf("Mancj"))
+        var libName = ArrayList<String>(listOf("Material Searchbar", "ExpandableSwipeRecyclerView", "Glide"))
+        var libAuthor = ArrayList<String>(listOf("Mancj", "Hyunstyle", "Bumptech"))
 
         val aboutTPAdapter = AboutTPAdapter(this,libName,libAuthor)
         thirdparty_listView.adapter = aboutTPAdapter
@@ -57,11 +57,11 @@ class AboutActivity : AppCompatActivity() {
             intent.data = Uri.parse("mailto:") // only email apps should handle this
             Toast.makeText(this, "Click on item at $itemAtPos its item id $itemIdAtPos", Toast.LENGTH_LONG).show()
 
-            if(itemIdAtPos==1L){
-                intent.putExtra(Intent.EXTRA_EMAIL, email[1])
-                intent.putExtra(Intent.EXTRA_SUBJECT,"Feedback Parthenopeddit")
-            } else {
+            if(itemIdAtPos==0L){
                 intent.putExtra(Intent.EXTRA_EMAIL, email[0])
+                intent.putExtra(Intent.EXTRA_SUBJECT,"Feedback Parthenopeddit")
+            } else if(itemIdAtPos==1L) {
+                intent.putExtra(Intent.EXTRA_EMAIL, email[1])
                 intent.putExtra(Intent.EXTRA_SUBJECT,"Feedback Parthenopeddit")
             }
             startActivity(intent)
@@ -77,8 +77,10 @@ class AboutActivity : AppCompatActivity() {
 
             if(itemIdAtPos==0L){
                 intent.data = Uri.parse("https://github.com/mancj/MaterialSearchBar")
-            } else {
-                //Other libs
+            } else if(itemIdAtPos==1L) {
+                intent.data = Uri.parse("https://github.com/hyunstyle/ExpandableSwipeRecyclerView")
+            } else if(itemIdAtPos==2L) {
+                intent.data = Uri.parse("https://github.com/bumptech/glide")
             }
             startActivity(intent)
 
