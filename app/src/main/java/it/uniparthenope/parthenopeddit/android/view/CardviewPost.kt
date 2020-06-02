@@ -124,12 +124,11 @@ class CardviewPost(
     }
 
     init {
-        // put all custom logic in this constructor, which always runs
         View.inflate(getContext(), R.layout.cardview_post, this)
 
         username_textview = findViewById(R.id.username_textview)
         titolo = findViewById(R.id.title_textview)
-        body = findViewById(R.id.posttext_textview)
+        body = findViewById(R.id.body)
         imageView = findViewById(R.id.image_view)
         board_textview = findViewById(R.id.board_textview)
         timestamp_textview = findViewById(R.id.timestamp_textview)

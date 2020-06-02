@@ -255,7 +255,7 @@
             app:layout_constraintTop_toBottomOf="@id/title_textview" />
 
         <TextView
-            android:id="@+id/posttext_textview"
+            android:id="@+id/body"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -272,7 +272,7 @@
             android:layout_marginTop="20dp"
             android:text="Post vuoto"
             android:textColor="@color/red"
-            app:layout_constraintStart_toEndOf="@+id/posttext_textview"
+            app:layout_constraintStart_toEndOf="@+id/body"
             app:layout_constraintTop_toBottomOf="@id/title_edittext"
             android:visibility="gone"/>
 
@@ -291,7 +291,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/posttext_textview" />
+            app:layout_constraintTop_toBottomOf="@+id/body" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

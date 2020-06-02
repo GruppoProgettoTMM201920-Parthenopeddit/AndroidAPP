@@ -15,7 +15,6 @@ import kotlinx.android.synthetic.main.cardview_post.view.comments_btn
 import kotlinx.android.synthetic.main.cardview_post.view.downvote_btn
 import kotlinx.android.synthetic.main.cardview_post.view.downvote_textview
 import kotlinx.android.synthetic.main.cardview_post.view.image_view
-import kotlinx.android.synthetic.main.cardview_post.view.posttext_textview
 import kotlinx.android.synthetic.main.cardview_post.view.upvote_btn
 import kotlinx.android.synthetic.main.cardview_post.view.upvote_textview
 import kotlinx.android.synthetic.main.cardview_post.view.username_textview
@@ -107,7 +106,7 @@ class CommentAdapter(private val context: Context, private var commentItemsList:
         val imageView: ImageView = itemView.image_view
         val username_textview: TextView = itemView.username_textview
         val timestamp_comment_textview: TextView = itemView.timestamp_comment_textview
-        val posttext_textview: TextView = itemView.posttext_textview
+        val posttext_textview: TextView = itemView.body
         val upvote_btn: ImageButton = itemView.upvote_btn
         val downvote_btn: ImageButton = itemView.downvote_btn
         val upvote_textview: TextView = itemView.upvote_textview
