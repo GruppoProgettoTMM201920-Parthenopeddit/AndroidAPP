@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -49,6 +50,7 @@ class GroupActivity : AppCompatActivity() {
         val fab = findViewById(R.id.fab) as FloatingActionButton
         val fab_new_post__group = findViewById(R.id.fab_new_post_group) as FloatingActionButton
         val fab_new_post_textview__group = findViewById(R.id.fab_new_post_textview_group) as TextView
+        val follow_button = findViewById(R.id.follow_button) as Button
         val rotateClockwise = AnimationUtils.loadAnimation(this, R.anim.rotate_clockwise)
         val rotateAnticlockwise = AnimationUtils.loadAnimation(this, R.anim.rotate_anticlockwise)
 
@@ -64,7 +66,7 @@ class GroupActivity : AppCompatActivity() {
                 members_group = members
                 members_num_group = members?.size
                 Log.d("DEBUG", "there are ${members_num_group} members")
-                if(num_members!=1){ num_members_textview.text = "${num_members} membri" } else { num_members_textview.text = "${num_members} membri" }
+                if(num_members!=1){ num_members_textview.text = "${num_members} membri" } else { num_members_textview.text = "${num_members} membro" }
 
                 Log.d("DEBUG", "before cf backdrop")
                 configureBackdrop(id_group, name_group, created_on_group, members_group, members_num_group)
@@ -110,6 +112,23 @@ class GroupActivity : AppCompatActivity() {
 
         fab_new_post_group.setOnClickListener{ onClickNewPost(id_group) }
         fab_new_post_textview_group.setOnClickListener{ onClickNewPost(id_group) }
+        follow_button.setOnClickListener {
+            if(isFollowed){
+                //TODO: unfollow group
+                Toast.makeText(this, "Hai smesso di seguire ${group_name_textview.text}",Toast.LENGTH_LONG).show()
+                follow_button.text = "Segui"
+                val imgResource: Int = R.drawable.ic_follow_themecolor_24dp
+                follow_button.setCompoundDrawablesWithIntrinsicBounds(imgResource, 0, 0, 0)
+                isFollowed = false
+            } else {
+                //TODO: follow group
+                Toast.makeText(this, "Hai seguito ${group_name_textview.text}",Toast.LENGTH_LONG).show()
+                follow_button.text = "Non seguire"
+                val imgResource: Int = R.drawable.ic_unfollow_themecolor_24dp
+                follow_button.setCompoundDrawablesWithIntrinsicBounds(imgResource, 0, 0, 0)
+                isFollowed = true
+            }
+        }
 
 
     }
