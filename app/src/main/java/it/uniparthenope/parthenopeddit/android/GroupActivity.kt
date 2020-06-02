@@ -1,16 +1,20 @@
 package it.uniparthenope.parthenopeddit.android
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.ui.group.BackdropFragment
+import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
 import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.auth.Auth
 import it.uniparthenope.parthenopeddit.model.GroupMember
@@ -19,7 +23,8 @@ import kotlinx.android.synthetic.main.activity_group.*
 
 class GroupActivity : AppCompatActivity() {
 
-
+    var isOpen = false
+    var isFollowed: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +44,13 @@ class GroupActivity : AppCompatActivity() {
         group_recyclerview.adapter = postAdapter
         group_recyclerview.layoutManager = LinearLayoutManager(this)
         group_recyclerview.setHasFixedSize(true)
+
+
+        val fab = findViewById(R.id.fab) as FloatingActionButton
+        val fab_new_post__group = findViewById(R.id.fab_new_post_group) as FloatingActionButton
+        val fab_new_post_textview__group = findViewById(R.id.fab_new_post_textview_group) as TextView
+        val rotateClockwise = AnimationUtils.loadAnimation(this, R.anim.rotate_clockwise)
+        val rotateAnticlockwise = AnimationUtils.loadAnimation(this, R.anim.rotate_anticlockwise)
 
 
         MockApiData().getGroupInfo( Auth().token, id_group) { name, num_members, created, members, error ->
@@ -72,10 +84,45 @@ class GroupActivity : AppCompatActivity() {
             }
         }
 
+        fab.setOnClickListener{
+            if(isOpen){
+                fab.startAnimation(rotateClockwise)
+
+
+                fab_new_post_group.animate().translationY(200F)
+                fab_new_post_textview_group.animate().translationY(200F)
+                fab_new_post_textview_group.animate().alpha(0F)
+                fab_new_post_textview_group.visibility = View.GONE
+                isOpen = false
+            } else{
+                fab.startAnimation(rotateAnticlockwise)
+
+                fab_new_post_group.animate().translationY(-200F)
+
+                fab_new_post_textview_group.animate().translationY(-200F)
+
+                fab_new_post_textview_group.visibility = View.VISIBLE
+
+                fab_new_post_textview_group.animate().alpha(1F)
+                isOpen = true
+            }
+        }
+
+        fab_new_post_group.setOnClickListener{ onClickNewPost(id_group) }
+        fab_new_post_textview_group.setOnClickListener{ onClickNewPost(id_group) }
+
 
     }
 
-
+    fun onClickNewPost(id_group: Int){
+        //crea dialogo
+        //passi fuonzione da effettuare onSuccess
+        //uploiad to api
+        //notifidatasetchanged()
+        val intent = Intent(this, NewPostActivity::class.java)
+        intent.putExtra("id_group", id_group)
+        startActivity(intent)
+    }
 
     private var mBottomSheetBehavior: BottomSheetBehavior<View?>? = null
 

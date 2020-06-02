@@ -93,6 +93,36 @@
         android:src="@drawable/ic_call_to_action_themecolor_24dp"
         app:fabSize="mini"/>
 
+    <TextView
+        android:id="@+id/fab_new_post_textview_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="80dp"
+        android:layout_marginBottom="25dp"
+        android:background="@drawable/fab_textview_bubble"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="@string/new_post_it"
+        android:textColor="@color/white"
+        android:textSize="15dp"
+        android:textStyle="bold"
+        android:elevation="2dp"
+        android:visibility="gone"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_new_post_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="25dp"
+        android:layout_marginBottom="25dp"
+        android:backgroundTint="@color/white"
+        android:contentDescription="hello"
+        android:elevation="2dp"
+        android:src="@drawable/ic_call_to_action_themecolor_24dp"
+        app:fabSize="mini"/>
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
