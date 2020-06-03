@@ -35,10 +35,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
-                    android:inputType="textMultiLine"
                     android:maxWidth="250dp"
                     android:text="Nome gruppo"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    tools:ignore="RtlHardcoded" />
 
 
                 <TextView

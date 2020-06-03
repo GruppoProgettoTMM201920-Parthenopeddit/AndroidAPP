@@ -110,7 +110,6 @@ class GroupActivity : AppCompatActivity() {
             }
         }
 
-        Log.d("DEBUG", "group name is ${name_group}")
         fab_new_post_group.setOnClickListener{ onClickNewPost(id_group, name_group!!) }
         fab_new_post_textview_group.setOnClickListener{ onClickNewPost(id_group, name_group!!) }
         follow_button.setOnClickListener {

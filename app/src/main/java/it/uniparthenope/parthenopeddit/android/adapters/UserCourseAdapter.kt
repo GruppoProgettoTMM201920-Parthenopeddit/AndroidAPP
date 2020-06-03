@@ -42,8 +42,8 @@ class UserCourseAdapter : RecyclerView.Adapter<UserCourseAdapter.UserCourseViewH
         val currentItem = courseList[position]
 
         holder.course_name_textview.text = currentItem.name
-        holder.course_enjoyment_rating.text = currentItem.average_liking_score.toString()
-        holder.course_difficulty_textview.text = currentItem.average_difficulty_score.toString()
+        holder.course_enjoyment_rating.text = currentItem.average_liking_score.toString()+"/5"
+        holder.course_difficulty_rating.text = currentItem.average_difficulty_score.toString()+"/5"
 
 
         //SET LIKING SCORE
@@ -177,7 +177,7 @@ class UserCourseAdapter : RecyclerView.Adapter<UserCourseAdapter.UserCourseViewH
         val relativeLayout: RelativeLayout = itemView.course_cardview_relativelayout
 
         var course_enjoyment_rating: TextView = itemView.course_enjoyment_rating
-        var course_difficulty_textview: TextView = itemView.course_difficulty_textview
+        var course_difficulty_rating: TextView = itemView.course_difficulty_rating
         var star_enj_1: ImageView = itemView.star_enj_1
         var star_enj_2: ImageView = itemView.star_enj_2
         var star_enj_3: ImageView = itemView.star_enj_3
