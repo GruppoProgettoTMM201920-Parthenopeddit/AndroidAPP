@@ -33,7 +33,7 @@ class GroupActivity : AppCompatActivity() {
 
         val extras = intent.extras
         var id_group:Int = extras?.getInt("id_group")?:0
-        var name_group: String?
+        var name_group: String = ""
         var created_on_group: String?
         var members_group : ArrayList<GroupMember>?
         var members_num_group : Int?
@@ -110,8 +110,9 @@ class GroupActivity : AppCompatActivity() {
             }
         }
 
-        fab_new_post_group.setOnClickListener{ onClickNewPost(id_group) }
-        fab_new_post_textview_group.setOnClickListener{ onClickNewPost(id_group) }
+        Log.d("DEBUG", "group name is ${name_group}")
+        fab_new_post_group.setOnClickListener{ onClickNewPost(id_group, name_group!!) }
+        fab_new_post_textview_group.setOnClickListener{ onClickNewPost(id_group, name_group!!) }
         follow_button.setOnClickListener {
             if(isFollowed){
                 //TODO: unfollow group
@@ -133,13 +134,14 @@ class GroupActivity : AppCompatActivity() {
 
     }
 
-    fun onClickNewPost(id_group: Int){
+    fun onClickNewPost(id_group: Int, name_group: String){
         //crea dialogo
         //passi fuonzione da effettuare onSuccess
         //uploiad to api
         //notifidatasetchanged()
         val intent = Intent(this, NewPostActivity::class.java)
         intent.putExtra("id_group", id_group)
+        intent.putExtra("name_group", name_group)
         startActivity(intent)
     }
 

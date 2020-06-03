@@ -29,6 +29,7 @@ class CourseActivity : AppCompatActivity() {
         setContentView(R.layout.activity_course)
         var intent: Intent = getIntent()
         var courseId : Int = intent.getIntExtra("id_group",0)        //TODO(DEVE ESSERE OTTENUTO DA QUERY)
+        var course_name : String? = ""
 
         val sectionsPagerAdapter = CourseAdapter(supportFragmentManager,courseId)
         val viewPager: ViewPager = findViewById(R.id.view_pager)
@@ -55,6 +56,7 @@ class CourseActivity : AppCompatActivity() {
                 follow_button.setCompoundDrawablesWithIntrinsicBounds(imgResource, 0, 0, 0);
             }
             course_name_textview.text = courseName
+            course_name = courseName
             course_enjoyment_rating.text = courseRating.toString()+"/5"
             course_difficulty_rating.text = courseDifficulty.toString()+"/5"
             if(numReviews>1 || numReviews!=0){num_reviews_textview.text = numReviews.toString()+" recensioni"} else{num_reviews_textview.text = numReviews.toString()+" recensione"}
@@ -113,8 +115,8 @@ class CourseActivity : AppCompatActivity() {
             }
         }
 
-        fab_new_post.setOnClickListener{ onClickNewPost(courseId) }
-        fab_new_post_textview.setOnClickListener{ onClickNewPost(courseId) }
+        fab_new_post.setOnClickListener{ onClickNewPost(courseId, course_name!!) }
+        fab_new_post_textview.setOnClickListener{ onClickNewPost(courseId, course_name!!) }
         fab_new_review.setOnClickListener{ onClickNewReview(courseId) }
         fab_new_review_textview.setOnClickListener{ onClickNewReview(courseId) }
     }
@@ -253,13 +255,14 @@ class CourseActivity : AppCompatActivity() {
 
     }
 
-    fun onClickNewPost(courseId: Int){
+    fun onClickNewPost(courseId: Int, course_name: String){
         //crea dialogo
         //passi fuonzione da effettuare onSuccess
         //uploiad to api
         //notifidatasetchanged()
         val intent = Intent(this, NewPostActivity::class.java)
         intent.putExtra("id_group", courseId)
+        intent.putExtra("name_group", course_name)
         startActivity(intent)
     }
 

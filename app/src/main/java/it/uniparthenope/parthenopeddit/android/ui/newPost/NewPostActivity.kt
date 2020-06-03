@@ -5,10 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.Spinner
+import android.widget.*
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.HomeActivity
@@ -31,6 +28,9 @@ class NewPostActivity : BasicActivity(){
         val actionBar = supportActionBar
         actionBar!!.title = "Nuovo post"
         var boardId : Int = intent.getIntExtra("id_group",0)
+        var board_name : String = intent.extras!!.getString("name_group", "")
+        var board_name_textview : TextView = findViewById<TextView>(R.id.board_name_textview)
+        board_name_textview.text = board_name
 
         var boards_name: ArrayList<String> = ArrayList()
         val publish_button = findViewById<Button>(R.id.publish_button)
