@@ -110,6 +110,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="Login"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user_logged_checkbox" />
@@ -128,9 +130,12 @@
     <Button
         android:id="@+id/privacy_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginTop="50dp"
         android:text="Disclaimer sulla privacy"
+        android:background="@drawable/group_textview_bubble"
+        android:textColor="@color/white"
+        android:padding="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login_button" />

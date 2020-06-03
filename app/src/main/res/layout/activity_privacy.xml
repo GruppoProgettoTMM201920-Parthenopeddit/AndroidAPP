@@ -38,7 +38,6 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="30dp"
         android:background="@drawable/fab_textview_bubble"
-        android:drawablePadding="2dip"
         android:text="API Ess3"
         android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"

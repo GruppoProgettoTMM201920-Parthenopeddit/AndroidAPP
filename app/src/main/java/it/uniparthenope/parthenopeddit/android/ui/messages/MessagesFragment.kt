@@ -103,15 +103,18 @@ class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners,
             .num(chatItemList.size.toString())
             .build()
 
-        //GRUPPI
-        /*val member_header = ExpandableSwipeAdapter.Item.Builder()
+
+        val groupchat_header = ExpandableListChatAdapter.Item.Builder()
             .type(ExpandableSwipeAdapter.HEADER)
-            .title("Membri")
-            .num( if(user_arraylist.isNotEmpty()) user_arraylist.size.toString() else "0" )
+            .title("Gruppi")
+            //.num( if(user_arraylist.isNotEmpty()) user_arraylist.size.toString() else "0" )
+            .num("0")
             .build()
-        ret.add(admin_header)
 
+        ret.add(userchat_header)
 
+        //GRUPPI
+        /*
         for(j in 0..(admin_arraylist.size!!-1)) {
             val content = ExpandableSwipeAdapter.Item.Builder()
                 .type(ExpandableSwipeAdapter.CONTENT)
@@ -124,7 +127,6 @@ class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners,
         }
         */
 
-        ret.add(userchat_header)
         if(chatItemList.isNotEmpty()) {
             for (j in 0..(chatItemList.size!! - 1)) {
                 val content = ExpandableListChatAdapter.Item.Builder()
@@ -141,6 +143,9 @@ class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners,
                 ret.add(content)
             }
         }
+
+
+        ret.add(groupchat_header)
 
 
 

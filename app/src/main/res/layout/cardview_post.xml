@@ -51,7 +51,6 @@
             android:layout_below="@+id/title_textview"
             android:layout_toEndOf="@+id/image_view"
             android:text="group"
-            android:inputType="textMultiLine"
             android:maxWidth="200dp"
             android:textColor="@color/white"
             android:paddingTop="2dp"
