@@ -16,11 +16,20 @@ import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.model.Comment
 import it.uniparthenope.parthenopeddit.model.Post
 import kotlinx.android.synthetic.main.activity_comment.*
+import kotlinx.android.synthetic.main.activity_new_post.*
+import kotlinx.android.synthetic.main.cardview_post.*
+import kotlinx.android.synthetic.main.cardview_post.posttext_textview
+import kotlinx.android.synthetic.main.cardview_post.title_textview
 
 class CommentActivity : BasicActivity(), CommentAdapter.CommentItemClickListeners {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_comment)
+
+        val username_textview: TextView = findViewById(R.id.username_textview)
+        val titolo: TextView = findViewById(R.id.title_textview)
+        var gruppo: TextView = findViewById(R.id.group_textview)
+        val body: TextView = findViewById(R.id.posttext_textview)
 
         val extras = intent.extras
         var id_post:Int = extras?.getInt("idPost")?:0
@@ -33,15 +42,13 @@ class CommentActivity : BasicActivity(), CommentAdapter.CommentItemClickListener
                 return@getPostWithComments;
             }
 
-            Log.d("DEBUG","setting layout post texts")
-
-            val username_textview: TextView = findViewById(R.id.username_textview)
-            val titolo: TextView = findViewById(R.id.group_textview)
-            val body: TextView = findViewById(R.id.posttext_textview)
-
-            username_textview.text = post.author_id
-            titolo.text = post.title
-            body.text = post.body?:""
+            username_textview.text = post.author!!.display_name
+            title_textview.text = post.title
+            group_textview.text = post.posted_to_board?.name?:"Generale"
+            timestamp_textview.text = post.timestamp
+            posttext_textview.text = post.body?:""
+            upvote_textview.text = "0"
+            downvote_textview.text = "0"
 
             Log.d("DEBUG","done")
 
