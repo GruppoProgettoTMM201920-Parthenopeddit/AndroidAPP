@@ -48,8 +48,8 @@ class GroupActivity : AppCompatActivity() {
 
 
         val fab = findViewById(R.id.fab) as FloatingActionButton
-        val fab_new_post__group = findViewById(R.id.fab_new_post_group) as FloatingActionButton
-        val fab_new_post_textview__group = findViewById(R.id.fab_new_post_textview_group) as TextView
+        val fab_group_chat = findViewById(R.id.fab_group_chat) as FloatingActionButton
+        val fab_group_chat_textview = findViewById(R.id.fab_group_chat_textview) as TextView
         val follow_button = findViewById(R.id.follow_button) as Button
         val rotateClockwise = AnimationUtils.loadAnimation(this, R.anim.rotate_clockwise)
         val rotateAnticlockwise = AnimationUtils.loadAnimation(this, R.anim.rotate_anticlockwise)
@@ -92,26 +92,35 @@ class GroupActivity : AppCompatActivity() {
 
 
                 fab_new_post_group.animate().translationY(200F)
-                fab_new_post_textview_group.animate().translationY(200F)
-                fab_new_post_textview_group.animate().alpha(0F)
-                fab_new_post_textview_group.visibility = View.GONE
+                fab_group_chat.animate().translationY(400F)
+                fab_new_post_group_textview.animate().translationY(200F)
+                fab_group_chat_textview.animate().translationY(400F)
+                fab_new_post_group_textview.animate().alpha(0F)
+                fab_group_chat_textview.animate().alpha(0F)
+                fab_new_post_group_textview.visibility = View.GONE
+                fab_group_chat_textview.visibility = View.GONE
+
                 isOpen = false
             } else{
                 fab.startAnimation(rotateAnticlockwise)
 
                 fab_new_post_group.animate().translationY(-200F)
+                fab_group_chat.animate().translationY(-400F)
 
-                fab_new_post_textview_group.animate().translationY(-200F)
+                fab_new_post_group_textview.animate().translationY(-200F)
+                fab_group_chat_textview.animate().translationY(-400F)
 
-                fab_new_post_textview_group.visibility = View.VISIBLE
+                fab_new_post_group_textview.visibility = View.VISIBLE
+                fab_group_chat_textview.visibility = View.VISIBLE
 
-                fab_new_post_textview_group.animate().alpha(1F)
+                fab_new_post_group_textview.animate().alpha(1F)
+                fab_group_chat_textview.animate().alpha(1F)
                 isOpen = true
             }
         }
 
         fab_new_post_group.setOnClickListener{ onClickNewPost(id_group, name_group!!) }
-        fab_new_post_textview_group.setOnClickListener{ onClickNewPost(id_group, name_group!!) }
+        fab_new_post_group_textview.setOnClickListener{ onClickNewPost(id_group, name_group!!) }
         follow_button.setOnClickListener {
             if(isFollowed){
                 //TODO: unfollow group
@@ -140,6 +149,7 @@ class GroupActivity : AppCompatActivity() {
         //notifidatasetchanged()
         val intent = Intent(this, NewPostActivity::class.java)
         intent.putExtra("id_group", id_group)
+        Log.d("DEBUG", "id group is ${id_group}")
         intent.putExtra("name_group", name_group)
         startActivity(intent)
     }

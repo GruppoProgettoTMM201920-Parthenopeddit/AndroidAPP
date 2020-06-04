@@ -1,6 +1,7 @@
 package it.uniparthenope.parthenopeddit.android.adapters
 
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -59,6 +60,7 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
         if( currentItem.posted_to_board_id == 1 ) {
             holder.board_textview.setBackgroundResource(R.drawable.general_textview_bubble)
             holder.board_textview.setTextColor(Color.BLACK)
+            Log.d("DEBUG", "the board id in home is ${currentItem.posted_to_board_id}")
         } else {
             when (currentItem.posted_to_board!!.type) {
                 "course" -> holder.board_textview.setBackgroundResource(R.drawable.fab_textview_bubble)

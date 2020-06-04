@@ -60,6 +60,8 @@ class NewPostActivity : BasicActivity(){
                         posted_to_board =  MockDatabase.instance.board_table.find{ it.id == boardId }
                     )
 
+                Log.d("DEBUG", "the board id is ${newPost?.posted_to_board_id}")
+
                 MockDatabase.instance.posts_table.add(newPost!!)
                 MockDatabase.instance.users_table.find { it.id == "user1" }!!.published_posts?.add(newPost)
 
