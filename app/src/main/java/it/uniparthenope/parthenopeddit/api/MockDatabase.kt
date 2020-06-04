@@ -25,6 +25,7 @@ class MockDatabase private constructor() {
     val board_table = ArrayList<Board>()
     val reviews_table = ArrayList<Review>()
     val chats_table = ArrayList<UsersChat>()
+    val group_chats_table = ArrayList<GroupChat>()
     val messages_table = ArrayList<Message>()
 
     init {
@@ -296,6 +297,18 @@ class MockDatabase private constructor() {
             of_user = u3
         )
 
+        val gp_ch_1 = GroupChat(
+            id = 1,
+            of_group_id = 2,
+            of_group = g2
+        )
+
+        val gp_ch_2 = GroupChat(
+            id = 3,
+            of_group_id = 3,
+            of_group = g3
+        )
+
         /*CHAT TRA U1 E U2*/
         val m1_u1_to_u2 = Message(
             id = 0,
@@ -421,6 +434,7 @@ class MockDatabase private constructor() {
         board_table.addAll(group_table)
         reviews_table.addAll(listOf(r1,r2,r3,r4,r5))
         chats_table.addAll(listOf(us_1_2,us_2_1,us_1_3,us_3_1))
+        group_chats_table.addAll(listOf(gp_ch_1, gp_ch_2))
         messages_table.addAll(listOf(
             m1_u1_to_u2,
             m2_u2_to_u1,

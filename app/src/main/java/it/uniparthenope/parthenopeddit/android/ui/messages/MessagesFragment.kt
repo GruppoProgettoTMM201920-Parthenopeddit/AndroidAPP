@@ -24,6 +24,7 @@ import it.uniparthenope.parthenopeddit.android.adapters.ExpandableListChatAdapte
 import it.uniparthenope.parthenopeddit.android.adapters.ExpandableSwipeAdapter
 import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.auth.Auth
+import it.uniparthenope.parthenopeddit.model.GroupChat
 import it.uniparthenope.parthenopeddit.model.User
 import it.uniparthenope.parthenopeddit.model.UsersChat
 import it.uniparthenope.parthenopeddit.util.SwipeItemTouchListener
@@ -94,20 +95,20 @@ class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners,
         startActivity(intent)
     }
 
-    private fun getData(chatItemList: ArrayList<UsersChat>) : List<ExpandableListChatAdapter.Item> {
+    private fun getData(userChatItemList: ArrayList<UsersChat>, groupChatItemList: ArrayList<GroupChat>) : List<ExpandableListChatAdapter.Item> {
         val ret = ArrayList<ExpandableListChatAdapter.Item>()
 
         val userchat_header = ExpandableListChatAdapter.Item.Builder()
             .type(ExpandableSwipeAdapter.HEADER)
             .title("Utenti")
-            .num(chatItemList.size.toString())
+            .num(userChatItemList.size.toString())
             .build()
 
 
         val groupchat_header = ExpandableListChatAdapter.Item.Builder()
             .type(ExpandableSwipeAdapter.HEADER)
             .title("Gruppi")
-            //.num( if(user_arraylist.isNotEmpty()) user_arraylist.size.toString() else "0" )
+            .num( if(groupChatItemList.isNotEmpty()) groupChatItemList.size.toString() else "0" )
             .num("0")
             .build()
 
@@ -127,18 +128,18 @@ class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners,
         }
         */
 
-        if(chatItemList.isNotEmpty()) {
-            for (j in 0..(chatItemList.size!! - 1)) {
+        if(userChatItemList.isNotEmpty()) {
+            for (j in 0..(userChatItemList.size!! - 1)) {
                 val content = ExpandableListChatAdapter.Item.Builder()
                     .type(ExpandableSwipeAdapter.CONTENT)
                     .thumbnailUrl(generateRandomImageUrl(MAX_IMAGE_SIZE))
-                    .username(chatItemList?.get(j)?.other_user?.display_name!!)
-                    .latestmessage(chatItemList?.get(j)?.latest_message)
+                    .username(userChatItemList?.get(j)?.other_user?.display_name!!)
+                    .latestmessage(userChatItemList?.get(j)?.latest_message)
                     .date("4:20")
-                    .user(chatItemList?.get(j)?.other_user)
+                    .user(userChatItemList?.get(j)?.other_user)
                     .build()
 
-                Log.d("DEBUG", "user has id ${chatItemList?.get(j)?.other_user.id}")
+                Log.d("DEBUG", "user has id ${userChatItemList?.get(j)?.other_user.id}")
 
                 ret.add(content)
             }

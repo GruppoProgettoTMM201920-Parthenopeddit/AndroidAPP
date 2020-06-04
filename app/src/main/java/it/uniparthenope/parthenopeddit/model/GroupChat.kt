@@ -6,7 +6,7 @@ import it.uniparthenope.parthenopeddit.util.JSONConvertable
 class GroupChat(
     id: Int,
 
-    val of_group_id: Int
-) : Chat(id, "group_chat"), JSONConvertable {
+    val of_group_id: Int,
     var of_group: Group? = null
+) : Chat(id, "group_chat"), JSONConvertable {
 }
