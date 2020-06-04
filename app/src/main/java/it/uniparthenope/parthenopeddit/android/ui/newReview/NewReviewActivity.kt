@@ -25,6 +25,8 @@ class NewReviewActivity : AppCompatActivity()  {
         var enjoy_rating = 0
         var difficulty_rating = 0
 
+        course_name_textview.text = course_name
+
         star_exp_1.setOnClickListener { setEnjStars(1)
             enjoy_rating = 1 }
         star_exp_2.setOnClickListener { setEnjStars(2)
