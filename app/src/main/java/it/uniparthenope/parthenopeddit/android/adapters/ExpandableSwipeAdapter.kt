@@ -2,6 +2,7 @@ package it.uniparthenope.parthenopeddit.android.adapters
 
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +31,7 @@ class ExpandableSwipeAdapter(private val context: Context, private val glide: Re
         const val HEADER = 0
         const val CONTENT = 1
         const val FOOTER = 2
+        const val GROUP_CONTENT = 3
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -60,6 +62,14 @@ class ExpandableSwipeAdapter(private val context: Context, private val glide: Re
                         false
                     )
                 )
+            GROUP_CONTENT -> holder =
+                ContentGroupViewHolder(
+                    inflater.inflate(
+                        R.layout.item_content,
+                        parent,
+                        false
+                    )
+                )
         }
         return holder ?: throw IllegalStateException("Item type unspecified.")
     }
@@ -76,6 +86,9 @@ class ExpandableSwipeAdapter(private val context: Context, private val glide: Re
                 }
                 FOOTER -> {
                     bindFooter(holder as FooterViewHolder, item)
+                }
+                GROUP_CONTENT -> {
+                    bindGroupContent(holder as ContentGroupViewHolder, item)
                 }
             }
         }
@@ -207,6 +220,18 @@ class ExpandableSwipeAdapter(private val context: Context, private val glide: Re
         }
     }
 
+    private fun bindGroupContent(holder: ContentGroupViewHolder, item: Item) {
+
+        resizeGroupContent(holder, item.isOpened)
+
+        glide.load(item.thumbnailUrl)
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .into(holder.thumbnail)
+        holder.container.setOnClickListener{
+        }
+
+    }
+
     /**
      * this is the expandable trick.
      * resize each item to width 0, height 0, then
@@ -220,6 +245,22 @@ class ExpandableSwipeAdapter(private val context: Context, private val glide: Re
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
             )
         } else {
+            container.visibility = View.GONE
+            container.layoutParams = FrameLayout.LayoutParams(0, 0)
+        }
+    }
+
+    private fun resizeGroupContent(holder: ContentGroupViewHolder, isOpened: Boolean) {
+        val container = holder.backgroundContainer
+        if (isOpened) {
+            container.visibility = View.VISIBLE
+            container.layoutParams = FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+
+            Log.d("DEBUG", "NIGHTTIME1")
+        } else {
+            Log.d("DEBUG", "NIGHTTIME")
             container.visibility = View.GONE
             container.layoutParams = FrameLayout.LayoutParams(0, 0)
         }
@@ -247,6 +288,18 @@ class ExpandableSwipeAdapter(private val context: Context, private val glide: Re
         val thumbnail: ImageView = itemView.findViewById(R.id.content_image)
         val username: TextView = itemView.findViewById(R.id.content_username_textview)
         val joindate: TextView = itemView.findViewById(R.id.content_joindate_textview)
+    }
+
+    class ContentGroupViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        val backgroundContainer: FrameLayout =
+            itemView.findViewById(R.id.content_background_container)
+        val container: ConstraintLayout = itemView.findViewById(R.id.content_container)
+        val thumbnail: ImageView = itemView.findViewById(R.id.content_image)
+        val groupname: TextView = itemView.findViewById(R.id.content_groupname_textview)
+        val group_user_latest: TextView = itemView.findViewById(R.id.content_username_textview)
+        val latest_message: TextView = itemView.findViewById(R.id.content_latestmessage_textview)
+        val date: TextView = itemView.findViewById(R.id.content_date_textview)
     }
 
     class FooterViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

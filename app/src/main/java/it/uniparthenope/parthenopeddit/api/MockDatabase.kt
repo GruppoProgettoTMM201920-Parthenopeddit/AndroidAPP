@@ -299,12 +299,16 @@ class MockDatabase private constructor() {
 
         val gp_ch_1 = GroupChat(
             id = 1,
+            latest_message = "The Box",
+            user_latestmessage = "Roddy Ricch",
             of_group_id = 2,
             of_group = g2
         )
 
         val gp_ch_2 = GroupChat(
             id = 3,
+            latest_message = "Did you listen Californication?",
+            user_latestmessage = "RedHotChiliPeppers",
             of_group_id = 3,
             of_group = g3
         )

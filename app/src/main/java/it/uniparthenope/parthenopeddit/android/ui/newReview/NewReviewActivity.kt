@@ -19,6 +19,9 @@ class NewReviewActivity : AppCompatActivity()  {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_review)
 
+        var courseId : Int = intent.getIntExtra("id_course",0)
+        var course_name : String = intent.getStringExtra("name_course")
+
         var enjoy_rating = 0
         var difficulty_rating = 0
 
@@ -63,8 +66,8 @@ class NewReviewActivity : AppCompatActivity()  {
                         timestamp = formatter.format(date),
                         author_id = "user1",
                         author = MockDatabase.instance.users_table.find { it.id == "user1" }!!,
-                        reviewed_course_id = 1,
-                        reviewed_course = MockDatabase.instance.course_table.find { it.id == 1 }!!,
+                        reviewed_course_id = courseId,
+                        reviewed_course = MockDatabase.instance.course_table.find { it.id == courseId }!!,
                         score_liking = enjoy_rating,
                         score_difficulty = difficulty_rating
                     )
@@ -72,7 +75,7 @@ class NewReviewActivity : AppCompatActivity()  {
 
 
                 MockDatabase.instance.reviews_table.add(newReview!!)
-                MockDatabase.instance.course_table.find { it.id == 1 }?.reviews?.add(newReview)
+                MockDatabase.instance.course_table.find { it.id == courseId }?.reviews?.add(newReview)
                 MockDatabase.instance.users_table.find { it.id == "user1" }!!.published_reviews?.add(newReview)
 
                 val intent = Intent(this, HomeActivity::class.java)

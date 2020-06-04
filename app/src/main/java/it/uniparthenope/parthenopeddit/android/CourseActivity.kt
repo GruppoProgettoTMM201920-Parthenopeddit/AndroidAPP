@@ -117,8 +117,8 @@ class CourseActivity : AppCompatActivity() {
 
         fab_new_post.setOnClickListener{ onClickNewPost(courseId, course_name!!) }
         fab_new_post_textview.setOnClickListener{ onClickNewPost(courseId, course_name!!) }
-        fab_new_review.setOnClickListener{ onClickNewReview(courseId) }
-        fab_new_review_textview.setOnClickListener{ onClickNewReview(courseId) }
+        fab_new_review.setOnClickListener{ onClickNewReview(courseId, course_name!!) }
+        fab_new_review_textview.setOnClickListener{ onClickNewReview(courseId, course_name!!) }
     }
 
     fun setEnjoymentStars(score_liking: Float){
@@ -266,9 +266,10 @@ class CourseActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-    fun onClickNewReview(courseId: Int){
+    fun onClickNewReview(courseId: Int, courseName: String){
         val intent = Intent(this, NewReviewActivity::class.java)
-        intent.putExtra("id_group", courseId)
+        intent.putExtra("id_course", courseId)
+        intent.putExtra("name_course", courseName)
         startActivity(intent)
     }
 }

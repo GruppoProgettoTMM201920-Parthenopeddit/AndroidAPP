@@ -1,6 +1,7 @@
 package it.uniparthenope.parthenopeddit.android.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +18,9 @@ import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.snackbar.Snackbar
 import it.uniparthenope.parthenopeddit.R
+import it.uniparthenope.parthenopeddit.android.adapters.ExpandableSwipeAdapter.Companion.GROUP_CONTENT
 import it.uniparthenope.parthenopeddit.android.ui.messages.MessagesFragment
+import it.uniparthenope.parthenopeddit.model.Group
 import it.uniparthenope.parthenopeddit.model.User
 import it.uniparthenope.parthenopeddit.model.UsersChat
 import java.lang.IllegalStateException
@@ -72,6 +75,14 @@ class ExpandableListChatAdapter (private val context: Context, private val glide
                         false
                     )
                 )
+            GROUP_CONTENT -> holder =
+                ContentGroupViewHolder(
+                    inflater.inflate(
+                        R.layout.item_content_chat_group,
+                        parent,
+                        false
+                    )
+                )
         }
         return holder ?: throw IllegalStateException("Item type unspecified.")
     }
@@ -85,6 +96,9 @@ class ExpandableListChatAdapter (private val context: Context, private val glide
                 }
                 CONTENT -> {
                     bindContent(holder as ContentViewHolder, item)
+                }
+                GROUP_CONTENT -> {
+                    bindGroupContent(holder as ContentGroupViewHolder, item)
                 }
             }
         }
@@ -201,11 +215,13 @@ class ExpandableListChatAdapter (private val context: Context, private val glide
 
 
         resizeContent(holder, item.isOpened)
+
+        Log.d("DEBUG", "NIGHTTIME1")
         glide.load(item.thumbnailUrl)
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(holder.thumbnail)
         holder.username.text = item.username
-        holder.latestmessage.text = item.latestmessage
+        holder.latest_message.text = item.latest_message
         holder.date.text = item.date
         holder.container.setOnClickListener {
             val snackBar = Snackbar.make(
@@ -222,12 +238,51 @@ class ExpandableListChatAdapter (private val context: Context, private val glide
         }
     }
 
+    private fun bindGroupContent(holder: ContentGroupViewHolder, item: Item) {
+        //var currentItem = chatList[position]
+
+        resizeGroupContent(holder, item.isOpened)
+        glide.load(item.thumbnailUrl)
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .into(holder.thumbnail)
+        holder.groupname.text = item.username
+        holder.group_user_latest.text = item.group_user_latest + ":"
+        holder.latest_message.text = item.latest_message
+        holder.date.text = item.date
+        holder.container.setOnClickListener {
+            val snackBar = Snackbar.make(
+                it,
+                context.resources.getString(R.string.click, holder.groupname.text.toString()),
+                Snackbar.LENGTH_LONG
+            )
+            snackBar.setActionTextColor(ContextCompat.getColor(context, R.color.red))
+            snackBar.setAction("Hide") {
+                snackBar.dismiss()
+            }
+            snackBar.show()
+            //listener!!.onChatClick(item.user!!)
+        }
+    }
+
     /**
      * this is the expandable trick.
      * resize each item to width 0, height 0, then
      * notifyItemRangeChanged do collapse / expand beautifully with their basic animation.
      */
     private fun resizeContent(holder: ContentViewHolder, isOpened: Boolean) {
+        val container = holder.backgroundContainer
+        if (isOpened) {
+            container.visibility = View.VISIBLE
+            container.layoutParams = FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        } else {
+            container.visibility = View.GONE
+            container.layoutParams = FrameLayout.LayoutParams(0, 0)
+        }
+    }
+
+    private fun resizeGroupContent(holder: ContentGroupViewHolder, isOpened: Boolean) {
         val container = holder.backgroundContainer
         if (isOpened) {
             container.visibility = View.VISIBLE
@@ -261,7 +316,19 @@ class ExpandableListChatAdapter (private val context: Context, private val glide
         val container: ConstraintLayout = itemView.findViewById(R.id.content_container)
         val thumbnail: ImageView = itemView.findViewById(R.id.content_image)
         val username: TextView = itemView.findViewById(R.id.content_username_textview)
-        val latestmessage: TextView = itemView.findViewById(R.id.content_latestmessage_textview)
+        val latest_message: TextView = itemView.findViewById(R.id.content_latestmessage_textview)
+        val date: TextView = itemView.findViewById(R.id.content_date_textview)
+    }
+
+    class ContentGroupViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        val backgroundContainer: FrameLayout =
+            itemView.findViewById(R.id.content_background_container)
+        val container: ConstraintLayout = itemView.findViewById(R.id.content_container)
+        val thumbnail: ImageView = itemView.findViewById(R.id.content_image)
+        val groupname: TextView = itemView.findViewById(R.id.content_groupname_textview)
+        val group_user_latest: TextView = itemView.findViewById(R.id.content_username_textview)
+        val latest_message: TextView = itemView.findViewById(R.id.content_latestmessage_textview)
         val date: TextView = itemView.findViewById(R.id.content_date_textview)
     }
 
@@ -277,9 +344,10 @@ class ExpandableListChatAdapter (private val context: Context, private val glide
     class Item(
         internal val type: Int, internal val title: String?,
         internal var num: String? = null,
-        internal var latestmessage: String? = null,
+        internal var latest_message: String? = null,
         internal var date: String? = null,
-        internal var user: User? = null,
+        internal var user: User? = null, internal var group: Group?,
+        internal val group_user_latest: String?,
         internal val thumbnailUrl: String?, internal val username: String?,
         internal val joindate: String?, internal var isOpened: Boolean
     ) {
@@ -288,9 +356,11 @@ class ExpandableListChatAdapter (private val context: Context, private val glide
             private var type: Int = 0,
             private var title: String? = null,
             private var num: String? = null,
-            private var latestmessage: String? = null,
+            private var latest_message: String? = null,
             private var date: String? = null,
+            private var group: Group? = null,
             private var user: User? = null,
+            private var group_user_latest: String? = null,
             private var thumbnailUrl: String? = null,
             private var username: String? = null,
             private var joindate: String? = null,
@@ -300,9 +370,11 @@ class ExpandableListChatAdapter (private val context: Context, private val glide
             fun type(type: Int) = apply { this.type = type }
             fun title(title: String) = apply { this.title = title }
             fun num(num: String) = apply { this.num = num }
-            fun latestmessage(latestmessage: String?) = apply { this.latestmessage = latestmessage}
+            fun latest_message(latest_message: String?) = apply { this.latest_message = latest_message}
             fun date(date: String?) = apply { this.date = date}
             fun user(user: User?) = apply{ this.user = user}
+            fun group(group: Group?) = apply{ this.group = group}
+            fun group_user_latest(group_user_latest: String?) = apply{ this.group_user_latest = group_user_latest}
             fun thumbnailUrl(thumbnailUrl: String) = apply { this.thumbnailUrl = thumbnailUrl }
             fun username(username: String) = apply { this.username = username }
             fun joindate(joindate: String) = apply { this.joindate = joindate }
@@ -311,9 +383,11 @@ class ExpandableListChatAdapter (private val context: Context, private val glide
                 type,
                 title,
                 num,
-                latestmessage,
+                latest_message,
                 date,
                 user,
+                group,
+                group_user_latest,
                 thumbnailUrl,
                 username,
                 joindate,

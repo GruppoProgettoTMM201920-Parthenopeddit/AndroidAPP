@@ -44,10 +44,8 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         val fab = root.findViewById(R.id.fab) as FloatingActionButton
         val fab_new_post = root.findViewById(R.id.fab_new_post) as FloatingActionButton
         val fab_new_group = root.findViewById(R.id.fab_new_group) as FloatingActionButton
-        val fab_new_review = root.findViewById(R.id.fab_new_review) as FloatingActionButton
         val fab_new_post_textview = root.findViewById(R.id.fab_new_post_textview) as TextView
         val fab_new_group_textview = root.findViewById(R.id.fab_new_group_textview) as TextView
-        val fab_new_review_textview = root.findViewById(R.id.fab_new_review_textview) as TextView
 
         /*
         val listHeader = listOf("I tuoi corsi di studio", "I tuoi gruppi")
@@ -142,16 +140,12 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
                 fab_new_post.animate().translationY(200F)
                 fab_new_group.animate().translationY(400F)
-                fab_new_review.animate().translationY(600F)
                 fab_new_post_textview.animate().translationY(200F)
                 fab_new_group_textview.animate().translationY(400F)
-                fab_new_review_textview.animate().translationY(600F)
                 fab_new_post_textview.animate().alpha(0F)
                 fab_new_group_textview.animate().alpha(0F)
-                fab_new_review_textview.animate().alpha(0F)
                 fab_new_post_textview.visibility = View.GONE
                 fab_new_group_textview.visibility = View.GONE
-                fab_new_review_textview.visibility = View.GONE
 
 
 
@@ -161,19 +155,15 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
                 fab_new_post.animate().translationY(-200F)
                 fab_new_group.animate().translationY(-400F)
-                fab_new_review.animate().translationY(-600F)
 
                 fab_new_post_textview.animate().translationY(-200F)
                 fab_new_group_textview.animate().translationY(-400F)
-                fab_new_review_textview.animate().translationY(-600F)
 
                 fab_new_post_textview.visibility = View.VISIBLE
                 fab_new_group_textview.visibility = View.VISIBLE
-                fab_new_review_textview.visibility = View.VISIBLE
 
                 fab_new_post_textview.animate().alpha(1F)
                 fab_new_group_textview.animate().alpha(1F)
-                fab_new_review_textview.animate().alpha(1F)
                 isOpen = true
             }
         }
@@ -182,8 +172,6 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         fab_new_post_textview.setOnClickListener{ onClickNewPost() }
         fab_new_group.setOnClickListener{ onClickNewGroup() }
         fab_new_group_textview.setOnClickListener{ onClickNewGroup() }
-        fab_new_review.setOnClickListener{ onClickNewReview() }
-        fab_new_review_textview.setOnClickListener{ onClickNewReview() }
 
         return root
     }
@@ -243,12 +231,6 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
     fun onClickNewGroup(){
         val intent = Intent(requireContext(), NewGroupActivity::class.java)
-        startActivity(intent)
-    }
-
-    fun onClickNewReview(){
-        val intent = Intent(requireContext(), NewReviewActivity::class.java)
-        intent.putExtra("id_group",-1)
         startActivity(intent)
     }
 }

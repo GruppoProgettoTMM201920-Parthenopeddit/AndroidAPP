@@ -188,6 +188,27 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
         return
     }
 
+    fun getGroupChat(
+        token: String,
+        userId: Int,
+        completion: (chat: ArrayList<GroupChat>?, error: String?) -> Unit
+    ) {
+        var group_chats : ArrayList<GroupChat>? = ArrayList()
+        var user = MockDatabase.instance.users_table.filter { it.id=="user1" }.single()
+        for(chat in MockDatabase.instance.group_chats_table){
+            if(user.groups!!.any { it.id == chat.of_group_id }){
+                group_chats?.add(chat)
+            }
+        }
+
+        if(group_chats?.isEmpty()!!){
+            completion.invoke(null, "L'utente non ha chat di gruppo")
+        } else {
+            completion.invoke(group_chats, null)
+        }
+        return
+    }
+
     fun getChatMessages(
         token: String,
         user1Id: String,

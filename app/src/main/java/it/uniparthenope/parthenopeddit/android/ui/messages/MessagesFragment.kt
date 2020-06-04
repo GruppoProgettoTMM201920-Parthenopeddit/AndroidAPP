@@ -74,19 +74,32 @@ class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners,
 
 
 
+        var chatList: ArrayList<UsersChat> = ArrayList<UsersChat>()
+        var groupChatList: ArrayList<GroupChat> = ArrayList<GroupChat>()
+
         MockApiData().getChat( Auth().token, 1) { chatItemList, error ->
             if( error != null ) {
                 Toast.makeText(requireContext(),"Errore : $error", Toast.LENGTH_LONG).show()
             } else {
                 chatItemList!!
-                adapter.setData(getData(chatItemList!!))
-                //TODO: getData for GroupChat
 
-                //chatListAdapter.aggiungiChat(chatItemList)
+                chatList = chatItemList!!
             }
         }
 
-        return root
+        MockApiData().getGroupChat( Auth().token, 1) { chatItemList, error ->
+            if( error != null ) {
+                Toast.makeText(requireContext(),"Errore : $error", Toast.LENGTH_LONG).show()
+            } else {
+                chatItemList!!
+
+                groupChatList = chatItemList!!
+            }
+        }
+
+        adapter.setData(getData(chatList!!, groupChatList!!))
+
+            return root
     }
 
     override fun onChatClick(user: User) {
@@ -109,7 +122,6 @@ class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners,
             .type(ExpandableSwipeAdapter.HEADER)
             .title("Gruppi")
             .num( if(groupChatItemList.isNotEmpty()) groupChatItemList.size.toString() else "0" )
-            .num("0")
             .build()
 
         ret.add(userchat_header)
@@ -134,7 +146,7 @@ class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners,
                     .type(ExpandableSwipeAdapter.CONTENT)
                     .thumbnailUrl(generateRandomImageUrl(MAX_IMAGE_SIZE))
                     .username(userChatItemList?.get(j)?.other_user?.display_name!!)
-                    .latestmessage(userChatItemList?.get(j)?.latest_message)
+                    .latest_message(userChatItemList?.get(j)?.latest_message)
                     .date("4:20")
                     .user(userChatItemList?.get(j)?.other_user)
                     .build()
@@ -147,10 +159,27 @@ class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners,
 
 
         ret.add(groupchat_header)
+        
+        if(groupChatItemList.isNotEmpty()) {
+            for (j in 0..(groupChatItemList.size!! - 1)) {
+                val content = ExpandableListChatAdapter.Item.Builder()
+                    .type(ExpandableSwipeAdapter.GROUP_CONTENT)
+                    .thumbnailUrl(generateRandomImageUrl(MAX_IMAGE_SIZE))
+                    .username(groupChatItemList?.get(j)?.of_group!!.name)
+                    .group_user_latest(groupChatItemList?.get(j)?.user_latestmessage)
+                    .latest_message(groupChatItemList?.get(j)?.latest_message)
+                    .date("4:20")
+                    .group(groupChatItemList?.get(j)?.of_group)
+                    .build()
 
 
+                ret.add(content)
+
+            }
+        }
 
 
+        Log.d("DEBUG", "group has id ${groupChatItemList?.get(0)?.of_group?.id}")
         return ret
     }
 
