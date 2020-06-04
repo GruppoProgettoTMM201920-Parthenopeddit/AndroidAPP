@@ -9,7 +9,8 @@ class GroupMember(
     val join_date: String,
     val last_read_chat: String?,
     val is_owner: Boolean,
-    var user: User? = null
-) : JSONConvertable {
+    var user: User? = null,
     var group: Group? = null
+
+) : JSONConvertable {
 }

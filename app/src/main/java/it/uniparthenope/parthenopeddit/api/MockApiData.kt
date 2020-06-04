@@ -1,8 +1,10 @@
 package it.uniparthenope.parthenopeddit.api
 
+import android.util.Log
 import it.uniparthenope.parthenopeddit.model.*
 import kotlinx.android.synthetic.main.chat_fragment.*
 import java.sql.Timestamp
+import java.text.SimpleDateFormat
 
 class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNamespace, GroupNamespace {
     override fun login(
@@ -293,11 +295,34 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
 
     override fun createGroup(
         group_name: String,
-        invitedUsersIds: List<String>,
-        onSuccess: (invitedUsers: ArrayList<GroupInvite>) -> Unit,
-        onFail: (error: String) -> Unit
+        invitedUsersIds: ArrayList<String>,
+        completion: (groupId: Int, error: String?) -> Unit
     ) {
-        TODO("Not yet implemented")
+        var group_id: Int = MockDatabase.instance.group_table.maxBy{ it.id }!!.id + 1
+        Log.d("DEBUG", "new id is ${group_id}")
+        var group_users: ArrayList<GroupMember> = ArrayList<GroupMember>()
+
+        val sdf = SimpleDateFormat("dd/M/yyyy")
+        val currentDate = sdf.toString()
+
+        var newGroup: Group = Group(group_id, group_name, currentDate, ArrayList<GroupMember>(), null, ArrayList<GroupInvite>(), 0)
+
+        for(username in invitedUsersIds){
+            var member: User = MockDatabase.instance.users_table.filter { it.id == username }.single()
+            member.groups?.add(newGroup)
+            if(username == "user1")
+                group_users.add(GroupMember(member.id, group_id, currentDate, null, true, member, newGroup))
+            else
+                group_users.add(GroupMember(member.id, group_id, currentDate, null, false, member, newGroup))
+
+        }
+
+        newGroup.members = group_users
+        newGroup.members_num = newGroup.members!!.size
+        //TODO: add group chat
+
+        MockDatabase.instance.group_table.add(newGroup)
+        completion.invoke(group_id,null)
     }
 
     override fun getUserInvitesToGroup(

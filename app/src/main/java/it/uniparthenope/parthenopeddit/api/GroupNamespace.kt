@@ -10,9 +10,10 @@ interface GroupNamespace {
 
     fun createGroup(
         group_name: String,
-        invitedUsersIds: List<String>,
-        onSuccess: (invitedUsers: ArrayList<GroupInvite>) -> Unit,
-        onFail: (error: String) -> Unit
+        invitedUsersIds: ArrayList<String>,
+        /*onSuccess: (invitedUsers: ArrayList<GroupInvite>) -> Unit,
+        onFail: (error: String) -> Unit*/
+        completion: (groupId: Int, error: String?) -> Unit
     )
 
     fun getUserInvitesToGroup(
