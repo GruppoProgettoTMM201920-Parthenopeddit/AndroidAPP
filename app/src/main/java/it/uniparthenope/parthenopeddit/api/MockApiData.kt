@@ -298,7 +298,7 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
         invitedUsersIds: ArrayList<String>,
         completion: (groupId: Int, error: String?) -> Unit
     ) {
-        var group_id: Int = MockDatabase.instance.group_table.maxBy{ it.id }!!.id + 1
+        var group_id: Int = MockDatabase.instance.board_table.maxBy{ it.id }!!.id + 1
         Log.d("DEBUG", "new id is ${group_id}")
         var group_users: ArrayList<GroupMember> = ArrayList<GroupMember>()
 
@@ -322,6 +322,7 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
         //TODO: add group chat
 
         MockDatabase.instance.group_table.add(newGroup)
+        MockDatabase.instance.board_table.add(newGroup)
         completion.invoke(group_id,null)
     }
 
