@@ -10,6 +10,7 @@ import androidx.preference.PreferenceManager
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.PreferenceHelper.customPreference
+import it.uniparthenope.parthenopeddit.android.PreferenceHelper.logged
 import it.uniparthenope.parthenopeddit.android.PreferenceHelper.password
 import it.uniparthenope.parthenopeddit.android.PreferenceHelper.userId
 import kotlinx.android.synthetic.main.activity_login.*
@@ -31,6 +32,7 @@ class LoginActivity : BasicActivity(){
         val prefs = customPreference(this, CUSTOM_PREF_NAME)
         username_edittext.setText(prefs.userId)
         password_edittext.setText(prefs.password)
+        user_logged_checkbox.isChecked = prefs.logged
 
         login_button.setOnClickListener {
 
@@ -49,7 +51,14 @@ class LoginActivity : BasicActivity(){
 
                     prefs.password = password
                     prefs.userId = username
+                    prefs.logged = true
+                } else{
+                    username_edittext.text.clear()
+                    password_edittext.text.clear()
 
+                    prefs.password = ""
+                    prefs.userId = ""
+                    prefs.logged = false
                 }
 
 
@@ -72,6 +81,7 @@ object PreferenceHelper {
 
     val USERNAME = "USERNAME"
     val USER_PASSWORD = "PASSWORD"
+    val LOGGED = "LOGGED"
 
     fun defaultPreference(context: Context): SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
 
@@ -98,6 +108,15 @@ object PreferenceHelper {
                 it.putString(USER_PASSWORD, value)
             }
         }
+
+    var SharedPreferences.logged
+        get() = getBoolean(LOGGED, false)
+        set(value) {
+            editMe {
+                it.putBoolean(LOGGED, value)
+            }
+        }
+
 }
 
 
