@@ -17,6 +17,7 @@ import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.ui.group.BackdropFragment
 import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
 import it.uniparthenope.parthenopeddit.api.MockApiData
+import it.uniparthenope.parthenopeddit.api.MockDatabase
 import it.uniparthenope.parthenopeddit.auth.Auth
 import it.uniparthenope.parthenopeddit.model.GroupMember
 import kotlinx.android.synthetic.main.activity_course.*
@@ -54,6 +55,19 @@ class GroupActivity : AppCompatActivity() {
         val rotateClockwise = AnimationUtils.loadAnimation(this, R.anim.rotate_clockwise)
         val rotateAnticlockwise = AnimationUtils.loadAnimation(this, R.anim.rotate_anticlockwise)
 
+        //BUON DIVERTIMENTO CON LE API, FRANCESCO
+        //PS. potevo farla più efficiente ma sono le 22:28
+        if(MockDatabase.instance.users_table.filter{ it.id == "user1" }.single().groups!!.filter{ it.id == id_group}.single().id == id_group ){
+            follow_button.text = "Lascia"
+            val imgResource: Int = R.drawable.ic_unfollow_themecolor_24dp
+            follow_button.setCompoundDrawablesWithIntrinsicBounds(imgResource, 0, 0, 0)
+            isFollowed = true
+        } else{
+            follow_button.text = "Entra"
+            val imgResource: Int = R.drawable.ic_follow_themecolor_24dp
+            follow_button.setCompoundDrawablesWithIntrinsicBounds(imgResource, 0, 0, 0)
+            isFollowed = false
+        }
 
         MockApiData().getGroupInfo( Auth().token, id_group) { name, num_members, created, members, error ->
 
@@ -124,6 +138,7 @@ class GroupActivity : AppCompatActivity() {
         follow_button.setOnClickListener {
             if(isFollowed){
                 //TODO: unfollow group
+                //MockDatabase.instance.users_table.filter { it.id == "user1" }.single().groups.removeIf { it.id == id_group }
                 Toast.makeText(this, "Hai smesso di seguire ${group_name_textview.text}",Toast.LENGTH_LONG).show()
                 follow_button.text = "Entra"
                 val imgResource: Int = R.drawable.ic_follow_themecolor_24dp

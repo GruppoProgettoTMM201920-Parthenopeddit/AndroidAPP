@@ -16,6 +16,7 @@ import it.uniparthenope.parthenopeddit.android.adapters.CourseAdapter
 import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
 import it.uniparthenope.parthenopeddit.android.ui.newReview.NewReviewActivity
 import it.uniparthenope.parthenopeddit.api.MockApiData
+import it.uniparthenope.parthenopeddit.api.MockDatabase
 import it.uniparthenope.parthenopeddit.auth.Auth
 import kotlinx.android.synthetic.main.activity_course.*
 
@@ -46,6 +47,17 @@ class CourseActivity : AppCompatActivity() {
         val rotateClockwise = AnimationUtils.loadAnimation(this, R.anim.rotate_clockwise)
         val rotateAnticlockwise = AnimationUtils.loadAnimation(this, R.anim.rotate_anticlockwise)
 
+        if(MockDatabase.instance.users_table.filter{ it.id == "user1" }.single().followed_courses!!.filter{ it.id == courseId}.single().id == courseId ){
+            follow_button.text = "Lascia"
+            val imgResource: Int = R.drawable.ic_unfollow_themecolor_24dp
+            follow_button.setCompoundDrawablesWithIntrinsicBounds(imgResource, 0, 0, 0)
+            isFollowed = true
+        } else{
+            follow_button.text = "Entra"
+            val imgResource: Int = R.drawable.ic_follow_themecolor_24dp
+            follow_button.setCompoundDrawablesWithIntrinsicBounds(imgResource, 0, 0, 0)
+            isFollowed = false
+        }
 
         MockApiData().getCourseInfo( Auth().token, courseId) { courseRating:Float, courseDifficulty:Float, numReviews: Int, courseName: String?, isFollowedCourse: Boolean, error: String? ->
 
