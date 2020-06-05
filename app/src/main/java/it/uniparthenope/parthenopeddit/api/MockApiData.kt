@@ -2,9 +2,8 @@ package it.uniparthenope.parthenopeddit.api
 
 import android.util.Log
 import it.uniparthenope.parthenopeddit.model.*
-import kotlinx.android.synthetic.main.chat_fragment.*
-import java.sql.Timestamp
-import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNamespace, GroupNamespace {
     override fun login(
@@ -302,8 +301,16 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
         Log.d("DEBUG", "new id is ${group_id}")
         var group_users: ArrayList<GroupMember> = ArrayList<GroupMember>()
 
-        val sdf = SimpleDateFormat("dd/M/yyyy")
-        val currentDate = sdf.toString()
+        val c: Calendar = Calendar.getInstance()
+        val currentDate: String =
+            c.get(Calendar.DATE).toString() + "/" + c.get(Calendar.MONTH).toString() + "/" + c.get(Calendar.YEAR).toString()
+
+        /*REQUIRES OREO
+        val currentDate =  DateTimeFormatter
+            .ofPattern("dd-MM-yyyy")
+            .withZone(ZoneOffset.UTC)
+            .format(Instant.now())
+         */
 
         var newGroup: Group = Group(group_id, group_name, currentDate, ArrayList<GroupMember>(), null, ArrayList<GroupInvite>(), 0)
 

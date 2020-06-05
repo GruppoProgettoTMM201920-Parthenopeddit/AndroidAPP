@@ -108,17 +108,6 @@ class BackdropFragment(): SwipeItemTouchListener, Fragment() {
                 }
             }
 
-
-            val footer = ExpandableSwipeAdapter.Item.Builder()
-                .type(ExpandableSwipeAdapter.FOOTER)
-                .title(resources.getString(R.string.footer_header))
-                .build()
-
-            ret.add(footer)
-
-
-
-
             return ret
         }
 
