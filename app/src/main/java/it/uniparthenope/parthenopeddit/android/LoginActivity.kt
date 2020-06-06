@@ -9,10 +9,6 @@ import android.view.View
 import androidx.preference.PreferenceManager
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.android.PreferenceHelper.customPreference
-import it.uniparthenope.parthenopeddit.android.PreferenceHelper.logged
-import it.uniparthenope.parthenopeddit.android.PreferenceHelper.password
-import it.uniparthenope.parthenopeddit.android.PreferenceHelper.userId
 import kotlinx.android.synthetic.main.activity_login.*
 
 
@@ -20,19 +16,23 @@ private val sharedPrefFile = "kotlinsharedpreference"
 
 class LoginActivity : BasicActivity(){
 
-    val CUSTOM_PREF_NAME = "User_data"
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        val sharedPreference =  getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
-        var username: String? = null
-        var password: String? = null
+    }
 
-        val prefs = customPreference(this, CUSTOM_PREF_NAME)
-        username_edittext.setText(prefs.userId)
-        password_edittext.setText(prefs.password)
-        user_logged_checkbox.isChecked = prefs.logged
+    override fun onStart() {
+        super.onStart()
+
+        if(app.auth.autoLogin == true) {
+            //IF AUTH IS OK
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
+        username_edittext.setText(app.auth.username?:"")
+        user_logged_checkbox.isChecked = app.auth.autoLogin?:false
 
         login_button.setOnClickListener {
 
@@ -42,32 +42,19 @@ class LoginActivity : BasicActivity(){
             else if(password_edittext.text.isEmpty()){
                 empty_password_textview.visibility = View.VISIBLE
             } else{
-                //TODO: auth with api
+                val username: String = username_edittext.text.toString()
+                val password: String = password_edittext.text.toString()
 
+                val token = app.auth.getToken(username, password)
+
+                //TODO auth with api
                 //IF AUTH IS OK
-                if(user_logged_checkbox.isChecked){
-                    username = username_edittext.text.toString()
-                    password = password_edittext.text.toString()
-
-                    prefs.password = password
-                    prefs.userId = username
-                    prefs.logged = true
-                } else{
-                    username_edittext.text.clear()
-                    password_edittext.text.clear()
-
-                    prefs.password = ""
-                    prefs.userId = ""
-                    prefs.logged = false
-                }
-
+                app.auth.login( token, username, user_logged_checkbox.isChecked )
 
                 val intent = Intent(this, HomeActivity::class.java)
                 startActivity(intent)
-
+                finish()
             }
-
-
         }
 
         privacy_button.setOnClickListener {
@@ -76,47 +63,4 @@ class LoginActivity : BasicActivity(){
         }
     }
 }
-
-object PreferenceHelper {
-
-    val USERNAME = "USERNAME"
-    val USER_PASSWORD = "PASSWORD"
-    val LOGGED = "LOGGED"
-
-    fun defaultPreference(context: Context): SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-
-    fun customPreference(context: Context, name: String): SharedPreferences = context.getSharedPreferences(name, Context.MODE_PRIVATE)
-
-    inline fun SharedPreferences.editMe(operation: (SharedPreferences.Editor) -> Unit) {
-        val editMe = edit()
-        operation(editMe)
-        editMe.apply()
-    }
-
-    var SharedPreferences.userId
-        get() = getString(USERNAME, "")
-        set(value) {
-            editMe {
-                it.putString(USERNAME, value)
-            }
-        }
-
-    var SharedPreferences.password
-        get() = getString(USER_PASSWORD, "")
-        set(value) {
-            editMe {
-                it.putString(USER_PASSWORD, value)
-            }
-        }
-
-    var SharedPreferences.logged
-        get() = getBoolean(LOGGED, false)
-        set(value) {
-            editMe {
-                it.putBoolean(LOGGED, value)
-            }
-        }
-
-}
-
 

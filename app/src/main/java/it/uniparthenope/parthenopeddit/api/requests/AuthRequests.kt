@@ -35,7 +35,6 @@ class AuthRequests(private val ctx:Context, private val auth: AuthManager) {
                         onFail(e.message?:"Could not parse login request result as user data")
                         return@performRequest
                     }
-                    auth.login(token, user.id)
                     if( resultCode == 200 ) {
                         onLogin(user)
                     } else {

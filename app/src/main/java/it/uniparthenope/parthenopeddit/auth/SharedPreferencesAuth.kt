@@ -9,6 +9,7 @@ class SharedPreferencesAuth(private var context: Context) : AuthManager {
     companion object : SingletonHolder<SharedPreferencesAuth, Context>(::SharedPreferencesAuth) {
         private const val TOKEN = "token"
         private const val USERNAME = "username"
+        private const val AUTOLOGIN = "autologin"
     }
 
     private fun getValue(key: String): String? {
@@ -40,9 +41,14 @@ class SharedPreferencesAuth(private var context: Context) : AuthManager {
         get() = getValue(TOKEN)
         set(newToken) = setValue(TOKEN, newToken)
 
-    override fun login(token:String, username:String) {
+    override var autoLogin: Boolean?
+        get() = getValue(AUTOLOGIN)?.toBoolean()
+        set(autoLogin) = setValue(AUTOLOGIN, autoLogin.toString())
+
+    override fun login(token:String, username:String, autoLogin: Boolean) {
         this.username = username
         this.token = token
+        this.autoLogin = autoLogin
 
         onLoginListener?.invoke(username)
     }
@@ -50,6 +56,7 @@ class SharedPreferencesAuth(private var context: Context) : AuthManager {
     override fun logout() {
         this.username = null
         this.token = null
+        this.autoLogin = null
 
         onLogoutListener?.invoke()
     }

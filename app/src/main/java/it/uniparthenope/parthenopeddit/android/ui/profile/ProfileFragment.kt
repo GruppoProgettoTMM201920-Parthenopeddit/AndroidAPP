@@ -8,6 +8,7 @@ import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Base64
@@ -30,6 +31,7 @@ import it.uniparthenope.parthenopeddit.R
 import kotlinx.android.synthetic.main.change_username_dialog.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import java.io.ByteArrayOutputStream
+import java.net.URI
 
 private val sharedPrefFile = "kotlinsharedpreference"
 
@@ -51,13 +53,15 @@ class ProfileFragment : Fragment(), PreferenceFragmentCompat.OnPreferenceStartFr
 
         sharedPreferences = requireContext().getSharedPreferences(sharedPrefFile,Context.MODE_PRIVATE)
         val sharedNameValue = sharedPreferences.getString("USERNAME","Username")
-        val sharedImageValue = sharedPreferences.getString("user_image_uri", "0")
+        val sharedImageValue = (sharedPreferences.getString("user_image_uri", "0"))
+
+        val imageUri = Uri.parse(sharedImageValue?:"")
 
         profileViewModel.text.observe(viewLifecycleOwner, Observer {
 
             username_shown_textview.text = sharedNameValue
             if(sharedImageValue == "0"){ user_image.setImageDrawable(resources.getDrawable(R.drawable.default_user_image)) } else {
-                user_image.setImageURI(sharedImageValue?.toUri())
+                user_image.setImageURI(imageUri)
             }
 
 
@@ -90,17 +94,12 @@ class ProfileFragment : Fragment(), PreferenceFragmentCompat.OnPreferenceStartFr
                 }}
 
             fab_user_image.setOnClickListener{
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-                    if(checkSelfPermission(requireContext(),Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
-                            //PERMISSION DENIED
-                        val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
-                        requestPermissions(permissions, PERMISSION_CODE)
-                        } else{
-                        //PERMISSION ALREADY GRANTED
-                        pickImageFromGallery()
-                    }
-                } else{
-                    //OS > 6.0
+                if(checkSelfPermission(requireContext(),Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
+                        //PERMISSION DENIED
+                    val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+                    requestPermissions(permissions, PERMISSION_CODE)
+                    } else{
+                    //PERMISSION ALREADY GRANTED
                     pickImageFromGallery()
                 }
             }
