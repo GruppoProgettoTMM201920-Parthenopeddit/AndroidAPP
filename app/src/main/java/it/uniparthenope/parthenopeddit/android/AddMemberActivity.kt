@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.adapters.AddMemberAdapter
+import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.api.MockDatabase
 import it.uniparthenope.parthenopeddit.model.GroupInvite
 import it.uniparthenope.parthenopeddit.model.GroupMember
@@ -44,54 +45,42 @@ class AddMemberActivity : AppCompatActivity(), AddMemberAdapter.UserListItemClic
     override fun onUserClick(user: User) {
         var group = MockDatabase.instance.group_table.filter { it.id == id_group }.single()
 
-        for(groupuser in group.members!!) {
-            Log.d("DEBUG", "group has user with id ${user.id}")
-        }
+        MockApiData().isUserInGroup(user.id, group) { result: Boolean ->
+            if(result){
+                Toast.makeText(this, "L'utente è già presente nel gruppo ${name_group}", Toast.LENGTH_LONG).show()
+                val intent = Intent(this, GroupActivity::class.java)
+                intent.putExtra("id_group", id_group)
+                startActivity(intent)
+                finish()
+            } else{
+                val c: Calendar = Calendar.getInstance()
+                val currentDate: String =
+                    c.get(Calendar.DATE).toString() + "/" + c.get(Calendar.MONTH).toString() + "/" + c.get(
+                        Calendar.YEAR).toString()
 
+                var group_invite: GroupInvite = GroupInvite(
+                    "user1",
+                    user.id,
+                    group.id,
+                    currentDate,
+                    MockDatabase.instance.users_table.filter{ it.id == "user1"}.single(),
+                    user,
+                    group
+                )
 
-        for(groupuser in group.members!!) {
-            if (user.id == groupuser.user_id) {
-                Toast.makeText(
-                    this,
-                    "L'utente è già presente nel gruppo ${name_group}",
-                    Toast.LENGTH_LONG
-                ).show()
+                //END TESTING
+                user.group_invites?.add(group_invite)
+                group.invites?.add(group_invite)
+
+                Toast.makeText(this, "Invito inviato all'utente ${user.display_name}", Toast.LENGTH_LONG).show()
+
 
                 val intent = Intent(this, GroupActivity::class.java)
                 intent.putExtra("id_group", id_group)
                 startActivity(intent)
-                return
             }
         }
 
-        val c: Calendar = Calendar.getInstance()
-        val currentDate: String =
-            c.get(Calendar.DATE).toString() + "/" + c.get(Calendar.MONTH).toString() + "/" + c.get(
-                Calendar.YEAR).toString()
-
-        var newGroupMember : GroupMember = GroupMember(user.id, id_group, currentDate, null, false, user, group)
-        group.members!!.add(newGroupMember)
-
-        var group_invite: GroupInvite = GroupInvite(
-            "user1",
-            user.id,
-            group.id,
-            currentDate,
-            MockDatabase.instance.users_table.filter{ it.id == "user1"}.single(),
-            user,
-            group
-        )
-
-        //END TESTING
-        user.group_invites?.add(group_invite)
-        group.invites?.add(group_invite)
-
-        Toast.makeText(this, "Invito inviato all'utente ${user.display_name}", Toast.LENGTH_LONG).show()
-
-
-        val intent = Intent(this, GroupActivity::class.java)
-        intent.putExtra("id_group", id_group)
-        startActivity(intent)
 
 
     }

@@ -1,6 +1,7 @@
 package it.uniparthenope.parthenopeddit.api
 
 import android.util.Log
+import android.widget.Toast
 import it.uniparthenope.parthenopeddit.model.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -448,6 +449,19 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
         } else{
             completion.invoke(null, "L'utente non è iscritto a gruppi")
         }
+    }
+
+    override fun isUserInGroup(
+        user_id: String,
+        group: Group,
+        completion: (result: Boolean) -> Unit
+    ) {
+        for(groupuser in group.members!!) {
+            if (user_id == groupuser.user_id) {
+                completion.invoke(true)
+            }
+        }
+        completion.invoke(false)
     }
 
 }

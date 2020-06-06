@@ -68,4 +68,10 @@ interface GroupNamespace {
         onSuccess: (new_owners: ArrayList<GroupMember>) -> Unit,
         onFail: (error: String) -> Unit
     )
+
+    fun isUserInGroup(
+        user_id: String,
+        group: Group,
+        completion: (result: Boolean) -> Unit
+    )
 }
