@@ -9,16 +9,18 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.GroupActivity
 import it.uniparthenope.parthenopeddit.android.HomeActivity
 import it.uniparthenope.parthenopeddit.android.adapters.UserGroupAdapter
 import it.uniparthenope.parthenopeddit.api.MockApiData
-import it.uniparthenope.parthenopeddit.auth.Auth
+import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Group
 
 class GroupUserBoardFragment : Fragment(), UserGroupAdapter.UserGroupItemClickListeners {
 
+    private lateinit var authManager: AuthManager
     private lateinit var recycler_view: RecyclerView
     private lateinit var groupUserBoardViewModel: GroupUserBoardViewModel
 
@@ -39,8 +41,9 @@ class GroupUserBoardFragment : Fragment(), UserGroupAdapter.UserGroupItemClickLi
         recycler_view.layoutManager = LinearLayoutManager(requireContext())
         recycler_view.setHasFixedSize(true)
 
+        authManager = (activity as BasicActivity).app.auth
 
-        MockApiData().getUserGroup( Auth().token, "user1") { group: ArrayList<Group>?, error: String? ->
+        MockApiData().getUserGroup( authManager.token!! , "user1") { group: ArrayList<Group>?, error: String? ->
 
             if(group!!.isNotEmpty()) {
                 userGroupAdapter.addGroup(group)

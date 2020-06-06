@@ -9,16 +9,18 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.CourseActivity
 import it.uniparthenope.parthenopeddit.android.adapters.UserCourseAdapter
 import it.uniparthenope.parthenopeddit.api.MockApiData
-import it.uniparthenope.parthenopeddit.auth.Auth
+import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Board
 import it.uniparthenope.parthenopeddit.model.Course
 
 class CourseUserBoardFragment : Fragment(), UserCourseAdapter.UserCourseItemClickListeners {
 
+    private lateinit var authManager: AuthManager
     private lateinit var recycler_view: RecyclerView
     private lateinit var courseUserBoardViewModel: CourseUserBoardViewModel
 
@@ -39,8 +41,9 @@ class CourseUserBoardFragment : Fragment(), UserCourseAdapter.UserCourseItemClic
         recycler_view.layoutManager = LinearLayoutManager(requireContext())
         recycler_view.setHasFixedSize(true)
 
+        authManager = (activity as BasicActivity).app.auth
 
-        MockApiData().getUserCourse( Auth().token, "user1") { course: ArrayList<Course>?, error: String? ->
+        MockApiData().getUserCourse( authManager.token!!, "user1") { course: ArrayList<Course>?, error: String? ->
 
             if(course!!.isNotEmpty()) {
                 userCourseAdapter.addCourse(course)

@@ -10,14 +10,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.CourseActivity
 import it.uniparthenope.parthenopeddit.android.adapters.ReviewAdapter
 import it.uniparthenope.parthenopeddit.api.MockApiData
-import it.uniparthenope.parthenopeddit.auth.Auth
+import it.uniparthenope.parthenopeddit.auth.AuthManager
 
 class ReviewActivitiesFragment : Fragment(), ReviewAdapter.CourseReviewItemClickListeners {
 
+    private lateinit var authManager: AuthManager
     private lateinit var recycler_view: RecyclerView
     private lateinit var reviewViewModel: ReviewActivitiesViewModel
 
@@ -38,7 +40,10 @@ class ReviewActivitiesFragment : Fragment(), ReviewAdapter.CourseReviewItemClick
         recycler_view.layoutManager = LinearLayoutManager(requireContext())
         recycler_view.setHasFixedSize(true)
 
-        MockApiData().getAllReview( Auth().token ) { reviewItemList, error ->
+        authManager = (activity as BasicActivity).app.auth
+
+
+        MockApiData().getAllReview( authManager.token!! ) { reviewItemList, error ->
             if( error != null ) {
                 Toast.makeText(requireContext(),"Errore : $error", Toast.LENGTH_LONG).show()
             } else {

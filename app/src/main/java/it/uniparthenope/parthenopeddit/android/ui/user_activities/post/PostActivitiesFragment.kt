@@ -10,16 +10,18 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.CommentActivity
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.ui.user_activities.post.PostActivitiesViewModel
 import it.uniparthenope.parthenopeddit.api.MockApiData
-import it.uniparthenope.parthenopeddit.auth.Auth
+import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Board
 
 class PostActivitiesFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
+    private lateinit var authManager: AuthManager
     private lateinit var recycler_view: RecyclerView
     private lateinit var postViewModel: PostActivitiesViewModel
 
@@ -40,7 +42,9 @@ class PostActivitiesFragment : Fragment(), PostAdapter.PostItemClickListeners {
         recycler_view.layoutManager = LinearLayoutManager(requireContext())
         recycler_view.setHasFixedSize(true)
 
-        MockApiData().getAllPost( Auth().token ) { postItemList, error ->
+        authManager = (activity as BasicActivity).app.auth
+
+        MockApiData().getAllPost( authManager.token!! ) { postItemList, error ->
             if( error != null ) {
                 Toast.makeText(requireContext(),"Errore : $error", Toast.LENGTH_LONG).show()
             } else {
