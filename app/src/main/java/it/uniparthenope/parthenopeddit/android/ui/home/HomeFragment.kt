@@ -28,6 +28,7 @@ import it.uniparthenope.parthenopeddit.android.ui.newGroup.NewGroupActivity
 import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
 import it.uniparthenope.parthenopeddit.android.ui.newReview.NewReviewActivity
 import it.uniparthenope.parthenopeddit.api.MockApiData
+import it.uniparthenope.parthenopeddit.api.requests.PostsRequests
 import it.uniparthenope.parthenopeddit.api.requests.UserRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Board
@@ -176,14 +177,34 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         return root
     }
 
-    override fun onClickLike(id_post: Int) {
-        Toast.makeText(requireContext(),"you liked post id[$id_post]", Toast.LENGTH_LONG).show()
-        //TODO Send upvote through API
+    override fun onClickLike(id_post: Int, upvote_textview: TextView, downvote_textview: TextView) {
+        PostsRequests(requireContext(), auth).likePost(
+            1, {
+                upvote_textview.text = (upvote_textview.text.toString().toInt() + 1).toString()
+            }, {
+                upvote_textview.text = (upvote_textview.text.toString().toInt() - 1).toString()
+            }, {
+                downvote_textview.text = (downvote_textview.text.toString().toInt() - 1).toString()
+                upvote_textview.text = (upvote_textview.text.toString().toInt() + 1).toString()
+            }, {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+            }
+        )
     }
 
-    override fun onClickDislike(id_post: Int) {
-        downvote_textview.text = (downvote_textview.text.toString().toInt() + 1).toString()
-        //TODO: Send downvote through API
+    override fun onClickDislike(id_post: Int, upvote_textview: TextView, downvote_textview: TextView) {
+        PostsRequests(requireContext(), auth).likePost(
+            1, {
+                downvote_textview.text = (downvote_textview.text.toString().toInt() + 1).toString()
+            }, {
+                downvote_textview.text = (downvote_textview.text.toString().toInt() - 1).toString()
+            }, {
+                upvote_textview.text = (upvote_textview.text.toString().toInt() - 1).toString()
+                downvote_textview.text = (downvote_textview.text.toString().toInt() + 1).toString()
+            }, {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+            }
+        )
     }
 
     override fun onClickComments(id_post: Int) {
@@ -199,7 +220,7 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
     }
 
     override fun onBoardClick(board_id: Int?, board: Board?) {
-        if (board?.id == 1) {
+        if (board_id == null || board_id == 0) {
             (activity as BasicActivity).goToActivity(HomeActivity::class.java) //HOME
         } else {
             when (board?.type) {

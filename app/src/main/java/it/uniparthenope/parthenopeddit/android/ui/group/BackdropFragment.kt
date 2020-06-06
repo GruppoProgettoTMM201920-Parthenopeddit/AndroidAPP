@@ -19,9 +19,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
+import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.android.AddMemberActivity
 import it.uniparthenope.parthenopeddit.android.adapters.ExpandableSwipeAdapter
 import it.uniparthenope.parthenopeddit.api.MockDatabase
+import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Group
 import it.uniparthenope.parthenopeddit.model.GroupMember
 import it.uniparthenope.parthenopeddit.util.SwipeItemTouchHelper
@@ -33,17 +35,16 @@ class BackdropFragment(): SwipeItemTouchListener, Fragment() {
     private var name_group: String? = null
     private var created_on_group: String? = null
     private var members_group: ArrayList<GroupMember>? = null
+    private var admin_arraylist: ArrayList<GroupMember> = ArrayList()
+    private var user_arraylist: ArrayList<GroupMember> = ArrayList()
     private var members_num_group: Int? = null
 
+    private lateinit var auth: AuthManager
 
-    private val charList : List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
     private lateinit var adapter: ExpandableSwipeAdapter
     private lateinit var expandable_recycler_view: RecyclerView
 
     companion object {
-        private const val HEADER_ITEM_COUNT = 2     //Membri e amministratori
-        private const val CONTENT_ITEM_COUNT = 5
-        private const val RANDOM_STRING_LENGTH = 10
         private const val MAX_IMAGE_SIZE = 200
     }
 
@@ -59,8 +60,10 @@ class BackdropFragment(): SwipeItemTouchListener, Fragment() {
         // ExpandableSwipeAdapter
         adapter = ExpandableSwipeAdapter(requireContext(), Glide.with(this))
 
+        auth = (activity as BasicActivity).app.auth
+
         add_member_button.setOnClickListener {
-            if(MockDatabase.instance.group_table.filter{ it.id == id_group}.single().members?.filter { it.user_id == "user1" }?.single()!!.is_owner){
+            if( admin_arraylist.filter{ it.user_id == auth.username!! }.singleOrNull()?.is_owner!! ){
                 val intent = Intent(requireContext(), AddMemberActivity::class.java)
                 intent.putExtra("id_group",id_group)
                 intent.putExtra("name_group",name_group)
@@ -82,9 +85,7 @@ class BackdropFragment(): SwipeItemTouchListener, Fragment() {
         private fun getData() : List<ExpandableSwipeAdapter.Item> {
             val ret = ArrayList<ExpandableSwipeAdapter.Item>()
 
-            var admin_arraylist: ArrayList<GroupMember> = ArrayList()
             admin_arraylist = members_group?.filter { it.is_owner == true } as ArrayList<GroupMember>
-            var user_arraylist: ArrayList<GroupMember> = ArrayList()
             user_arraylist = members_group?.filter { it.is_owner == false } as ArrayList<GroupMember>
 
             val admin_header = ExpandableSwipeAdapter.Item.Builder()
@@ -127,11 +128,6 @@ class BackdropFragment(): SwipeItemTouchListener, Fragment() {
 
             return ret
         }
-
-        private fun generateRandomString(length: Int) : String = (1..length)
-            .map { kotlin.random.Random.nextInt(0, charList.size) }
-            .map(charList::get)
-            .joinToString("")
 
         private fun generateRandomImageUrl(max: Int) : String = resources.getString(R.string.random_image_url, (1..max).shuffled().first())
 

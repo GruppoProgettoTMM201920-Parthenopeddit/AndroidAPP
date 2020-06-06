@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -17,6 +18,7 @@ import it.uniparthenope.parthenopeddit.android.CommentActivity
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.ui.user_activities.post.PostActivitiesViewModel
 import it.uniparthenope.parthenopeddit.api.MockApiData
+import it.uniparthenope.parthenopeddit.api.requests.PostsRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Board
 
@@ -56,17 +58,37 @@ class CoursePostFragment(courseID: Int) : Fragment(), PostAdapter.PostItemClickL
             }
         }
 
-
-
         return root
     }
 
-    override fun onClickLike(id_post: Int) {
-        //TODO("Not yet implemented")
+    override fun onClickLike(id_post: Int, upvote_textview: TextView, downvote_textview: TextView) {
+        PostsRequests(requireContext(), auth).likePost(
+            1, {
+                upvote_textview.text = (upvote_textview.text.toString().toInt() + 1).toString()
+            }, {
+                upvote_textview.text = (upvote_textview.text.toString().toInt() - 1).toString()
+            }, {
+                downvote_textview.text = (downvote_textview.text.toString().toInt() - 1).toString()
+                upvote_textview.text = (upvote_textview.text.toString().toInt() + 1).toString()
+            }, {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+            }
+        )
     }
 
-    override fun onClickDislike(id_post: Int) {
-        //TODO("Not yet implemented")
+    override fun onClickDislike(id_post: Int, upvote_textview: TextView, downvote_textview: TextView) {
+        PostsRequests(requireContext(), auth).likePost(
+            1, {
+                downvote_textview.text = (downvote_textview.text.toString().toInt() + 1).toString()
+            }, {
+                downvote_textview.text = (downvote_textview.text.toString().toInt() - 1).toString()
+            }, {
+                upvote_textview.text = (upvote_textview.text.toString().toInt() - 1).toString()
+                downvote_textview.text = (downvote_textview.text.toString().toInt() + 1).toString()
+            }, {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+            }
+        )
     }
 
     override fun onClickComments(id_post: Int) {
