@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.ui.group.BackdropFragment
@@ -25,7 +26,7 @@ import kotlinx.android.synthetic.main.activity_group.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-class GroupActivity : AppCompatActivity() {
+class GroupActivity : BasicActivity() {
 
     var isOpen = false
     var isFollowed: Boolean = false
@@ -71,7 +72,7 @@ class GroupActivity : AppCompatActivity() {
             isFollowed = false
         }
 
-        MockApiData().getGroupInfo( Auth().token, id_group) { name, num_members, created, members, error ->
+        MockApiData().getGroupInfo( app.auth.token!!, id_group) { name, num_members, created, members, error ->
 
             if(error != null){
                 //toast
@@ -92,7 +93,7 @@ class GroupActivity : AppCompatActivity() {
 
         name_group = group_name_textview.text.toString()
 
-        MockApiData().getGroupPost( Auth().token, id_group) { postItemList, error ->
+        MockApiData().getGroupPost( app.auth.token!!, id_group) { postItemList, error ->
             if( error != null ) {
                 Toast.makeText(this,"Errore : $error", Toast.LENGTH_LONG).show()
             } else {

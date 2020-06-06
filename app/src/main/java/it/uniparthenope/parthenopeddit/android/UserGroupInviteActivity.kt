@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.adapters.UserActivityAdapter
 import it.uniparthenope.parthenopeddit.android.adapters.UserGroupInviteAdapter
@@ -18,7 +19,7 @@ import kotlinx.android.synthetic.main.activity_user_group_invite.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-class UserGroupInviteActivity : AppCompatActivity(), UserGroupInviteAdapter.UserGroupInviteItemClickListeners {
+class UserGroupInviteActivity : BasicActivity(), UserGroupInviteAdapter.UserGroupInviteItemClickListeners {
 
     private lateinit var invite_recyclerview: RecyclerView
     private lateinit var adapter: UserGroupInviteAdapter

@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.adapters.AddMemberAdapter
 import it.uniparthenope.parthenopeddit.api.MockApiData
@@ -17,7 +18,7 @@ import it.uniparthenope.parthenopeddit.model.User
 import kotlinx.android.synthetic.main.activity_add_member.*
 import java.util.*
 
-class AddMemberActivity : AppCompatActivity(), AddMemberAdapter.UserListItemClickListeners {
+class AddMemberActivity : BasicActivity(), AddMemberAdapter.UserListItemClickListeners {
 
     var id_group:Int = 0
     var name_group: String? = ""

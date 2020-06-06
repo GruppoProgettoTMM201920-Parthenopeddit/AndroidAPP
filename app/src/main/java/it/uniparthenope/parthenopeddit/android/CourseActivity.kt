@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
+import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.adapters.CourseAdapter
 import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
@@ -20,7 +21,7 @@ import it.uniparthenope.parthenopeddit.api.MockDatabase
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import kotlinx.android.synthetic.main.activity_course.*
 
-class CourseActivity : AppCompatActivity() {
+class CourseActivity : BasicActivity() {
 
     var isOpen = false
     var isFollowed: Boolean = false
@@ -59,7 +60,7 @@ class CourseActivity : AppCompatActivity() {
             isFollowed = false
         }
 
-        MockApiData().getCourseInfo( Auth().token, courseId) { courseRating:Float, courseDifficulty:Float, numReviews: Int, courseName: String?, isFollowedCourse: Boolean, error: String? ->
+        MockApiData().getCourseInfo( app.auth.token!!, courseId) { courseRating:Float, courseDifficulty:Float, numReviews: Int, courseName: String?, isFollowedCourse: Boolean, error: String? ->
 
             if(isFollowedCourse){
                 isFollowed = true
