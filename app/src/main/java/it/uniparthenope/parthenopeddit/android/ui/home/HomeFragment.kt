@@ -28,13 +28,14 @@ import it.uniparthenope.parthenopeddit.android.ui.newGroup.NewGroupActivity
 import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
 import it.uniparthenope.parthenopeddit.android.ui.newReview.NewReviewActivity
 import it.uniparthenope.parthenopeddit.api.MockApiData
-import it.uniparthenope.parthenopeddit.auth.Auth
+import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Board
 import kotlinx.android.synthetic.main.cardview_post.*
 
 
 class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
+    private lateinit var auth : AuthManager
     private lateinit var recycler_view: RecyclerView
     private lateinit var homeViewModel: HomeViewModel
     var isOpen = false
@@ -75,7 +76,9 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         recycler_view.layoutManager = LinearLayoutManager(requireContext())
         recycler_view.setHasFixedSize(true)
 
-        MockApiData().getAllPost( Auth().token ) { postItemList, error ->
+        auth = (activity as BasicActivity).app.auth
+
+        MockApiData().getAllPost( auth.token!! ) { postItemList, error ->
             if( error != null ) {
                 Toast.makeText(requireContext(),"Errore : $error", Toast.LENGTH_LONG).show()
             } else {
