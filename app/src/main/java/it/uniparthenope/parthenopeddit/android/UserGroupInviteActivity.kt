@@ -2,6 +2,7 @@ package it.uniparthenope.parthenopeddit.android
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,6 +14,7 @@ import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.api.MockDatabase
 import it.uniparthenope.parthenopeddit.model.GroupInvite
 import it.uniparthenope.parthenopeddit.model.GroupMember
+import kotlinx.android.synthetic.main.activity_user_group_invite.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -34,9 +36,17 @@ class UserGroupInviteActivity : AppCompatActivity(), UserGroupInviteAdapter.User
         invite_recyclerview.layoutManager = LinearLayoutManager(this)
         invite_recyclerview.setHasFixedSize(true)
 
+
         MockApiData().getUserInvitesToGroup("user5") { userGroupInvite: ArrayList<GroupInvite>?, error: String? ->
             userGroupInvite!!
-            adapter.addInvite(userGroupInvite)
+            if(userGroupInvite.isEmpty()){
+                invite_recyclerview.visibility = View.GONE
+                no_invites_textview.visibility = View.VISIBLE
+            } else{
+                no_invites_textview.visibility = View.GONE
+                invite_recyclerview.visibility = View.VISIBLE
+                adapter.addInvite(userGroupInvite)
+            }
         }
     }
 
