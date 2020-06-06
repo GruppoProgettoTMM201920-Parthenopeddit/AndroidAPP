@@ -47,9 +47,9 @@ class SettingsActivity : AppCompatActivity() {
                 true
             }
 
-            val groupInviteActivityPreference: Preference? = findPreference("groupinvitesactivity")
+            val userGroupInviteActivityPreference: Preference? = findPreference("usergroupinviteactivity")
             userBoardsActivityPreference?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-                val intent = Intent(requireContext(), GroupActivity::class.java)
+                val intent = Intent(requireContext(), UserGroupInviteActivity::class.java)
                 startActivity(intent)
                 true
             }

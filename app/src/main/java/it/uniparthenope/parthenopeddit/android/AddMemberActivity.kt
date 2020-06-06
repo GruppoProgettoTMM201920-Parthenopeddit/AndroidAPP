@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.adapters.AddMemberAdapter
 import it.uniparthenope.parthenopeddit.api.MockDatabase
+import it.uniparthenope.parthenopeddit.model.GroupInvite
 import it.uniparthenope.parthenopeddit.model.GroupMember
 import it.uniparthenope.parthenopeddit.model.User
 import kotlinx.android.synthetic.main.activity_add_member.*
@@ -70,9 +71,43 @@ class AddMemberActivity : AppCompatActivity(), AddMemberAdapter.UserListItemClic
         val currentDate: String =
             c.get(Calendar.DATE).toString() + "/" + c.get(Calendar.MONTH).toString() + "/" + c.get(
                 Calendar.YEAR).toString()
-        var newGroupMember : GroupMember = GroupMember(user.id, id_group, currentDate, null, false, user, group)
+        //SUSPENDED
+        /*var newGroupMember : GroupMember = GroupMember(user.id, id_group, currentDate, null, false, user, group)
         group.members!!.add(newGroupMember)
         Toast.makeText(this,"Hai aggiunto l'utente ${user.id}", Toast.LENGTH_LONG).show()
+        */
+
+        //HOW IT MUST BE
+        /*
+        var group_invite: GroupInvite = GroupInvite(
+            "user1",
+            user.id,
+            group.id,
+            currentDate,
+            MockDatabase.instance.users_table.filter{ it.id == "user1"}.single(),
+            user,
+            group
+        )*/
+
+        //TODO: DELETE "JUST FOR TESTING" AND USE "HOW IT MUST BE"
+        //JUST FOR TESTING
+        var u1 = MockDatabase.instance.users_table.filter{ it.id == "user1"}.single()
+        var u2 = MockDatabase.instance.users_table.filter{ it.id == "user2"}.single()
+        MockDatabase.instance.users_table.removeIf { it.id == "user1" }
+
+        var group_invite: GroupInvite = GroupInvite(
+            u2.id,
+            u1.id,
+            group.id,
+            currentDate,
+            u2,
+            u1,
+            group
+        )
+
+        //END TESTING
+        u1.group_invites?.add(group_invite)
+
 
         val intent = Intent(this, GroupActivity::class.java)
         intent.putExtra("id_group", id_group)

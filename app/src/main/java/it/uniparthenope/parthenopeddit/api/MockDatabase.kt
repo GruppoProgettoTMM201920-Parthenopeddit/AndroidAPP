@@ -82,27 +82,32 @@ class MockDatabase private constructor() {
         val u1 = User(
             id = "user1",
             display_name = "NoobMaster69",
-            registered_on = "2014-08-18 21:11:35.537000"
+            registered_on = "2014-08-18 21:11:35.537000",
+            group_invites = ArrayList<GroupInvite>()
         )
         val u2 = User(
             id = "user2",
             display_name = "gaussjr",
-            registered_on = "2014-08-18 21:11:35.537000"
+            registered_on = "2014-08-18 21:11:35.537000",
+            group_invites = ArrayList<GroupInvite>()
         )
         val u3 = User(
             id = "user3",
             display_name = "acuto.org",
-            registered_on = "2014-08-18 21:11:35.537000"
+            registered_on = "2014-08-18 21:11:35.537000",
+            group_invites = ArrayList<GroupInvite>()
         )
         val u4 = User(
             id = "user4",
             display_name = "Tonald Drump",
-            registered_on = "2014-08-18 21:11:35.537000"
+            registered_on = "2014-08-18 21:11:35.537000",
+            group_invites = ArrayList<GroupInvite>()
         )
         val u5 = User(
             id = "user5",
             display_name = "Topocipolla",
-            registered_on = "2014-08-18 21:11:35.537000"
+            registered_on = "2014-08-18 21:11:35.537000",
+            group_invites = ArrayList<GroupInvite>()
         )
 
         val p1 = Post(
