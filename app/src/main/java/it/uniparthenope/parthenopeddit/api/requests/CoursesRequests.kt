@@ -44,6 +44,7 @@ class CoursesRequests(private val ctx: Context, private val auth: AuthManager) {
         )
     }
 
+    //TODO REQUESTS
     /*
     fun getUserGroups(
         onSuccess: (groupMemberships: ArrayList<GroupMember>) -> Unit,
