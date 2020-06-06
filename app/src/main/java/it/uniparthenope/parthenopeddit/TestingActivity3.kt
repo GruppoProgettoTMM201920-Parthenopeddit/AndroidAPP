@@ -4,9 +4,6 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.widget.Toast
-import com.github.nkzawa.emitter.Emitter
-import com.github.nkzawa.socketio.client.IO
-import com.github.nkzawa.socketio.client.Socket
 import it.uniparthenope.parthenopeddit.api.requests.PostsRequests
 import it.uniparthenope.parthenopeddit.api.requests.UserRequests
 import it.uniparthenope.parthenopeddit.auth.SharedPreferencesAuth
