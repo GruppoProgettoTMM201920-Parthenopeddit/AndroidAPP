@@ -44,6 +44,9 @@ class PostActivitiesFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
         authManager = (activity as BasicActivity).app.auth
 
+        //TODO: through API
+
+
         MockApiData().getAllPost( authManager.token!! ) { postItemList, error ->
             if( error != null ) {
                 Toast.makeText(requireContext(),"Errore : $error", Toast.LENGTH_LONG).show()

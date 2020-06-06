@@ -22,6 +22,7 @@ import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.ui.user_activities.comment.CommentActivitiesViewModel
 import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.api.MockDatabase
+import it.uniparthenope.parthenopeddit.api.requests.CommentsRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Comment
 import kotlinx.android.synthetic.main.fragment_messages.*
@@ -51,6 +52,8 @@ class CommentActivitiesFragment : Fragment(), CommentAdapter.CommentItemClickLis
         recycler_view.setHasFixedSize(true)
 
         authManager = (activity as BasicActivity).app.auth
+
+        //TODO: through API
 
         MockApiData().getUserComment(authManager.token!!, "user1") { commentsItemList, error ->
             if( error != null ) {
