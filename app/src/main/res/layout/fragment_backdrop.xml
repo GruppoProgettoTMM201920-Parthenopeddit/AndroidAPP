@@ -37,11 +37,25 @@
         android:textSize="15dp"
         android:text="01/01/1970"/>
 
+    <Button
+        android:id="@+id/add_member_button"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:background="@drawable/fab_textview_bubble"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="10dp"
+        android:drawableLeft="@drawable/ic_add_white_24dp"
+        android:drawablePadding="2dip"
+        android:paddingLeft="30dip"
+        android:paddingRight="26dip"
+        android:text="Aggiungi membri"
+        android:textColor="@color/white"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/expandable_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="120dp"
         android:padding="8dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 

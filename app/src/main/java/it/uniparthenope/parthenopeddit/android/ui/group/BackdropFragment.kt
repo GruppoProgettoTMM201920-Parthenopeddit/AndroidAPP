@@ -1,5 +1,6 @@
 package it.uniparthenope.parthenopeddit.android.ui.group
 
+import android.content.Intent
 import android.graphics.Canvas
 import it.uniparthenope.parthenopeddit.R
 import android.os.Bundle
@@ -7,7 +8,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -16,7 +19,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
+import it.uniparthenope.parthenopeddit.android.AddMemberActivity
 import it.uniparthenope.parthenopeddit.android.adapters.ExpandableSwipeAdapter
+import it.uniparthenope.parthenopeddit.api.MockDatabase
 import it.uniparthenope.parthenopeddit.model.Group
 import it.uniparthenope.parthenopeddit.model.GroupMember
 import it.uniparthenope.parthenopeddit.util.SwipeItemTouchHelper
@@ -46,13 +51,25 @@ class BackdropFragment(): SwipeItemTouchListener, Fragment() {
         val root = inflater.inflate(R.layout.fragment_backdrop, container, false)
         expandable_recycler_view = root.findViewById<RecyclerView>(R.id.expandable_recycler_view)
         expandable_recycler_view.layoutManager = LinearLayoutManager(requireContext())
-
+        var add_member_button = root.findViewById<Button>(R.id.add_member_button)
         // Swipe
         val swipeHelper = SwipeItemTouchHelper(0, ItemTouchHelper.LEFT, this)
         ItemTouchHelper(swipeHelper).attachToRecyclerView(expandable_recycler_view)
 
         // ExpandableSwipeAdapter
         adapter = ExpandableSwipeAdapter(requireContext(), Glide.with(this))
+
+        add_member_button.setOnClickListener {
+            if(MockDatabase.instance.group_table.filter{ it.id == id_group}.single().members?.filter { it.user_id == "user1" }?.single()!!.is_owner){
+                val intent = Intent(requireContext(), AddMemberActivity::class.java)
+                intent.putExtra("id_group",id_group)
+                intent.putExtra("name_group",name_group)
+                startActivity(intent)
+
+            } else{
+                Toast.makeText(requireContext(), "Solo gli amministratori possono aggiungere membri", Toast.LENGTH_LONG).show()
+            }
+        }
 
         return root
     }

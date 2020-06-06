@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".android.PrivacyActivity"></activity>
+        <activity android:name=".android.AddMemberActivity"></activity>
+        <activity android:name=".android.PrivacyActivity" />
         <activity android:name=".android.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -52,7 +53,7 @@
         <activity android:name=".android.ui.newReview.NewReviewActivity" />
         <activity
             android:name=".android.HomeActivity"
-            android:label="@string/app_name"></activity>
+            android:label="@string/app_name" />
         <activity android:name=".android.CommentActivity" />
     </application>
 

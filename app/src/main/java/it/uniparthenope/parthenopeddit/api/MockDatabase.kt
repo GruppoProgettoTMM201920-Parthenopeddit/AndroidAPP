@@ -94,6 +94,16 @@ class MockDatabase private constructor() {
             display_name = "acuto.org",
             registered_on = "2014-08-18 21:11:35.537000"
         )
+        val u4 = User(
+            id = "user4",
+            display_name = "Tonald Drump",
+            registered_on = "2014-08-18 21:11:35.537000"
+        )
+        val u5 = User(
+            id = "user5",
+            display_name = "Topocipolla",
+            registered_on = "2014-08-18 21:11:35.537000"
+        )
 
         val p1 = Post(
             id=1,
@@ -429,7 +439,7 @@ class MockDatabase private constructor() {
         g3.members = ArrayList<GroupMember>(listOf(GroupMember(u2.id, 3, "02/06/2020", null, true, u1)))
         g3.members_num = g3.members!!.size
 
-        users_table.addAll(listOf(u1,u2))
+        users_table.addAll(listOf(u1,u2,u3,u4,u5))
         posts_table.addAll(listOf(p1,p2,p3,p4,p5,p6,p7))
         comments_table.addAll(listOf(c1,c2))
         course_table.addAll(listOf(C1,C2,C3))
