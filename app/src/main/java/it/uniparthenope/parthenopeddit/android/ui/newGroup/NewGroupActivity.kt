@@ -13,6 +13,7 @@ import it.uniparthenope.parthenopeddit.android.HomeActivity
 import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.api.MockDatabase
 import it.uniparthenope.parthenopeddit.api.requests.GroupsRequests
+import it.uniparthenope.parthenopeddit.api.requests.GroupsRequests
 import it.uniparthenope.parthenopeddit.model.Course
 import it.uniparthenope.parthenopeddit.model.Group
 
