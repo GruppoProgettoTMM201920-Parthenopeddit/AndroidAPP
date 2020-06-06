@@ -386,7 +386,7 @@ class MockApiData {
             .format(Instant.now())
          */
 
-        var newGroup: Group = Group(group_id, group_name, currentDate, ArrayList<GroupMember>(), null, ArrayList<GroupInvite>(), 0)
+        var newGroup: Group = Group(group_id, group_name, ArrayList<Post>(), 0, currentDate, ArrayList<GroupMember>(), null, ArrayList<GroupInvite>(), 0)
 
         for(username in invitedUsersIds){
             var member: User = MockDatabase.instance.users_table.filter { it.id == username }.single()
