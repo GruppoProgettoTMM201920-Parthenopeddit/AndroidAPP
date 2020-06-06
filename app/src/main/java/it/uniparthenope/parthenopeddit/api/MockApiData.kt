@@ -1,7 +1,6 @@
 package it.uniparthenope.parthenopeddit.api
 
 import android.util.Log
-import android.widget.Toast
 import it.uniparthenope.parthenopeddit.model.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -215,7 +214,7 @@ class MockApiData {
         token: String,
         user1Id: String,
         user2Id: String,
-        completion: (chatLog: ChatLog?, error: String?) -> Unit
+        completion: (userChatLog: UserChatLog?, error: String?) -> Unit
     ) {
         lateinit var chatUser1: UsersChat
         lateinit var otherUserChat : UsersChat
@@ -236,7 +235,7 @@ class MockApiData {
             }
         }
 
-        var chatLog = ChatLog( logMessaggi, otherUserChat.of_user!! )
+        var chatLog = UserChatLog( logMessaggi, otherUserChat.of_user!! )
         completion.invoke(chatLog, null)
         return
     }
@@ -253,13 +252,13 @@ class MockApiData {
             }
         }
 
-        val logMessaggi : ArrayList<GroupMessageLog> = ArrayList()
+        val logMessaggi : ArrayList<MessageLog> = ArrayList()
 
         for( message in MockDatabase.instance.group_messages_table ) {
             if( message.sender_id == "user1" ) {
-                logMessaggi.add( GroupMessageLog( message, message.sender_user, true) )
+                logMessaggi.add( MessageLog( message, true, true) )
             } else{
-                logMessaggi.add( GroupMessageLog( message, message.sender_user, true ) )
+                logMessaggi.add( MessageLog( message, true, true) )
             }
         }
 
@@ -400,7 +399,8 @@ class MockApiData {
 
         newGroup.members = group_users
         newGroup.members_num = newGroup.members!!.size
-        //TODO: add group chat
+        var char = GroupChat(group_id, ArrayList<Message>(), null, group_id, newGroup)
+        newGroup.chat = char
 
         MockDatabase.instance.group_table.add(newGroup)
         MockDatabase.instance.board_table.add(newGroup)

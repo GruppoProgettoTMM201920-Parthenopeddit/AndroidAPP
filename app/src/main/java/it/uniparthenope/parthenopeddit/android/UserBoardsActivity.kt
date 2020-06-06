@@ -12,7 +12,6 @@ import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.adapters.UserBoardsAdapter
 import it.uniparthenope.parthenopeddit.android.ui.ui.main.SectionsPagerAdapter
 import it.uniparthenope.parthenopeddit.api.MockApiData
-import it.uniparthenope.parthenopeddit.auth.Auth
 import it.uniparthenope.parthenopeddit.model.Board
 
 class UserBoardsActivity : AppCompatActivity() {
