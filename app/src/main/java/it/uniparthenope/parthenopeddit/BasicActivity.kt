@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 
 @SuppressLint("Registered")
 open class BasicActivity : AppCompatActivity() {
-    protected lateinit var app: App
+    lateinit var app: App
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
