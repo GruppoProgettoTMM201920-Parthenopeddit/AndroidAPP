@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
@@ -148,11 +149,38 @@ class ProfileFragment : Fragment(), PreferenceFragmentCompat.OnPreferenceStartFr
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
             sharedPreferences = requireContext().getSharedPreferences(sharedPrefFile,Context.MODE_PRIVATE)
-            user_image.setImageURI(data?.data)
+
+            var imageUri = data?.data
+            var imageBitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, imageUri);
+            //user_image.setImageURI(data?.data)
             editor =  sharedPreferences.edit()
-            editor.putString("user_image_uri", data?.data.toString())
+            //editor.putString("user_image_uri", data?.data.toString())
             editor.apply()
             editor.commit();
+
+
+            /*
+            sharedPreferences = requireContext().getSharedPreferences(sharedPrefFile,Context.MODE_PRIVATE)
+
+            user_image.setImageURI(data?.data)
+
+            var imageUri = data?.data
+            var imageBitmap = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, imageUri)
+
+            var outputStream: ByteArrayOutputStream = ByteArrayOutputStream()
+            imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+            var byteArray: ByteArray = outputStream.toByteArray()
+            var encodedString = Base64.encodeToString(byteArray, Base64.DEFAULT)
+
+            editor =  sharedPreferences.edit()
+            //editor.putString("user_image_uri", data?.data.toString())
+            editor.putString("user_image", encodedString)
+            editor.apply()
+            editor.commit();
+             */
+
+
+
         }
     }
 
