@@ -6,10 +6,14 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.FrameLayout
 import androidx.preference.PreferenceManager
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
+import it.uniparthenope.parthenopeddit.api.requests.AuthRequests
+import it.uniparthenope.parthenopeddit.util.animateView
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.progress_overlay.*
 
 
 private val sharedPrefFile = "kotlinsharedpreference"
@@ -25,10 +29,25 @@ class LoginActivity : BasicActivity(){
         super.onStart()
 
         if(app.auth.autoLogin == true) {
-            //IF AUTH IS OK
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
-            finish()
+            wrong_credentials_textview.visibility = View.GONE
+
+            showProgressOverlay()
+
+            AuthRequests(this, app.auth).login(
+                app.auth.token!!,
+                {
+                    goToActivity(HomeActivity::class.java)
+                    finish()
+                }, {
+                    goToActivity(HomeActivity::class.java)
+                    finish()
+                }, {
+                    hideProgressOverlay()
+                    app.auth.logout()
+
+                    wrong_credentials_textview.visibility = View.VISIBLE
+                }
+            )
         }
 
         username_edittext.setText(app.auth.username?:"")
@@ -48,12 +67,31 @@ class LoginActivity : BasicActivity(){
                 val token = app.auth.getToken(username, password)
 
                 //TODO auth with api
-                //IF AUTH IS OK
-                app.auth.login( token, username, user_logged_checkbox.isChecked )
 
-                val intent = Intent(this, HomeActivity::class.java)
-                startActivity(intent)
-                finish()
+                showProgressOverlay()
+
+                AuthRequests(this, app.auth).login(
+                    token,
+                    {
+                        //login normale
+                        wrong_credentials_textview.visibility = View.GONE
+
+                        app.auth.login( token, username, user_logged_checkbox.isChecked )
+                        goToActivity(HomeActivity::class.java)
+                        finish()
+                    }, {
+                        //primo login dell utente
+                        wrong_credentials_textview.visibility = View.GONE
+
+                        app.auth.login( token, username, user_logged_checkbox.isChecked )
+                        goToActivity(HomeActivity::class.java)
+                        finish()
+                    }, {
+                        //fallito login
+                        wrong_credentials_textview.visibility = View.VISIBLE
+                        hideProgressOverlay()
+                    }
+                )
             }
         }
 
@@ -61,6 +99,18 @@ class LoginActivity : BasicActivity(){
             val intent = Intent(this, PrivacyActivity::class.java)
             startActivity(intent)
         }
+    }
+
+
+
+    fun showProgressOverlay() {
+        val progress_overlay = findViewById<FrameLayout>(R.id.progress_overlay)
+        animateView(progress_overlay, View.VISIBLE, 0.4f, 200)
+    }
+
+    fun hideProgressOverlay() {
+        val progress_overlay = findViewById<FrameLayout>(R.id.progress_overlay)
+        animateView(progress_overlay, View.GONE, 0f, 200)
     }
 }
 
