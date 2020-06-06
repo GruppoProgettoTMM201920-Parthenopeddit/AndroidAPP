@@ -31,8 +31,8 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
     }
 
     interface PostItemClickListeners {
-        fun onClickLike(id_post:Int)
-        fun onClickDislike(id_post:Int)
+        fun onClickLike(id_post:Int, upvote_textview: TextView, downvote_textview: TextView)
+        fun onClickDislike(id_post:Int, upvote_textview: TextView, downvote_textview: TextView)
         fun onClickComments(id_post:Int)
         fun onBoardClick(board_id: Int?, board: Board?)
         fun onPostClick(id_post: Int)
@@ -71,15 +71,11 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
 
         if( listener != null ) {
             holder.upvote_btn.setOnClickListener {
-                listener!!.onClickLike(currentItem.id)
-                holder.upvote_textview.text =
-                    (holder.upvote_textview.text.toString().toInt() + 1).toString()
+                listener!!.onClickLike(currentItem.id, holder.upvote_textview, holder.downvote_textview)
             }
 
             holder.downvote_btn.setOnClickListener {
-                listener!!.onClickLike(currentItem.id)
-                holder.downvote_textview.text =
-                    (holder.downvote_textview.text.toString().toInt() + 1).toString()
+                listener!!.onClickLike(currentItem.id, holder.upvote_textview, holder.downvote_textview)
             }
 
             holder.comment_btn.setOnClickListener {

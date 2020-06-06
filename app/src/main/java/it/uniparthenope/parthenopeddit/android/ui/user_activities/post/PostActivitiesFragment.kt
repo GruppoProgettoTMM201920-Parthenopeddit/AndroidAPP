@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -59,11 +60,11 @@ class PostActivitiesFragment : Fragment(), PostAdapter.PostItemClickListeners {
         return root
     }
 
-    override fun onClickLike(id_post: Int) {
+    override fun onClickLike(id_post: Int, upvote_textview: TextView, downvote_textview: TextView) {
         //TODO("Not yet implemented")
     }
 
-    override fun onClickDislike(id_post: Int) {
+    override fun onClickDislike(id_post: Int, upvote_textview: TextView, downvote_textview: TextView) {
         //TODO("Not yet implemented")
     }
 
