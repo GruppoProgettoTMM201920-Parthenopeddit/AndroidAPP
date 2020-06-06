@@ -5,10 +5,10 @@ import it.uniparthenope.parthenopeddit.util.JSONConvertable
 
 class GroupChat(
     id: Int,
-
-    var latest_message: Message? = null
+    received_messages: ArrayList<Message>? = null,
+    latest_message: Message? = null,
 
     val of_group_id: Int,
     var of_group: Group? = null
-) : Chat(id, "group_chat"), JSONConvertable {
+) : Chat(id, "group_chat", received_messages, latest_message), JSONConvertable {
 }

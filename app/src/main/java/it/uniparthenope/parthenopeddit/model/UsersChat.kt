@@ -5,6 +5,7 @@ import it.uniparthenope.parthenopeddit.util.JSONConvertable
 class UsersChat(
     id: Int,
     received_messages: ArrayList<Message>? = null,
+    latest_message: Message? = null,
 
     val of_user_id: String,
     val last_opened_on: String,
@@ -14,5 +15,6 @@ class UsersChat(
 ) : Chat(
     id,
     "users_chat",
-    received_messages
+    received_messages,
+    latest_message
 ), JSONConvertable

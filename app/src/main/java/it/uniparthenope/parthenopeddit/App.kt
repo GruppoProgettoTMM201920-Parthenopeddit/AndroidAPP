@@ -1,8 +1,6 @@
 package it.uniparthenope.parthenopeddit
 
 import android.app.Application
-import com.github.nkzawa.socketio.client.IO
-import com.github.nkzawa.socketio.client.Socket
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.auth.SharedPreferencesAuth
 import java.lang.RuntimeException
