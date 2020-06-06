@@ -35,21 +35,24 @@ class MockDatabase private constructor() {
             id = 1,
             name = "Generale",
             created_on = "01/01/1970",
-            members_num = 2000
+            members_num = 2000,
+            invites = ArrayList<GroupInvite>()
         )
 
         val g2 = Group(
             id = 2,
             name = "Studenti L-21",
             created_on = "01/06/2020",
-            members_num = 180
+            members_num = 180,
+            invites = ArrayList<GroupInvite>()
         )
 
         val g3 = Group(
             id = 3,
             name = "CS Memes",
             created_on = "01/01/1970",
-            members_num = 70
+            members_num = 70,
+            invites = ArrayList<GroupInvite>()
         )
 
         val C1 = Course(
@@ -83,30 +86,35 @@ class MockDatabase private constructor() {
             id = "user1",
             display_name = "NoobMaster69",
             registered_on = "2014-08-18 21:11:35.537000",
+            groups = ArrayList<Group>(),
             group_invites = ArrayList<GroupInvite>()
         )
         val u2 = User(
             id = "user2",
             display_name = "gaussjr",
             registered_on = "2014-08-18 21:11:35.537000",
+            groups = ArrayList<Group>(),
             group_invites = ArrayList<GroupInvite>()
         )
         val u3 = User(
             id = "user3",
             display_name = "acuto.org",
             registered_on = "2014-08-18 21:11:35.537000",
+            groups = ArrayList<Group>(),
             group_invites = ArrayList<GroupInvite>()
         )
         val u4 = User(
             id = "user4",
             display_name = "Tonald Drump",
             registered_on = "2014-08-18 21:11:35.537000",
+            groups = ArrayList<Group>(),
             group_invites = ArrayList<GroupInvite>()
         )
         val u5 = User(
             id = "user5",
             display_name = "Topocipolla",
             registered_on = "2014-08-18 21:11:35.537000",
+            groups = ArrayList<Group>(),
             group_invites = ArrayList<GroupInvite>()
         )
 

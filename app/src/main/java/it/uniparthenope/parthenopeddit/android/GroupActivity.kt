@@ -22,6 +22,8 @@ import it.uniparthenope.parthenopeddit.auth.Auth
 import it.uniparthenope.parthenopeddit.model.GroupMember
 import kotlinx.android.synthetic.main.activity_course.*
 import kotlinx.android.synthetic.main.activity_group.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class GroupActivity : AppCompatActivity() {
 
@@ -137,15 +139,28 @@ class GroupActivity : AppCompatActivity() {
         fab_new_post_group_textview.setOnClickListener{ onClickNewPost(id_group, name_group!!) }
         follow_button.setOnClickListener {
             if(isFollowed){
-                //TODO: unfollow group
-                //MockDatabase.instance.users_table.filter { it.id == "user1" }.single().groups.removeIf { it.id == id_group }
+                //TODO: unfollow group through API
+
+                MockDatabase.instance.group_table.filter { it.id == id_group }.single().members?.removeIf { it.user_id == "user1" }
+                MockDatabase.instance.users_table.filter { it.id == "user1" }.single().groups?.removeIf { it.id == id_group }
                 Toast.makeText(this, "Hai smesso di seguire ${group_name_textview.text}",Toast.LENGTH_LONG).show()
                 follow_button.text = "Entra"
                 val imgResource: Int = R.drawable.ic_follow_themecolor_24dp
                 follow_button.setCompoundDrawablesWithIntrinsicBounds(imgResource, 0, 0, 0)
                 isFollowed = false
             } else {
-                //TODO: follow group
+                //TODO: follow group through API
+                val c: Calendar = Calendar.getInstance()
+                val currentDate: String =
+                    c.get(Calendar.DATE).toString() + "/" + c.get(Calendar.MONTH).toString() + "/" + c.get(
+                        Calendar.YEAR).toString()
+
+
+                var u1 = MockDatabase.instance.users_table.filter{ it.id == "user1"}.single()
+                var group = MockDatabase.instance.group_table.filter { it.id == id_group }.single()
+                var newGroupMember : GroupMember = GroupMember(u1.id, id_group, currentDate, null, false, u1, group)
+                group.members!!.add(newGroupMember)
+
                 Toast.makeText(this, "Hai seguito ${group_name_textview.text}",Toast.LENGTH_LONG).show()
                 follow_button.text = "Lascia"
                 val imgResource: Int = R.drawable.ic_unfollow_themecolor_24dp

@@ -14,6 +14,12 @@
         android:title="I tuoi corsi e gruppi"
         app:icon="@drawable/ic_group_themecolor_24dp" />
 
+    <Preference
+        app:key="usergroupinviteactivity"
+        android:summary="Visualizza gli inviti ai gruppi"
+        android:title="Inviti ai gruppi"
+        app:icon="@drawable/ic_group_themecolor_24dp" />
+
     <SwitchPreference
         app:key="notifications"
         app:title="Notifiche"

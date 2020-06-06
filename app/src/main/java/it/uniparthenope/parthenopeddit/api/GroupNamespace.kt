@@ -17,9 +17,8 @@ interface GroupNamespace {
     )
 
     fun getUserInvitesToGroup(
-        onSuccess: (invites: ArrayList<GroupInvite>) -> Unit,
-        onFail: (error: String) -> Unit
-    )
+        id_user: String,
+        completion: (userGroupInvites: ArrayList<GroupInvite>, error: String?) -> Unit)
 
     fun getGroup(
         group_id: Int,

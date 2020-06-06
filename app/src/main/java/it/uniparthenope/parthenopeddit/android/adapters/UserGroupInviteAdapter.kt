@@ -21,11 +21,16 @@ class UserGroupInviteAdapter : RecyclerView.Adapter<UserGroupInviteAdapter.UserG
     }
 
     interface UserGroupInviteItemClickListeners {
-        fun onInviteClick(group_id: Int?)
+        fun onInviteClick(groupInvite: GroupInvite)
     }
 
     fun addInvite(GroupInviteItemList: List<GroupInvite>) {
         this.InviteList.addAll(GroupInviteItemList)
+        notifyDataSetChanged()
+    }
+
+    fun removeInvite(group_id: Int?) {
+        this.InviteList.removeIf { it.group_id == group_id }
         notifyDataSetChanged()
     }
 
@@ -49,7 +54,7 @@ class UserGroupInviteAdapter : RecyclerView.Adapter<UserGroupInviteAdapter.UserG
         if( listener != null ) {
 
             holder.relativeLayout.setOnClickListener {
-                listener!!.onInviteClick(currentItem.group_id)
+                listener!!.onInviteClick(currentItem)
             }
         }
     }

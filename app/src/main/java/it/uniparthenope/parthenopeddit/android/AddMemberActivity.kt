@@ -48,17 +48,14 @@ class AddMemberActivity : AppCompatActivity(), AddMemberAdapter.UserListItemClic
             Log.d("DEBUG", "group has user with id ${user.id}")
         }
 
-        for(groupuser in group.members!!) {
 
-            Log.d("DEBUG", "checking user with id ${groupuser.user_id}")
+        for(groupuser in group.members!!) {
             if (user.id == groupuser.user_id) {
                 Toast.makeText(
                     this,
                     "L'utente è già presente nel gruppo ${name_group}",
                     Toast.LENGTH_LONG
                 ).show()
-                Log.d("DEBUG", "because user has id ${user.id}")
-                Log.d("DEBUG", "and usergroup has id ${groupuser.user_id}")
 
                 val intent = Intent(this, GroupActivity::class.java)
                 intent.putExtra("id_group", id_group)
@@ -71,14 +68,10 @@ class AddMemberActivity : AppCompatActivity(), AddMemberAdapter.UserListItemClic
         val currentDate: String =
             c.get(Calendar.DATE).toString() + "/" + c.get(Calendar.MONTH).toString() + "/" + c.get(
                 Calendar.YEAR).toString()
-        //SUSPENDED
-        /*var newGroupMember : GroupMember = GroupMember(user.id, id_group, currentDate, null, false, user, group)
-        group.members!!.add(newGroupMember)
-        Toast.makeText(this,"Hai aggiunto l'utente ${user.id}", Toast.LENGTH_LONG).show()
-        */
 
-        //HOW IT MUST BE
-        /*
+        var newGroupMember : GroupMember = GroupMember(user.id, id_group, currentDate, null, false, user, group)
+        group.members!!.add(newGroupMember)
+
         var group_invite: GroupInvite = GroupInvite(
             "user1",
             user.id,
@@ -87,26 +80,13 @@ class AddMemberActivity : AppCompatActivity(), AddMemberAdapter.UserListItemClic
             MockDatabase.instance.users_table.filter{ it.id == "user1"}.single(),
             user,
             group
-        )*/
-
-        //TODO: DELETE "JUST FOR TESTING" AND USE "HOW IT MUST BE"
-        //JUST FOR TESTING
-        var u1 = MockDatabase.instance.users_table.filter{ it.id == "user1"}.single()
-        var u2 = MockDatabase.instance.users_table.filter{ it.id == "user2"}.single()
-        MockDatabase.instance.users_table.removeIf { it.id == "user1" }
-
-        var group_invite: GroupInvite = GroupInvite(
-            u2.id,
-            u1.id,
-            group.id,
-            currentDate,
-            u2,
-            u1,
-            group
         )
 
         //END TESTING
-        u1.group_invites?.add(group_invite)
+        user.group_invites?.add(group_invite)
+        group.invites?.add(group_invite)
+
+        Toast.makeText(this, "Invito inviato all'utente ${user.display_name}", Toast.LENGTH_LONG).show()
 
 
         val intent = Intent(this, GroupActivity::class.java)

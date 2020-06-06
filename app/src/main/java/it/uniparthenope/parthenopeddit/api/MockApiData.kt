@@ -334,10 +334,11 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
     }
 
     override fun getUserInvitesToGroup(
-        onSuccess: (invites: ArrayList<GroupInvite>) -> Unit,
-        onFail: (error: String) -> Unit
-    ) {
-        TODO("Not yet implemented")
+        id_user: String,
+        completion: (userGroupInvites: ArrayList<GroupInvite>, error: String?) -> Unit) {
+        MockDatabase.instance.users_table.filter { it.id == id_user }.single().group_invites
+        completion.invoke(
+            MockDatabase.instance.users_table.filter { it.id == id_user }.single().group_invites!!, null)
     }
 
     override fun getGroup(
