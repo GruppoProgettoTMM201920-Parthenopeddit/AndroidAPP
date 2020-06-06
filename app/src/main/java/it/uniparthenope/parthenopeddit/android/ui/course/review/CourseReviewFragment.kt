@@ -8,13 +8,15 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.adapters.ReviewAdapter
 import it.uniparthenope.parthenopeddit.api.MockApiData
-import it.uniparthenope.parthenopeddit.auth.Auth
+import it.uniparthenope.parthenopeddit.auth.AuthManager
 
 class CourseReviewFragment(courseID: Int) : Fragment(), ReviewAdapter.CourseReviewItemClickListeners{
 
+    private lateinit var auth : AuthManager
     private lateinit var recycler_view: RecyclerView
     private lateinit var courseReviewViewModel: CourseReviewViewModel
     var courseId = courseID
@@ -30,8 +32,9 @@ class CourseReviewFragment(courseID: Int) : Fragment(), ReviewAdapter.CourseRevi
         recycler_view.layoutManager = LinearLayoutManager(requireContext())
         recycler_view.setHasFixedSize(true)
 
+        auth = (activity as BasicActivity).app.auth
 
-        MockApiData().getCourseReviews( Auth().token, courseId ) { reviewItemList, error ->
+        MockApiData().getCourseReviews( auth.token!!, courseId ) { reviewItemList, error ->
             if( error != null ) {
                 Toast.makeText(requireContext(),"Errore : $error", Toast.LENGTH_LONG).show()
             } else {

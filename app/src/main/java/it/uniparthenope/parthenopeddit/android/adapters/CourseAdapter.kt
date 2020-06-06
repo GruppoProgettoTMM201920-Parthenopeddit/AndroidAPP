@@ -8,7 +8,7 @@ import it.uniparthenope.parthenopeddit.android.ui.course.review.CourseReviewFrag
 import it.uniparthenope.parthenopeddit.api.MockDatabase
 import it.uniparthenope.parthenopeddit.model.Review
 
-class CourseAdapter(fm: FragmentManager, courseId: Int) : FragmentPagerAdapter(fm), ReviewNamespace {
+class CourseAdapter(fm: FragmentManager, courseId: Int) : FragmentPagerAdapter(fm) {
 
     var courseID = courseId
     override fun getItem(position: Int): Fragment {
@@ -34,12 +34,12 @@ class CourseAdapter(fm: FragmentManager, courseId: Int) : FragmentPagerAdapter(f
     }
 
     //INUTILE, MI SERVIVA SOLO GET COURSE RATING
-    override fun getAllReview(
+    fun getAllReview(
         token: String,
         completion: (reviewList: List<Review>?, error: String?) -> Unit
     ) { }
 
-    override fun getCourseInfo(
+    fun getCourseInfo(
         token: String,
         courseId: Int,
         completion: (courseRating: Float, courseDifficulty: Float, numReviews: Int, courseName: String?, isFollowed: Boolean, error: String?) -> Unit
@@ -55,7 +55,7 @@ class CourseAdapter(fm: FragmentManager, courseId: Int) : FragmentPagerAdapter(f
         completion.invoke(0F, 0F, 0,"no course with id $courseId", isFollowed,"no course with id $courseId")
     }
 
-    override fun getCourseReviews(
+    fun getCourseReviews(
         token: String,
         courseId: Int,
         completion: (reviewList: List<Review>?, error: String?) -> Unit

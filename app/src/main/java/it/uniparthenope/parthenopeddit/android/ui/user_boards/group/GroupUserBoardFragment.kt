@@ -20,7 +20,7 @@ import it.uniparthenope.parthenopeddit.model.Group
 
 class GroupUserBoardFragment : Fragment(), UserGroupAdapter.UserGroupItemClickListeners {
 
-    private lateinit var authManager: AuthManager
+    private lateinit var auth: AuthManager
     private lateinit var recycler_view: RecyclerView
     private lateinit var groupUserBoardViewModel: GroupUserBoardViewModel
 
@@ -41,9 +41,9 @@ class GroupUserBoardFragment : Fragment(), UserGroupAdapter.UserGroupItemClickLi
         recycler_view.layoutManager = LinearLayoutManager(requireContext())
         recycler_view.setHasFixedSize(true)
 
-        authManager = (activity as BasicActivity).app.auth
+        auth = (activity as BasicActivity).app.auth
 
-        MockApiData().getUserGroup( authManager.token!! , "user1") { group: ArrayList<Group>?, error: String? ->
+        MockApiData().getUserGroup( auth.token!!, "user1") { group: ArrayList<Group>?, error: String? ->
 
             if(group!!.isNotEmpty()) {
                 userGroupAdapter.addGroup(group)
