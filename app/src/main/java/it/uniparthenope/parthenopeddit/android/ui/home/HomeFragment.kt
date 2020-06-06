@@ -28,8 +28,10 @@ import it.uniparthenope.parthenopeddit.android.ui.newGroup.NewGroupActivity
 import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
 import it.uniparthenope.parthenopeddit.android.ui.newReview.NewReviewActivity
 import it.uniparthenope.parthenopeddit.api.MockApiData
+import it.uniparthenope.parthenopeddit.api.requests.UserRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Board
+import it.uniparthenope.parthenopeddit.model.Post
 import kotlinx.android.synthetic.main.cardview_post.*
 
 
@@ -78,15 +80,13 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
         auth = (activity as BasicActivity).app.auth
 
-        MockApiData().getAllPost( auth.token!! ) { postItemList, error ->
-            if( error != null ) {
-                Toast.makeText(requireContext(),"Errore : $error", Toast.LENGTH_LONG).show()
-            } else {
-                postItemList!!
-
-                postAdapter.aggiungiPost( postItemList )
+        UserRequests(requireContext(), auth).getUserFeed(
+            1, 20, {it: ArrayList<Post> ->
+                postAdapter.aggiungiPost( it )
+            }, { it: String ->
+                Toast.makeText(requireContext(),it, Toast.LENGTH_LONG).show()
             }
-        }
+        )
 
         val rotateClockwise = AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_clockwise)
         val rotateAnticlockwise = AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_anticlockwise)
@@ -114,7 +114,6 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
             override fun afterTextChanged(editable: Editable) {
 
             }
-
         })
         searchBar.setOnSearchActionListener(object : MaterialSearchBar.OnSearchActionListener {
             override fun onSearchStateChanged(enabled: Boolean) {
