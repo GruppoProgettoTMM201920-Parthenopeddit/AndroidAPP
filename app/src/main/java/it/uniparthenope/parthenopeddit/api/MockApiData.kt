@@ -241,6 +241,33 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
         return
     }
 
+    fun getGroupChatMessages(
+        token: String,
+        group_id: Int,
+        completion: (groupChatLog: GroupChatLog?, error: String?) -> Unit
+    ) {
+        lateinit var groupChat: GroupChat
+        for ( group_chat in MockDatabase.instance.group_chats_table ) {
+            if(group_chat.id == group_id) {
+                groupChat = group_chat
+            }
+        }
+
+        val logMessaggi : ArrayList<GroupMessageLog> = ArrayList()
+
+        for( message in MockDatabase.instance.group_messages_table ) {
+            if( message.sender_id == "user1" ) {
+                logMessaggi.add( GroupMessageLog( message, message.sender_user, true) )
+            } else{
+                logMessaggi.add( GroupMessageLog( message, message.sender_user, true ) )
+            }
+        }
+
+        var GroupChatLog = GroupChatLog( logMessaggi, groupChat.of_group!! )
+        //completion.invoke(it.uniparthenope.parthenopeddit.model.GroupChatLog, null)
+        return
+    }
+
     fun newMessage(
         sender: String,
         receiver: String,
@@ -264,6 +291,52 @@ class MockApiData : AuthNamespace, PostNamespace, CommentsNamespace, ReviewNames
             if(usersChat.of_user_id == sender && usersChat.other_user_chat!!.of_user_id == receiver) {
                 senderUserChat = usersChat
                 receiverUserChat = usersChat.other_user_chat!!
+            }
+        }
+
+        val newMessage = Message(
+            id = MockDatabase.instance.messages_table.size +1,
+            body = body,
+            timestamp = timestamp,
+            sender_id = sender,
+            sender_user = senderUser,
+            receiver_chat = receiverUserChat,
+            receiver_id = receiverUserChat.id
+        )
+
+        MockDatabase.instance.messages_table.add(newMessage)
+
+        completion.invoke(MessageLog(
+            message = newMessage,
+            inviato = true,
+            letto = true
+        ), null)
+    }
+
+    fun newGroupMessage(
+        sender: String,
+        receiver: String,
+        body: String,
+        timestamp: String,
+        completion: (messageLog: MessageLog, error: String?) -> Unit
+    ) {
+
+        lateinit var senderUser: User
+        lateinit var receiverGroup: Group
+        for ( user in MockDatabase.instance.users_table ) {
+            if(user.id == sender) {
+                senderUser = user
+            } else if(user.id == receiver) {
+                //receiverUser = user
+            }
+        }
+
+        lateinit var senderUserChat: GroupChat
+        lateinit var receiverUserChat : GroupChat
+        for ( usersChat in MockDatabase.instance.chats_table ) {
+            if(usersChat.of_user_id == sender && usersChat.other_user_chat!!.of_user_id == receiver) {
+                //senderUserChat = usersChat
+                //receiverUserChat = usersChat.other_user_chat!!
             }
         }
 

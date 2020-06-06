@@ -27,6 +27,7 @@ class MockDatabase private constructor() {
     val chats_table = ArrayList<UsersChat>()
     val group_chats_table = ArrayList<GroupChat>()
     val messages_table = ArrayList<Message>()
+    val group_messages_table = ArrayList<GroupMessage>()
 
     init {
         /* Popolamento tabelle fittizie. */
@@ -320,7 +321,7 @@ class MockDatabase private constructor() {
             of_user = u3
         )
 
-        val gp_ch_1 = GroupChat(
+        val gc_1 = GroupChat(
             id = 1,
             latest_message = "The Box",
             user_latestmessage = "Roddy Ricch",
@@ -328,7 +329,7 @@ class MockDatabase private constructor() {
             of_group = g2
         )
 
-        val gp_ch_2 = GroupChat(
+        val gc_2 = GroupChat(
             id = 3,
             latest_message = "Did you listen Californication?",
             user_latestmessage = "RedHotChiliPeppers",
@@ -421,6 +422,57 @@ class MockDatabase private constructor() {
             receiver_chat = us_3_1
         )
 
+        val m1_gc1 = GroupMessage(
+            id = 1,
+            body = "Ragazzi come state?",
+            timestamp = "4:22",
+            sender_id = u1.id,
+            sender_user = u1,
+            receiver_id = gc_1.of_group_id,
+            receiver_groupchat = gc_1
+        )
+
+        val m2_gc1 = GroupMessage(
+            id = 2,
+            body = "Come al solito...",
+            timestamp = "4:22",
+            sender_id = u2.id,
+            sender_user = u2,
+            receiver_id = gc_1.of_group_id,
+            receiver_groupchat = gc_1
+        )
+
+        val m3_gc1 = GroupMessage(
+            id = 3,
+            body = "Che succede?",
+            timestamp = "4:22",
+            sender_id = u3.id,
+            sender_user = u3,
+            receiver_id = gc_1.of_group_id,
+            receiver_groupchat = gc_1
+        )
+
+        val m4_gc1 = GroupMessage(
+            id = 4,
+            body = "Non farci preoccupare",
+            timestamp = "4:22",
+            sender_id = u1.id,
+            sender_user = u1,
+            receiver_id = gc_1.of_group_id,
+            receiver_groupchat = gc_1
+        )
+
+        val m5_gc1 = GroupMessage(
+            id = 5,
+            body = "Il carico di KitKat non è arrivato...",
+            timestamp = "4:22",
+            sender_id = u2.id,
+            sender_user = u2,
+            receiver_id = gc_1.of_group_id,
+            receiver_groupchat = gc_1
+        )
+
+
 
         us_1_2.other_user_chat = us_2_1
         us_2_1.other_user_chat = us_1_2
@@ -461,7 +513,7 @@ class MockDatabase private constructor() {
         board_table.addAll(group_table)
         reviews_table.addAll(listOf(r1,r2,r3,r4,r5))
         chats_table.addAll(listOf(us_1_2,us_2_1,us_1_3,us_3_1))
-        group_chats_table.addAll(listOf(gp_ch_1, gp_ch_2))
+        group_chats_table.addAll(listOf(gc_1, gc_2))
         messages_table.addAll(listOf(
             m1_u1_to_u2,
             m2_u2_to_u1,
@@ -473,5 +525,12 @@ class MockDatabase private constructor() {
             m8_u3_to_u1,
             m9_u1_to_u3)
         )
+        group_messages_table.addAll(listOf(
+            m1_gc1,
+            m2_gc1,
+            m3_gc1,
+            m4_gc1,
+            m5_gc1
+        ))
     }
 }

@@ -33,6 +33,7 @@ class NewGroupActivity : AppCompatActivity() {
                 val intent = Intent(this, GroupActivity::class.java)
                 intent.putExtra("id_group", groupId)
                 startActivity(intent)
+                finish()
             }
 
         }
