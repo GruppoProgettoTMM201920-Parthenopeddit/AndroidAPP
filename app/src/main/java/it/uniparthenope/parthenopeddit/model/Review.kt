@@ -1,9 +1,6 @@
 package it.uniparthenope.parthenopeddit.model
 
-import com.google.gson.annotations.SerializedName
 import it.uniparthenope.parthenopeddit.util.JSONConvertable
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 class Review(

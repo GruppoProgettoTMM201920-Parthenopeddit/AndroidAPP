@@ -1,8 +1,5 @@
 package it.uniparthenope.parthenopeddit.model
-import com.google.gson.annotations.SerializedName
 import it.uniparthenope.parthenopeddit.util.JSONConvertable
-import java.util.*
-import kotlin.collections.ArrayList
 
 open class Content (
     val id: Int,
@@ -19,4 +16,9 @@ open class Content (
     var comments_num: Int? = null,
     var likes_num: Int? = null,
     var dislikes_num: Int? = null
+) : JSONConvertable
+
+class LikeDislikeScore(
+    val likes_num: Int,
+    val dislikes_num: Int
 ) : JSONConvertable

@@ -1,7 +1,5 @@
 package it.uniparthenope.parthenopeddit.api
 
-import com.android.volley.Request
-
 abstract class ApiRoute {
     val timeOut: Int
         get() {

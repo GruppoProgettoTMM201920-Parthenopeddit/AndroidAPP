@@ -1,6 +1,5 @@
 package it.uniparthenope.parthenopeddit.model
 
-import android.content.BroadcastReceiver
 import it.uniparthenope.parthenopeddit.util.JSONConvertable
 
 class Message(
@@ -12,7 +11,7 @@ class Message(
     val sender_id: String,
     val receiver_id: Int,
 
-    var sender_uder: User? = null,
-    var receiver_chat: Chat? = null,
-    var replies_to_message: Message? = null
+    @Transient var sender_user: User? = null,
+    @Transient var receiver_chat: Chat? = null,
+    @Transient var replies_to_message: Message? = null
 ) : JSONConvertable

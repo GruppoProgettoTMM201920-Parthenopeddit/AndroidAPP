@@ -1,8 +1,10 @@
-package it.uniparthenope.parthenopeddit.api.namespaces
+package it.uniparthenope.parthenopeddit.api
 
-import it.uniparthenope.parthenopeddit.model.*
+import it.uniparthenope.parthenopeddit.model.Group
+import it.uniparthenope.parthenopeddit.model.GroupInvite
+import it.uniparthenope.parthenopeddit.model.GroupMember
 
-interface GroupsNamespace {
+interface GroupNamespace {
     fun getUserGroups(
         onSuccess: (groupMemberships: ArrayList<GroupMember>) -> Unit,
         onFail: (error: String) -> Unit
@@ -22,7 +24,6 @@ interface GroupsNamespace {
 
     fun getGroup(
         group_id: Int,
-
         onSuccess: (group: Group) -> Unit,
         onFail: (error: String) -> Unit
     )
@@ -34,9 +35,9 @@ interface GroupsNamespace {
         onSuccess: (invites: ArrayList<GroupInvite>) -> Unit,
         onFail: (error: String) -> Unit
     )
+
     fun getGroupInvites(
         group_id: Int,
-
         onSuccess: (invites: ArrayList<GroupInvite>) -> Unit,
         onFail: (error: String) -> Unit
     )
@@ -44,7 +45,6 @@ interface GroupsNamespace {
     fun answerGroupInvite(
         group_id: Int,
         accept: Boolean,
-
         onDecline: () -> Unit,
         onAccept: (membership: GroupMember) -> Unit,
         onFail: (error: String) -> Unit
@@ -52,7 +52,6 @@ interface GroupsNamespace {
 
     fun leaveGroup(
         group_id: Int,
-
         onSuccess: () -> Unit,
         onNewOwnerPromoted: () -> Unit,
         onGroupDisbanded: () -> Unit,
@@ -61,47 +60,14 @@ interface GroupsNamespace {
 
     fun getGroupMembers(
         group_id: Int,
-
-        onSuccess: (members: ArrayList<GroupMember>) -> Unit,
+        onSuccess: (newOwners: ArrayList<GroupMember>) -> Unit,
         onFail: (error: String) -> Unit
     )
+
     fun makeMembersOwners(
         group_id: Int,
-        newOwners: List<String>,
-
+        invitedUsersIds: List<String>,
         onSuccess: (new_owners: ArrayList<GroupMember>) -> Unit,
-        onFail: (error: String) -> Unit
-    )
-
-    fun getGroupPosts(
-        group_id: Int,
-        per_page: Int? = null,
-        page: Int? = null,
-
-        onSuccess: (posts: ArrayList<Post>) -> Unit,
-        onFail: (error: String) -> Unit
-    )
-    fun publishPostToGroup(
-        group_id: Int,
-        title:String,
-        body:String,
-
-        onSuccess: (post: Post) -> Unit,
-        onFail: (error: String) -> Unit
-    )
-
-    fun getGroupMessages(
-        group_id: Int,
-
-        onSuccess: (messages: ArrayList<Message>) -> Unit,
-        onFail: (error: String) -> Unit
-    )
-    fun sendMessageToGroup(
-        group_id: Int,
-        body: String,
-        replies_to_message_id: Int,
-
-        onSuccess: (message: Message) -> Unit,
         onFail: (error: String) -> Unit
     )
 }

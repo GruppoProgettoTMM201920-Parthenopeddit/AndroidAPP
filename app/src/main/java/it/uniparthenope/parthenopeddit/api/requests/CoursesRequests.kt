@@ -13,7 +13,38 @@ import it.uniparthenope.parthenopeddit.util.toArrayList
 import it.uniparthenope.parthenopeddit.util.toObject
 import org.json.JSONArray
 
-class GroupsRequests(private val ctx: Context, private val auth: AuthManager) {
+class CoursesRequests(private val ctx: Context, private val auth: AuthManager) {
+    fun getFollowedCourses(
+        onSuccess: (followedCourses: ArrayList<Course>) -> Unit,
+        onFail: (error: String) -> Unit
+    ) {
+        ApiClient(ctx).performRequest(
+            object : ApiRoute() {
+                override val url: String
+                    get() = "$baseUrl/courses/"
+                override val httpMethod: Int
+                    get() = Request.Method.GET
+                override val params: HashMap<String, String>
+                    get() = getParamsMap()
+                override val headers: HashMap<String, String>
+                    get() = getHeadersMap(auth.token!!)
+            }, { resultCode: Int, resultJson: String ->
+                if( resultCode == 200 ) {
+                    try {
+                        onSuccess(JSONArray(resultJson).toArrayList())
+                    } catch (e: Exception) {
+                        return@performRequest
+                    }
+                } else {
+                    onFail("Error : $resultCode")
+                }
+            }, { _, error: String ->
+                onFail.invoke(error)
+            }
+        )
+    }
+
+    /*
     fun getUserGroups(
         onSuccess: (groupMemberships: ArrayList<GroupMember>) -> Unit,
         onFail: (error: String) -> Unit
@@ -443,5 +474,5 @@ class GroupsRequests(private val ctx: Context, private val auth: AuthManager) {
     ) {
         TODO("Not yet implemented")
     }
-
+*/
 }

@@ -4,14 +4,12 @@ import android.content.Context
 import com.android.volley.Request
 import it.uniparthenope.parthenopeddit.api.ApiClient
 import it.uniparthenope.parthenopeddit.api.ApiRoute
-import it.uniparthenope.parthenopeddit.api.namespaces.AuthNamespace
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.User
 import it.uniparthenope.parthenopeddit.util.toObject
-import java.lang.Exception
 
-class AuthRequests(private val ctx:Context, private val auth: AuthManager) : AuthNamespace {
-    override fun login(
+class AuthRequests(private val ctx:Context, private val auth: AuthManager) {
+    fun login(
         token:String,
         onLogin: (user: User) -> Unit,
         onFirstLogin: (user: User) -> Unit,
@@ -52,7 +50,7 @@ class AuthRequests(private val ctx:Context, private val auth: AuthManager) : Aut
         )
     }
 
-    override fun registerDeviceToken(
+    fun registerDeviceToken(
         deviceToken: String,
         onRegister: () -> Unit,
         onUpdate: () -> Unit,

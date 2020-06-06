@@ -5,16 +5,14 @@ import android.util.Log
 import com.android.volley.Request
 import it.uniparthenope.parthenopeddit.api.ApiClient
 import it.uniparthenope.parthenopeddit.api.ApiRoute
-import it.uniparthenope.parthenopeddit.api.namespaces.UserNamespace
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Post
 import it.uniparthenope.parthenopeddit.util.TAG
 import it.uniparthenope.parthenopeddit.util.toArrayList
-import it.uniparthenope.parthenopeddit.util.toObject
 import org.json.JSONArray
 
-class UserRequests(private val ctx: Context, private val auth: AuthManager) : UserNamespace {
-    override fun getUserFeed(
+class UserRequests(private val ctx: Context, private val auth: AuthManager) {
+    fun getUserFeed(
         page: Int,
         perPage: Int,
         onSuccess: (postList: ArrayList<Post>) -> Unit,
@@ -47,5 +45,4 @@ class UserRequests(private val ctx: Context, private val auth: AuthManager) : Us
             }
         )
     }
-
 }
