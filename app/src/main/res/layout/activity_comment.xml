@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".android.CommentActivity">
+    tools:context=".android.CommentActivity"
+    android:background="#595959">
 
 
     <include
@@ -29,8 +30,12 @@
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="409dp"
-        android:layout_height="68dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -39,20 +44,27 @@
 
         <EditText
             android:id="@+id/message_edittext"
-            android:layout_width="359dp"
-            android:layout_height="50dp"
+            android:layout_width="280dp"
+            android:layout_height="wrap_content"
             android:background="@drawable/message_shape"
             android:elevation="50dp"
             android:ems="10"
-            android:gravity="start|top"
-            android:inputType="textMultiLine" />
+            android:gravity="center_vertical"
+            android:inputType="textMultiLine"
+            android:minHeight="50dp"
+            android:maxHeight="150dp"
+            android:paddingLeft="10dp"
+            android:paddingTop="5dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="5dp" />
 
-        <Button
+        <ImageButton
             android:id="@+id/send_btn"
-            android:layout_width="63dp"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
             android:layout_weight="1"
-            android:text="Button" />
+            android:background="@drawable/send_shape" />
     </LinearLayout>
 
 

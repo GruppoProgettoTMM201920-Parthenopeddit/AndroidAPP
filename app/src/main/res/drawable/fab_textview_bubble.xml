@@ -11,10 +11,6 @@
 
 
 
-    <size
-        android:width="180dp"
-        android:height="30dp" />
-
     <!--Use android:dashWidth="2dp" and android:dashGap="2dp"
     to add dashes to your stroke-->
 

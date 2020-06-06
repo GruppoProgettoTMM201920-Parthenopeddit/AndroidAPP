@@ -8,20 +8,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.ListView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mancj.materialsearchbar.MaterialSearchBar
+import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.CommentActivity
+import it.uniparthenope.parthenopeddit.android.CourseActivity
+import it.uniparthenope.parthenopeddit.android.GroupActivity
+import it.uniparthenope.parthenopeddit.android.HomeActivity
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.ui.newGroup.NewGroupActivity
 import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
-import it.uniparthenope.parthenopeddit.api.MockDatabase
-import it.uniparthenope.parthenopeddit.model.Post
+import it.uniparthenope.parthenopeddit.android.ui.newReview.NewReviewActivity
+import it.uniparthenope.parthenopeddit.api.MockApiData
+import it.uniparthenope.parthenopeddit.auth.Auth
+import it.uniparthenope.parthenopeddit.model.Board
 import kotlinx.android.synthetic.main.cardview_post.*
+
 
 class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
@@ -37,21 +47,44 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         val fab_new_post_textview = root.findViewById(R.id.fab_new_post_textview) as TextView
         val fab_new_group_textview = root.findViewById(R.id.fab_new_group_textview) as TextView
 
+        /*
+        val listHeader = listOf("I tuoi corsi di studio", "I tuoi gruppi")
+
+        val coursesList = listOf("Corso 1","Corso 2","Corso 3","Corso 4")
+        val groupsList = listOf("Gruppo1","Gruppo 2","Gruppo 3","Gruppo 4")
+
+        //val groupList = resources.getStringArray(R.array.groups)
+
+
+        val listChild = HashMap<String, List<String>>()
+        listChild.put(listHeader[0], coursesList)
+        listChild.put(listHeader[1], groupsList)
+
+        val expandableListAdapter : ExpandableListAdapter = ExpandableListAdapter(requireContext(), listHeader, listChild)
+        //root.expandable_list_view.setAdapter(expandableListAdapter)
+        expandableListAdapter.notifyDataSetChanged()
+        //root.expandable_list_view
+
+         */
+
         recycler_view = root.findViewById(R.id.recycler_view) as RecyclerView
 
-        val postAdapter = PostAdapter(ArrayList<Post>(), this)
+        val postAdapter = PostAdapter()
+        postAdapter.setItemClickListener(this)
         recycler_view.adapter = postAdapter
         recycler_view.layoutManager = LinearLayoutManager(requireContext())
         recycler_view.setHasFixedSize(true)
 
-        postAdapter.aggiornaLista( MockDatabase.instance.posts_table )
+        MockApiData().getAllPost( Auth().token ) { postItemList, error ->
+            if( error != null ) {
+                Toast.makeText(requireContext(),"Errore : $error", Toast.LENGTH_LONG).show()
+            } else {
+                postItemList!!
 
-        val fabOpen_1 = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_open_1)
-        val fabOpen_2 = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_open_2)
-        val fabTextViewOpen = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_textview_open)
-        val fabTextViewClose = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_textview_close)
-        val fabClose_1 = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_close_1)
-        val fabClose_2 = AnimationUtils.loadAnimation(requireContext(), R.anim.fab_close_2)
+                postAdapter.aggiungiPost( postItemList )
+            }
+        }
+
         val rotateClockwise = AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_clockwise)
         val rotateAnticlockwise = AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_anticlockwise)
 
@@ -104,25 +137,33 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         fab.setOnClickListener{
             if(isOpen){
                 fab.startAnimation(rotateClockwise)
-                fab_new_post.startAnimation(fabClose_1)
-                fab_new_group.startAnimation(fabClose_2)
-                fab_new_post_textview.startAnimation(fabTextViewClose)
-                fab_new_group_textview.startAnimation(fabTextViewClose)
-                fab_new_post.visibility = View.GONE
-                fab_new_group.visibility = View.GONE
-                fab_new_post.visibility = View.GONE
-                fab_new_group.visibility = View.GONE
+
+                fab_new_post.animate().translationY(200F)
+                fab_new_group.animate().translationY(400F)
+                fab_new_post_textview.animate().translationY(200F)
+                fab_new_group_textview.animate().translationY(400F)
+                fab_new_post_textview.animate().alpha(0F)
+                fab_new_group_textview.animate().alpha(0F)
+                fab_new_post_textview.visibility = View.GONE
+                fab_new_group_textview.visibility = View.GONE
+
+
+
                 isOpen = false
             } else{
-                fab_new_post.visibility = View.VISIBLE
-                fab_new_group.visibility = View.VISIBLE
+                fab.startAnimation(rotateAnticlockwise)
+
+                fab_new_post.animate().translationY(-200F)
+                fab_new_group.animate().translationY(-400F)
+
+                fab_new_post_textview.animate().translationY(-200F)
+                fab_new_group_textview.animate().translationY(-400F)
+
                 fab_new_post_textview.visibility = View.VISIBLE
                 fab_new_group_textview.visibility = View.VISIBLE
-                fab.startAnimation(rotateAnticlockwise)
-                fab_new_post.startAnimation(fabOpen_1)
-                fab_new_group.startAnimation(fabOpen_2)
-                fab_new_post_textview.startAnimation(fabTextViewOpen)
-                fab_new_group_textview.startAnimation(fabTextViewOpen)
+
+                fab_new_post_textview.animate().alpha(1F)
+                fab_new_group_textview.animate().alpha(1F)
                 isOpen = true
             }
         }
@@ -131,6 +172,7 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         fab_new_post_textview.setOnClickListener{ onClickNewPost() }
         fab_new_group.setOnClickListener{ onClickNewGroup() }
         fab_new_group_textview.setOnClickListener{ onClickNewGroup() }
+
         return root
     }
 
@@ -150,8 +192,40 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         startActivity(intent)
     }
 
+    override fun onPostClick(id_post: Int) {
+        val intent = Intent(requireContext(), CommentActivity::class.java)
+        intent.putExtra("idPost", id_post)
+        startActivity(intent)
+    }
+
+    override fun onBoardClick(board_id: Int?, board: Board?) {
+        if (board?.id == 1) {
+            (activity as BasicActivity).goToActivity(HomeActivity::class.java) //HOME
+        } else {
+            when (board?.type) {
+                "course" -> {
+                    val intent = Intent(requireContext(), CourseActivity::class.java)  //CORSO
+                    intent.putExtra("id_group", board_id)
+                    startActivity(intent)
+                }
+                "group" -> {
+                    val intent = Intent(requireContext(), GroupActivity::class.java)
+                    intent.putExtra("id_group", board_id)
+                    startActivity(intent)
+                }
+                else -> {  }
+            }
+        }
+    }
+
     fun onClickNewPost(){
+        //crea dialogo
+            //passi fuonzione da effettuare onSuccess
+        //uploiad to api
+        //notifidatasetchanged()
         val intent = Intent(requireContext(), NewPostActivity::class.java)
+        intent.putExtra("id_group",1)
+        intent.putExtra("name_group","Generale")
         startActivity(intent)
     }
 

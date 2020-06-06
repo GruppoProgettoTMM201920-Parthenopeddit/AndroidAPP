@@ -5,10 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.R
@@ -24,12 +21,22 @@ import kotlinx.android.synthetic.main.cardview_post.view.upvote_btn
 import kotlinx.android.synthetic.main.cardview_post.view.upvote_textview
 import kotlinx.android.synthetic.main.cardview_post.view.username_textview
 
-class CommentAdapter(private val context: Context, private var commentItemsList: ArrayList<Comment>, private var listener:CommentItemClickListener) : RecyclerView.Adapter<CommentAdapter.CommentViewHolder>() {
+class CommentAdapter(private val context: Context, private var commentItemsList: ArrayList<Comment>, private var listener:CommentItemClickListeners?) : RecyclerView.Adapter<CommentAdapter.CommentViewHolder>() {
 
-    interface CommentItemClickListener {
+    interface CommentItemClickListeners {
         fun onClickLike(id_Commento:Int)
         fun onClickDislike(id_Commento:Int)
         fun onClickComments(id_Commento:Int)
+        fun onCommentClick(id_post: Int)
+    }
+
+    fun setItemClickListener( listener:CommentItemClickListeners? ) {
+        this.listener = listener
+    }
+
+    fun aggiungiCommento(postItemList: List<Comment>) {
+        this.commentItemsList.addAll(postItemList)
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {
@@ -43,24 +50,29 @@ class CommentAdapter(private val context: Context, private var commentItemsList:
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
         val currentItem = commentItemsList[position]
 
-        holder.imageView.setImageResource(R.drawable.ic_home_black_24dp)
-        holder.username_textview.text = currentItem.author_id
+        holder.imageView.setImageResource(R.drawable.default_user_image)
+        holder.username_textview.text = currentItem.author?.display_name?:currentItem.author_id
+        holder.timestamp_comment_textview.text = currentItem.timestamp
         holder.posttext_textview.text = currentItem.body
         holder.upvote_textview.text = "0"
         holder.downvote_textview.text = "0"
 
         holder.upvote_btn.setOnClickListener {
-            listener.onClickLike( currentItem.id )
+            listener?.onClickLike( currentItem.id )
             holder.upvote_textview.text = (holder.upvote_textview.text.toString().toInt() + 1).toString()
         }
 
         holder.downvote_btn.setOnClickListener {
-            listener.onClickLike( currentItem.id )
+            listener?.onClickLike( currentItem.id )
             holder.downvote_textview.text = (holder.downvote_textview.text.toString().toInt() + 1).toString()
         }
 
         holder.comment_btn.setOnClickListener {
-            listener.onClickComments( currentItem.id )
+            listener?.onClickComments( currentItem.id )
+        }
+
+        holder.comment_relativelayout.setOnClickListener {
+            listener?.onCommentClick( currentItem.root_content_id )
         }
 
         Log.d("DEBUG","settando la lista di commenti del commento ${currentItem.id}")
@@ -94,12 +106,14 @@ class CommentAdapter(private val context: Context, private var commentItemsList:
     class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {     //SINGOLO ELEMENTO DELLA LISTA
         val imageView: ImageView = itemView.image_view
         val username_textview: TextView = itemView.username_textview
+        val timestamp_comment_textview: TextView = itemView.timestamp_comment_textview
         val posttext_textview: TextView = itemView.posttext_textview
-        val upvote_btn: Button = itemView.upvote_btn
-        val downvote_btn: Button = itemView.downvote_btn
+        val upvote_btn: ImageButton = itemView.upvote_btn
+        val downvote_btn: ImageButton = itemView.downvote_btn
         val upvote_textview: TextView = itemView.upvote_textview
         val downvote_textview: TextView = itemView.downvote_textview
-        val comment_btn: Button = itemView.comments_btn
+        val comment_btn: ImageButton = itemView.comments_btn
+        val comment_relativelayout: RelativeLayout = itemView.comment_relativelayout
 
         val commentsLayoutContainer: LinearLayout = itemView.commentsLayoutContainer
         val commentsListContainer: RecyclerView = itemView.commentsListContainer

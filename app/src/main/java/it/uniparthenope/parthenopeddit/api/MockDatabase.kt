@@ -1,6 +1,8 @@
 package it.uniparthenope.parthenopeddit.api
 
 import it.uniparthenope.parthenopeddit.model.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Contaner class for MOCK data
@@ -20,9 +22,12 @@ class MockDatabase private constructor() {
     val comments_table = ArrayList<Comment>()
     val course_table = ArrayList<Course>()
     val group_table = ArrayList<Group>()
+    val board_table = ArrayList<Board>()
     val reviews_table = ArrayList<Review>()
     val chats_table = ArrayList<UsersChat>()
+    val group_chats_table = ArrayList<GroupChat>()
     val messages_table = ArrayList<Message>()
+    val group_messages_table = ArrayList<GroupMessage>()
 
     init {
         /* Popolamento tabelle fittizie. */
@@ -31,21 +36,24 @@ class MockDatabase private constructor() {
             id = 1,
             name = "Generale",
             created_on = "01/01/1970",
-            members_num = 2000
+            members_num = 2000,
+            invites = ArrayList<GroupInvite>()
         )
 
         val g2 = Group(
             id = 2,
             name = "Studenti L-21",
-            created_on = "01/01/1970",
-            members_num = 180
+            created_on = "01/06/2020",
+            members_num = 180,
+            invites = ArrayList<GroupInvite>()
         )
 
         val g3 = Group(
             id = 3,
             name = "CS Memes",
             created_on = "01/01/1970",
-            members_num = 70
+            members_num = 70,
+            invites = ArrayList<GroupInvite>()
         )
 
         val C1 = Course(
@@ -78,17 +86,37 @@ class MockDatabase private constructor() {
         val u1 = User(
             id = "user1",
             display_name = "NoobMaster69",
-            registered_on = "2014-08-18 21:11:35.537000"
+            registered_on = "2014-08-18 21:11:35.537000",
+            groups = ArrayList<Group>(),
+            group_invites = ArrayList<GroupInvite>()
         )
         val u2 = User(
             id = "user2",
             display_name = "gaussjr",
-            registered_on = "2014-08-18 21:11:35.537000"
+            registered_on = "2014-08-18 21:11:35.537000",
+            groups = ArrayList<Group>(),
+            group_invites = ArrayList<GroupInvite>()
         )
         val u3 = User(
             id = "user3",
             display_name = "acuto.org",
-            registered_on = "2014-08-18 21:11:35.537000"
+            registered_on = "2014-08-18 21:11:35.537000",
+            groups = ArrayList<Group>(),
+            group_invites = ArrayList<GroupInvite>()
+        )
+        val u4 = User(
+            id = "user4",
+            display_name = "Tonald Drump",
+            registered_on = "2014-08-18 21:11:35.537000",
+            groups = ArrayList<Group>(),
+            group_invites = ArrayList<GroupInvite>()
+        )
+        val u5 = User(
+            id = "user5",
+            display_name = "Topocipolla",
+            registered_on = "2014-08-18 21:11:35.537000",
+            groups = ArrayList<Group>(),
+            group_invites = ArrayList<GroupInvite>()
         )
 
         val p1 = Post(
@@ -177,7 +205,9 @@ class MockDatabase private constructor() {
             commented_content_id = 1,
             root_content_id = 1,
             author_id = u2.id,
-            author = u2
+            author = u2,
+            commented_content = p1,
+            root_content = p1
         )
         val c2 = Comment(
             id = 8,
@@ -186,7 +216,9 @@ class MockDatabase private constructor() {
             commented_content_id = 7,
             author_id = u1.id,
             author = u1,
-            root_content_id = 1
+            root_content_id = 1,
+            commented_content = c1,
+            root_content = p1
         )
 
         val r1 = Review(
@@ -252,33 +284,57 @@ class MockDatabase private constructor() {
         val us_1_2 = UsersChat(
             id = 1,
             of_user_id = u1.id,
+            latest_message = "Ciao bello, hai ganja?",
             last_opened_on = "2019/90/89-89:00:00Z",
             other_user_chat_id = 2,
+            other_user = u2,
             of_user = u1
         )
 
         val us_2_1 = UsersChat(
             id = 2,
             of_user_id = u2.id,
+            latest_message = "Ciao bello, hai ganja?",
             last_opened_on = "2019/90/89-89:00:00Z",
             other_user_chat_id = 1,
+            other_user = u1,
             of_user = u2
         )
 
         val us_1_3 = UsersChat(
             id = 1,
             of_user_id = u1.id,
+            latest_message = "E' arrivato il carico di KitKat",
             last_opened_on = "2019/90/89-89:00:00Z",
             other_user_chat_id = 3,
+            other_user = u3,
             of_user = u1
         )
 
         val us_3_1 = UsersChat(
             id = 3,
             of_user_id = u3.id,
+            latest_message = "E' arrivato il carico di KitKat",
             last_opened_on = "2019/90/89-89:00:00Z",
             other_user_chat_id = 1,
+            other_user = u1,
             of_user = u3
+        )
+
+        val gc_1 = GroupChat(
+            id = 1,
+            latest_message = "The Box",
+            user_latestmessage = "Roddy Ricch",
+            of_group_id = 2,
+            of_group = g2
+        )
+
+        val gc_2 = GroupChat(
+            id = 3,
+            latest_message = "Did you listen Californication?",
+            user_latestmessage = "RedHotChiliPeppers",
+            of_group_id = 3,
+            of_group = g3
         )
 
         /*CHAT TRA U1 E U2*/
@@ -366,6 +422,57 @@ class MockDatabase private constructor() {
             receiver_chat = us_3_1
         )
 
+        val m1_gc1 = GroupMessage(
+            id = 1,
+            body = "Ragazzi come state?",
+            timestamp = "4:22",
+            sender_id = u1.id,
+            sender_user = u1,
+            receiver_id = gc_1.of_group_id,
+            receiver_groupchat = gc_1
+        )
+
+        val m2_gc1 = GroupMessage(
+            id = 2,
+            body = "Come al solito...",
+            timestamp = "4:22",
+            sender_id = u2.id,
+            sender_user = u2,
+            receiver_id = gc_1.of_group_id,
+            receiver_groupchat = gc_1
+        )
+
+        val m3_gc1 = GroupMessage(
+            id = 3,
+            body = "Che succede?",
+            timestamp = "4:22",
+            sender_id = u3.id,
+            sender_user = u3,
+            receiver_id = gc_1.of_group_id,
+            receiver_groupchat = gc_1
+        )
+
+        val m4_gc1 = GroupMessage(
+            id = 4,
+            body = "Non farci preoccupare",
+            timestamp = "4:22",
+            sender_id = u1.id,
+            sender_user = u1,
+            receiver_id = gc_1.of_group_id,
+            receiver_groupchat = gc_1
+        )
+
+        val m5_gc1 = GroupMessage(
+            id = 5,
+            body = "Il carico di KitKat non è arrivato...",
+            timestamp = "4:22",
+            sender_id = u2.id,
+            sender_user = u2,
+            receiver_id = gc_1.of_group_id,
+            receiver_groupchat = gc_1
+        )
+
+
 
         us_1_2.other_user_chat = us_2_1
         us_2_1.other_user_chat = us_1_2
@@ -375,6 +482,8 @@ class MockDatabase private constructor() {
         u1.published_posts = ArrayList<Post>(listOf(p1,p3,p4))
         u1.published_comments = ArrayList<Comment>(listOf(c2))
         u1.published_reviews = ArrayList<Review>(listOf(r1,r3,r5))
+        u1.followed_courses = ArrayList<Course>(listOf(C1,C2))
+        u1.groups = ArrayList<Group>(listOf(g1,g2,g3))
 
         u2.published_posts = ArrayList<Post>(listOf(p2,p5,p6,p7))
         u2.published_comments = ArrayList<Comment>(listOf(c1))
@@ -389,13 +498,22 @@ class MockDatabase private constructor() {
         C2.reviews = ArrayList<Review>(listOf(r3,r4))
         C3.reviews = ArrayList<Review>(listOf(r5))
 
-        users_table.addAll(listOf(u1,u2))
+        g2.members = ArrayList<GroupMember>(listOf(GroupMember(u1.id, 2, "02/06/2020", null, true, u1), GroupMember(u2.id, 2, "03/06/2020", null, false, u2), GroupMember(u3.id, 2, "03/06/2020", null, false, u3) ))
+        g2.members_num = g2.members!!.size
+
+        g3.members = ArrayList<GroupMember>(listOf(GroupMember(u2.id, 3, "02/06/2020", null, true, u1)))
+        g3.members_num = g3.members!!.size
+
+        users_table.addAll(listOf(u1,u2,u3,u4,u5))
         posts_table.addAll(listOf(p1,p2,p3,p4,p5,p6,p7))
         comments_table.addAll(listOf(c1,c2))
         course_table.addAll(listOf(C1,C2,C3))
         group_table.addAll(listOf(g1,g2,g3))
+        board_table.addAll(course_table)
+        board_table.addAll(group_table)
         reviews_table.addAll(listOf(r1,r2,r3,r4,r5))
         chats_table.addAll(listOf(us_1_2,us_2_1,us_1_3,us_3_1))
+        group_chats_table.addAll(listOf(gc_1, gc_2))
         messages_table.addAll(listOf(
             m1_u1_to_u2,
             m2_u2_to_u1,
@@ -407,5 +525,12 @@ class MockDatabase private constructor() {
             m8_u3_to_u1,
             m9_u1_to_u3)
         )
+        group_messages_table.addAll(listOf(
+            m1_gc1,
+            m2_gc1,
+            m3_gc1,
+            m4_gc1,
+            m5_gc1
+        ))
     }
 }

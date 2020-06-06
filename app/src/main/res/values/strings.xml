@@ -17,6 +17,7 @@
     <string name="title_activity_home">HomeActivity</string>
     <string name="new_group_it">Crea un nuovo gruppo</string>
     <string name="new_post_it">Crea un nuovo post</string>
+    <string name="new_review_it">Crea nuova recensione</string>
     <string name="select_group_post_it">Seleziona il gruppo in cui pubblicare</string>
     <string name="write_post_it">Scrivi il post</string>
     <string name="publish_it">Pubblica</string>
@@ -29,10 +30,35 @@
     <string name="hint_group_name_it">Nome gruppo</string>
     <string name="username_user">Username</string>
 
-    //PROFILE FRAGMENT
+    <!--PROFILE FRAGMENT-->
     <string name="user_activity_text_it">Visualizza le tue attività</string>
     <string name="darkmode">Dark mode</string>
     <string name="about_it">Informazioni</string>
+    <string name="title_activity_user">UserActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="title_activity_review">ReviewActivity</string>
+
+
+    <!--TEMP-->
+    <string name="random_image_url">https://picsum.photos/%1$d</string>
+    <string name="footer_content">this example is using Glide &amp; picsum-photos.\ndetailed license has been uploaded on github.</string>
+    <string name="click">Well done! %1$s clicked.</string>
+    <string name="remove">Well done! %1$s successfully removed.</string>
+    <string name="header">%1$s completely removed!</string>
+    <string name="title_activity_user_boards">UserBoardsActivity</string>
+    <string name="title_activity_login">Sign in</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+
+
+    <!--FIREBASE-->
     <string name="msg_token_fmt"><![CDATA[test -> %s]]></string>
     <string name="testing_notification_channel_id">TESTING_CHANNEL</string>
 
