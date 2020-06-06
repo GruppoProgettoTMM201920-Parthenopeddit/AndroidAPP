@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +16,7 @@ import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.CourseActivity
 import it.uniparthenope.parthenopeddit.android.adapters.UserCourseAdapter
 import it.uniparthenope.parthenopeddit.api.MockApiData
+import it.uniparthenope.parthenopeddit.api.requests.CoursesRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Board
 import it.uniparthenope.parthenopeddit.model.Course
@@ -32,7 +35,7 @@ class CourseUserBoardFragment : Fragment(), UserCourseAdapter.UserCourseItemClic
         courseUserBoardViewModel =
             ViewModelProviders.of(this).get(CourseUserBoardViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_userboard_course, container, false)
-
+        val no_courses_textview = root.findViewById<TextView>(R.id.no_courses_textview)
         recycler_view = root.findViewById(R.id.recycler_view) as RecyclerView
 
         val userCourseAdapter = UserCourseAdapter()
@@ -43,15 +46,14 @@ class CourseUserBoardFragment : Fragment(), UserCourseAdapter.UserCourseItemClic
 
         authManager = (activity as BasicActivity).app.auth
 
-        MockApiData().getUserCourse( authManager.token!!, "user1") { course: ArrayList<Course>?, error: String? ->
-
-            if(course!!.isNotEmpty()) {
-                userCourseAdapter.addCourse(course)
+        CoursesRequests(requireContext(), authManager).getFollowedCourses({it: ArrayList<Course> ->
+            no_courses_textview.visibility = View.GONE
+            recycler_view.visibility = View.VISIBLE
+            userCourseAdapter.addCourse(it)
+            },{ it: String ->
+            Toast.makeText(requireContext(), "Errore ${it}", Toast.LENGTH_LONG).show()
             }
-
-        }
-
-
+        )
 
 
         return root

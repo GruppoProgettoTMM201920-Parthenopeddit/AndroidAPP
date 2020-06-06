@@ -11,6 +11,7 @@ import it.uniparthenope.parthenopeddit.android.GroupActivity
 import it.uniparthenope.parthenopeddit.android.HomeActivity
 import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.api.MockDatabase
+import it.uniparthenope.parthenopeddit.api.requests.GroupsRequests
 
 
 class NewGroupActivity : BasicActivity() {
@@ -29,6 +30,21 @@ class NewGroupActivity : BasicActivity() {
             //TODO: Add group through APi
 
             user_group.addAll(listOf("user1","user2"))      //TEST
+
+            GroupsRequests(this, app.auth).createGroup( group_name_edittext.text.toString(), listOf(),
+            {
+                //TODO: get groupId
+                /*val intent = Intent(this, GroupActivity::class.java)
+                intent.putExtra("id_group", groupId)
+                startActivity(intent)*/
+                finish()
+            },{
+
+            }
+
+            )
+
+
             MockApiData().createGroup(group_name_edittext.text.toString(), user_group) { groupId: Int, error: String? ->
                 val intent = Intent(this, GroupActivity::class.java)
                 intent.putExtra("id_group", groupId)

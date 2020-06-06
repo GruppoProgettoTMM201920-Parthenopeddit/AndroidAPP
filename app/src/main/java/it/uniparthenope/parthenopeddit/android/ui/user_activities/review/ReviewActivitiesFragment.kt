@@ -42,6 +42,7 @@ class ReviewActivitiesFragment : Fragment(), ReviewAdapter.CourseReviewItemClick
 
         authManager = (activity as BasicActivity).app.auth
 
+        //TODO: through API
 
         MockApiData().getAllReview( authManager.token!! ) { reviewItemList, error ->
             if( error != null ) {
