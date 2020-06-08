@@ -16,8 +16,11 @@ import it.uniparthenope.parthenopeddit.android.CommentActivity
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.ui.user_activities.post.PostActivitiesViewModel
 import it.uniparthenope.parthenopeddit.api.MockApiData
+import it.uniparthenope.parthenopeddit.api.requests.UserRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Board
+import it.uniparthenope.parthenopeddit.model.Post
+import it.uniparthenope.parthenopeddit.model.Review
 
 class PostActivitiesFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
@@ -44,18 +47,11 @@ class PostActivitiesFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
         authManager = (activity as BasicActivity).app.auth
 
-        //TODO: through API
-
-
-        MockApiData().getAllPost( authManager.token!! ) { postItemList, error ->
-            if( error != null ) {
-                Toast.makeText(requireContext(),"Errore : $error", Toast.LENGTH_LONG).show()
-            } else {
-                postItemList!!
-
-                postAdapter.aggiungiPost( postItemList.filter{ it.author_id == "user1"} )
-            }
-        }
+        UserRequests(requireContext(), authManager).getUserPublishedPosts( authManager.username!!, 1, 20, { it: ArrayList<Post> ->
+            postAdapter.aggiungiPost(it)
+        },{it: String ->
+            Toast.makeText(requireContext(),"Errore : $it", Toast.LENGTH_LONG).show()
+        })
 
 
 

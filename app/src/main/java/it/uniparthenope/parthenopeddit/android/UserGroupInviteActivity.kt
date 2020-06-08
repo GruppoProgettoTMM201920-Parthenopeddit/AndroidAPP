@@ -1,7 +1,9 @@
 package it.uniparthenope.parthenopeddit.android
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -11,8 +13,10 @@ import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.adapters.UserActivityAdapter
 import it.uniparthenope.parthenopeddit.android.adapters.UserGroupInviteAdapter
+import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
 import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.api.MockDatabase
+import it.uniparthenope.parthenopeddit.api.requests.GroupsRequests
 import it.uniparthenope.parthenopeddit.model.GroupInvite
 import it.uniparthenope.parthenopeddit.model.GroupMember
 import kotlinx.android.synthetic.main.activity_user_group_invite.*
@@ -37,22 +41,21 @@ class UserGroupInviteActivity : BasicActivity(), UserGroupInviteAdapter.UserGrou
         invite_recyclerview.layoutManager = LinearLayoutManager(this)
         invite_recyclerview.setHasFixedSize(true)
 
-
-        MockApiData().getUserInvitesToGroup("user5") { userGroupInvite: ArrayList<GroupInvite>?, error: String? ->
-            userGroupInvite!!
-            if(userGroupInvite.isEmpty()){
+        GroupsRequests(this, app.auth).getUserInvitesToGroup({it: ArrayList<GroupInvite> ->
+            it
+            if(it.isEmpty()){
                 invite_recyclerview.visibility = View.GONE
                 no_invites_textview.visibility = View.VISIBLE
             } else{
                 no_invites_textview.visibility = View.GONE
                 invite_recyclerview.visibility = View.VISIBLE
-                adapter.addInvite(userGroupInvite)
+                adapter.addInvite(it)
             }
-        }
+        },{
+            Toast.makeText(this,"Errore : ${it}", Toast.LENGTH_LONG).show()
+        })
     }
 
-
-    //TODO: change arguments to GroupInvite
     override fun onInviteClick(groupInvite: GroupInvite) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Vuoi entrare nel gruppo?")
@@ -63,49 +66,34 @@ class UserGroupInviteActivity : BasicActivity(), UserGroupInviteAdapter.UserGrou
             Toast.makeText(applicationContext,
                 android.R.string.yes, Toast.LENGTH_SHORT).show()
 
-            //TODO: User joins in group through API
-            //MockApiData().answerGroupInvite(group_id!!, true)
-
-
-            var u1 = MockDatabase.instance.users_table.filter{ it.id == "user1"}.single()
-            var u2 = MockDatabase.instance.users_table.filter{ it.id == "user2"}.single()
-
-            val c: Calendar = Calendar.getInstance()
-            val currentDate: String =
-                c.get(Calendar.DATE).toString() + "/" + c.get(Calendar.MONTH).toString() + "/" + c.get(
-                    Calendar.YEAR).toString()
-
-            var group = MockDatabase.instance.group_table.filter { it.id == groupInvite.group?.id}.single()
-            var newGroupMember : GroupMember = GroupMember(groupInvite.invited_id, groupInvite.group!!.id, currentDate, null, false, groupInvite.invited, group)
-            groupInvite.group!!.members!!.add(newGroupMember)
-            groupInvite.invited?.groups!!.add(groupInvite.group!!)
-
-            groupInvite.invited?.group_invites!!.removeIf { it.group_id == groupInvite.group_id }
-            groupInvite.group!!.invites!!.removeIf { it.invited_id == u2.id }
-
-            adapter.removeInvite(groupInvite.group_id)
+            GroupsRequests(this, app.auth).answerGroupInvite(groupInvite.group_id, true, {
+            }, {it: GroupMember ->
+                Toast.makeText(this, "Sei entrato nel gruppo ${groupInvite.group?.name}", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, GroupActivity::class.java)
+                intent.putExtra("id_group", groupInvite.group_id)
+                startActivity(intent)
+                finish()
+            },{it: String ->
+                Toast.makeText(this, "Errore ${it}", Toast.LENGTH_LONG).show()
+            })
         }
 
         builder.setNegativeButton("RIFIUTA") { dialog, which ->
             Toast.makeText(applicationContext,
                 android.R.string.no, Toast.LENGTH_SHORT).show()
 
-            //TODO: Delete invite through API
-            //MockApiData().answerGroupInvite(group_id!!, false)
-
-            var u2 = MockDatabase.instance.users_table.filter{ it.id == "user2"}.single()
-            var group = MockDatabase.instance.group_table.filter { it.id == groupInvite.group_id }.single()
-
-            groupInvite.invited?.group_invites!!.removeIf { it.group_id == groupInvite.group_id }
-            groupInvite.group!!.invites!!.removeIf { it.invited_id == groupInvite.invited_id }
-
-            adapter.removeInvite(groupInvite.group_id)
-
+            GroupsRequests(this, app.auth).answerGroupInvite(groupInvite.group_id, false, {
+                Toast.makeText(this, "Hai rifiutato l'invito al gruppo ${groupInvite.group?.name}", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, UserGroupInviteActivity::class.java)
+                startActivity(intent)
+                finish()
+            }, {it: GroupMember ->
+            },{it: String ->
+                Toast.makeText(this, "Errore ${it}", Toast.LENGTH_LONG).show()
+            })
         }
 
         builder.setNeutralButton("CI PENSERÒ") { dialog, which ->
-            Toast.makeText(applicationContext,
-                "Maybe", Toast.LENGTH_SHORT).show()
         }
         builder.show()
     }
