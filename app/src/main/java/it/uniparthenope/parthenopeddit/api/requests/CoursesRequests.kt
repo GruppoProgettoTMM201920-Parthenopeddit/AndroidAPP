@@ -1,19 +1,50 @@
 package it.uniparthenope.parthenopeddit.api.requests
 
 import android.content.Context
-import android.util.Log
 import com.android.volley.Request
-import com.google.gson.Gson
 import it.uniparthenope.parthenopeddit.api.ApiClient
 import it.uniparthenope.parthenopeddit.api.ApiRoute
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.*
-import it.uniparthenope.parthenopeddit.util.TAG
 import it.uniparthenope.parthenopeddit.util.toArrayList
 import it.uniparthenope.parthenopeddit.util.toObject
 import org.json.JSONArray
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 class CoursesRequests(private val ctx: Context, private val auth: AuthManager) {
+
+    fun searchByName(
+        course_name: String,
+        onSuccess: (followedCourses: ArrayList<Course>) -> Unit,
+        onFail: (error: String) -> Unit
+    ) {
+        ApiClient(ctx).performRequest(
+            object : ApiRoute() {
+                override val url: String
+                    get() = "$baseUrl/courses/search/$course_name"
+                override val httpMethod: Int
+                    get() = Request.Method.GET
+                override val params: HashMap<String, String>
+                    get() = getParamsMap()
+                override val headers: HashMap<String, String>
+                    get() = getHeadersMap(auth.token!!)
+            }, { resultCode: Int, resultJson: String ->
+                if( resultCode == 200 ) {
+                    try {
+                        onSuccess(JSONArray(resultJson).toArrayList())
+                    } catch (e: Exception) {
+                        return@performRequest
+                    }
+                } else {
+                    onFail("Error : $resultCode")
+                }
+            }, { _, error: String ->
+                onFail.invoke(error)
+            }
+        )
+    }
+
     fun getFollowedCourses(
         onSuccess: (followedCourses: ArrayList<Course>) -> Unit,
         onFail: (error: String) -> Unit
@@ -44,120 +75,15 @@ class CoursesRequests(private val ctx: Context, private val auth: AuthManager) {
         )
     }
 
-    //TODO REQUESTS
-    /*
-    fun getUserGroups(
-        onSuccess: (groupMemberships: ArrayList<GroupMember>) -> Unit,
+    fun getCourseByID (
+        course_id: Int,
+        onSuccess: (course: Course) -> Unit,
         onFail: (error: String) -> Unit
     ) {
         ApiClient(ctx).performRequest(
             object : ApiRoute() {
                 override val url: String
-                    get() = "$baseUrl/groups/"
-                override val httpMethod: Int
-                    get() = Request.Method.GET
-                override val params: HashMap<String, String>
-                    get() = getParamsMap()
-                override val headers: HashMap<String, String>
-                    get() = getHeadersMap(auth.token!!)
-            }, { resultCode: Int, resultJson: String ->
-                if( resultCode == 200 ) {
-                    try {
-                        onSuccess(JSONArray(resultJson).toArrayList())
-                    } catch (e: Exception) {
-                        onFail("Could not parse request result as group membership data.")
-                        Log.d(TAG, resultJson)
-                        return@performRequest
-                    }
-                } else {
-                    onFail("Error : $resultCode")
-                }
-            }, { _, error: String ->
-                onFail.invoke(error)
-            }
-        )
-    }
-
-    fun createGroup(
-        group_name: String,
-        invitedUsersIds: List<String>,
-        onSuccess: (invitedUsers: ArrayList<GroupInvite>) -> Unit,
-        onFail: (error: String) -> Unit
-    ) {
-        ApiClient(ctx).performRequest(
-            object : ApiRoute() {
-                override val url: String
-                    get() = "$baseUrl/groups/"
-                override val httpMethod: Int
-                    get() = Request.Method.POST
-                override val params: HashMap<String, String>
-                    get() {
-                        val params = getParamsMap()
-                        params["group_name"] = group_name
-                        params["invited_members"] = Gson().toJson(invitedUsersIds)
-                        return params
-                    }
-                override val headers: HashMap<String, String>
-                    get() = getHeadersMap(auth.token!!)
-            }, { resultCode: Int, resultJson: String ->
-                if( resultCode == 201 ) {
-                    try {
-                        onSuccess(JSONArray(resultJson).toArrayList())
-                    } catch (e: Exception) {
-                        onFail("Could not parse request result as group membership data")
-                        Log.d(TAG, resultJson)
-                        return@performRequest
-                    }
-                } else {
-                    onFail("Error : $resultCode")
-                }
-            }, { _, error: String ->
-                onFail.invoke(error)
-            }
-        )
-    }
-
-    fun getUserInvitesToGroup(
-        onSuccess: (invites: ArrayList<GroupInvite>) -> Unit,
-        onFail: (error: String) -> Unit
-    ) {
-        ApiClient(ctx).performRequest(
-            object : ApiRoute() {
-                override val url: String
-                    get() = "$baseUrl/groups/invites"
-                override val httpMethod: Int
-                    get() = Request.Method.GET
-                override val params: HashMap<String, String>
-                    get() = getParamsMap()
-                override val headers: HashMap<String, String>
-                    get() = getHeadersMap(auth.token!!)
-            }, { resultCode: Int, resultJson: String ->
-                if( resultCode == 200 ) {
-                    try {
-                        onSuccess(JSONArray(resultJson).toArrayList())
-                    } catch (e: Exception) {
-                        onFail("Could not parse request result as group invite data")
-                        Log.d(TAG, resultJson)
-                        return@performRequest
-                    }
-                } else {
-                    onFail("Error : $resultCode")
-                }
-            }, { _, error: String ->
-                onFail.invoke(error)
-            }
-        )
-    }
-
-    fun getGroup(
-        group_id: Int,
-        onSuccess: (group: Group) -> Unit,
-        onFail: (error: String) -> Unit
-    ) {
-        ApiClient(ctx).performRequest(
-            object : ApiRoute() {
-                override val url: String
-                    get() = "$baseUrl/groups/$group_id"
+                    get() = "$baseUrl/courses/$course_id"
                 override val httpMethod: Int
                     get() = Request.Method.GET
                 override val params: HashMap<String, String>
@@ -169,8 +95,6 @@ class CoursesRequests(private val ctx: Context, private val auth: AuthManager) {
                     try {
                         onSuccess(resultJson.toObject())
                     } catch (e: Exception) {
-                        onFail("Could not parse request result as group data")
-                        Log.d(TAG, resultJson)
                         return@performRequest
                     }
                 } else {
@@ -182,54 +106,15 @@ class CoursesRequests(private val ctx: Context, private val auth: AuthManager) {
         )
     }
 
-    fun inviteUsersToGroup(
-        group_id: Int,
-        invitedUsersIds: List<String>,
-
-        onSuccess: (invites: ArrayList<GroupInvite>) -> Unit,
+    fun getCourseFollowers (
+        course_id: Int,
+        onSuccess: (followers: ArrayList<User>) -> Unit,
         onFail: (error: String) -> Unit
     ) {
         ApiClient(ctx).performRequest(
             object : ApiRoute() {
                 override val url: String
-                    get() = "$baseUrl/groups/$group_id/invite"
-                override val httpMethod: Int
-                    get() = Request.Method.POST
-                override val params: HashMap<String, String>
-                    get() {
-                        val params = getParamsMap()
-                        params["users_list"] = Gson().toJson(invitedUsersIds)
-                        return params
-                    }
-                override val headers: HashMap<String, String>
-                    get() = getHeadersMap(auth.token!!)
-            }, { resultCode: Int, resultJson: String ->
-                if( resultCode == 201 ) {
-                    try {
-                        onSuccess(JSONArray(resultJson).toArrayList())
-                    } catch (e: Exception) {
-                        onFail("Could not parse request result as group invite data")
-                        Log.d(TAG, resultJson)
-                        return@performRequest
-                    }
-                } else {
-                    onFail("Error : $resultCode")
-                }
-            }, { _, error: String ->
-                onFail.invoke(error)
-            }
-        )
-    }
-
-    fun getGroupInvites(
-        group_id: Int,
-        onSuccess: (invites: ArrayList<GroupInvite>) -> Unit,
-        onFail: (error: String) -> Unit
-    ) {
-        ApiClient(ctx).performRequest(
-            object : ApiRoute() {
-                override val url: String
-                    get() = "$baseUrl/groups/$group_id/invite"
+                    get() = "$baseUrl/courses/$course_id/followers"
                 override val httpMethod: Int
                     get() = Request.Method.GET
                 override val params: HashMap<String, String>
@@ -241,8 +126,6 @@ class CoursesRequests(private val ctx: Context, private val auth: AuthManager) {
                     try {
                         onSuccess(JSONArray(resultJson).toArrayList())
                     } catch (e: Exception) {
-                        onFail("Could not parse request result as group invite data")
-                        Log.d(TAG, resultJson)
                         return@performRequest
                     }
                 } else {
@@ -254,58 +137,15 @@ class CoursesRequests(private val ctx: Context, private val auth: AuthManager) {
         )
     }
 
-    fun answerGroupInvite(
-        group_id: Int,
-        accept: Boolean,
-        onDecline: () -> Unit,
-        onAccept: (membership: GroupMember) -> Unit,
-        onFail: (error: String) -> Unit
-    ) {
-        ApiClient(ctx).performRequest(
-            object : ApiRoute() {
-                override val url: String
-                    get() = "$baseUrl/groups/$group_id/invite/answer"
-                override val httpMethod: Int
-                    get() = Request.Method.POST
-                override val params: HashMap<String, String>
-                    get() {
-                        val params = getParamsMap()
-                        params["answer"] = Gson().toJson(accept)
-                        return params
-                    }
-                override val headers: HashMap<String, String>
-                    get() = getHeadersMap(auth.token!!)
-            }, { resultCode: Int, resultJson: String ->
-                if( resultCode == 201 ) {
-                    onDecline()
-                } else if( resultCode == 202 ) {
-                    try {
-                        onAccept(resultJson.toObject())
-                    } catch (e: Exception) {
-                        onFail("Could not parse request result as group membership data")
-                        Log.d(TAG, resultJson)
-                        return@performRequest
-                    }
-                } else {
-                    onFail("Error : $resultCode")
-                }
-            }, { _, error: String ->
-                onFail.invoke(error)
-            }
-        )
-    }
-
-    fun leaveGroup(
-        group_id: Int,
+    fun followCourse (
+        course_id: Int,
         onSuccess: () -> Unit,
-        onNewOwnerPromoted: () -> Unit,
-        onGroupDisbanded: () -> Unit,
         onFail: (error: String) -> Unit
     ) {
         ApiClient(ctx).performRequest(
             object : ApiRoute() {
                 override val url: String
-                    get() = "$baseUrl/groups/$group_id/leave"
+                    get() = "$baseUrl/courses/$course_id/follow"
                 override val httpMethod: Int
                     get() = Request.Method.POST
                 override val params: HashMap<String, String>
@@ -314,72 +154,11 @@ class CoursesRequests(private val ctx: Context, private val auth: AuthManager) {
                     get() = getHeadersMap(auth.token!!)
             }, { resultCode: Int, resultJson: String ->
                 if( resultCode == 201 ) {
-                    onSuccess()
-                } else if( resultCode == 202 ) {
-                    onNewOwnerPromoted()
-                } else if( resultCode == 203 ) {
-                    onGroupDisbanded()
-                } else {
-                    onFail("Error : $resultCode")
-                }
-            }, { _, error: String ->
-                onFail.invoke(error)
-            }
-        )
-    }
-
-    fun getGroupMembers(
-        group_id: Int,
-        onSuccess: (newOwners: ArrayList<GroupMember>) -> Unit,
-        onFail: (error: String) -> Unit
-    ) {
-        ApiClient(ctx).performRequest(
-            object : ApiRoute() {
-                override val url: String
-                    get() = "$baseUrl/groups/$group_id/members"
-                override val httpMethod: Int
-                    get() = Request.Method.GET
-                override val params: HashMap<String, String>
-                    get() = getParamsMap()
-                override val headers: HashMap<String, String>
-                    get() = getHeadersMap(auth.token!!)
-
-            }, { resultCode: Int, resultJson: String ->
-                if( resultCode == 200 ) {
-                    onSuccess(JSONArray(resultJson).toArrayList())
-                } else {
-                    onFail("Error : $resultCode")
-                }
-            }, { _, error: String ->
-                onFail.invoke(error)
-            }
-        )
-    }
-
-    fun makeMembersOwners(
-        group_id: Int,
-        newOwners: List<String>,
-        onSuccess: (new_owners: ArrayList<GroupMember>) -> Unit,
-        onFail: (error: String) -> Unit
-    ) {
-        ApiClient(ctx).performRequest(
-            object : ApiRoute() {
-                override val url: String
-                    get() = "$baseUrl/groups/$group_id/members/make_owner"
-                override val httpMethod: Int
-                    get() = Request.Method.POST
-                override val params: HashMap<String, String>
-                    get() {
-                        val params = getParamsMap()
-                        params["users_list"] = Gson().toJson(newOwners)
-                        return params
+                    try {
+                        onSuccess()
+                    } catch (e: Exception) {
+                        return@performRequest
                     }
-                override val headers: HashMap<String, String>
-                    get() = getHeadersMap(auth.token!!)
-
-            }, { resultCode: Int, resultJson: String ->
-                if( resultCode == 201 ) {
-                    onSuccess(JSONArray(resultJson).toArrayList())
                 } else {
                     onFail("Error : $resultCode")
                 }
@@ -389,31 +168,61 @@ class CoursesRequests(private val ctx: Context, private val auth: AuthManager) {
         )
     }
 
-    fun getGroupPosts(
-        group_id: Int,
-        per_page: Int?,
-        page: Int?,
+    fun unfollowCourse (
+        course_id: Int,
+        onSuccess: () -> Unit,
+        onFail: (error: String) -> Unit
+    ) {
+        ApiClient(ctx).performRequest(
+            object : ApiRoute() {
+                override val url: String
+                    get() = "$baseUrl/courses/$course_id/unfollow"
+                override val httpMethod: Int
+                    get() = Request.Method.POST
+                override val params: HashMap<String, String>
+                    get() = getParamsMap()
+                override val headers: HashMap<String, String>
+                    get() = getHeadersMap(auth.token!!)
+            }, { resultCode: Int, resultJson: String ->
+                if( resultCode == 201 ) {
+                    try {
+                        onSuccess()
+                    } catch (e: Exception) {
+                        return@performRequest
+                    }
+                } else {
+                    onFail("Error : $resultCode")
+                }
+            }, { _, error: String ->
+                onFail.invoke(error)
+            }
+        )
+    }
+
+    fun getCoursePosts (
+        course_id: Int,
+        page: Int = 1,
+        perPage: Int = 20,
         onSuccess: (posts: ArrayList<Post>) -> Unit,
         onFail: (error: String) -> Unit
     ) {
         ApiClient(ctx).performRequest(
             object : ApiRoute() {
                 override val url: String
-                    get() = "$baseUrl/groups/$group_id/posts/${
-                        if(page == null) "" else {
-                            if(per_page == null) "$page" else "$per_page/$page"
-                        }
-                    }"
+                    get() = "$baseUrl/courses/$course_id/posts/$page/$perPage"
                 override val httpMethod: Int
                     get() = Request.Method.GET
                 override val params: HashMap<String, String>
                     get() = getParamsMap()
                 override val headers: HashMap<String, String>
                     get() = getHeadersMap(auth.token!!)
-
             }, { resultCode: Int, resultJson: String ->
                 if( resultCode == 200 ) {
-                    onSuccess(JSONArray(resultJson).toArrayList())
+                    try {
+                        onSuccess(JSONArray(resultJson).toArrayList())
+                    } catch (e: Exception) {
+                        return@performRequest
+                    }
                 } else {
                     onFail("Error : $resultCode")
                 }
@@ -423,32 +232,35 @@ class CoursesRequests(private val ctx: Context, private val auth: AuthManager) {
         )
     }
 
-    fun publishPostToGroup(
-        group_id: Int,
+    fun publishPostToCourse (
+        course_id: Int,
         title: String,
         body: String,
-        onSuccess: (post: Post) -> Unit,
+        onSuccess: (newPost: Post) -> Unit,
         onFail: (error: String) -> Unit
     ) {
         ApiClient(ctx).performRequest(
             object : ApiRoute() {
                 override val url: String
-                    get() = "$baseUrl/groups/$group_id/posts"
+                    get() = "$baseUrl/courses/$course_id/posts"
                 override val httpMethod: Int
-                    get() = Request.Method.GET
+                    get() = Request.Method.POST
                 override val params: HashMap<String, String>
                     get() {
                         val params = getParamsMap()
-                        params["title"] = Gson().toJson(title)
-                        params["body"] = Gson().toJson(body)
+                        params["title"] = title
+                        params["body"] = body
                         return params
                     }
                 override val headers: HashMap<String, String>
                     get() = getHeadersMap(auth.token!!)
-
             }, { resultCode: Int, resultJson: String ->
-                if( resultCode == 200 ) {
-                    onSuccess(resultJson.toObject())
+                if( resultCode == 201 ) {
+                    try {
+                        onSuccess(resultJson.toObject())
+                    } catch (e: Exception) {
+                        return@performRequest
+                    }
                 } else {
                     onFail("Error : $resultCode")
                 }
@@ -458,22 +270,76 @@ class CoursesRequests(private val ctx: Context, private val auth: AuthManager) {
         )
     }
 
-    fun getGroupMessages(
-        group_id: Int,
-        onSuccess: (messages: ArrayList<Message>) -> Unit,
+    fun getCourseReviews (
+        course_id: Int,
+        page: Int = 1,
+        perPage: Int = 20,
+        onSuccess: (posts: ArrayList<Review>) -> Unit,
         onFail: (error: String) -> Unit
     ) {
-        TODO("Not yet implemented")
+        ApiClient(ctx).performRequest(
+            object : ApiRoute() {
+                override val url: String
+                    get() = "$baseUrl/courses/$course_id/reviews/$page/$perPage"
+                override val httpMethod: Int
+                    get() = Request.Method.GET
+                override val params: HashMap<String, String>
+                    get() = getParamsMap()
+                override val headers: HashMap<String, String>
+                    get() = getHeadersMap(auth.token!!)
+            }, { resultCode: Int, resultJson: String ->
+                if( resultCode == 200 ) {
+                    try {
+                        onSuccess(JSONArray(resultJson).toArrayList())
+                    } catch (e: Exception) {
+                        return@performRequest
+                    }
+                } else {
+                    onFail("Error : $resultCode")
+                }
+            }, { _, error: String ->
+                onFail.invoke(error)
+            }
+        )
     }
 
-    fun sendMessageToGroup(
-        group_id: Int,
+    fun publishReviewToCourse (
+        course_id: Int,
         body: String,
-        replies_to_message_id: Int,
-        onSuccess: (message: Message) -> Unit,
+        score_liking: Int,
+        score_difficulty: Int,
+        onSuccess: (newReviw: Review) -> Unit,
         onFail: (error: String) -> Unit
     ) {
-        TODO("Not yet implemented")
+        ApiClient(ctx).performRequest(
+            object : ApiRoute() {
+                override val url: String
+                    get() = "$baseUrl/courses/$course_id/reviews"
+                override val httpMethod: Int
+                    get() = Request.Method.POST
+                override val params: HashMap<String, String>
+                    get() {
+                        val params = getParamsMap()
+                        params["body"] = body
+                        params["score_liking"] = score_liking.toString()
+                        params["score_difficulty"] = score_difficulty.toString()
+                        return params
+                    }
+                override val headers: HashMap<String, String>
+                    get() = getHeadersMap(auth.token!!)
+            }, { resultCode: Int, resultJson: String ->
+                if( resultCode == 201 ) {
+                    try {
+                        onSuccess(resultJson.toObject())
+                    } catch (e: Exception) {
+                        return@performRequest
+                    }
+                } else {
+                    onFail("Error : $resultCode")
+                }
+            }, { _, error: String ->
+                onFail.invoke(error)
+            }
+        )
     }
-*/
 }
