@@ -49,7 +49,8 @@ class GroupsRequests(private val ctx: Context, private val auth: AuthManager) {
     fun createGroup(
         group_name: String,
         invitedUsersIds: List<String>,
-        onSuccess: (invitedUsers: ArrayList<GroupInvite>) -> Unit,
+        onGroupCreated: (createdGroup: Group) -> Unit,
+        onGroupCreatedAndUsersInvited: (invitedUsers: ArrayList<GroupInvite>) -> Unit,
         onFail: (error: String) -> Unit
     ) {
         ApiClient(ctx).performRequest(
@@ -68,9 +69,18 @@ class GroupsRequests(private val ctx: Context, private val auth: AuthManager) {
                 override val headers: HashMap<String, String>
                     get() = getHeadersMap(auth.token!!)
             }, { resultCode: Int, resultJson: String ->
+
                 if( resultCode == 201 ) {
                     try {
-                        onSuccess(JSONArray(resultJson).toArrayList())
+                        onGroupCreated(resultJson.toObject())
+                    } catch (e: Exception) {
+                        onFail("Could not parse request result as group data")
+                        Log.d(TAG, resultJson)
+                        return@performRequest
+                    }
+                } else if( resultCode == 202 ) {
+                    try {
+                        onGroupCreatedAndUsersInvited(JSONArray(resultJson).toArrayList())
                     } catch (e: Exception) {
                         onFail("Could not parse request result as group membership data")
                         Log.d(TAG, resultJson)
