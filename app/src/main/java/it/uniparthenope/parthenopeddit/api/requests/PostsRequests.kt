@@ -8,10 +8,46 @@ import it.uniparthenope.parthenopeddit.api.ApiRoute
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.LikeDislikeScore
 import it.uniparthenope.parthenopeddit.model.Post
+import it.uniparthenope.parthenopeddit.model.User
 import it.uniparthenope.parthenopeddit.util.TAG
+import it.uniparthenope.parthenopeddit.util.toArrayList
 import it.uniparthenope.parthenopeddit.util.toObject
+import org.json.JSONArray
 
 class PostsRequests(private val ctx: Context, private val auth: AuthManager) {
+
+    fun searchPost(
+        searched_post_title: String,
+        onSuccess: (users: ArrayList<Post>) -> Unit,
+        onFail: (error: String) -> Unit
+    ) {
+        ApiClient.getInstance(ctx).performRequest(
+            object : ApiRoute() {
+                override val url: String
+                    get() = "$baseUrl/posts/search/$searched_post_title"
+                override val httpMethod: Int
+                    get() = Request.Method.GET
+                override val params: HashMap<String, String>
+                    get() = getParamsMap()
+                override val headers: HashMap<String, String>
+                    get() = getHeadersMap(auth.token!!)
+            }, { resultCode: Int, resultJson: String ->
+                if( resultCode == 200 ) {
+                    try {
+                        onSuccess(JSONArray(resultJson).toArrayList())
+                    } catch (e: Exception) {
+                        onFail("Could not parse request result as posts data")
+                        Log.d(TAG, resultJson)
+                        return@performRequest
+                    }
+                } else {
+                    onFail("Error : $resultCode")
+                }
+            }, { _, error: String ->
+                onFail.invoke(error)
+            }
+        )
+    }
 
     fun publishNewPost(
         title: String,
