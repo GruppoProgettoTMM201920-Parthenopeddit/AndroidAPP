@@ -148,12 +148,12 @@ class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners,
                     .type(ExpandableSwipeAdapter.CONTENT)
                     .thumbnailUrl(generateRandomImageUrl(MAX_IMAGE_SIZE))
                     .username(userChatItemList?.get(j)?.of_user?.display_name!!)
-                    .latest_message(userChatItemList?.get(j)?.latest_message?.body?:"")
+                    .latest_message(userChatItemList?.get(j)?.last_message?.body?:"")
                     .date("4:20")
-                    .user(userChatItemList?.get(j)?.latest_message?.sender_user)
+                    .user(userChatItemList?.get(j)?.last_message?.sender_user)
                     .build()
 
-                Log.d("DEBUG", "user has id ${userChatItemList?.get(j)?.latest_message?.sender_id}")
+                Log.d("DEBUG", "user has id ${userChatItemList?.get(j)?.last_message?.sender_id}")
 
                 ret.add(content)
             }
@@ -168,8 +168,8 @@ class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners,
                     .type(ExpandableSwipeAdapter.GROUP_CONTENT)
                     .thumbnailUrl(generateRandomImageUrl(MAX_IMAGE_SIZE))
                     .username(groupChatItemList?.get(j)?.of_group!!.name)
-                    .group_user_latest(groupChatItemList?.get(j)?.latest_message?.sender_user?.display_name)
-                    .latest_message(groupChatItemList?.get(j)?.latest_message?.body?:"")
+                    .group_user_latest(groupChatItemList?.get(j)?.last_message?.sender_user?.display_name)
+                    .latest_message(groupChatItemList?.get(j)?.last_message?.body?:"")
                     .date("4:20")
                     .group(groupChatItemList?.get(j)?.of_group)
                     .build()

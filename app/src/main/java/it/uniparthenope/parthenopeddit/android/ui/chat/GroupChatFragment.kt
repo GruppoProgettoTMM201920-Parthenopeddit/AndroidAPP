@@ -10,9 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Group
-import it.uniparthenope.parthenopeddit.model.MessageLog
+import it.uniparthenope.parthenopeddit.model.Message
 import kotlin.collections.ArrayList
 
 class GroupChatFragment (private val group: Group) : Fragment() {
@@ -23,7 +22,7 @@ class GroupChatFragment (private val group: Group) : Fragment() {
 
     private lateinit var viewModel: GroupChatViewModel
     private lateinit var recyclerview_chat_log: RecyclerView
-    private lateinit var myMessageList : ArrayList<MessageLog>
+    private lateinit var myMessageList : ArrayList<Message>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

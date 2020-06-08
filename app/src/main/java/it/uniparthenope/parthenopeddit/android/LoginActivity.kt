@@ -5,12 +5,14 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.FrameLayout
 import androidx.preference.PreferenceManager
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.api.requests.AuthRequests
+import it.uniparthenope.parthenopeddit.util.TAG
 import it.uniparthenope.parthenopeddit.util.animateView
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.progress_overlay.*
@@ -73,6 +75,7 @@ class LoginActivity : BasicActivity(){
                 AuthRequests(this, app.auth).login(
                     token,
                     {
+                        Log.d(TAG,"--------------------1")
                         //login normale
                         wrong_credentials_textview.visibility = View.GONE
 
@@ -80,6 +83,7 @@ class LoginActivity : BasicActivity(){
                         goToActivity(HomeActivity::class.java)
                         finish()
                     }, {
+                        Log.d(TAG,"--------------------2")
                         //primo login dell utente
                         wrong_credentials_textview.visibility = View.GONE
 
@@ -87,6 +91,9 @@ class LoginActivity : BasicActivity(){
                         goToActivity(HomeActivity::class.java)
                         finish()
                     }, {
+                        Log.d(TAG,"--------------------3")
+
+                        Log.d(TAG,"--------------------$it")
                         //fallito login
                         wrong_credentials_textview.visibility = View.VISIBLE
                         hideProgressOverlay()

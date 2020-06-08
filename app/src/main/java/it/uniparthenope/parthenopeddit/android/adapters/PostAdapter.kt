@@ -57,7 +57,7 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
         holder.upvote_textview.text = "0"
         holder.downvote_textview.text = "0"
 
-        if( currentItem.posted_to_board_id == 1 ) {
+        if( currentItem.posted_to_board_id == 0 || currentItem.posted_to_board_id == null ) {
             holder.board_textview.setBackgroundResource(R.drawable.general_textview_bubble)
             holder.board_textview.setTextColor(Color.BLACK)
             Log.d("DEBUG", "the board id in home is ${currentItem.posted_to_board_id}")

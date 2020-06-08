@@ -51,7 +51,7 @@ class ChatListAdapter() : RecyclerView.Adapter<ChatListAdapter.ChatListViewHolde
 
         val other_user = currentItem.other_user_chat!!.of_user!!
         holder.username_textview.text = other_user.display_name?:other_user.id
-        holder.latest_message_textview.text = currentItem.latest_message!!.body
+        holder.latest_message_textview.text = currentItem.last_message!!.body
         holder.date_textview.text = "10:00"
 
         if( listener != null ) {

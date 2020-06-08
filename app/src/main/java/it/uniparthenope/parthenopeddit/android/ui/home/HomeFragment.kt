@@ -103,8 +103,6 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         val adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_list_item_1, galaxies)
         lv.setAdapter(adapter)
 
-
-
         searchBar.setCardViewElevation(10)
         searchBar.addTextChangeListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}

@@ -214,7 +214,7 @@ class MockApiData {
         token: String,
         user1Id: String,
         user2Id: String,
-        completion: (userChatLog: UserChatLog?, error: String?) -> Unit
+        completion: (userChat: UsersChat, error: String?) -> Unit
     ) {
         lateinit var chatUser1: UsersChat
         lateinit var otherUserChat : UsersChat
@@ -225,26 +225,16 @@ class MockApiData {
             }
         }
 
-        val logMessaggi : ArrayList<MessageLog> = ArrayList()
-
-        for( message in MockDatabase.instance.messages_table ) {
-            if( message.sender_id == user1Id && message.receiver_id == otherUserChat.id ) {
-                logMessaggi.add( MessageLog( message, true, true ) )
-            } else if( message.sender_id == user2Id && message.receiver_id == chatUser1.id ) {
-                logMessaggi.add( MessageLog( message, false, true ) )
-            }
-        }
-
-        var chatLog = UserChatLog( logMessaggi, otherUserChat.of_user!! )
-        completion.invoke(chatLog, null)
+        completion.invoke(chatUser1, null)
         return
     }
 
     fun getGroupChatMessages(
         token: String,
         group_id: Int,
-        completion: (groupChatLog: GroupChatLog?, error: String?) -> Unit
+        completion: (groupChatLog: GroupChat?, error: String?) -> Unit
     ) {
+        /*
         lateinit var groupChat: GroupChat
         for ( group_chat in MockDatabase.instance.group_chats_table ) {
             if(group_chat.id == group_id) {
@@ -265,6 +255,9 @@ class MockApiData {
         var GroupChatLog = GroupChatLog( logMessaggi, groupChat.of_group!! )
         //completion.invoke(it.uniparthenope.parthenopeddit.model.GroupChatLog, null)
         return
+
+         */
+        return
     }
 
     fun newMessage(
@@ -272,8 +265,9 @@ class MockApiData {
         receiver: String,
         body: String,
         timestamp: String,
-        completion: (messageLog: MessageLog, error: String?) -> Unit
+        completion: (messageLog: Message, error: String?) -> Unit
     ) {
+        /*
         lateinit var senderUser: User
         lateinit var receiverUser: User
         for ( user in MockDatabase.instance.users_table ) {
@@ -310,6 +304,9 @@ class MockApiData {
             inviato = true,
             letto = true
         ), null)
+
+         */
+        return
     }
 
     fun newGroupMessage(
@@ -317,9 +314,9 @@ class MockApiData {
         receiver: String,
         body: String,
         timestamp: String,
-        completion: (messageLog: MessageLog, error: String?) -> Unit
+        completion: (messageLog: Message, error: String?) -> Unit
     ) {
-
+/*
         lateinit var senderUser: User
         lateinit var receiverGroup: Group
         for ( user in MockDatabase.instance.users_table ) {
@@ -356,6 +353,9 @@ class MockApiData {
             inviato = true,
             letto = true
         ), null)
+
+ */
+        return
     }
 
     fun getUserGroups(

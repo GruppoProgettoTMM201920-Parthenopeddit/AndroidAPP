@@ -459,16 +459,16 @@ class MockDatabase private constructor() {
 
 
         us_1_2.other_user_chat = us_2_1
-        us_1_2.latest_message = m4_u2_to_u1
+        us_1_2.last_message = m4_u2_to_u1
 
         us_2_1.other_user_chat = us_1_2
-        us_2_1 .latest_message = m4_u2_to_u1
+        us_2_1 .last_message = m4_u2_to_u1
 
         us_1_3.other_user_chat = us_3_1
-        us_1_3.latest_message = m9_u1_to_u3
+        us_1_3.last_message = m9_u1_to_u3
 
         us_3_1.other_user_chat = us_1_3
-        us_3_1.latest_message = m9_u1_to_u3
+        us_3_1.last_message = m9_u1_to_u3
 
         u1.published_posts = ArrayList<Post>(listOf(p1,p3,p4))
         u1.published_comments = ArrayList<Comment>(listOf(c2))
@@ -494,8 +494,6 @@ class MockDatabase private constructor() {
 
         g3.members = ArrayList<GroupMember>(listOf(GroupMember(u2.id, 3, "02/06/2020", null, true, u1)))
         g3.members_num = g3.members!!.size
-
-        gc_1.latest_message = m5_gc1
 
         users_table.addAll(listOf(u1,u2,u3,u4,u5))
         posts_table.addAll(listOf(p1,p2,p3,p4,p5,p6,p7))
