@@ -28,7 +28,7 @@ open class ApiRequestsTest {
     }
 
     fun logUser(auth: AuthManager, username: String) {
-        auth.login( auth.getToken(username, "123"), username )
+        auth.login( auth.getToken(username, "123"), username, false )
     }
 
     fun getToken(auth: AuthManager, username: String) : String {
