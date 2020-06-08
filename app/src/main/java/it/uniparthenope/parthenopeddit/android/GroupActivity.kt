@@ -19,8 +19,11 @@ import it.uniparthenope.parthenopeddit.android.ui.group.BackdropFragment
 import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
 import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.api.MockDatabase
+import it.uniparthenope.parthenopeddit.api.requests.GroupsRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
+import it.uniparthenope.parthenopeddit.model.Group
 import it.uniparthenope.parthenopeddit.model.GroupMember
+import it.uniparthenope.parthenopeddit.model.Post
 import kotlinx.android.synthetic.main.activity_course.*
 import kotlinx.android.synthetic.main.activity_group.*
 import java.util.*
@@ -72,36 +75,28 @@ class GroupActivity : BasicActivity() {
             isFollowed = false
         }
 
-        MockApiData().getGroupInfo( app.auth.token!!, id_group) { name, num_members, created, members, error ->
+        GroupsRequests(this, app.auth).getGroup(id_group,{it: Group ->
+            group_name_textview.text = it.name!!
+            name_group = group_name_textview.text.toString()
+            created_on_group = it.created_on
+            members_group = it.members
+            members_num_group = it.members?.size
+            //if(members_num_group!=1){ num_members_textview.text = "${members_num_group} membri" } else { num_members_textview.text = "${members_num_group} membro" }
 
-            if(error != null){
-                //toast
-            } else {
-                group_name_textview.text = name!!
-                name_group = group_name_textview.text.toString()
-                created_on_group = created
-                members_group = members
-                members_num_group = members?.size
-                Log.d("DEBUG", "there are ${members_num_group} members")
-                if(num_members!=1){ num_members_textview.text = "${num_members} membri" } else { num_members_textview.text = "${num_members} membro" }
+            configureBackdrop(id_group, name_group, created_on_group, members_group, members_num_group)
 
-                Log.d("DEBUG", "before cf backdrop")
-                configureBackdrop(id_group, name_group, created_on_group, members_group, members_num_group)
-            }
+        },{it: String ->
+            Toast.makeText(this, "Errore ${it}", Toast.LENGTH_LONG).show()
+        })
 
-        }
+        GroupsRequests(this, app.auth).getGroupPosts(id_group, 20, 1,{it: ArrayList<Post> ->
+            it!!
 
-        name_group = group_name_textview.text.toString()
+            postAdapter.aggiungiPost( it )
 
-        MockApiData().getGroupPost( app.auth.token!!, id_group) { postItemList, error ->
-            if( error != null ) {
-                Toast.makeText(this,"Errore : $error", Toast.LENGTH_LONG).show()
-            } else {
-                postItemList!!
-
-                postAdapter.aggiungiPost( postItemList )
-            }
-        }
+        },{it: String ->
+            Toast.makeText(this,"Errore : ${it}", Toast.LENGTH_LONG).show()
+        })
 
         fab.setOnClickListener{
             if(isOpen){
@@ -139,35 +134,23 @@ class GroupActivity : BasicActivity() {
         fab_new_post_group.setOnClickListener{ onClickNewPost(id_group, name_group!!) }
         fab_new_post_group_textview.setOnClickListener{ onClickNewPost(id_group, name_group!!) }
         follow_button.setOnClickListener {
-            if(isFollowed){
-                //TODO: unfollow group through API
+            GroupsRequests(this, app.auth).leaveGroup(id_group, {
+                Toast.makeText(this,"Hai lasciato il gruppo ${name_group}", Toast.LENGTH_SHORT).show()
+            },{
+                Toast.makeText(this,"Eri l'ultimo admin. Hai abbandonato la nave, sei peggio di Schettino", Toast.LENGTH_LONG).show()
+            },{
+                Toast.makeText(this,"Eri l'utente. Il gruppo ${name_group} è stato eliminato", Toast.LENGTH_LONG).show()
+            }, {it: String ->
+                Toast.makeText(this,"Errore : ${it}", Toast.LENGTH_LONG).show()
+            })
 
-                MockDatabase.instance.group_table.filter { it.id == id_group }.single().members?.removeIf { it.user_id == "user1" }
-                MockDatabase.instance.users_table.filter { it.id == "user1" }.single().groups?.removeIf { it.id == id_group }
-                Toast.makeText(this, "Hai smesso di seguire ${group_name_textview.text}",Toast.LENGTH_LONG).show()
-                follow_button.text = "Entra"
-                val imgResource: Int = R.drawable.ic_follow_themecolor_24dp
-                follow_button.setCompoundDrawablesWithIntrinsicBounds(imgResource, 0, 0, 0)
-                isFollowed = false
-            } else {
-                //TODO: follow group through API
-                val c: Calendar = Calendar.getInstance()
-                val currentDate: String =
-                    c.get(Calendar.DATE).toString() + "/" + c.get(Calendar.MONTH).toString() + "/" + c.get(
-                        Calendar.YEAR).toString()
-
-
-                var u1 = MockDatabase.instance.users_table.filter{ it.id == "user1"}.single()
-                var group = MockDatabase.instance.group_table.filter { it.id == id_group }.single()
-                var newGroupMember : GroupMember = GroupMember(u1.id, id_group, currentDate, null, false, u1, group)
-                group.members!!.add(newGroupMember)
-
-                Toast.makeText(this, "Hai seguito ${group_name_textview.text}",Toast.LENGTH_LONG).show()
-                follow_button.text = "Lascia"
-                val imgResource: Int = R.drawable.ic_unfollow_themecolor_24dp
-                follow_button.setCompoundDrawablesWithIntrinsicBounds(imgResource, 0, 0, 0)
-                isFollowed = true
-            }
+            follow_button.text = "Entra"
+            val imgResource: Int = R.drawable.ic_follow_themecolor_24dp
+            follow_button.setCompoundDrawablesWithIntrinsicBounds(imgResource, 0, 0, 0)
+            isFollowed = false
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
         }
 
 

@@ -40,8 +40,6 @@ class NewPostActivity : BasicActivity(){
         var boards_name: ArrayList<String> = ArrayList()
         val publish_button = findViewById<Button>(R.id.publish_button)
 
-        //TODO: Add sections to spinner
-
         publish_button.setOnClickListener {
 
             if(title_edittext.text.isEmpty()){ empty_title_textview.visibility = View.VISIBLE }
@@ -54,7 +52,7 @@ class NewPostActivity : BasicActivity(){
                    user_post_edittext.text.toString(),
                    boardId,
                     {it: Post ->
-                        Toast.makeText(this, "Recensione pubblicata", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Post pubblicato", Toast.LENGTH_SHORT).show()
                     },{it: String ->
                         Toast.makeText(this, "Errore ${it}", Toast.LENGTH_LONG).show()
                     })
