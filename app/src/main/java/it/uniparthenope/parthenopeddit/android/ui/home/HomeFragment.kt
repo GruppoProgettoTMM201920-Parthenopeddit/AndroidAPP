@@ -224,7 +224,7 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         //uploiad to api
         //notifidatasetchanged()
         val intent = Intent(requireContext(), NewPostActivity::class.java)
-        intent.putExtra("id_group",1)
+        intent.putExtra("id_group",0)
         intent.putExtra("name_group","Generale")
         startActivity(intent)
     }

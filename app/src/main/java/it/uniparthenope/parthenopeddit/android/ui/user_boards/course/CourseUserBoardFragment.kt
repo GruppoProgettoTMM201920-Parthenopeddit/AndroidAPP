@@ -44,6 +44,8 @@ class CourseUserBoardFragment : Fragment(), UserCourseAdapter.UserCourseItemClic
         recycler_view.layoutManager = LinearLayoutManager(requireContext())
         recycler_view.setHasFixedSize(true)
 
+        no_courses_textview.visibility = View.VISIBLE
+
         authManager = (activity as BasicActivity).app.auth
 
         CoursesRequests(requireContext(), authManager).getFollowedCourses({it: ArrayList<Course> ->
