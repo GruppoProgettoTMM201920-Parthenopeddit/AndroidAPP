@@ -81,7 +81,8 @@ class MessagesRequests(private val ctx: Context, private val auth: AuthManager) 
 
     fun postMessageToChatWithUser(
         other_user_id: String,
-        onSuccess: (chatsList: Message) -> Unit,
+        messageBody: String,
+        onSuccess: (message: Message) -> Unit,
         onFail: (error: String) -> Unit
     ) {
         ApiClient(ctx).performRequest(
@@ -91,11 +92,15 @@ class MessagesRequests(private val ctx: Context, private val auth: AuthManager) 
                 override val httpMethod: Int
                     get() = Request.Method.POST
                 override val params: HashMap<String, String>
-                    get() = getParamsMap()
+                    get() {
+                        val params = getParamsMap()
+                        params["body"] = messageBody
+                        return params
+                    }
                 override val headers: HashMap<String, String>
                     get() = getHeadersMap(auth.token!!)
             }, { resultCode: Int, resultJson: String ->
-                if( resultCode == 200 ) {
+                if( resultCode == 201 ) {
                     try {
                         onSuccess(resultJson.toObject())
                     } catch (e: Exception) {
