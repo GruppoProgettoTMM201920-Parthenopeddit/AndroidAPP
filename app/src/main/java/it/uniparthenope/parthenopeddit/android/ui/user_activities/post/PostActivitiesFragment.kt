@@ -53,8 +53,6 @@ class PostActivitiesFragment : Fragment(), PostAdapter.PostItemClickListeners {
             Toast.makeText(requireContext(),"Errore : $it", Toast.LENGTH_LONG).show()
         })
 
-
-
         return root
     }
 

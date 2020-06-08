@@ -48,6 +48,8 @@ class CourseActivity : BasicActivity() {
         val rotateClockwise = AnimationUtils.loadAnimation(this, R.anim.rotate_clockwise)
         val rotateAnticlockwise = AnimationUtils.loadAnimation(this, R.anim.rotate_anticlockwise)
 
+
+
         if(MockDatabase.instance.users_table.filter{ it.id == "user1" }.single().followed_courses!!.filter{ it.id == courseId}.single().id == courseId ){
             follow_button.text = "Lascia"
             val imgResource: Int = R.drawable.ic_unfollow_themecolor_24dp
