@@ -30,15 +30,15 @@ class SearchPostsFragment : Fragment(), PostAdapter.PostItemClickListeners{
 
     private lateinit var auth: AuthManager
     private lateinit var recycler_view: RecyclerView
-    private lateinit var postViewModel: PostActivitiesViewModel
+    private lateinit var searchPostsViewModel: SearchPostsViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        postViewModel =
-            ViewModelProviders.of(this).get(PostActivitiesViewModel::class.java)
+        searchPostsViewModel =
+            ViewModelProviders.of(this).get(SearchPostsViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_search_posts, container, false)
         val no_posts_textview = root.findViewById<TextView>(R.id.no_posts_textview)
 
