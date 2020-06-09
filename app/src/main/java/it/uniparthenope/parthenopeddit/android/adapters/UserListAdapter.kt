@@ -1,6 +1,5 @@
 package it.uniparthenope.parthenopeddit.android.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,11 +8,10 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.android.AddMemberActivity
 import it.uniparthenope.parthenopeddit.model.User
 import kotlinx.android.synthetic.main.cardview_user.view.*
 
-class AddMemberAdapter() : RecyclerView.Adapter<AddMemberAdapter.AddMemberAdapterViewHolder>() {
+class UserListAdapter() : RecyclerView.Adapter<UserListAdapter.AddMemberAdapterViewHolder>() {
 
     private val userList: ArrayList<User> = ArrayList()
     private var listener: UserListItemClickListeners? = null
@@ -23,7 +21,7 @@ class AddMemberAdapter() : RecyclerView.Adapter<AddMemberAdapter.AddMemberAdapte
         notifyDataSetChanged()
     }
 
-    fun setItemClickListener(listener: AddMemberActivity) {
+    fun setItemClickListener(listener: UserListItemClickListeners) {
         this.listener = listener
     }
 
