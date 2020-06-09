@@ -63,12 +63,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="25dp"
                     android:background="@drawable/course_follow_bubble"
-                    android:drawableLeft="@drawable/ic_follow_themecolor_24dp"
+                    android:drawableLeft="@drawable/ic_unfollow_themecolor_24dp"
                     android:drawablePadding="2dip"
                     android:paddingLeft="30dip"
                     android:paddingRight="26dip"
-                    android:text="Segui"
-                    android:textColor="@color/colorPrimary"/>
+                    android:text="Lascia"
+                    android:textColor="@color/colorPrimary" />
 
             </androidx.appcompat.widget.Toolbar>
 
@@ -193,6 +193,7 @@
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:name="it.uniparthenope.parthenopeddit.android.ui.group.BackdropFragment" />
+        android:name="it.uniparthenope.parthenopeddit.android.ui.group.BackdropFragment"
+        tools:layout="@layout/fragment_backdrop" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -31,13 +31,10 @@ import it.uniparthenope.parthenopeddit.util.SwipeItemTouchListener
 import kotlinx.android.synthetic.main.fragment_backdrop.*
 
 class BackdropFragment(): SwipeItemTouchListener, Fragment() {
-    private var id_group: Int = 0
-    private var name_group: String? = null
-    private var created_on_group: String? = null
-    private var members_group: ArrayList<GroupMember>? = null
+    private lateinit var group: Group
+
     private var admin_arraylist: ArrayList<GroupMember> = ArrayList()
     private var user_arraylist: ArrayList<GroupMember> = ArrayList()
-    private var members_num_group: Int? = null
 
     private lateinit var auth: AuthManager
 
@@ -50,30 +47,26 @@ class BackdropFragment(): SwipeItemTouchListener, Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_backdrop, container, false)
+
         expandable_recycler_view = root.findViewById<RecyclerView>(R.id.expandable_recycler_view)
         expandable_recycler_view.layoutManager = LinearLayoutManager(requireContext())
-        var add_member_button = root.findViewById<Button>(R.id.add_member_button)
-        // Swipe
+
         val swipeHelper = SwipeItemTouchHelper(0, ItemTouchHelper.LEFT, this)
         ItemTouchHelper(swipeHelper).attachToRecyclerView(expandable_recycler_view)
 
-        // ExpandableSwipeAdapter
         adapter = ExpandableSwipeAdapter(requireContext(), Glide.with(this))
 
         auth = (activity as BasicActivity).app.auth
-
         add_member_button.setOnClickListener {
             if( admin_arraylist.filter{ it.user_id == auth.username!! }.singleOrNull()?.is_owner!! ){
                 val intent = Intent(requireContext(), AddMemberActivity::class.java)
-                intent.putExtra("id_group",id_group)
-                intent.putExtra("name_group",name_group)
+                intent.putExtra("id_group", group.id)
+                intent.putExtra("name_group",group.name)
                 startActivity(intent)
-
             } else{
                 Toast.makeText(requireContext(), "Solo gli amministratori possono aggiungere membri", Toast.LENGTH_LONG).show()
             }
         }
-
         return root
     }
 
@@ -85,8 +78,8 @@ class BackdropFragment(): SwipeItemTouchListener, Fragment() {
         private fun getData() : List<ExpandableSwipeAdapter.Item> {
             val ret = ArrayList<ExpandableSwipeAdapter.Item>()
 
-            admin_arraylist = members_group?.filter { it.is_owner == true } as ArrayList<GroupMember>
-            user_arraylist = members_group?.filter { it.is_owner == false } as ArrayList<GroupMember>
+            admin_arraylist = group.members?.filter { it.is_owner } as ArrayList<GroupMember>
+            user_arraylist = group.members?.filter { !it.is_owner } as ArrayList<GroupMember>
 
             val admin_header = ExpandableSwipeAdapter.Item.Builder()
                 .type(ExpandableSwipeAdapter.HEADER)
@@ -101,12 +94,12 @@ class BackdropFragment(): SwipeItemTouchListener, Fragment() {
                 .build()
 
             ret.add(admin_header)
-            for(j in 0..(admin_arraylist.size!!-1)) {
+            for(j in 0..(admin_arraylist.size-1)) {
                 val content = ExpandableSwipeAdapter.Item.Builder()
                     .type(ExpandableSwipeAdapter.CONTENT)
                     .thumbnailUrl(generateRandomImageUrl(MAX_IMAGE_SIZE))
-                    .username(admin_arraylist?.get(j)?.user?.display_name!!)
-                    .joindate(admin_arraylist?.get(j)?.join_date!!)
+                    .username(admin_arraylist.get(j).user?.display_name!!)
+                    .joindate(admin_arraylist.get(j).join_date)
                     .build()
 
                 ret.add(content)
@@ -114,12 +107,12 @@ class BackdropFragment(): SwipeItemTouchListener, Fragment() {
 
             ret.add(member_header)
             if(user_arraylist.isNotEmpty()) {
-                for (j in 0..(user_arraylist.size!! - 1)) {
+                for (j in 0..(user_arraylist.size - 1)) {
                     val content = ExpandableSwipeAdapter.Item.Builder()
                         .type(ExpandableSwipeAdapter.CONTENT)
                         .thumbnailUrl(generateRandomImageUrl(MAX_IMAGE_SIZE))
-                        .username(user_arraylist?.get(j)?.user?.display_name!!)
-                        .joindate(user_arraylist?.get(j)?.join_date!!)
+                        .username(user_arraylist.get(j).user?.display_name!!)
+                        .joindate(user_arraylist.get(j).join_date)
                         .build()
 
                     ret.add(content)
@@ -211,15 +204,11 @@ class BackdropFragment(): SwipeItemTouchListener, Fragment() {
             }
         }
 
-    fun updateData(id_group: Int, name_group: String?, created_on_group: String?, members_group: ArrayList<GroupMember>?, members_num_group: Int?){
-        this.id_group = id_group
-        this.name_group = name_group
-        this.created_on_group = created_on_group
-        this.members_group = members_group
-        this.members_num_group = members_num_group
+    fun updateData(group: Group){
+        this.group = group
 
-        backdrop_group_name_textview.text = name_group
-        creation_date_textview.text = created_on_group
+        backdrop_group_name_textview.text = group.name
+        creation_date_textview.text = group.created_on
 
         expandable_recycler_view.adapter = adapter
 
