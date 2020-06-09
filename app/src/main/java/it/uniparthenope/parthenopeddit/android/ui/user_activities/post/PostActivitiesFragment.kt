@@ -38,6 +38,7 @@ class PostActivitiesFragment : Fragment(), PostAdapter.PostItemClickListeners {
         postViewModel =
             ViewModelProviders.of(this).get(PostActivitiesViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_post_activities, container, false)
+        val no_posts_textview = root.findViewById<TextView>(R.id.no_posts_textview)
 
         recycler_view = root.findViewById(R.id.recycler_view) as RecyclerView
 
@@ -51,9 +52,12 @@ class PostActivitiesFragment : Fragment(), PostAdapter.PostItemClickListeners {
         val user_id = (activity as UserActivity).user_id
 
         UserRequests(requireContext(), auth).getUserPublishedPosts( user_id, 1, 20, { it: ArrayList<Post> ->
-            postAdapter.aggiungiPost(it)
+            if(it.isNotEmpty()){
+                no_posts_textview.visibility = View.GONE
+                recycler_view.visibility = View.VISIBLE
+                postAdapter.aggiungiPost(it)
+            }
         },{it: String ->
-            Toast.makeText(requireContext(),"Errore : $it", Toast.LENGTH_LONG).show()
         })
 
         return root
