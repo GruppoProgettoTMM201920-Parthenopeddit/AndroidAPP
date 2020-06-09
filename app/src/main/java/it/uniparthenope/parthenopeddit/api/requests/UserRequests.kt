@@ -50,6 +50,39 @@ class UserRequests(private val ctx: Context, private val auth: AuthManager) {
         )
     }
 
+    fun getUserByID(
+        fetched_user_id: String,
+        onSuccess: (user: User) -> Unit,
+        onFail: (error: String) -> Unit
+    ) {
+        ApiClient.getInstance(ctx).performRequest(
+            object : ApiRoute() {
+                override val url: String
+                    get() = "$baseUrl/user/$fetched_user_id"
+                override val httpMethod: Int
+                    get() = Request.Method.GET
+                override val params: HashMap<String, String>
+                    get()  = getParamsMap()
+                override val headers: HashMap<String, String>
+                    get() = getHeadersMap(auth.token!!)
+            }, { resultCode: Int, resultJson: String ->
+                if( resultCode == 200 ) {
+                    try {
+                        onSuccess(resultJson.toObject())
+                    } catch (e: Exception) {
+                        onFail("Could not parse request result as user data")
+                        Log.d(TAG, resultJson)
+                        return@performRequest
+                    }
+                } else {
+                    onFail("Error : $resultCode")
+                }
+            }, { _, error: String ->
+                onFail.invoke(error)
+            }
+        )
+    }
+
     fun setDisplayName(
         name: String,
         onSuccess: (user: User) -> Unit,
