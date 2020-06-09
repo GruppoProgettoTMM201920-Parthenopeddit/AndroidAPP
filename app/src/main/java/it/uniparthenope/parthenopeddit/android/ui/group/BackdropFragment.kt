@@ -81,8 +81,10 @@ class BackdropFragment(): SwipeItemTouchListener, Fragment() {
         private fun getData() : List<ExpandableSwipeAdapter.Item> {
             val ret = ArrayList<ExpandableSwipeAdapter.Item>()
 
-            admin_arraylist = group.members?.filter { it.is_owner } as ArrayList<GroupMember>
-            user_arraylist = group.members?.filter { !it.is_owner } as ArrayList<GroupMember>
+            var members = group.members?:arrayListOf()
+
+            admin_arraylist = members.filter { it.is_owner } as ArrayList<GroupMember>
+            user_arraylist = members.filter { !it.is_owner } as ArrayList<GroupMember>
 
             val admin_header = ExpandableSwipeAdapter.Item.Builder()
                 .type(ExpandableSwipeAdapter.HEADER)

@@ -73,6 +73,10 @@ class GroupActivity : BasicActivity() {
         //BUON DIVERTIMENTO CON LE API, FRANCESCO
         GroupsRequests(this, app.auth).getGroup(id_group,{it: Group ->
             setGroup(it)
+
+            for(user in it.members?:arrayListOf())
+                Log.d("DEBUG", "admin is ${user.user_id}")
+
             configureBackdrop(it)
         },{it: String ->
             Toast.makeText(this, "Errore ${it}", Toast.LENGTH_LONG).show()
