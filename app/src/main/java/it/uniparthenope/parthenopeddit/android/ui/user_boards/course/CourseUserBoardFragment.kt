@@ -47,9 +47,12 @@ class CourseUserBoardFragment : Fragment(), UserCourseAdapter.UserCourseItemClic
         authManager = (activity as BasicActivity).app.auth
 
         CoursesRequests(requireContext(), authManager).getFollowedCourses({it: ArrayList<Course> ->
-            no_courses_textview.visibility = View.GONE
-            recycler_view.visibility = View.VISIBLE
-            userCourseAdapter.addCourse(it)
+
+            if(it.isNotEmpty()){
+                no_courses_textview.visibility = View.GONE
+                recycler_view.visibility = View.VISIBLE
+                userCourseAdapter.addCourse(it)
+            }
             },{ it: String ->
             Toast.makeText(requireContext(), "Errore ${it}", Toast.LENGTH_LONG).show()
             }

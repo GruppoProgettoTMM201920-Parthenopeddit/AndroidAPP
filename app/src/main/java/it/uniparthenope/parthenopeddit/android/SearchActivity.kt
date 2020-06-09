@@ -14,23 +14,26 @@ import it.uniparthenope.parthenopeddit.android.ui.main.SectionsPagerAdapter
 
 class SearchActivity : AppCompatActivity() {
 
+    lateinit var searchedQuery: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+
+        var intent: Intent = getIntent()
+        var query: String? = intent.getStringExtra("query")
+        if(query != null)
+            searchedQuery = query
+        else
+            finish()
+
         supportActionBar!!.title = "Inviti ai gruppi"
         val sectionsPagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
         val viewPager: ViewPager = findViewById(R.id.view_pager)
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewPager)
-        val fab: FloatingActionButton = findViewById(R.id.fab)
 
-        var intent: Intent = getIntent()
-        var query: String? = intent.getStringExtra("query")
 
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }
     }
 }
