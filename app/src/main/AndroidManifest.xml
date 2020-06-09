@@ -23,7 +23,7 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".android.UserGroupInviteActivity"></activity>
+        <activity android:name=".android.UserGroupInviteActivity" />
         <activity android:name=".android.AddMemberActivity" />
         <activity android:name=".android.PrivacyActivity" />
         <activity android:name=".android.LoginActivity">
@@ -35,6 +35,10 @@
         </activity>
         <activity
             android:name=".android.UserBoardsActivity"
+            android:label="@string/title_activity_user_boards"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".android.GroupChatActivity"
             android:label="@string/title_activity_user_boards"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
