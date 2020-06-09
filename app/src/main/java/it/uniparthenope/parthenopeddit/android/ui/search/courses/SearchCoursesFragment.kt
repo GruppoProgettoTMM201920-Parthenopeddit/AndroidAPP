@@ -41,7 +41,7 @@ class SearchCoursesFragment : Fragment(), UserCourseAdapter.UserCourseItemClickL
         recycler_view = root.findViewById(R.id.recycler_view) as RecyclerView
 
         val courseAdapter = UserCourseAdapter()
-        courseAdapter.setItemClickListener(CourseUserBoardFragment())
+        courseAdapter.setItemClickListener(this)
         recycler_view.adapter = courseAdapter
         recycler_view.layoutManager = LinearLayoutManager(requireContext())
         recycler_view.setHasFixedSize(true)

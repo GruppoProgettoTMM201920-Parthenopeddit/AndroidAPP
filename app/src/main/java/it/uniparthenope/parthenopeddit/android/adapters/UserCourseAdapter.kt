@@ -17,7 +17,7 @@ class UserCourseAdapter : RecyclerView.Adapter<UserCourseAdapter.UserCourseViewH
     private val courseList: ArrayList<Course> = ArrayList()
     private var listener:UserCourseItemClickListeners? = null
 
-    fun setItemClickListener(listener: CourseUserBoardFragment) {
+    fun setItemClickListener(listener: UserCourseItemClickListeners) {
         this.listener = listener
     }
 

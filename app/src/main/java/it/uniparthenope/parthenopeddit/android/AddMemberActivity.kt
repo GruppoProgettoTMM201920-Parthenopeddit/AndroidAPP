@@ -1,24 +1,21 @@
 package it.uniparthenope.parthenopeddit.android
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.android.adapters.AddMemberAdapter
+import it.uniparthenope.parthenopeddit.android.adapters.UserListAdapter
 import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.api.MockDatabase
 import it.uniparthenope.parthenopeddit.model.GroupInvite
-import it.uniparthenope.parthenopeddit.model.GroupMember
 import it.uniparthenope.parthenopeddit.model.User
 import kotlinx.android.synthetic.main.activity_add_member.*
 import java.util.*
 
-class AddMemberActivity : BasicActivity(), AddMemberAdapter.UserListItemClickListeners {
+class AddMemberActivity : BasicActivity(), UserListAdapter.UserListItemClickListeners {
 
     var id_group:Int = 0
     var name_group: String? = ""
@@ -34,7 +31,7 @@ class AddMemberActivity : BasicActivity(), AddMemberAdapter.UserListItemClickLis
         var user_list_recyclerview = findViewById<RecyclerView>(R.id.user_list_recyclerview)
         group_name_textview.text = name_group
 
-        val addMemberAdapter = AddMemberAdapter()
+        val addMemberAdapter = UserListAdapter()
         addMemberAdapter.setItemClickListener(this)
         user_list_recyclerview.adapter = addMemberAdapter
         user_list_recyclerview.layoutManager = LinearLayoutManager(this)

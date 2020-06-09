@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.CourseActivity
+import it.uniparthenope.parthenopeddit.android.UserActivity
 import it.uniparthenope.parthenopeddit.android.adapters.ReviewAdapter
 import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.api.requests.UserRequests
@@ -44,8 +45,9 @@ class ReviewActivitiesFragment : Fragment(), ReviewAdapter.CourseReviewItemClick
         recycler_view.setHasFixedSize(true)
 
         authManager = (activity as BasicActivity).app.auth
+        val user_id = (activity as UserActivity).user_id
 
-        UserRequests(requireContext(), authManager).getUserPublishedReviews( authManager.username!!, 1, 20, {it: ArrayList<Review> ->
+        UserRequests(requireContext(), authManager).getUserPublishedReviews( user_id, 1, 20, {it: ArrayList<Review> ->
             reviewAdapter.aggiungiReview(it)
         },{it: String ->
             Toast.makeText(requireContext(),"Errore : $it", Toast.LENGTH_LONG).show()

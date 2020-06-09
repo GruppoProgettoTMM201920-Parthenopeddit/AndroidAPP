@@ -13,10 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.android.CourseActivity
-import it.uniparthenope.parthenopeddit.android.GroupActivity
-import it.uniparthenope.parthenopeddit.android.HomeActivity
-import it.uniparthenope.parthenopeddit.android.PostCommentsActivity
+import it.uniparthenope.parthenopeddit.android.*
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.ui.user_activities.post.PostActivitiesViewModel
 import it.uniparthenope.parthenopeddit.api.requests.PostsRequests
@@ -51,8 +48,9 @@ class PostActivitiesFragment : Fragment(), PostAdapter.PostItemClickListeners {
         recycler_view.setHasFixedSize(true)
 
         auth = (activity as BasicActivity).app.auth
+        val user_id = (activity as UserActivity).user_id
 
-        UserRequests(requireContext(), auth).getUserPublishedPosts( auth.username!!, 1, 20, { it: ArrayList<Post> ->
+        UserRequests(requireContext(), auth).getUserPublishedPosts( user_id, 1, 20, { it: ArrayList<Post> ->
             postAdapter.aggiungiPost(it)
         },{it: String ->
             Toast.makeText(requireContext(),"Errore : $it", Toast.LENGTH_LONG).show()

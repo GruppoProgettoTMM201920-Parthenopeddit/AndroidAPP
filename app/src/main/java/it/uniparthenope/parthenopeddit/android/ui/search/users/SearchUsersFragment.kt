@@ -1,5 +1,6 @@
 package it.uniparthenope.parthenopeddit.android.ui.search.users
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,16 +13,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
+import it.uniparthenope.parthenopeddit.android.GroupActivity
 import it.uniparthenope.parthenopeddit.android.SearchActivity
-import it.uniparthenope.parthenopeddit.android.adapters.UserCourseAdapter
-import it.uniparthenope.parthenopeddit.android.ui.search.courses.SearchCoursesViewModel
-import it.uniparthenope.parthenopeddit.android.ui.user_boards.course.CourseUserBoardFragment
-import it.uniparthenope.parthenopeddit.android.ui.user_boards.course.CourseUserBoardViewModel
-import it.uniparthenope.parthenopeddit.api.requests.CoursesRequests
+import it.uniparthenope.parthenopeddit.android.UserProfileActivity
+import it.uniparthenope.parthenopeddit.android.adapters.UserListAdapter
+import it.uniparthenope.parthenopeddit.api.requests.UserRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
-import it.uniparthenope.parthenopeddit.model.Course
+import it.uniparthenope.parthenopeddit.model.User
 
-class SearchUsersFragment : Fragment() {
+class SearchUsersFragment : Fragment(), UserListAdapter.UserListItemClickListeners {
 
     private lateinit var authManager: AuthManager
     private lateinit var recycler_view: RecyclerView
@@ -35,28 +35,28 @@ class SearchUsersFragment : Fragment() {
         searchUsersViewModel =
             ViewModelProviders.of(this).get(SearchUsersViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_search_courses, container, false)
-        val no_courses_textview = root.findViewById<TextView>(R.id.no_courses_textview)
+        val no_users_textview = root.findViewById<TextView>(R.id.no_courses_textview)
         recycler_view = root.findViewById(R.id.recycler_view) as RecyclerView
 
-        val courseAdapter = UserCourseAdapter()
-        courseAdapter.setItemClickListener(CourseUserBoardFragment())
-        recycler_view.adapter = courseAdapter
+        val userAdapter = UserListAdapter()
+        userAdapter.setItemClickListener(this)
+        recycler_view.adapter = userAdapter
         recycler_view.layoutManager = LinearLayoutManager(requireContext())
         recycler_view.setHasFixedSize(true)
 
-        no_courses_textview.visibility = View.VISIBLE
+        no_users_textview.visibility = View.VISIBLE
 
         authManager = (activity as BasicActivity).app.auth
 
         val activity = activity as SearchActivity
         val query = activity.searchedQuery
 
-        CoursesRequests(requireContext(), authManager).searchByName(query,{ it: ArrayList<Course> ->
+        UserRequests(requireContext(), authManager).searchUser(query,{ it: ArrayList<User> ->
 
             if(it.isNotEmpty()){
-                no_courses_textview.visibility = View.GONE
+                no_users_textview.visibility = View.GONE
                 recycler_view.visibility = View.VISIBLE
-                courseAdapter.addCourse(it)
+                userAdapter.addUser(it)
             }
         },{ it: String ->
             Toast.makeText(requireContext(), "Errore ${it}", Toast.LENGTH_LONG).show()
@@ -65,6 +65,12 @@ class SearchUsersFragment : Fragment() {
 
 
         return root
+    }
+
+    override fun onUserClick(user: User) {
+        val intent = Intent(requireContext(), UserProfileActivity::class.java)
+        intent.putExtra("id_user", user.id)
+        startActivity(intent)
     }
 
 }
