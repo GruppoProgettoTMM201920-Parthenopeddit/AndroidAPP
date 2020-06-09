@@ -26,7 +26,7 @@ class UserActivity : BasicActivity() {
         tabLayout.setupWithViewPager(viewPager)
 
         var intent: Intent = getIntent()
-        user_id = intent.getStringExtra("user_id")
+        user_id = intent.getStringExtra("user_id")?:app.auth.username!!
 
     }
 
