@@ -6,13 +6,9 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Base64
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -21,27 +17,30 @@ import android.widget.Toast
 import androidx.annotation.Keep
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat.checkSelfPermission
-import androidx.core.graphics.drawable.toBitmap
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
+import it.uniparthenope.parthenopeddit.api.requests.UserRequests
+import it.uniparthenope.parthenopeddit.auth.AuthManager
+import it.uniparthenope.parthenopeddit.model.Post
+import it.uniparthenope.parthenopeddit.model.User
 import kotlinx.android.synthetic.main.change_username_dialog.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
-import java.io.ByteArrayOutputStream
-import java.net.URI
 
 private val sharedPrefFile = "kotlinsharedpreference"
 
 class ProfileFragment : Fragment(), PreferenceFragmentCompat.OnPreferenceStartFragmentCallback {
 
+    private lateinit var auth : AuthManager
     private lateinit var profileViewModel: ProfileViewModel
 
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor:SharedPreferences.Editor
+    private val max_username_length = 20
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,33 +65,9 @@ class ProfileFragment : Fragment(), PreferenceFragmentCompat.OnPreferenceStartFr
             }
 
 
-            fab_new_username.setOnClickListener {val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.change_username_dialog, null)
-                //AlertDialogBuilder
-                val mBuilder = AlertDialog.Builder(requireContext())
-                    .setView(mDialogView)
-                    .setTitle("Nuovo username")
-                val  mAlertDialog = mBuilder.show()
-                mDialogView.dialogDoneBtn.setOnClickListener {
-                    val username = mDialogView.dialogUsernameEt.text.toString()
-                    val error_textview = mDialogView.error_textview
-                    if(username.isNotBlank()){
-                        username_shown_textview.setText(username)
-                        //TODO: send username to database through API
-
-                        //SAVE PREFERENCE
-                        editor = sharedPreferences.edit()
-                        editor.putString("USERNAME",username)
-                        editor.apply()
-                        editor.commit()
-                        mAlertDialog.dismiss()
-                    } else{
-                        error_textview.visibility = View.VISIBLE
-
-                    }
-                }
-                mDialogView.dialogCancelBtn.setOnClickListener {
-                    mAlertDialog.dismiss()
-                }}
+            fab_new_username.setOnClickListener {
+                setUsername()
+            }
 
             fab_user_image.setOnClickListener{
                 if(checkSelfPermission(requireContext(),Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED){
@@ -108,6 +83,55 @@ class ProfileFragment : Fragment(), PreferenceFragmentCompat.OnPreferenceStartFr
 
         })
         return root
+    }
+
+    private fun setUsername(){
+
+        val mDialogView = LayoutInflater.from(requireContext()).inflate(R.layout.change_username_dialog, null)
+        val mBuilder = AlertDialog.Builder(requireContext())
+            .setView(mDialogView)
+            .setTitle("Nuovo username")
+        val  mAlertDialog = mBuilder.show()
+        mDialogView.dialogDoneBtn.setOnClickListener {
+            val username = mDialogView.dialogUsernameEt.text.toString()
+            val error_textview = mDialogView.error_textview
+            if(username.isBlank()) {
+                error_textview.visibility = View.VISIBLE
+                return@setOnClickListener
+            }
+            if(username.length > max_username_length){
+                val builder = AlertDialog.Builder(requireContext())
+                builder.setTitle("Username troppo lungo")
+                builder.setMessage("Il nome utente non può superare i ${max_username_length} caratteri.")
+                builder.setPositiveButton("OK", null)
+                val dialog = builder.create()
+                dialog.show()
+                return@setOnClickListener
+            }
+
+
+            username_shown_textview.setText(username)
+
+            val auth = (activity as BasicActivity).app.auth
+            UserRequests(requireContext(), auth).setDisplayName(
+                username, {it: User ->
+                    Toast.makeText(requireContext(), "Hai correttamente cambiato nome utente", Toast.LENGTH_SHORT).show()
+                }, { it: String ->
+                    Toast.makeText(requireContext(),"Errore ${it}", Toast.LENGTH_LONG).show()
+                }
+            )
+
+            //SAVE PREFERENCE
+            editor = sharedPreferences.edit()
+            editor.putString("USERNAME",username)
+            editor.apply()
+            editor.commit()
+            mAlertDialog.dismiss()
+        }
+
+        mDialogView.dialogCancelBtn.setOnClickListener {
+            mAlertDialog.dismiss()
+        }
     }
 
     private fun pickImageFromGallery() {
