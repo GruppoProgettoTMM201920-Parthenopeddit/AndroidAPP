@@ -4,12 +4,10 @@ import android.content.Intent
 import android.graphics.Canvas
 import it.uniparthenope.parthenopeddit.R
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -22,7 +20,6 @@ import com.google.android.material.snackbar.Snackbar
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.android.AddMemberActivity
 import it.uniparthenope.parthenopeddit.android.adapters.ExpandableSwipeAdapter
-import it.uniparthenope.parthenopeddit.api.MockDatabase
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Group
 import it.uniparthenope.parthenopeddit.model.GroupMember
@@ -32,6 +29,7 @@ import kotlinx.android.synthetic.main.fragment_backdrop.*
 
 class BackdropFragment(): SwipeItemTouchListener, Fragment() {
     private lateinit var group: Group
+    private lateinit var members: ArrayList<GroupMember>
 
     private var admin_arraylist: ArrayList<GroupMember> = ArrayList()
     private var user_arraylist: ArrayList<GroupMember> = ArrayList()
@@ -49,13 +47,14 @@ class BackdropFragment(): SwipeItemTouchListener, Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_backdrop, container, false)
 
+        adapter = ExpandableSwipeAdapter(requireContext(), Glide.with(this))
+
         expandable_recycler_view = root.findViewById(R.id.expandable_recycler_view)
         expandable_recycler_view.layoutManager = LinearLayoutManager(requireContext())
+        expandable_recycler_view.adapter = adapter
 
         val swipeHelper = SwipeItemTouchHelper(0, ItemTouchHelper.LEFT, this)
         ItemTouchHelper(swipeHelper).attachToRecyclerView(expandable_recycler_view)
-
-        adapter = ExpandableSwipeAdapter(requireContext(), Glide.with(this))
 
         auth = (activity as BasicActivity).app.auth
 
@@ -78,10 +77,8 @@ class BackdropFragment(): SwipeItemTouchListener, Fragment() {
          * actually, this function should be modified to do some network requests like Retrofit 2.0.
          * after that, add Items to List using builder pattern.
          */
-        private fun getData() : List<ExpandableSwipeAdapter.Item> {
+        private fun setMembersRecyclerView() : List<ExpandableSwipeAdapter.Item> {
             val ret = ArrayList<ExpandableSwipeAdapter.Item>()
-
-            var members = group.members?:arrayListOf()
 
             admin_arraylist = members.filter { it.is_owner } as ArrayList<GroupMember>
             user_arraylist = members.filter { !it.is_owner } as ArrayList<GroupMember>
@@ -99,12 +96,12 @@ class BackdropFragment(): SwipeItemTouchListener, Fragment() {
                 .build()
 
             ret.add(admin_header)
-            for(j in 0..(admin_arraylist.size-1)) {
+            for(member:GroupMember in admin_arraylist) {
                 val content = ExpandableSwipeAdapter.Item.Builder()
                     .type(ExpandableSwipeAdapter.CONTENT)
                     .thumbnailUrl(generateRandomImageUrl(MAX_IMAGE_SIZE))
-                    .username(admin_arraylist.get(j).user?.display_name!!)
-                    .joindate(admin_arraylist.get(j).join_date)
+                    .username(member.user!!.display_name?:member.user_id)
+                    .joindate(member.join_date)
                     .build()
 
                 ret.add(content)
@@ -112,12 +109,12 @@ class BackdropFragment(): SwipeItemTouchListener, Fragment() {
 
             ret.add(member_header)
             if(user_arraylist.isNotEmpty()) {
-                for (j in 0..(user_arraylist.size - 1)) {
+                for(member:GroupMember in user_arraylist) {
                     val content = ExpandableSwipeAdapter.Item.Builder()
                         .type(ExpandableSwipeAdapter.CONTENT)
                         .thumbnailUrl(generateRandomImageUrl(MAX_IMAGE_SIZE))
-                        .username(user_arraylist.get(j).user?.display_name!!)
-                        .joindate(user_arraylist.get(j).join_date)
+                        .username(member.user!!.display_name?:member.user_id)
+                        .joindate(member.join_date)
                         .build()
 
                     ret.add(content)
@@ -209,14 +206,13 @@ class BackdropFragment(): SwipeItemTouchListener, Fragment() {
             }
         }
 
-    fun updateData(group: Group){
+    fun updateGroupData(group: Group){
         this.group = group
+    }
 
-        backdrop_group_name_textview.text = group.name
-        creation_date_textview.text = group.created_on
+    fun updateMembersData(members: ArrayList<GroupMember>){
+        this.members = members
 
-        expandable_recycler_view.adapter = adapter
-
-        adapter.setData(getData())
+        adapter.setData(setMembersRecyclerView())
     }
 }
