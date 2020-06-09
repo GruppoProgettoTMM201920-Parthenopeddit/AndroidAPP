@@ -40,6 +40,7 @@ class BackdropFragment(): SwipeItemTouchListener, Fragment() {
 
     private lateinit var adapter: ExpandableSwipeAdapter
     private lateinit var expandable_recycler_view: RecyclerView
+    private lateinit var add_member_button: Button
 
     companion object {
         private const val MAX_IMAGE_SIZE = 200
@@ -48,7 +49,7 @@ class BackdropFragment(): SwipeItemTouchListener, Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_backdrop, container, false)
 
-        expandable_recycler_view = root.findViewById<RecyclerView>(R.id.expandable_recycler_view)
+        expandable_recycler_view = root.findViewById(R.id.expandable_recycler_view)
         expandable_recycler_view.layoutManager = LinearLayoutManager(requireContext())
 
         val swipeHelper = SwipeItemTouchHelper(0, ItemTouchHelper.LEFT, this)
@@ -57,6 +58,8 @@ class BackdropFragment(): SwipeItemTouchListener, Fragment() {
         adapter = ExpandableSwipeAdapter(requireContext(), Glide.with(this))
 
         auth = (activity as BasicActivity).app.auth
+
+        add_member_button = root.findViewById(R.id.add_member_button)
         add_member_button.setOnClickListener {
             if( admin_arraylist.filter{ it.user_id == auth.username!! }.singleOrNull()?.is_owner!! ){
                 val intent = Intent(requireContext(), AddMemberActivity::class.java)

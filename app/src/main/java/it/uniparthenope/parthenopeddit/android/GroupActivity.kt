@@ -56,9 +56,6 @@ class GroupActivity : BasicActivity() {
             configureBackdrop(deserializedGroup)
         }
 
-        //num_members
-        //group_name_textview
-
         val postAdapter = PostAdapter()
         postAdapter.setItemClickListener(null)
         group_recyclerview.adapter = postAdapter
@@ -73,6 +70,7 @@ class GroupActivity : BasicActivity() {
         val rotateClockwise = AnimationUtils.loadAnimation(this, R.anim.rotate_clockwise)
         val rotateAnticlockwise = AnimationUtils.loadAnimation(this, R.anim.rotate_anticlockwise)
 
+        //BUON DIVERTIMENTO CON LE API, FRANCESCO
         GroupsRequests(this, app.auth).getGroup(id_group,{it: Group ->
             setGroup(it)
             configureBackdrop(it)
@@ -144,7 +142,8 @@ class GroupActivity : BasicActivity() {
         }
     }
 
-    private fun setGroup(group: Group) {
+    private fun setGroup(newGroup: Group) {
+        group = newGroup
         group_name_textview.text = group.name
         num_members.text = group.members_num.toString()
     }
