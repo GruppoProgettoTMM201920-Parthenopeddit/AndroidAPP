@@ -9,11 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.ui.user_boards.group.GroupUserBoardFragment
 import it.uniparthenope.parthenopeddit.model.Group
+import it.uniparthenope.parthenopeddit.model.GroupMember
 import kotlinx.android.synthetic.main.cardview_group.view.*
 
 class UserGroupAdapter : RecyclerView.Adapter<UserGroupAdapter.UserGroupViewHolder>() {
 
-    private val GroupList: ArrayList<Group> = ArrayList()
+    private val GroupList: ArrayList<GroupMember> = ArrayList()
     private var listener:UserGroupItemClickListeners? = null
 
     fun setItemClickListener(listener: GroupUserBoardFragment) {
@@ -24,7 +25,7 @@ class UserGroupAdapter : RecyclerView.Adapter<UserGroupAdapter.UserGroupViewHold
         fun onBoardClick(board_id: Int?)
     }
 
-    fun addGroup(GroupItemList: List<Group>) {
+    fun addGroup(GroupItemList: List<GroupMember>) {
         this.GroupList.addAll(GroupItemList)
         notifyDataSetChanged()
     }
@@ -40,7 +41,7 @@ class UserGroupAdapter : RecyclerView.Adapter<UserGroupAdapter.UserGroupViewHold
     override fun onBindViewHolder(holder: UserGroupViewHolder, position: Int) {
         val currentItem = GroupList[position]
 
-        holder.group_name_textview.text = currentItem.name
+        holder.group_name_textview.text = currentItem.group?.name
 
 
 
@@ -48,7 +49,7 @@ class UserGroupAdapter : RecyclerView.Adapter<UserGroupAdapter.UserGroupViewHold
         if( listener != null ) {
 
             holder.relativeLayout.setOnClickListener {
-                listener!!.onBoardClick(currentItem.id)
+                listener!!.onBoardClick(currentItem.group_id)
             }
         }
     }

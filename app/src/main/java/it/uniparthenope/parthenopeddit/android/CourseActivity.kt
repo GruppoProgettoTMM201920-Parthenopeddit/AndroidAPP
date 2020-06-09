@@ -30,7 +30,7 @@ class CourseActivity : BasicActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_course)
         var intent: Intent = getIntent()
-        var courseId : Int = intent.getIntExtra("id_group",0)        //TODO(DEVE ESSERE OTTENUTO DA QUERY)
+        var courseId : Int = intent.getIntExtra("id_course",0)        //TODO(DEVE ESSERE OTTENUTO DA QUERY)
         var course_name : String? = ""
 
         val sectionsPagerAdapter = CourseAdapter(supportFragmentManager,courseId)
@@ -47,6 +47,8 @@ class CourseActivity : BasicActivity() {
         val fab_new_review_textview = findViewById(R.id.fab_new_review_textview) as TextView
         val rotateClockwise = AnimationUtils.loadAnimation(this, R.anim.rotate_clockwise)
         val rotateAnticlockwise = AnimationUtils.loadAnimation(this, R.anim.rotate_anticlockwise)
+
+
 
         if(MockDatabase.instance.users_table.filter{ it.id == "user1" }.single().followed_courses!!.filter{ it.id == courseId}.single().id == courseId ){
             follow_button.text = "Lascia"

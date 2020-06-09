@@ -36,9 +36,10 @@ class ReviewAdapter() : RecyclerView.Adapter<ReviewAdapter.CourseReviewViewHolde
     }
 
     interface CourseReviewItemClickListeners {
-        fun onClickLike(id_post:Int)
-        fun onClickDislike(id_post:Int)
+        fun onClickLike(id_review:Int, upvote_textview: TextView, downvote_textview: TextView)
+        fun onClickDislike(id_review:Int, upvote_textview: TextView, downvote_textview: TextView)
         fun onReviewClick(id_course: Int)
+        fun onClickComments(id_review: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CourseReviewViewHolder {
@@ -55,26 +56,28 @@ class ReviewAdapter() : RecyclerView.Adapter<ReviewAdapter.CourseReviewViewHolde
         holder.username_textview.text = currentItem.author?.display_name?:currentItem.author_id
         holder.timestamp_textview.text = currentItem.timestamp
         holder.posttext_textview.text = currentItem.body
-        holder.upvote_textview.text = "0"
-        holder.downvote_textview.text = "0"
-        setEnjoymentStars(holder, currentItem.score_liking)
-        setDifficultyStars(holder, currentItem.score_difficulty)
+        holder.upvote_textview.text = currentItem.likes_num.toString()
+        holder.downvote_textview.text = currentItem.dislikes_num.toString()
+        holder.comments_textview.text = currentItem.comments_num.toString()
+
+        holder.liking_rating_bar.rating = currentItem.score_liking.toFloat()
+        holder.difficulty_rating_bar.rating = currentItem.score_difficulty.toFloat()
 
         if( listener != null ) {
             holder.upvote_btn.setOnClickListener {
-                listener!!.onClickLike(currentItem.id)
-                holder.upvote_textview.text =
-                    (holder.upvote_textview.text.toString().toInt() + 1).toString()
+                listener!!.onClickLike(currentItem.id, holder.upvote_textview, holder.downvote_textview)
             }
 
             holder.downvote_btn.setOnClickListener {
-                listener!!.onClickLike(currentItem.id)
-                holder.downvote_textview.text =
-                    (holder.downvote_textview.text.toString().toInt() + 1).toString()
+                listener!!.onClickLike(currentItem.id, holder.upvote_textview, holder.downvote_textview)
             }
 
             holder.review_relativelayout.setOnClickListener {
                 listener!!.onReviewClick( currentItem.reviewed_course_id )
+            }
+
+            holder.comments_btn.setOnClickListener {
+                listener!!.onClickComments( currentItem.id )
             }
         }
     }
@@ -86,139 +89,6 @@ class ReviewAdapter() : RecyclerView.Adapter<ReviewAdapter.CourseReviewViewHolde
         notifyDataSetChanged()
     }
 
-    fun setEnjoymentStars(holder: CourseReviewViewHolder, score_liking: Int){
-        if(score_liking.toInt()==1){
-            holder.star_1r.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_2r.setImageResource(R.drawable.ic_star_empty_24dp)
-            holder.star_3r.setImageResource(R.drawable.ic_star_empty_24dp)
-            holder.star_4r.setImageResource(R.drawable.ic_star_empty_24dp)
-            holder.star_5r.setImageResource(R.drawable.ic_star_empty_24dp)
-            }
-        else if(score_liking >1 && score_liking <2){
-            holder.star_1r.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_2r.setImageResource(R.drawable.ic_star_half_24dp)
-            holder.star_3r.setImageResource(R.drawable.ic_star_empty_24dp)
-            holder.star_4r.setImageResource(R.drawable.ic_star_empty_24dp)
-            holder.star_5r.setImageResource(R.drawable.ic_star_empty_24dp)
-        }
-        else if(score_liking == 2){
-            holder.star_1r.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_2r.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_3r.setImageResource(R.drawable.ic_star_empty_24dp)
-            holder.star_4r.setImageResource(R.drawable.ic_star_empty_24dp)
-            holder.star_5r.setImageResource(R.drawable.ic_star_empty_24dp)
-        }
-        else if(score_liking >2 && score_liking <3){
-            holder.star_1r.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_2r.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_3r.setImageResource(R.drawable.ic_star_half_24dp)
-            holder.star_4r.setImageResource(R.drawable.ic_star_empty_24dp)
-            holder.star_5r.setImageResource(R.drawable.ic_star_empty_24dp)
-        }
-        else if(score_liking == 3){
-            holder.star_1r.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_2r.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_3r.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_4r.setImageResource(R.drawable.ic_star_empty_24dp)
-            holder.star_5r.setImageResource(R.drawable.ic_star_empty_24dp)
-        }
-        else if(score_liking >3 && score_liking <4){
-            holder.star_1r.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_2r.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_3r.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_4r.setImageResource(R.drawable.ic_star_half_24dp)
-            holder.star_5r.setImageResource(R.drawable.ic_star_empty_24dp)
-        }
-        else if(score_liking == 4){
-            holder.star_1r.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_2r.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_3r.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_4r.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_5r.setImageResource(R.drawable.ic_star_empty_24dp)
-        }
-        else if(score_liking >4 && score_liking <5){
-            holder.star_1r.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_2r.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_3r.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_4r.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_5r.setImageResource(R.drawable.ic_star_half_24dp)
-        }
-        else if(score_liking == 5){
-            holder.star_1r.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_2r.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_3r.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_4r.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_5r.setImageResource(R.drawable.ic_star_full_24dp)
-        }
-
-    }
-    fun setDifficultyStars(holder: CourseReviewViewHolder, score_difficulty: Int){
-        if(score_difficulty.toInt()==1){
-            holder.star_1d.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_2d.setImageResource(R.drawable.ic_star_empty_24dp)
-            holder.star_3d.setImageResource(R.drawable.ic_star_empty_24dp)
-            holder.star_4d.setImageResource(R.drawable.ic_star_empty_24dp)
-            holder.star_5d.setImageResource(R.drawable.ic_star_empty_24dp)
-        }
-        else if(score_difficulty >1 && score_difficulty <2){
-            holder.star_1d.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_2d.setImageResource(R.drawable.ic_star_half_24dp)
-            holder.star_3d.setImageResource(R.drawable.ic_star_empty_24dp)
-            holder.star_4d.setImageResource(R.drawable.ic_star_empty_24dp)
-            holder.star_5d.setImageResource(R.drawable.ic_star_empty_24dp)
-        }
-        else if(score_difficulty == 2){
-            holder.star_1d.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_2d.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_3d.setImageResource(R.drawable.ic_star_empty_24dp)
-            holder.star_4d.setImageResource(R.drawable.ic_star_empty_24dp)
-            holder.star_5d.setImageResource(R.drawable.ic_star_empty_24dp)
-        }
-        else if(score_difficulty >2 && score_difficulty <3){
-            holder.star_1d.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_2d.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_3d.setImageResource(R.drawable.ic_star_half_24dp)
-            holder.star_4d.setImageResource(R.drawable.ic_star_empty_24dp)
-            holder.star_5d.setImageResource(R.drawable.ic_star_empty_24dp)
-        }
-        else if(score_difficulty == 3){
-            holder.star_1d.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_2d.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_3d.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_4d.setImageResource(R.drawable.ic_star_empty_24dp)
-            holder.star_5d.setImageResource(R.drawable.ic_star_empty_24dp)
-        }
-        else if(score_difficulty >3 && score_difficulty <4){
-            holder.star_1d.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_2d.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_3d.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_4d.setImageResource(R.drawable.ic_star_half_24dp)
-            holder.star_5d.setImageResource(R.drawable.ic_star_empty_24dp)
-        }
-        else if(score_difficulty == 4){
-            holder.star_1d.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_2d.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_3d.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_4d.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_5d.setImageResource(R.drawable.ic_star_empty_24dp)
-        }
-        else if(score_difficulty >4 && score_difficulty <5){
-            holder.star_1d.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_2d.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_3d.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_4d.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_5d.setImageResource(R.drawable.ic_star_half_24dp)
-        }
-        else if(score_difficulty == 5){
-            holder.star_1d.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_2d.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_3d.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_4d.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_5d.setImageResource(R.drawable.ic_star_full_24dp)
-        }
-
-    }
-
     class CourseReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {     //SINGOLO ELEMENTO DELLA LISTA
         val imageView: ImageView = itemView.image_view
         val username_textview: TextView = itemView.username_textview
@@ -226,18 +96,12 @@ class ReviewAdapter() : RecyclerView.Adapter<ReviewAdapter.CourseReviewViewHolde
         val posttext_textview: TextView = itemView.posttext_textview
         val upvote_btn: ImageButton = itemView.upvote_btn
         val downvote_btn: ImageButton = itemView.downvote_btn
+        val comments_btn: ImageButton = itemView.comments_btn2
         val upvote_textview: TextView = itemView.upvote_textview
         val downvote_textview: TextView = itemView.downvote_textview
+        val comments_textview: TextView = itemView.comments_textview2
         val review_relativelayout: RelativeLayout = itemView.review_relativelayout
-        val star_1r: ImageView = itemView.star_1r
-        val star_2r: ImageView = itemView.star_2r
-        val star_3r: ImageView = itemView.star_3r
-        val star_4r: ImageView = itemView.star_4r
-        val star_5r: ImageView = itemView.star_5r
-        val star_1d: ImageView = itemView.star_1d
-        val star_2d: ImageView = itemView.star_2d
-        val star_3d: ImageView = itemView.star_3d
-        val star_4d: ImageView = itemView.star_4d
-        val star_5d: ImageView = itemView.star_5d
+        val liking_rating_bar: RatingBar = itemView.liking_rating_bar
+        val difficulty_rating_bar: RatingBar = itemView.difficulty_rating_bar
     }
 }

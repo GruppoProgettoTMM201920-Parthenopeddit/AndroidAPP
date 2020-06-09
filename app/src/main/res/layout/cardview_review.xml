@@ -16,6 +16,27 @@
         android:layout_height="match_parent"
         android:padding="8dp">
 
+        <ImageButton
+            android:id="@+id/comments_btn2"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/posttext_textview"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/ic_comment_themecolor_24dp" />
+
+        <TextView
+            android:id="@+id/comments_textview2"
+            android:layout_width="30dp"
+            android:layout_height="20dp"
+            android:layout_below="@+id/posttext_textview"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="30dp"
+            android:layout_toEndOf="@+id/comments_btn2"
+            android:layout_toRightOf="@+id/comments_btn"
+            android:gravity="right"
+            android:text="0" />
+
         <ImageView
             android:id="@+id/image_view"
             android:layout_width="50dp"
@@ -50,32 +71,15 @@
             android:orientation="horizontal"
             android:layout_toEndOf="@id/image_view"
             android:layout_below="@id/review_enjoyment">
-            
-            <ImageView
-                android:id="@+id/star_1r"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_star_full_24dp"/>
-            <ImageView
-                android:id="@+id/star_2r"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_star_full_24dp"/>
-            <ImageView
-                android:id="@+id/star_3r"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_star_full_24dp"/>
-            <ImageView
-                android:id="@+id/star_4r"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_star_full_24dp"/>
-            <ImageView
-                android:id="@+id/star_5r"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_star_half_24dp"/></LinearLayout>
+
+            <RatingBar
+                android:id="@+id/liking_rating_bar"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/review_difficulty"
@@ -94,44 +98,25 @@
             android:layout_toEndOf="@id/image_view"
             android:layout_below="@id/review_difficulty">
 
-            <ImageView
-                android:id="@+id/star_1d"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_star_full_24dp"/>
-            <ImageView
-                android:id="@+id/star_2d"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_star_full_24dp"/>
-            <ImageView
-                android:id="@+id/star_3d"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_star_full_24dp"/>
-            <ImageView
-                android:id="@+id/star_4d"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_star_full_24dp"/>
-            <ImageView
-                android:id="@+id/star_5d"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/ic_star_half_24dp"/>
+            <RatingBar
+                android:id="@+id/difficulty_rating_bar"
+                style="@style/Widget.AppCompat.RatingBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
         </LinearLayout>
 
         <TextView
             android:id="@+id/timestamp_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:layout_toEndOf="@+id/user_rating"
-            android:layout_below="@+id/title_textview_r"
             android:layout_marginLeft="80dp"
             android:layout_marginTop="5dp"
-            android:textSize="12dp"
-            android:text="22/05/2020" />
+            android:layout_toEndOf="@id/username_textview"
+            android:gravity="center_vertical"
+            android:text="22/05/2020"
+            android:textSize="12dp" />
 
         <TextView
             android:id="@+id/posttext_textview"

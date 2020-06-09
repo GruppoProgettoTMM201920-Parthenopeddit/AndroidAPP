@@ -3,17 +3,21 @@ package it.uniparthenope.parthenopeddit.android.ui.newReview
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
+import it.uniparthenope.parthenopeddit.android.CourseActivity
 import it.uniparthenope.parthenopeddit.android.HomeActivity
 import it.uniparthenope.parthenopeddit.api.MockDatabase
+import it.uniparthenope.parthenopeddit.api.requests.ReviewsRequests
 import it.uniparthenope.parthenopeddit.model.Review
 import kotlinx.android.synthetic.main.activity_new_review.*
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.util.*
 
-class NewReviewActivity : AppCompatActivity()  {
+class NewReviewActivity : BasicActivity()  {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,29 +63,21 @@ class NewReviewActivity : AppCompatActivity()  {
             else if(title_edittext.text.isEmpty()){ empty_title_textview.visibility = View.VISIBLE }
             else if(user_review_edittext.text.isEmpty()){ empty_review_textview.visibility = View.VISIBLE }
             else {
-                var date = Date()
-                val formatter = SimpleDateFormat("dd MMM yyyy")
-                var newReview: Review? =
-                    Review(
-                        id = MockDatabase.instance.reviews_table.maxBy { it -> it.id }?.id!! + 1,
-                        body = user_review_edittext.text.toString(),
-                        timestamp = formatter.format(date),
-                        author_id = "user1",
-                        author = MockDatabase.instance.users_table.find { it.id == "user1" }!!,
-                        reviewed_course_id = courseId,
-                        reviewed_course = MockDatabase.instance.course_table.find { it.id == courseId }!!,
-                        score_liking = enjoy_rating,
-                        score_difficulty = difficulty_rating
-                    )
-                newReview?.reviewed_course = MockDatabase.instance.course_table.find { it.id == 1 }
+                ReviewsRequests(this, app.auth).publishNewReview(
+                    user_review_edittext.text.toString(),
+                    courseId,
+                    enjoy_rating,
+                    difficulty_rating,
+                {it: Review ->
+                    Toast.makeText(this, "Recensione pubblicata", Toast.LENGTH_SHORT).show()
+                },{it: String ->
+                    Toast.makeText(this, "Errore ${it}", Toast.LENGTH_LONG).show()
+                })
 
-
-                MockDatabase.instance.reviews_table.add(newReview!!)
-                MockDatabase.instance.course_table.find { it.id == courseId }?.reviews?.add(newReview)
-                MockDatabase.instance.users_table.find { it.id == "user1" }!!.published_reviews?.add(newReview)
-
-                val intent = Intent(this, HomeActivity::class.java)
+                val intent = Intent(this, CourseActivity::class.java)
+                intent.putExtra("id_course", courseId)
                 startActivity(intent)
+                finish()
             }
         }
 

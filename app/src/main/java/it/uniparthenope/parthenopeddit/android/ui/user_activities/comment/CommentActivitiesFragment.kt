@@ -1,30 +1,24 @@
 package it.uniparthenope.parthenopeddit.android.ui.messages
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.android.CommentActivity
 //import it.uniparthenope.parthenopeddit.android.adapters.ChatListAdapter
 import it.uniparthenope.parthenopeddit.android.adapters.CommentAdapter
-import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.ui.user_activities.comment.CommentActivitiesViewModel
 import it.uniparthenope.parthenopeddit.api.MockApiData
-import it.uniparthenope.parthenopeddit.api.MockDatabase
+import it.uniparthenope.parthenopeddit.api.requests.UserRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Comment
-import kotlinx.android.synthetic.main.fragment_messages.*
 
 class CommentActivitiesFragment : Fragment(), CommentAdapter.CommentItemClickListeners {
 
@@ -52,34 +46,43 @@ class CommentActivitiesFragment : Fragment(), CommentAdapter.CommentItemClickLis
 
         authManager = (activity as BasicActivity).app.auth
 
+        //TODO: through API
+        UserRequests(requireContext(), authManager).getUserPublishedComments( authManager.username!!, 1, 20, { it: ArrayList<Comment> ->
+            commentAdapter.aggiungiCommenti(it)
+        },{it: String ->
+            Toast.makeText(requireContext(),"Errore : $it", Toast.LENGTH_LONG).show()
+        })
+
         MockApiData().getUserComment(authManager.token!!, "user1") { commentsItemList, error ->
             if( error != null ) {
                 Toast.makeText(requireContext(),"Errore : $error", Toast.LENGTH_LONG).show()
             } else {
                 commentsItemList!!
 
-                commentAdapter.aggiungiCommento( commentsItemList )
+                commentAdapter.aggiungiCommenti( commentsItemList )
             }
         }
 
         return root
     }
 
-    override fun onClickLike(id_Commento: Int) {
-        //TODO("Not yet implemented")
+    override fun onClickLike(
+        id_Commento: Int,
+        upvote_textview: TextView,
+        downvote_textview: TextView
+    ) {
+        TODO("Not yet implemented")
     }
 
-    override fun onClickDislike(id_Commento: Int) {
-        //TODO("Not yet implemented")
+    override fun onClickDislike(
+        id_Commento: Int,
+        upvote_textview: TextView,
+        downvote_textview: TextView
+    ) {
+        TODO("Not yet implemented")
     }
 
-    override fun onClickComments(id_Commento: Int) {
-        //TODO("Not yet implemented")
-    }
-
-    override fun onCommentClick(id_post: Int) {
-        val intent = Intent(requireContext(), CommentActivity::class.java)
-        intent.putExtra("idPost", id_post)
-        startActivity(intent)
+    override fun onClickComments(id_Commento: Int, comment: Comment) {
+        TODO("Not yet implemented")
     }
 }

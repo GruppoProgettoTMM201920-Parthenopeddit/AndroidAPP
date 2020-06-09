@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -15,7 +16,9 @@ import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.CourseActivity
 import it.uniparthenope.parthenopeddit.android.adapters.ReviewAdapter
 import it.uniparthenope.parthenopeddit.api.MockApiData
+import it.uniparthenope.parthenopeddit.api.requests.UserRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
+import it.uniparthenope.parthenopeddit.model.Review
 
 class ReviewActivitiesFragment : Fragment(), ReviewAdapter.CourseReviewItemClickListeners {
 
@@ -42,33 +45,34 @@ class ReviewActivitiesFragment : Fragment(), ReviewAdapter.CourseReviewItemClick
 
         authManager = (activity as BasicActivity).app.auth
 
-
-        MockApiData().getAllReview( authManager.token!! ) { reviewItemList, error ->
-            if( error != null ) {
-                Toast.makeText(requireContext(),"Errore : $error", Toast.LENGTH_LONG).show()
-            } else {
-                reviewItemList!!
-
-                reviewAdapter.aggiungiReview( reviewItemList.filter{ it.author?.id == "user1"} )
-            }
-        }
-
-
+        UserRequests(requireContext(), authManager).getUserPublishedReviews( authManager.username!!, 1, 20, {it: ArrayList<Review> ->
+            reviewAdapter.aggiungiReview(it)
+        },{it: String ->
+            Toast.makeText(requireContext(),"Errore : $it", Toast.LENGTH_LONG).show()
+        })
 
         return root
     }
 
-    override fun onClickLike(id_post: Int) {
+    override fun onClickLike(id_review: Int, upvote_textview: TextView, downvote_textview: TextView) {
         //TODO("Not yet implemented")
     }
 
-    override fun onClickDislike(id_post: Int) {
+    override fun onClickDislike(
+        id_review: Int,
+        upvote_textview: TextView,
+        downvote_textview: TextView
+    ) {
         //TODO("Not yet implemented")
     }
 
     override fun onReviewClick(id_course: Int) {
         val intent = Intent(requireContext(), CourseActivity::class.java)
-        intent.putExtra("id_group", id_course)
+        intent.putExtra("id_course", id_course)
         startActivity(intent)
+    }
+
+    override fun onClickComments(id_review: Int) {
+        TODO("Not yet implemented")
     }
 }

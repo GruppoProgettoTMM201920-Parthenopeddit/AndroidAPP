@@ -11,10 +11,16 @@ import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.HomeActivity
 import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.api.MockDatabase
+import it.uniparthenope.parthenopeddit.api.requests.PostsRequests
+import it.uniparthenope.parthenopeddit.api.requests.ReviewsRequests
 import it.uniparthenope.parthenopeddit.model.Board
 import it.uniparthenope.parthenopeddit.model.Group
 import it.uniparthenope.parthenopeddit.model.Post
+import it.uniparthenope.parthenopeddit.model.Review
 import kotlinx.android.synthetic.main.activity_new_post.*
+import kotlinx.android.synthetic.main.activity_new_post.empty_title_textview
+import kotlinx.android.synthetic.main.activity_new_post.title_edittext
+import kotlinx.android.synthetic.main.activity_new_review.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -31,43 +37,38 @@ class NewPostActivity : BasicActivity(){
         var board_name_textview : TextView = findViewById<TextView>(R.id.board_name_textview)
         board_name_textview.text = board_name
 
-        var boards_name: ArrayList<String> = ArrayList()
         val publish_button = findViewById<Button>(R.id.publish_button)
-
-        //TODO: Add sections to spinner
 
         publish_button.setOnClickListener {
 
-            if(title_edittext.text.isEmpty()){ empty_title_textview.visibility = View.VISIBLE }
-            else if(user_post_edittext.text.isEmpty()){ empty_body_textview.visibility = View.VISIBLE }
-            else {
-
-                var date = Date()
-                val formatter = SimpleDateFormat("dd MMM yyyy")
-                var newPost: Post? =
-                    Post(
-                        id = MockDatabase.instance.posts_table.maxBy { it -> it.id }?.id!! + 1,
-                        title = title_edittext.text.toString(),
-                        body = user_post_edittext.text.toString(),
-                        timestamp = formatter.format(date),
-                        author_id = "user1",
-                        author = MockDatabase.instance.users_table.find { it.id == "user1" }!!,
-                        comments_num = 0,
-                        likes_num = 0,
-                        dislikes_num = 0,
-                        posted_to_board_id = boardId,
-                        posted_to_board =  MockDatabase.instance.board_table.find{ it.id == boardId }
-                    )
-
-                Log.d("DEBUG", "the board id is ${newPost?.posted_to_board_id}")
-
-                MockDatabase.instance.posts_table.add(newPost!!)
-                MockDatabase.instance.users_table.find { it.id == "user1" }!!.published_posts?.add(newPost)
-
-                val intent = Intent(this, HomeActivity::class.java)
-                startActivity(intent)
+            if(title_edittext.text.isEmpty()){
+                empty_title_textview.visibility = View.VISIBLE
+                return@setOnClickListener
+            } else {
+                empty_title_textview.visibility = View.GONE
             }
-        }
 
+            if(user_post_edittext.text.isEmpty()){
+                empty_body_textview.visibility = View.VISIBLE
+                return@setOnClickListener
+            } else {
+                empty_body_textview.visibility = View.GONE
+            }
+
+            PostsRequests(this, app.auth).publishNewPost(
+                title_edittext.text.toString(),
+                user_post_edittext.text.toString(),
+                boardId,
+                {
+                    Toast.makeText(this, "Post pubblicato", Toast.LENGTH_SHORT).show()
+                },{
+                    Toast.makeText(this, "Errore ${it}", Toast.LENGTH_LONG).show()
+                }
+            )
+
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 }

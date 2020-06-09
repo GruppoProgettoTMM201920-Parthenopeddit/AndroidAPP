@@ -1,4 +1,4 @@
-package it.uniparthenope.parthenopeddit.android.ui
+package it.uniparthenope.parthenopeddit.android
 
 import android.os.Bundle
 import it.uniparthenope.parthenopeddit.BasicActivity
