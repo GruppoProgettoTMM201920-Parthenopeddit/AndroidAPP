@@ -46,22 +46,11 @@ class CommentActivitiesFragment : Fragment(), CommentAdapter.CommentItemClickLis
 
         authManager = (activity as BasicActivity).app.auth
 
-        //TODO: through API
         UserRequests(requireContext(), authManager).getUserPublishedComments( authManager.username!!, 1, 20, { it: ArrayList<Comment> ->
             commentAdapter.aggiungiCommenti(it)
         },{it: String ->
             Toast.makeText(requireContext(),"Errore : $it", Toast.LENGTH_LONG).show()
         })
-
-        MockApiData().getUserComment(authManager.token!!, "user1") { commentsItemList, error ->
-            if( error != null ) {
-                Toast.makeText(requireContext(),"Errore : $error", Toast.LENGTH_LONG).show()
-            } else {
-                commentsItemList!!
-
-                commentAdapter.aggiungiCommenti( commentsItemList )
-            }
-        }
 
         return root
     }
