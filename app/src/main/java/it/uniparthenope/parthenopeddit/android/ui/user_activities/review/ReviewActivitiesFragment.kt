@@ -36,6 +36,7 @@ class ReviewActivitiesFragment : Fragment(), ReviewAdapter.CourseReviewItemClick
         reviewViewModel =
             ViewModelProviders.of(this).get(ReviewActivitiesViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_review_activities, container, false)
+        val no_reviews_textview = root.findViewById<TextView>(R.id.no_reviews_textview)
 
         recycler_view = root.findViewById(R.id.recycler_view3) as RecyclerView
 
@@ -49,9 +50,12 @@ class ReviewActivitiesFragment : Fragment(), ReviewAdapter.CourseReviewItemClick
         val user_id = (activity as UserActivity).user_id
 
         UserRequests(requireContext(), authManager).getUserPublishedReviews( user_id, 1, 20, {it: ArrayList<Review> ->
-            reviewAdapter.aggiungiReview(it)
+            if(it.isNotEmpty()){
+                no_reviews_textview.visibility = View.GONE
+                recycler_view.visibility = View.VISIBLE
+                reviewAdapter.aggiungiReview(it)
+            }
         },{it: String ->
-            Toast.makeText(requireContext(),"Errore : $it", Toast.LENGTH_LONG).show()
         })
 
         return root

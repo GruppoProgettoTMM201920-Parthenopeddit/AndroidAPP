@@ -41,6 +41,7 @@ class CommentActivitiesFragment : Fragment(), CommentAdapter.CommentItemClickLis
         commentViewModel =
             ViewModelProviders.of(this).get(CommentActivitiesViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_comment_activities, container, false)
+        val no_comments_textview = root.findViewById<TextView>(R.id.no_comments_textview)
 
         recycler_view = root.findViewById(R.id.recycler_view) as RecyclerView
 
@@ -55,9 +56,12 @@ class CommentActivitiesFragment : Fragment(), CommentAdapter.CommentItemClickLis
         val user_id = (activity as UserActivity).user_id
 
         UserRequests(requireContext(), auth).getUserPublishedComments( user_id, 1, 20, { it: ArrayList<Comment> ->
-            commentAdapter.aggiungiCommenti(it)
+            if(it.isNotEmpty()){
+                no_comments_textview.visibility = View.GONE
+                recycler_view.visibility = View.VISIBLE
+                commentAdapter.aggiungiCommenti(it)
+            }
         },{it: String ->
-            Toast.makeText(requireContext(),"Errore : $it", Toast.LENGTH_LONG).show()
         })
 
         return root
