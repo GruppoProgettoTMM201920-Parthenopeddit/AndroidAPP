@@ -30,7 +30,7 @@ class CourseActivity : BasicActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_course)
         var intent: Intent = getIntent()
-        var courseId : Int = intent.getIntExtra("id_course",0)        //TODO(DEVE ESSERE OTTENUTO DA QUERY)
+        var courseId : Int = intent.getIntExtra("id_course",0)
         var course_name : String? = ""
 
         val sectionsPagerAdapter = CourseAdapter(supportFragmentManager,courseId)
