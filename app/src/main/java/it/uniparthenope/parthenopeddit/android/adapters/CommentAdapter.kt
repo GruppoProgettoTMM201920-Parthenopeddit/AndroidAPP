@@ -80,6 +80,38 @@ class CommentAdapter(private val context: Context) : RecyclerView.Adapter<Commen
             listener?.onClickComments( currentItem.id, currentItem )
         }
 
+        holder.comment_relativelayout.setOnLongClickListener {
+            if(!holder.collapsed) {
+                holder.posttext_textview.visibility = View.GONE
+                holder.comments_textview.visibility = View.GONE
+                holder.comment_btn.visibility = View.GONE
+                holder.upvote_textview.visibility = View.GONE
+                holder.downvote_textview.visibility = View.GONE
+                holder.upvote_btn.visibility = View.GONE
+                holder.downvote_btn.visibility = View.GONE
+
+                holder.commentsLayoutContainer.visibility = View.GONE
+
+                holder.collapsed = true
+            } else {
+                holder.posttext_textview.visibility = View.VISIBLE
+                holder.comments_textview.visibility = View.VISIBLE
+                holder.comment_btn.visibility = View.VISIBLE
+                holder.upvote_textview.visibility = View.VISIBLE
+                holder.downvote_textview.visibility = View.VISIBLE
+                holder.upvote_btn.visibility = View.VISIBLE
+                holder.downvote_btn.visibility = View.VISIBLE
+
+                if(holder.comments_visible)
+                    holder.commentsLayoutContainer.visibility = View.VISIBLE
+                else
+                    holder.commentsLayoutContainer.visibility = View.GONE
+
+                holder.collapsed = false
+            }
+            return@setOnLongClickListener true
+        }
+
         Log.d("DEBUG","settando la lista di commenti del commento ${currentItem.id}")
         Log.d("DEBUG","comments num : ${currentItem.comments_num?:0}")
 
@@ -94,10 +126,12 @@ class CommentAdapter(private val context: Context) : RecyclerView.Adapter<Commen
             holder.commentsListContainer.setHasFixedSize(true)
 
             holder.commentsLayoutContainer.visibility = View.VISIBLE
+            holder.comments_visible = true
         } else {
 
             Log.d("DEBUG","no comments to show")
             holder.commentsLayoutContainer.visibility = View.GONE
+            holder.comments_visible = false
         }
     }
 
@@ -120,6 +154,9 @@ class CommentAdapter(private val context: Context) : RecyclerView.Adapter<Commen
         val comment_btn: ImageButton = itemView.comments_btn
         val comment_relativelayout: RelativeLayout = itemView.comment_relativelayout
         val comments_textview: TextView = itemView.comment_comments_textview
+
+        var collapsed: Boolean = false
+        var comments_visible: Boolean = false
 
         val commentsLayoutContainer: LinearLayout = itemView.commentsLayoutContainer
         val commentsListContainer: RecyclerView = itemView.commentsListContainer
