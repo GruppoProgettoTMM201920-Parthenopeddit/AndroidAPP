@@ -31,6 +31,7 @@ import kotlinx.android.synthetic.main.cardview_review.*
 class ReviewCommentsActivity : BasicActivity(), CommentAdapter.CommentItemClickListeners {
 
     private lateinit var review: Review
+    private lateinit var adapter: CommentAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +53,8 @@ class ReviewCommentsActivity : BasicActivity(), CommentAdapter.CommentItemClickL
             setReview(deserializedReview)
         }
 
+        adapter = CommentAdapter(this,this)
+
         ReviewsRequests(this, app.auth).getReviewWithComments(id_review,
             {
                 setReview(it)
@@ -65,8 +68,10 @@ class ReviewCommentsActivity : BasicActivity(), CommentAdapter.CommentItemClickL
                     Log.d("DEBUG","initializing comments layout")
 
                     val listaCommenti:RecyclerView = findViewById(R.id.listaCommenti)
-                    val commentAdapter = CommentAdapter(this, commenti, this)
-                    listaCommenti.adapter = commentAdapter
+
+                    adapter.aggiornaLista(commenti)
+
+                    listaCommenti.adapter = adapter
                     listaCommenti.layoutManager = LinearLayoutManager(this)
                     listaCommenti.setHasFixedSize(true)
 
@@ -84,7 +89,15 @@ class ReviewCommentsActivity : BasicActivity(), CommentAdapter.CommentItemClickL
         send_btn.setOnClickListener {
             message = message_edittext.text.toString()
             if(message.isNotEmpty()) {
-                //TODO: Send message through API
+                CommentsRequests(this, app.auth).publishNewComment(
+                    message,
+                    review.id,
+                    {
+                        adapter.aggiungiCommenti(listOf(it))
+                    }, {
+                        Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                    }
+                )
             } else{
                 Toast.makeText(this,"Non hai scritto alcun commento.",Toast.LENGTH_SHORT).show()
             }

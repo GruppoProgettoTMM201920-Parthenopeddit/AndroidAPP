@@ -26,6 +26,7 @@ import kotlinx.android.synthetic.main.cardview_post.title_textview
 class PostCommentsActivity : BasicActivity(), CommentAdapter.CommentItemClickListeners {
 
     private lateinit var post:Post
+    private lateinit var adapter: CommentAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +48,8 @@ class PostCommentsActivity : BasicActivity(), CommentAdapter.CommentItemClickLis
             setPost(deserializedPost)
         }
 
+        adapter = CommentAdapter(this,this)
+
         PostsRequests(this, app.auth).getPostWithComments(id_post,
             {
                 Log.d("DEBUG","Fetched post ${id_post}")
@@ -62,8 +65,10 @@ class PostCommentsActivity : BasicActivity(), CommentAdapter.CommentItemClickLis
                     Log.d("DEBUG","initializing comments layout")
 
                     val listaCommenti:RecyclerView = findViewById(R.id.listaCommenti)
-                    val commentAdapter = CommentAdapter(this, commenti, this)
-                    listaCommenti.adapter = commentAdapter
+
+                    adapter.aggiornaLista(commenti)
+
+                    listaCommenti.adapter = adapter
                     listaCommenti.layoutManager = LinearLayoutManager(this)
                     listaCommenti.setHasFixedSize(true)
 
@@ -81,7 +86,15 @@ class PostCommentsActivity : BasicActivity(), CommentAdapter.CommentItemClickLis
         send_btn.setOnClickListener {
             message = message_edittext.text.toString()
             if(message.isNotEmpty()) {
-                //TODO: Send message through API
+                CommentsRequests(this, app.auth).publishNewComment(
+                    message,
+                    post.id,
+                    {
+                        adapter.aggiungiCommenti(listOf(it))
+                    }, {
+                        Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                    }
+                )
             } else{
                 Toast.makeText(this,"Non hai scritto alcun commento.",Toast.LENGTH_SHORT).show()
             }

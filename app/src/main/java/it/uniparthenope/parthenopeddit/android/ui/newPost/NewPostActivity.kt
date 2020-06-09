@@ -37,31 +37,38 @@ class NewPostActivity : BasicActivity(){
         var board_name_textview : TextView = findViewById<TextView>(R.id.board_name_textview)
         board_name_textview.text = board_name
 
-        var boards_name: ArrayList<String> = ArrayList()
         val publish_button = findViewById<Button>(R.id.publish_button)
 
         publish_button.setOnClickListener {
 
-            if(title_edittext.text.isEmpty()){ empty_title_textview.visibility = View.VISIBLE }
-            else if(user_post_edittext.text.isEmpty()){ empty_body_textview.visibility = View.VISIBLE }
-            else {
-
-
-               PostsRequests(this, app.auth).publishNewPost(
-                    title_edittext.text.toString(),
-                   user_post_edittext.text.toString(),
-                   boardId,
-                    {it: Post ->
-                        Toast.makeText(this, "Post pubblicato", Toast.LENGTH_SHORT).show()
-                    },{it: String ->
-                        Toast.makeText(this, "Errore ${it}", Toast.LENGTH_LONG).show()
-                    })
-
-                val intent = Intent(this, HomeActivity::class.java)
-                startActivity(intent)
-                finish()
+            if(title_edittext.text.isEmpty()){
+                empty_title_textview.visibility = View.VISIBLE
+                return@setOnClickListener
+            } else {
+                empty_title_textview.visibility = View.GONE
             }
-        }
 
+            if(user_post_edittext.text.isEmpty()){
+                empty_body_textview.visibility = View.VISIBLE
+                return@setOnClickListener
+            } else {
+                empty_body_textview.visibility = View.GONE
+            }
+
+            PostsRequests(this, app.auth).publishNewPost(
+                title_edittext.text.toString(),
+                user_post_edittext.text.toString(),
+                boardId,
+                {
+                    Toast.makeText(this, "Post pubblicato", Toast.LENGTH_SHORT).show()
+                },{
+                    Toast.makeText(this, "Errore ${it}", Toast.LENGTH_LONG).show()
+                }
+            )
+
+            val intent = Intent(this, HomeActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 }

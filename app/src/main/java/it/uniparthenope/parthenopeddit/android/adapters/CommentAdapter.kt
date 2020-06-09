@@ -21,7 +21,18 @@ import kotlinx.android.synthetic.main.cardview_post.view.upvote_btn
 import kotlinx.android.synthetic.main.cardview_post.view.upvote_textview
 import kotlinx.android.synthetic.main.cardview_post.view.username_textview
 
-class CommentAdapter(private val context: Context, private var commentItemsList: ArrayList<Comment>, private var listener:CommentItemClickListeners?) : RecyclerView.Adapter<CommentAdapter.CommentViewHolder>() {
+class CommentAdapter(private val context: Context) : RecyclerView.Adapter<CommentAdapter.CommentViewHolder>() {
+
+    private var listener:CommentItemClickListeners? = null
+    private var commentItemsList: ArrayList<Comment> = arrayListOf()
+
+    constructor(context: Context, listener:CommentItemClickListeners?) : this(context) {
+        this.listener = listener
+    }
+
+    constructor(context: Context, commentItemsList: ArrayList<Comment>, listener:CommentItemClickListeners?) : this(context, listener) {
+        this.commentItemsList = commentItemsList
+    }
 
     interface CommentItemClickListeners {
         fun onClickLike(id_Commento:Int, upvote_textview: TextView, downvote_textview: TextView)
@@ -33,8 +44,8 @@ class CommentAdapter(private val context: Context, private var commentItemsList:
         this.listener = listener
     }
 
-    fun aggiungiCommento(postItemList: List<Comment>) {
-        this.commentItemsList.addAll(postItemList)
+    fun aggiungiCommenti(commentsList: List<Comment>) {
+        this.commentItemsList.addAll(commentsList)
         notifyDataSetChanged()
     }
 

@@ -1,6 +1,5 @@
 package it.uniparthenope.parthenopeddit.android.ui.messages
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.android.PostCommentsActivity
 //import it.uniparthenope.parthenopeddit.android.adapters.ChatListAdapter
 import it.uniparthenope.parthenopeddit.android.adapters.CommentAdapter
 import it.uniparthenope.parthenopeddit.android.ui.user_activities.comment.CommentActivitiesViewModel
@@ -50,7 +48,7 @@ class CommentActivitiesFragment : Fragment(), CommentAdapter.CommentItemClickLis
 
         //TODO: through API
         UserRequests(requireContext(), authManager).getUserPublishedComments( authManager.username!!, 1, 20, { it: ArrayList<Comment> ->
-            commentAdapter.aggiungiCommento(it)
+            commentAdapter.aggiungiCommenti(it)
         },{it: String ->
             Toast.makeText(requireContext(),"Errore : $it", Toast.LENGTH_LONG).show()
         })
@@ -61,7 +59,7 @@ class CommentActivitiesFragment : Fragment(), CommentAdapter.CommentItemClickLis
             } else {
                 commentsItemList!!
 
-                commentAdapter.aggiungiCommento( commentsItemList )
+                commentAdapter.aggiungiCommenti( commentsItemList )
             }
         }
 

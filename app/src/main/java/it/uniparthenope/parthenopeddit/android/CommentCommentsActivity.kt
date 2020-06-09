@@ -34,6 +34,7 @@ import kotlinx.android.synthetic.main.cardview_post.username_textview
 class CommentCommentsActivity : BasicActivity(), CommentAdapter.CommentItemClickListeners {
 
     private lateinit var comment:Comment
+    private lateinit var adapter: CommentAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +56,8 @@ class CommentCommentsActivity : BasicActivity(), CommentAdapter.CommentItemClick
             setComment(deserializedComment)
         }
 
+        adapter = CommentAdapter(this,this)
+
         CommentsRequests(this, app.auth).getCommentWithComments(id_comment,
             {
                 Log.d("DEBUG","Fetched post ${id_comment}")
@@ -70,8 +73,10 @@ class CommentCommentsActivity : BasicActivity(), CommentAdapter.CommentItemClick
                     Log.d("DEBUG","initializing comments layout")
 
                     val listaCommenti:RecyclerView = findViewById(R.id.listaCommenti)
-                    val commentAdapter = CommentAdapter(this, commenti, this)
-                    listaCommenti.adapter = commentAdapter
+
+                    adapter.aggiornaLista(commenti)
+
+                    listaCommenti.adapter = adapter
                     listaCommenti.layoutManager = LinearLayoutManager(this)
                     listaCommenti.setHasFixedSize(true)
 
@@ -86,10 +91,20 @@ class CommentCommentsActivity : BasicActivity(), CommentAdapter.CommentItemClick
         val send_btn = findViewById<ImageButton>(R.id.send_btn)
         var message: String
 
+
+
         send_btn.setOnClickListener {
             message = message_edittext.text.toString()
             if(message.isNotEmpty()) {
-                //TODO: Send message through API
+                CommentsRequests(this, app.auth).publishNewComment(
+                    message,
+                    comment.id,
+                    {
+                        adapter.aggiungiCommenti(listOf(it))
+                    }, {
+                        Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                    }
+                )
             } else{
                 Toast.makeText(this,"Non hai scritto alcun commento.",Toast.LENGTH_SHORT).show()
             }

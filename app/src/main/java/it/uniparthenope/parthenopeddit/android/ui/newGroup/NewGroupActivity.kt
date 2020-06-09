@@ -35,29 +35,16 @@ class NewGroupActivity : BasicActivity() {
             user_group.addAll(listOf("user1","user2"))      //TEST
 
             GroupsRequests(this, app.auth).createGroup( group_name_edittext.text.toString(), listOf(),
-            {it: Group ->
-                //TODO: get groupId
+            {
                 val intent = Intent(this, GroupActivity::class.java)
                 intent.putExtra("id_group", it.id)
                 startActivity(intent)
                 finish()
             },{
-                    //TODO
-
             },{it: String ->
                     Toast.makeText(this, "Errore ${it}", Toast.LENGTH_LONG).show()
                 }
-
             )
-
-
-            MockApiData().createGroup(group_name_edittext.text.toString(), user_group) { groupId: Int, error: String? ->
-                val intent = Intent(this, GroupActivity::class.java)
-                intent.putExtra("id_group", groupId)
-                startActivity(intent)
-                finish()
-            }
-
         }
     }
 }
