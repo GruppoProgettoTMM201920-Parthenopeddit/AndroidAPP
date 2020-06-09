@@ -20,10 +20,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mancj.materialsearchbar.MaterialSearchBar
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.android.CourseActivity
-import it.uniparthenope.parthenopeddit.android.GroupActivity
-import it.uniparthenope.parthenopeddit.android.HomeActivity
-import it.uniparthenope.parthenopeddit.android.PostCommentsActivity
+import it.uniparthenope.parthenopeddit.android.*
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.ui.home.HomeViewModel
 import it.uniparthenope.parthenopeddit.android.ui.newGroup.NewGroupActivity
@@ -115,6 +112,12 @@ class CoursePostFragment(private var courseID: Int) : Fragment(), PostAdapter.Po
         val intent = Intent(requireContext(), PostCommentsActivity::class.java)
         intent.putExtra("idPost", id_post)
         intent.putExtra("post", post.toGson())
+        startActivity(intent)
+    }
+
+    override fun onUserClick(id_user: String) {
+        val intent = Intent(requireContext(), UserProfileActivity::class.java)
+        intent.putExtra("id_user", id_user)
         startActivity(intent)
     }
 

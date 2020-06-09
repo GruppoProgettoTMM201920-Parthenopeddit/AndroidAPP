@@ -69,41 +69,18 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         val rotateClockwise = AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_clockwise)
         val rotateAnticlockwise = AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_anticlockwise)
 
-        //MATERIALSEARCHBAR
-        val lv = root.findViewById(R.id.search_listview) as ListView
         val searchBar = root.findViewById(R.id.searchBar) as MaterialSearchBar
-        searchBar.setHint("Ricerca...")
         searchBar.setSpeechMode(false)
-
-        var galaxies = arrayOf("Sombrero", "Cartwheel", "Pinwheel", "StarBust", "Whirlpool", "Ring Nebular", "Own Nebular", "Centaurus A", "Virgo Stellar Stream", "Canis Majos Overdensity", "Mayall's Object", "Leo", "Milky Way", "IC 1011", "Messier 81", "Andromeda", "Messier 87")
-
-        //ADAPTER
-        val adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_list_item_1, galaxies)
-        lv.setAdapter(adapter)
-
         searchBar.setCardViewElevation(10)
-        searchBar.addTextChangeListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
-
-            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
-
-            override fun afterTextChanged(editable: Editable) {
-
-            }
-        })
         searchBar.setOnSearchActionListener(object : MaterialSearchBar.OnSearchActionListener {
-            override fun onSearchStateChanged(enabled: Boolean) {
-
-            }
+            override fun onSearchStateChanged(enabled: Boolean) {}
 
             override fun onSearchConfirmed(text: CharSequence) {
-                Toast.makeText(requireContext(), "ricerca", Toast.LENGTH_SHORT).show()
                 if(text.isNotBlank()){
                     val intent = Intent(requireContext(), SearchActivity::class.java)
-                    intent.putExtra("query", text)
+                    intent.putExtra("query", text.toString())
                     startActivity(intent)
                 }
-
             }
 
             override fun onButtonClicked(buttonCode: Int) {
@@ -139,13 +116,10 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
                 fab_new_post.animate().translationY(-200F)
                 fab_new_group.animate().translationY(-400F)
-
                 fab_new_post_textview.animate().translationY(-200F)
                 fab_new_group_textview.animate().translationY(-400F)
-
                 fab_new_post_textview.visibility = View.VISIBLE
                 fab_new_group_textview.visibility = View.VISIBLE
-
                 fab_new_post_textview.animate().alpha(1F)
                 fab_new_group_textview.animate().alpha(1F)
                 isOpen = true

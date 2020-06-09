@@ -21,6 +21,12 @@ class UserListAdapter() : RecyclerView.Adapter<UserListAdapter.AddMemberAdapterV
         notifyDataSetChanged()
     }
 
+    fun setUserList(userList: List<User>) {
+        this.userList.clear()
+        this.userList.addAll(userList)
+        notifyDataSetChanged()
+    }
+
     fun setItemClickListener(listener: UserListItemClickListeners) {
         this.listener = listener
     }
@@ -42,7 +48,7 @@ class UserListAdapter() : RecyclerView.Adapter<UserListAdapter.AddMemberAdapterV
         val currentItem = userList[position]
 
         holder.user_imageview.setImageResource(R.drawable.default_user_image)
-        holder.username_textview.text = currentItem.display_name
+        holder.username_textview.text = currentItem.display_name?:currentItem.id
 
         if (listener != null) {
             holder.user_imageview.setOnClickListener {

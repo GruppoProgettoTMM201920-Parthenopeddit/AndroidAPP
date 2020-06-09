@@ -30,6 +30,12 @@ class UserCourseAdapter : RecyclerView.Adapter<UserCourseAdapter.UserCourseViewH
         notifyDataSetChanged()
     }
 
+    fun setCourseList(courseItemList: List<Course>) {
+        this.courseList.clear()
+        this.courseList.addAll(courseItemList)
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserCourseViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(
             R.layout.cardview_course,

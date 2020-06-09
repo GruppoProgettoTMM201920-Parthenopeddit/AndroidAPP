@@ -25,8 +25,6 @@ class SettingsActivity : BasicActivity() {
             .beginTransaction()
             .replace(android.R.id.content, SettingsFragment())
             .commit()
-
-
     }
 
 
@@ -130,5 +128,4 @@ class SettingsActivity : BasicActivity() {
                     .getString(preference.key, ""))
         }
     }
-
 }

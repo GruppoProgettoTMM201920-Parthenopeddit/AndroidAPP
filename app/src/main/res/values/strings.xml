@@ -60,7 +60,5 @@
     <!--FIREBASE-->
     <string name="msg_token_fmt"><![CDATA[test -> %s]]></string>
     <string name="testing_notification_channel_id">TESTING_CHANNEL</string>
-    <string name="title_activity_search">SearchActivity</string>
-
 
 </resources>

@@ -1,5 +1,6 @@
 package it.uniparthenope.parthenopeddit.android.ui.search.posts
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,59 +16,78 @@ import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.*
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
+import it.uniparthenope.parthenopeddit.android.adapters.UserCourseAdapter
 import it.uniparthenope.parthenopeddit.android.ui.newGroup.NewGroupActivity
 import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
 import it.uniparthenope.parthenopeddit.android.ui.user_activities.post.PostActivitiesViewModel
 import it.uniparthenope.parthenopeddit.api.MockApiData
+import it.uniparthenope.parthenopeddit.api.requests.CoursesRequests
 import it.uniparthenope.parthenopeddit.api.requests.PostsRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Board
 import it.uniparthenope.parthenopeddit.model.LikeDislikeScore
 import it.uniparthenope.parthenopeddit.model.Post
 import it.uniparthenope.parthenopeddit.util.toGson
+import kotlinx.android.synthetic.main.fragment_search_courses.recycler_view
+import kotlinx.android.synthetic.main.fragment_search_posts.*
 
-class SearchPostsFragment : Fragment(), PostAdapter.PostItemClickListeners{
 
-    private lateinit var auth: AuthManager
+class SearchPostsFragment(private var searchQuery: String) : Fragment(), PostAdapter.PostItemClickListeners {
+
+    private lateinit var authManager: AuthManager
+
+    private lateinit var adapter: PostAdapter
     private lateinit var recycler_view: RecyclerView
-    private lateinit var searchPostsViewModel: SearchPostsViewModel
+    private lateinit var no_posts_textview: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        searchPostsViewModel =
-            ViewModelProviders.of(this).get(SearchPostsViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_search_posts, container, false)
-        val no_posts_textview = root.findViewById<TextView>(R.id.no_posts_textview)
 
-        recycler_view = root.findViewById(R.id.recycler_view) as RecyclerView
+        adapter = PostAdapter()
+        adapter.setItemClickListener(this)
 
-        val postAdapter = PostAdapter()
-        postAdapter.setItemClickListener(this)
-        recycler_view.adapter = postAdapter
+        recycler_view = root.findViewById(R.id.recycler_view)
+        no_posts_textview = root.findViewById(R.id.no_posts_textview)
+
+        recycler_view.adapter = adapter
         recycler_view.layoutManager = LinearLayoutManager(requireContext())
         recycler_view.setHasFixedSize(true)
 
-        auth = (activity as BasicActivity).app.auth
+        authManager = (activity as BasicActivity).app.auth
 
-        val activity = activity as SearchActivity
-        val query = activity.searchedQuery
-
-        PostsRequests(requireContext(), auth).searchPost(query,{it: ArrayList<Post> ->
-            if(it.isNotEmpty()){
-                no_posts_textview.visibility = View.GONE
-                recycler_view.visibility = View.VISIBLE
-                postAdapter.aggiungiPost(it)
-            }
-        },{it: String ->
-            Toast.makeText(requireContext(), "Errore ${it}", Toast.LENGTH_LONG).show()
-        })
+        search(searchQuery)
 
         return root
     }
 
+    private fun showList( visible: Boolean ) {
+        if( visible ) {
+            recycler_view.visibility = View.VISIBLE
+            no_posts_textview.visibility = View.GONE
+        } else {
+            recycler_view.visibility = View.GONE
+            no_posts_textview.visibility = View.VISIBLE
+        }
+    }
+
+    fun search(searchQuery: String) {
+        adapter.setPostList(listOf())
+        PostsRequests(activity as Context, authManager).searchPost(
+            searchQuery,
+            {
+                if(it.isNotEmpty()){
+                    adapter.setPostList(it)
+                    showList(true)
+                }
+            },{
+                showList(false)
+            }
+        )
+    }
 
     private fun updateLike(upvote_textview: TextView, downvote_textview: TextView, scores: LikeDislikeScore) {
         upvote_textview.text = scores.likes_num.toString()
@@ -75,8 +95,8 @@ class SearchPostsFragment : Fragment(), PostAdapter.PostItemClickListeners{
     }
 
     override fun onClickLike(id_post: Int, upvote_textview: TextView, downvote_textview: TextView) {
-        PostsRequests(requireContext(), auth).likePost(
-            1, {
+        PostsRequests(requireContext(), authManager).likePost(
+            id_post, {
                 updateLike(upvote_textview, downvote_textview, it)
             }, {
                 updateLike(upvote_textview, downvote_textview, it)
@@ -89,8 +109,8 @@ class SearchPostsFragment : Fragment(), PostAdapter.PostItemClickListeners{
     }
 
     override fun onClickDislike(id_post: Int, upvote_textview: TextView, downvote_textview: TextView) {
-        PostsRequests(requireContext(), auth).dislikePost(
-            1, {
+        PostsRequests(requireContext(), authManager).dislikePost(
+            id_post, {
                 updateLike(upvote_textview, downvote_textview, it)
             }, {
                 updateLike(upvote_textview, downvote_textview, it)
@@ -124,12 +144,12 @@ class SearchPostsFragment : Fragment(), PostAdapter.PostItemClickListeners{
 
     override fun onBoardClick(board_id: Int?, board: Board?) {
         if (board_id == null || board_id == 0) {
-            (activity as BasicActivity).goToActivity(HomeActivity::class.java) //HOME
+            (activity as BasicActivity).goToActivity(HomeActivity::class.java)
         } else {
             when (board?.type) {
                 "course" -> {
-                    val intent = Intent(requireContext(), CourseActivity::class.java)  //CORSO
-                    intent.putExtra("id_group", board_id)
+                    val intent = Intent(requireContext(), CourseActivity::class.java)
+                    intent.putExtra("id_course", board_id)
                     startActivity(intent)
                 }
                 "group" -> {
@@ -141,5 +161,4 @@ class SearchPostsFragment : Fragment(), PostAdapter.PostItemClickListeners{
             }
         }
     }
-
 }

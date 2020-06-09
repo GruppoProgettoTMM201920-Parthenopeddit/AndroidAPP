@@ -30,6 +30,12 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
         notifyDataSetChanged()
     }
 
+    fun setPostList(postItemList: List<Post>) {
+        this.postList.clear()
+        this.postList.addAll(postItemList)
+        notifyDataSetChanged()
+    }
+
     interface PostItemClickListeners {
         fun onClickLike(id_post:Int, upvote_textview: TextView, downvote_textview: TextView)
         fun onClickDislike(id_post:Int, upvote_textview: TextView, downvote_textview: TextView)
