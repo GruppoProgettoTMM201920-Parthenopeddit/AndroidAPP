@@ -209,7 +209,7 @@ class CoursesRequests(private val ctx: Context, private val auth: AuthManager) {
         ApiClient(ctx).performRequest(
             object : ApiRoute() {
                 override val url: String
-                    get() = "$baseUrl/courses/$course_id/posts/$page/$perPage"
+                    get() = "$baseUrl/courses/$course_id/posts/$perPage/$page"
                 override val httpMethod: Int
                     get() = Request.Method.GET
                 override val params: HashMap<String, String>
@@ -280,7 +280,7 @@ class CoursesRequests(private val ctx: Context, private val auth: AuthManager) {
         ApiClient(ctx).performRequest(
             object : ApiRoute() {
                 override val url: String
-                    get() = "$baseUrl/courses/$course_id/reviews/$page/$perPage"
+                    get() = "$baseUrl/courses/$course_id/reviews/$perPage/$page"
                 override val httpMethod: Int
                     get() = Request.Method.GET
                 override val params: HashMap<String, String>
