@@ -20,10 +20,7 @@ import com.google.gson.Gson
 import com.mancj.materialsearchbar.MaterialSearchBar
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.android.PostCommentsActivity
-import it.uniparthenope.parthenopeddit.android.CourseActivity
-import it.uniparthenope.parthenopeddit.android.GroupActivity
-import it.uniparthenope.parthenopeddit.android.HomeActivity
+import it.uniparthenope.parthenopeddit.android.*
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.ui.newGroup.NewGroupActivity
 import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
@@ -100,6 +97,12 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
             }
 
             override fun onSearchConfirmed(text: CharSequence) {
+                Toast.makeText(requireContext(), "ricerca", Toast.LENGTH_SHORT).show()
+                if(text.isNotBlank()){
+                    val intent = Intent(requireContext(), SearchActivity::class.java)
+                    intent.putExtra("query", text)
+                    startActivity(intent)
+                }
 
             }
 
