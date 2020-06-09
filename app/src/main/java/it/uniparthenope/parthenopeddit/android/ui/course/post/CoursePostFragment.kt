@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.PostCommentsActivity
+import it.uniparthenope.parthenopeddit.android.UserProfileActivity
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.ui.user_activities.post.PostActivitiesViewModel
 import it.uniparthenope.parthenopeddit.api.MockApiData
@@ -102,6 +103,12 @@ class CoursePostFragment(courseID: Int) : Fragment(), PostAdapter.PostItemClickL
     override fun onPostClick(id_post: Int, post: Post) {
         val intent = Intent(requireContext(), PostCommentsActivity::class.java)
         intent.putExtra("idPost", id_post)
+        startActivity(intent)
+    }
+
+    override fun onUserClick(id_user: String) {
+        val intent = Intent(requireContext(), UserProfileActivity::class.java)
+        intent.putExtra("id_user", id_user)
         startActivity(intent)
     }
 }

@@ -207,6 +207,12 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         startActivity(intent)
     }
 
+    override fun onUserClick(id_user: String) {
+        val intent = Intent(requireContext(), UserProfileActivity::class.java)
+        intent.putExtra("id_user", id_user)
+        startActivity(intent)
+    }
+
     override fun onBoardClick(board_id: Int?, board: Board?) {
         if (board_id == null || board_id == 0) {
             (activity as BasicActivity).goToActivity(HomeActivity::class.java) //HOME

@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
@@ -20,12 +21,19 @@ class UserProfileActivity : BasicActivity() {
 
         val user_activity_button = findViewById<Button>(R.id.user_activity_button)
         val user_chat_button = findViewById<Button>(R.id.user_chat_button)
+        val username_textview = findViewById<TextView>(R.id.username_textview)
+        val username_shown_textview = findViewById<TextView>(R.id.username_shown_textview)
+        val registered_on_textview = findViewById<TextView>(R.id.registered_on_textview)
 
         val extras = intent.extras
         val id_user = extras?.getString("id_user")
 
+
         UserRequests(this, app.auth).getUserByID(id_user!!,{it: User ->
             user = it
+            username_textview.text = user.id
+            username_shown_textview.text = user.display_name?:user.id
+            registered_on_textview.text = user.registered_on
         },{
             Toast.makeText(this,"Errore : $it", Toast.LENGTH_LONG).show()
         })

@@ -36,6 +36,7 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
         fun onClickComments(id_post:Int, post:Post)
         fun onBoardClick(board_id: Int?, board: Board?)
         fun onPostClick(id_post: Int, post:Post)
+        fun onUserClick(id_user: String)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
@@ -90,6 +91,10 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
 
             holder.board_textview.setOnClickListener {
                 listener!!.onBoardClick(currentItem.posted_to_board_id, currentItem.posted_to_board)
+            }
+
+            holder.username_textview.setOnClickListener {
+                listener!!.onUserClick(currentItem.author_id)
             }
 
             holder.relativeLayout.setOnClickListener {

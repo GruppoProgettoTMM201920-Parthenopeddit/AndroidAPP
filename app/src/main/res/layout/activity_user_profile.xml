@@ -48,6 +48,7 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="8dp"
         android:background="@drawable/settings_shape"
+        android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -60,7 +61,6 @@
             android:text="Registrato il"
             android:textSize="15sp"
             android:layout_marginTop="10dp"
-            android:layout_marginStart="10dp"
             android:textStyle="bold" />
 
         <TextView
@@ -68,30 +68,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="01/01/1970"
-            android:textSize="15sp"
-            android:layout_marginStart="10dp"/>
+            android:textSize="15sp"/>
 
         <Button
             android:id="@+id/user_activity_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
             android:textColor="@color/white"
             android:text="Visualizza le attività dell'utente"
+            android:background="@drawable/fab_textview_bubble"
             android:padding="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="10dp"/>
+            android:layout_marginTop="10dp"/>
 
         <Button
             android:id="@+id/user_chat_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
             android:textColor="@color/white"
             android:text="Apri la chat con l'utente"
+            android:background="@drawable/fab_textview_bubble"
             android:padding="10dp"
             android:layout_marginTop="10dp"
-            android:layout_marginStart="10dp"
             android:layout_marginBottom="20dp"/>
 
     </LinearLayout>
