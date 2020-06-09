@@ -2,6 +2,7 @@ package it.uniparthenope.parthenopeddit.android
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.Button
@@ -27,6 +28,7 @@ import it.uniparthenope.parthenopeddit.api.requests.CoursesRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Course
 import it.uniparthenope.parthenopeddit.model.Post
+import it.uniparthenope.parthenopeddit.util.TAG
 import it.uniparthenope.parthenopeddit.util.toObject
 import kotlinx.android.synthetic.main.activity_course.*
 
@@ -198,9 +200,18 @@ class CourseActivity : BasicActivity() {
 
         override fun createFragment(position: Int): Fragment {
             return when( position ) {
-                0 -> fragmentPosts
-                1 -> fragmentReviews
-                else -> { Fragment() }
+                0 -> {
+                    Log.d(TAG, "POSTS FRAGMENT REQUESTED")
+                    fragmentPosts
+                }
+                1 -> {
+                    Log.d(TAG, "REVIEWS FRAGMENT REQUESTED")
+                    fragmentReviews
+                }
+                else -> {
+                    Log.d(TAG, "error --------- in else ----------------------")
+                    Fragment()
+                }
             }
         }
     }
