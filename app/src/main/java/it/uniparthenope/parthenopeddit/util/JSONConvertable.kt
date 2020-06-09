@@ -10,6 +10,8 @@ interface JSONConvertable : Serializable {
 
 inline fun <reified T : JSONConvertable> String.toObject(): T = Gson().fromJson(this, T::class.java)
 
+inline fun <reified T : JSONConvertable> T.toGson(): String = Gson().toJson(this)
+
 inline fun <reified T : JSONConvertable> String.toObjectArray(): Array<T> = Gson().fromJson(this, Array<T>::class.java)
 
 inline fun <reified T : JSONConvertable> JSONArray.toArrayList(): ArrayList<T> {

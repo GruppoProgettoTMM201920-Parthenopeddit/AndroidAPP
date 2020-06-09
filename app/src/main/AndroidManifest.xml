@@ -42,10 +42,6 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustResize" />
         <activity
-            android:name=".android.GroupChatActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustResize" />
-        <activity
             android:name=".android.CourseActivity"
             android:label="@string/title_activity_review"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -69,7 +65,9 @@
         <activity
             android:name=".android.HomeActivity"
             android:label="@string/app_name" />
-        <activity android:name=".android.CommentActivity" />
+        <activity android:name=".android.PostCommentsActivity" />
+        <activity android:name=".android.ReviewCommentsActivity" />
+        <activity android:name=".android.CommentCommentsActivity" />
     </application>
 
 </manifest>

@@ -33,9 +33,9 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
     interface PostItemClickListeners {
         fun onClickLike(id_post:Int, upvote_textview: TextView, downvote_textview: TextView)
         fun onClickDislike(id_post:Int, upvote_textview: TextView, downvote_textview: TextView)
-        fun onClickComments(id_post:Int)
+        fun onClickComments(id_post:Int, post:Post)
         fun onBoardClick(board_id: Int?, board: Board?)
-        fun onPostClick(id_post: Int)
+        fun onPostClick(id_post: Int, post:Post)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
@@ -54,17 +54,23 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
         holder.board_textview.text = currentItem.posted_to_board?.name?:"Generale"
         holder.timestamp_textview.text = currentItem.timestamp
         holder.posttext_textview.text = currentItem.body
-        holder.upvote_textview.text = "0"
-        holder.downvote_textview.text = "0"
+        holder.upvote_textview.text = currentItem.likes_num.toString()
+        holder.downvote_textview.text = currentItem.dislikes_num.toString()
+        holder.comments_textview.text = currentItem.comments_num.toString()
 
         if( currentItem.posted_to_board_id == 0 || currentItem.posted_to_board_id == null ) {
             holder.board_textview.setBackgroundResource(R.drawable.general_textview_bubble)
             holder.board_textview.setTextColor(Color.BLACK)
-            Log.d("DEBUG", "the board id in home is ${currentItem.posted_to_board_id}")
         } else {
             when (currentItem.posted_to_board!!.type) {
-                "course" -> holder.board_textview.setBackgroundResource(R.drawable.fab_textview_bubble)
-                "group" -> holder.board_textview.setBackgroundResource(R.drawable.group_textview_bubble)
+                "course" ->  {
+                    holder.board_textview.setBackgroundResource(R.drawable.fab_textview_bubble)
+                    holder.board_textview.setTextColor(Color.WHITE)
+                }
+                "group" ->  {
+                    holder.board_textview.setBackgroundResource(R.drawable.group_textview_bubble)
+                    holder.board_textview.setTextColor(Color.WHITE)
+                }
                 else -> holder.board_textview.visibility = View.GONE
             }
         }
@@ -75,11 +81,11 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
             }
 
             holder.downvote_btn.setOnClickListener {
-                listener!!.onClickLike(currentItem.id, holder.upvote_textview, holder.downvote_textview)
+                listener!!.onClickDislike(currentItem.id, holder.upvote_textview, holder.downvote_textview)
             }
 
             holder.comment_btn.setOnClickListener {
-                listener!!.onClickComments(currentItem.id)
+                listener!!.onClickComments(currentItem.id, currentItem)
             }
 
             holder.board_textview.setOnClickListener {
@@ -87,7 +93,7 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
             }
 
             holder.relativeLayout.setOnClickListener {
-                listener!!.onPostClick(currentItem.id)
+                listener!!.onPostClick(currentItem.id, currentItem)
             }
         }
     }
@@ -107,5 +113,6 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
         val downvote_textview: TextView = itemView.downvote_textview
         val comment_btn: ImageButton = itemView.comments_btn
         val relativeLayout: RelativeLayout = itemView.post_relativelayout
+        val comments_textview: TextView = itemView.comments_textview
     }
 }

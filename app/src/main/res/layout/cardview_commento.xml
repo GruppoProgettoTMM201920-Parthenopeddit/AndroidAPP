@@ -88,7 +88,7 @@
                 app:srcCompat="@drawable/ic_downvote_white_24dp"/>
 
             <TextView
-                android:id="@+id/comments_textview"
+                android:id="@+id/comment_comments_textview"
                 android:layout_width="30dp"
                 android:layout_height="20dp"
                 android:layout_below="@+id/posttext_textview"

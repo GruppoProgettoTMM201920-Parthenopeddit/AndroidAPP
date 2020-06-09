@@ -16,24 +16,24 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.gson.Gson
 import com.mancj.materialsearchbar.MaterialSearchBar
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.android.CommentActivity
+import it.uniparthenope.parthenopeddit.android.PostCommentsActivity
 import it.uniparthenope.parthenopeddit.android.CourseActivity
 import it.uniparthenope.parthenopeddit.android.GroupActivity
 import it.uniparthenope.parthenopeddit.android.HomeActivity
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.ui.newGroup.NewGroupActivity
 import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
-import it.uniparthenope.parthenopeddit.android.ui.newReview.NewReviewActivity
-import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.api.requests.PostsRequests
 import it.uniparthenope.parthenopeddit.api.requests.UserRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Board
+import it.uniparthenope.parthenopeddit.model.LikeDislikeScore
 import it.uniparthenope.parthenopeddit.model.Post
-import kotlinx.android.synthetic.main.cardview_post.*
+import it.uniparthenope.parthenopeddit.util.toGson
 
 
 class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
@@ -50,26 +50,6 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         val fab_new_group = root.findViewById(R.id.fab_new_group) as FloatingActionButton
         val fab_new_post_textview = root.findViewById(R.id.fab_new_post_textview) as TextView
         val fab_new_group_textview = root.findViewById(R.id.fab_new_group_textview) as TextView
-
-        /*
-        val listHeader = listOf("I tuoi corsi di studio", "I tuoi gruppi")
-
-        val coursesList = listOf("Corso 1","Corso 2","Corso 3","Corso 4")
-        val groupsList = listOf("Gruppo1","Gruppo 2","Gruppo 3","Gruppo 4")
-
-        //val groupList = resources.getStringArray(R.array.groups)
-
-
-        val listChild = HashMap<String, List<String>>()
-        listChild.put(listHeader[0], coursesList)
-        listChild.put(listHeader[1], groupsList)
-
-        val expandableListAdapter : ExpandableListAdapter = ExpandableListAdapter(requireContext(), listHeader, listChild)
-        //root.expandable_list_view.setAdapter(expandableListAdapter)
-        expandableListAdapter.notifyDataSetChanged()
-        //root.expandable_list_view
-
-         */
 
         recycler_view = root.findViewById(R.id.recycler_view) as RecyclerView
 
@@ -177,15 +157,19 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         return root
     }
 
+    private fun updateLike(upvote_textview: TextView, downvote_textview: TextView, scores: LikeDislikeScore) {
+        upvote_textview.text = scores.likes_num.toString()
+        downvote_textview.text = scores.dislikes_num.toString()
+    }
+
     override fun onClickLike(id_post: Int, upvote_textview: TextView, downvote_textview: TextView) {
         PostsRequests(requireContext(), auth).likePost(
             1, {
-                upvote_textview.text = (upvote_textview.text.toString().toInt() + 1).toString()
+                updateLike(upvote_textview, downvote_textview, it)
             }, {
-                upvote_textview.text = (upvote_textview.text.toString().toInt() - 1).toString()
+                updateLike(upvote_textview, downvote_textview, it)
             }, {
-                downvote_textview.text = (downvote_textview.text.toString().toInt() - 1).toString()
-                upvote_textview.text = (upvote_textview.text.toString().toInt() + 1).toString()
+                updateLike(upvote_textview, downvote_textview, it)
             }, {
                 Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
             }
@@ -193,29 +177,30 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
     }
 
     override fun onClickDislike(id_post: Int, upvote_textview: TextView, downvote_textview: TextView) {
-        PostsRequests(requireContext(), auth).likePost(
+        PostsRequests(requireContext(), auth).dislikePost(
             1, {
-                downvote_textview.text = (downvote_textview.text.toString().toInt() + 1).toString()
+                updateLike(upvote_textview, downvote_textview, it)
             }, {
-                downvote_textview.text = (downvote_textview.text.toString().toInt() - 1).toString()
+                updateLike(upvote_textview, downvote_textview, it)
             }, {
-                upvote_textview.text = (upvote_textview.text.toString().toInt() - 1).toString()
-                downvote_textview.text = (downvote_textview.text.toString().toInt() + 1).toString()
+                updateLike(upvote_textview, downvote_textview, it)
             }, {
                 Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
             }
         )
     }
 
-    override fun onClickComments(id_post: Int) {
-        val intent = Intent(requireContext(), CommentActivity::class.java)
+    override fun onClickComments(id_post: Int, post: Post) {
+        val intent = Intent(requireContext(), PostCommentsActivity::class.java)
         intent.putExtra("idPost", id_post)
+        intent.putExtra("post", post.toGson())
         startActivity(intent)
     }
 
-    override fun onPostClick(id_post: Int) {
-        val intent = Intent(requireContext(), CommentActivity::class.java)
+    override fun onPostClick(id_post: Int, post: Post) {
+        val intent = Intent(requireContext(), PostCommentsActivity::class.java)
         intent.putExtra("idPost", id_post)
+        intent.putExtra("post", post.toGson())
         startActivity(intent)
     }
 
@@ -240,10 +225,6 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
     }
 
     fun onClickNewPost(){
-        //crea dialogo
-            //passi fuonzione da effettuare onSuccess
-        //uploiad to api
-        //notifidatasetchanged()
         val intent = Intent(requireContext(), NewPostActivity::class.java)
         intent.putExtra("id_group",0)
         intent.putExtra("name_group","Generale")

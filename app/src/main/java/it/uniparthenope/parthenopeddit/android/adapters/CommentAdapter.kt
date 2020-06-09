@@ -24,10 +24,9 @@ import kotlinx.android.synthetic.main.cardview_post.view.username_textview
 class CommentAdapter(private val context: Context, private var commentItemsList: ArrayList<Comment>, private var listener:CommentItemClickListeners?) : RecyclerView.Adapter<CommentAdapter.CommentViewHolder>() {
 
     interface CommentItemClickListeners {
-        fun onClickLike(id_Commento:Int)
-        fun onClickDislike(id_Commento:Int)
-        fun onClickComments(id_Commento:Int)
-        fun onCommentClick(id_post: Int)
+        fun onClickLike(id_Commento:Int, upvote_textview: TextView, downvote_textview: TextView)
+        fun onClickDislike(id_Commento:Int, upvote_textview: TextView, downvote_textview: TextView)
+        fun onClickComments(id_Commento:Int, comment: Comment)
     }
 
     fun setItemClickListener( listener:CommentItemClickListeners? ) {
@@ -54,31 +53,26 @@ class CommentAdapter(private val context: Context, private var commentItemsList:
         holder.username_textview.text = currentItem.author?.display_name?:currentItem.author_id
         holder.timestamp_comment_textview.text = currentItem.timestamp
         holder.posttext_textview.text = currentItem.body
-        holder.upvote_textview.text = "0"
-        holder.downvote_textview.text = "0"
+        holder.upvote_textview.text = currentItem.likes_num.toString()
+        holder.downvote_textview.text = currentItem.dislikes_num.toString()
+        holder.comments_textview.text = currentItem.comments_num.toString()
 
         holder.upvote_btn.setOnClickListener {
-            listener?.onClickLike( currentItem.id )
-            holder.upvote_textview.text = (holder.upvote_textview.text.toString().toInt() + 1).toString()
+            listener?.onClickLike( currentItem.id, holder.upvote_textview, holder.downvote_textview )
         }
 
         holder.downvote_btn.setOnClickListener {
-            listener?.onClickLike( currentItem.id )
-            holder.downvote_textview.text = (holder.downvote_textview.text.toString().toInt() + 1).toString()
+            listener?.onClickDislike( currentItem.id, holder.upvote_textview, holder.downvote_textview )
         }
 
         holder.comment_btn.setOnClickListener {
-            listener?.onClickComments( currentItem.id )
-        }
-
-        holder.comment_relativelayout.setOnClickListener {
-            listener?.onCommentClick( currentItem.root_content_id )
+            listener?.onClickComments( currentItem.id, currentItem )
         }
 
         Log.d("DEBUG","settando la lista di commenti del commento ${currentItem.id}")
         Log.d("DEBUG","comments num : ${currentItem.comments_num?:0}")
 
-        if( currentItem.comments_num?:0 > 0 ) {
+        if( currentItem.comments?.size?:0 > 0 ) {
             Log.d("DEBUG","Creo l'adapter")
             val commentAdapter = CommentAdapter(context, currentItem.comments!!, listener)
 
@@ -114,6 +108,7 @@ class CommentAdapter(private val context: Context, private var commentItemsList:
         val downvote_textview: TextView = itemView.downvote_textview
         val comment_btn: ImageButton = itemView.comments_btn
         val comment_relativelayout: RelativeLayout = itemView.comment_relativelayout
+        val comments_textview: TextView = itemView.comment_comments_textview
 
         val commentsLayoutContainer: LinearLayout = itemView.commentsLayoutContainer
         val commentsListContainer: RecyclerView = itemView.commentsListContainer

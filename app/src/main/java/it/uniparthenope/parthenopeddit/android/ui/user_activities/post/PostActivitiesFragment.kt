@@ -13,15 +13,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.android.CommentActivity
+import it.uniparthenope.parthenopeddit.android.PostCommentsActivity
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.ui.user_activities.post.PostActivitiesViewModel
-import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.api.requests.UserRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Board
 import it.uniparthenope.parthenopeddit.model.Post
-import it.uniparthenope.parthenopeddit.model.Review
 
 class PostActivitiesFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
@@ -65,7 +63,7 @@ class PostActivitiesFragment : Fragment(), PostAdapter.PostItemClickListeners {
         //TODO("Not yet implemented")
     }
 
-    override fun onClickComments(id_post: Int) {
+    override fun onClickComments(id_post: Int, post: Post) {
         //TODO("Not yet implemented")
     }
 
@@ -73,8 +71,8 @@ class PostActivitiesFragment : Fragment(), PostAdapter.PostItemClickListeners {
         TODO("Not yet implemented")
     }
 
-    override fun onPostClick(id_post: Int) {
-        val intent = Intent(requireContext(), CommentActivity::class.java)
+    override fun onPostClick(id_post: Int, post: Post) {
+        val intent = Intent(requireContext(), PostCommentsActivity::class.java)
         intent.putExtra("idPost", id_post)
         startActivity(intent)
     }

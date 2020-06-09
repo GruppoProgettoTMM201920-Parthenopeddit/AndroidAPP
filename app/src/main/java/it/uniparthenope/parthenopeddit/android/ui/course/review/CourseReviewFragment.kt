@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -48,15 +49,23 @@ class CourseReviewFragment(courseID: Int) : Fragment(), ReviewAdapter.CourseRevi
 
     }
 
-    override fun onClickLike(id_post: Int) {
+    override fun onClickLike(id_review: Int, upvote_textview: TextView, downvote_textview: TextView) {
         //TODO("Not yet implemented")
     }
 
-    override fun onClickDislike(id_post: Int) {
+    override fun onClickDislike(
+        id_review: Int,
+        upvote_textview: TextView,
+        downvote_textview: TextView
+    ) {
         //TODO("Not yet implemented")
     }
 
     override fun onReviewClick(id_course: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onClickComments(id_review: Int) {
         TODO("Not yet implemented")
     }
 }

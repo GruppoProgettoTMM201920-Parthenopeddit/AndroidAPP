@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
@@ -53,11 +54,15 @@ class ReviewActivitiesFragment : Fragment(), ReviewAdapter.CourseReviewItemClick
         return root
     }
 
-    override fun onClickLike(id_post: Int) {
+    override fun onClickLike(id_review: Int, upvote_textview: TextView, downvote_textview: TextView) {
         //TODO("Not yet implemented")
     }
 
-    override fun onClickDislike(id_post: Int) {
+    override fun onClickDislike(
+        id_review: Int,
+        upvote_textview: TextView,
+        downvote_textview: TextView
+    ) {
         //TODO("Not yet implemented")
     }
 
@@ -65,5 +70,9 @@ class ReviewActivitiesFragment : Fragment(), ReviewAdapter.CourseReviewItemClick
         val intent = Intent(requireContext(), CourseActivity::class.java)
         intent.putExtra("id_course", id_course)
         startActivity(intent)
+    }
+
+    override fun onClickComments(id_review: Int) {
+        TODO("Not yet implemented")
     }
 }
