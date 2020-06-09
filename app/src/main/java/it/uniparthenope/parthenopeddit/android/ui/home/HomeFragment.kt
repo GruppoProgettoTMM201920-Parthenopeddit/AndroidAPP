@@ -164,7 +164,7 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
     override fun onClickLike(id_post: Int, upvote_textview: TextView, downvote_textview: TextView) {
         PostsRequests(requireContext(), auth).likePost(
-            1, {
+            id_post, {
                 updateLike(upvote_textview, downvote_textview, it)
             }, {
                 updateLike(upvote_textview, downvote_textview, it)
@@ -178,7 +178,7 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
     override fun onClickDislike(id_post: Int, upvote_textview: TextView, downvote_textview: TextView) {
         PostsRequests(requireContext(), auth).dislikePost(
-            1, {
+            id_post, {
                 updateLike(upvote_textview, downvote_textview, it)
             }, {
                 updateLike(upvote_textview, downvote_textview, it)

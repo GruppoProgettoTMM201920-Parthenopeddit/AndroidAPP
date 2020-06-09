@@ -168,7 +168,7 @@ class PostCommentsActivity : BasicActivity(), CommentAdapter.CommentItemClickLis
                 when (post.posted_to_board?.type) {
                     "course" -> {
                         val intent = Intent(this, CourseActivity::class.java)  //CORSO
-                        intent.putExtra("id_group", post.posted_to_board_id!!)
+                        intent.putExtra("id_course", post.posted_to_board_id!!)
                         startActivity(intent)
                     }
                     "group" -> {

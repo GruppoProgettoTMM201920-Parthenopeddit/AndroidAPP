@@ -2,45 +2,57 @@ package it.uniparthenope.parthenopeddit.android.ui.course.post
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.widget.ArrayAdapter
+import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.mancj.materialsearchbar.MaterialSearchBar
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
+import it.uniparthenope.parthenopeddit.android.CourseActivity
+import it.uniparthenope.parthenopeddit.android.GroupActivity
+import it.uniparthenope.parthenopeddit.android.HomeActivity
 import it.uniparthenope.parthenopeddit.android.PostCommentsActivity
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
+import it.uniparthenope.parthenopeddit.android.ui.home.HomeViewModel
+import it.uniparthenope.parthenopeddit.android.ui.newGroup.NewGroupActivity
+import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
 import it.uniparthenope.parthenopeddit.android.ui.user_activities.post.PostActivitiesViewModel
 import it.uniparthenope.parthenopeddit.api.MockApiData
+import it.uniparthenope.parthenopeddit.api.requests.CoursesRequests
 import it.uniparthenope.parthenopeddit.api.requests.PostsRequests
+import it.uniparthenope.parthenopeddit.api.requests.UserRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Board
+import it.uniparthenope.parthenopeddit.model.Course
+import it.uniparthenope.parthenopeddit.model.LikeDislikeScore
 import it.uniparthenope.parthenopeddit.model.Post
+import it.uniparthenope.parthenopeddit.util.toGson
 
-class CoursePostFragment(courseID: Int) : Fragment(), PostAdapter.PostItemClickListeners {
+class CoursePostFragment(private var courseID: Int) : Fragment(), PostAdapter.PostItemClickListeners {
 
-    private lateinit var auth: AuthManager
+    private lateinit var auth : AuthManager
     private lateinit var recycler_view: RecyclerView
-    private lateinit var postViewModel: PostActivitiesViewModel
-    var courseId = courseID
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        postViewModel =
-            ViewModelProviders.of(this).get(PostActivitiesViewModel::class.java)
+    private lateinit var postAdapter: PostAdapter
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_course_post, container, false)
 
         recycler_view = root.findViewById(R.id.recycler_view) as RecyclerView
 
-        val postAdapter = PostAdapter()
+        postAdapter = PostAdapter()
         postAdapter.setItemClickListener(this)
         recycler_view.adapter = postAdapter
         recycler_view.layoutManager = LinearLayoutManager(requireContext())
@@ -48,28 +60,30 @@ class CoursePostFragment(courseID: Int) : Fragment(), PostAdapter.PostItemClickL
 
         auth = (activity as BasicActivity).app.auth
 
-        MockApiData().getAllPost( auth.token!! ) { postItemList, error ->
-            if( error != null ) {
-                Toast.makeText(requireContext(),"Errore : $error", Toast.LENGTH_LONG).show()
-            } else {
-                postItemList!!
-
-                postAdapter.aggiungiPost( postItemList.filter{ it.posted_to_board_id == courseId} )
-            }
-        }
+        CoursesRequests(requireContext(), auth).getCoursePosts(
+            course_id = courseID,
+            onSuccess = {
+                postAdapter.aggiungiPost(it)
+            },
+            onFail = {}
+        )
 
         return root
     }
 
+    private fun updateLike(upvote_textview: TextView, downvote_textview: TextView, scores: LikeDislikeScore) {
+        upvote_textview.text = scores.likes_num.toString()
+        downvote_textview.text = scores.dislikes_num.toString()
+    }
+
     override fun onClickLike(id_post: Int, upvote_textview: TextView, downvote_textview: TextView) {
         PostsRequests(requireContext(), auth).likePost(
-            1, {
-                upvote_textview.text = (upvote_textview.text.toString().toInt() + 1).toString()
+            id_post, {
+                updateLike(upvote_textview, downvote_textview, it)
             }, {
-                upvote_textview.text = (upvote_textview.text.toString().toInt() - 1).toString()
+                updateLike(upvote_textview, downvote_textview, it)
             }, {
-                downvote_textview.text = (downvote_textview.text.toString().toInt() - 1).toString()
-                upvote_textview.text = (upvote_textview.text.toString().toInt() + 1).toString()
+                updateLike(upvote_textview, downvote_textview, it)
             }, {
                 Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
             }
@@ -77,14 +91,13 @@ class CoursePostFragment(courseID: Int) : Fragment(), PostAdapter.PostItemClickL
     }
 
     override fun onClickDislike(id_post: Int, upvote_textview: TextView, downvote_textview: TextView) {
-        PostsRequests(requireContext(), auth).likePost(
-            1, {
-                downvote_textview.text = (downvote_textview.text.toString().toInt() + 1).toString()
+        PostsRequests(requireContext(), auth).dislikePost(
+            id_post, {
+                updateLike(upvote_textview, downvote_textview, it)
             }, {
-                downvote_textview.text = (downvote_textview.text.toString().toInt() - 1).toString()
+                updateLike(upvote_textview, downvote_textview, it)
             }, {
-                upvote_textview.text = (upvote_textview.text.toString().toInt() - 1).toString()
-                downvote_textview.text = (downvote_textview.text.toString().toInt() + 1).toString()
+                updateLike(upvote_textview, downvote_textview, it)
             }, {
                 Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
             }
@@ -92,16 +105,20 @@ class CoursePostFragment(courseID: Int) : Fragment(), PostAdapter.PostItemClickL
     }
 
     override fun onClickComments(id_post: Int, post: Post) {
-        //TODO("Not yet implemented")
-    }
-
-    override fun onBoardClick(board_id: Int?, board: Board?) {
-        TODO("Not yet implemented")
+        val intent = Intent(requireContext(), PostCommentsActivity::class.java)
+        intent.putExtra("idPost", id_post)
+        intent.putExtra("post", post.toGson())
+        startActivity(intent)
     }
 
     override fun onPostClick(id_post: Int, post: Post) {
         val intent = Intent(requireContext(), PostCommentsActivity::class.java)
         intent.putExtra("idPost", id_post)
+        intent.putExtra("post", post.toGson())
         startActivity(intent)
+    }
+
+    override fun onBoardClick(board_id: Int?, board: Board?) {
+        //nothing
     }
 }

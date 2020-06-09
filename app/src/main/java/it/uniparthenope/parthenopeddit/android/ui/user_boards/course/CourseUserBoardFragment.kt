@@ -15,10 +15,8 @@ import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.CourseActivity
 import it.uniparthenope.parthenopeddit.android.adapters.UserCourseAdapter
-import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.api.requests.CoursesRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
-import it.uniparthenope.parthenopeddit.model.Board
 import it.uniparthenope.parthenopeddit.model.Course
 
 class CourseUserBoardFragment : Fragment(), UserCourseAdapter.UserCourseItemClickListeners {
@@ -61,9 +59,9 @@ class CourseUserBoardFragment : Fragment(), UserCourseAdapter.UserCourseItemClic
         return root
     }
 
-    override fun onBoardClick(id_course: Int?) {
+    override fun onBoardClick(board_id: Int?) {
         val intent = Intent(requireContext(), CourseActivity::class.java)
-        intent.putExtra("id_group", id_course)
+        intent.putExtra("id_course", board_id)
         startActivity(intent)
     }
 }

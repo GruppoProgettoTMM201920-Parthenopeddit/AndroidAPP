@@ -34,8 +34,8 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
         fun onClickLike(id_post:Int, upvote_textview: TextView, downvote_textview: TextView)
         fun onClickDislike(id_post:Int, upvote_textview: TextView, downvote_textview: TextView)
         fun onClickComments(id_post:Int, post:Post)
-        fun onBoardClick(board_id: Int?, board: Board?)
         fun onPostClick(id_post: Int, post:Post)
+        fun onBoardClick(board_id: Int?, board: Board?)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {

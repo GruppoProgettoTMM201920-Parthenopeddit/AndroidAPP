@@ -18,6 +18,7 @@ import it.uniparthenope.parthenopeddit.android.adapters.ReviewAdapter
 import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.api.requests.UserRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
+import it.uniparthenope.parthenopeddit.model.Course
 import it.uniparthenope.parthenopeddit.model.Review
 
 class ReviewActivitiesFragment : Fragment(), ReviewAdapter.CourseReviewItemClickListeners {
@@ -66,13 +67,18 @@ class ReviewActivitiesFragment : Fragment(), ReviewAdapter.CourseReviewItemClick
         //TODO("Not yet implemented")
     }
 
-    override fun onReviewClick(id_course: Int) {
+    override fun onClickCourse(id_course: Int, course: Course) {
         val intent = Intent(requireContext(), CourseActivity::class.java)
         intent.putExtra("id_course", id_course)
+        intent.putExtra("course", course)
         startActivity(intent)
     }
 
-    override fun onClickComments(id_review: Int) {
+    override fun onReviewClick(id_review: Int, review: Review) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onClickComments(id_review: Int, review: Review) {
         TODO("Not yet implemented")
     }
 }

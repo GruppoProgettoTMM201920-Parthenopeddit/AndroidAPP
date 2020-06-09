@@ -16,6 +16,21 @@
         android:layout_height="match_parent"
         android:padding="8dp">
 
+        <TextView
+            android:id="@+id/group_textview2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/username_textview"
+            android:layout_toEndOf="@+id/image_view"
+            android:background="@drawable/fab_textview_bubble"
+            android:maxWidth="200dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="2dp"
+            android:paddingRight="5dp"
+            android:paddingBottom="2dp"
+            android:text="group"
+            android:textColor="@color/white" />
+
         <ImageButton
             android:id="@+id/comments_btn2"
             android:layout_width="40dp"
@@ -58,7 +73,7 @@
             android:id="@+id/review_enjoyment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/username_textview"
+            android:layout_below="@id/group_textview2"
             android:layout_marginTop="5dp"
             android:layout_toEndOf="@id/image_view"
             android:text="Gradimento:"
