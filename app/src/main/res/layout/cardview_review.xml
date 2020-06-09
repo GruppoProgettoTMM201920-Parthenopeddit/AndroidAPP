@@ -21,6 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/username_textview"
+            android:layout_marginTop="10dp"
             android:layout_toEndOf="@+id/image_view"
             android:background="@drawable/fab_textview_bubble"
             android:maxWidth="200dp"

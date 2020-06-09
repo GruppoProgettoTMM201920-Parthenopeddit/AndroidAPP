@@ -15,6 +15,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.adapters.CourseAdapter
@@ -73,68 +74,39 @@ class CourseActivity : BasicActivity() {
         val pagerAdapter = ScreenSlidePagerAdapter(this)
         viewPager.adapter = pagerAdapter
 
-        //TODO REQUEST FOLLOW
-
-        /*
-        follow_button
-        if(MockDatabase.instance.users_table.filter{ it.id == "user1" }.single().followed_courses!!.filter{ it.id == courseId}.single().id == courseId ){
-            follow_button.text = "Lascia"
-            val imgResource: Int = R.drawable.ic_unfollow_themecolor_24dp
-            follow_button.setCompoundDrawablesWithIntrinsicBounds(imgResource, 0, 0, 0)
-            isFollowed = true
-        } else{
-            follow_button.text = "Entra"
-            val imgResource: Int = R.drawable.ic_follow_themecolor_24dp
-            follow_button.setCompoundDrawablesWithIntrinsicBounds(imgResource, 0, 0, 0)
-            isFollowed = false
-        }
-
-         */
-
-        /*
-        MockApiData().getCourseInfo( app.auth.token!!, courseId) { courseRating:Float, courseDifficulty:Float, numReviews: Int, courseName: String?, isFollowedCourse: Boolean, error: String? ->
-
-            if(isFollowedCourse){
-                isFollowed = true
-                follow_button.text = "Non seguire"
-                val imgResource: Int = R.drawable.ic_unfollow_themecolor_24dp
-                follow_button.setCompoundDrawablesWithIntrinsicBounds(imgResource, 0, 0, 0);
+        TabLayoutMediator(tabLayout, viewPager,
+            TabLayoutMediator.TabConfigurationStrategy { tab, position ->
+                when (position) {
+                    0 -> { tab.text = "Posts"}
+                    1 -> { tab.text = "Reviews"}
+                }
             }
-            course_name_textview.text = courseName
-            course_name = courseName
-            course_enjoyment_rating.text = courseRating.toString()+"/5"
-            course_difficulty_rating.text = courseDifficulty.toString()+"/5"
-            if(numReviews>1 || numReviews!=0){num_reviews_textview.text = numReviews.toString()+" recensioni"} else{num_reviews_textview.text = numReviews.toString()+" recensione"}
+        ).attach()
 
+        CoursesRequests(this, app.auth).getFollowedCourses(
+            {
+                val is_followed = it.filter{ it.id == course.id }.firstOrNull() != null
+                setBottoneFollow(is_followed)
+            }, {}
+        )
 
-            setEnjoymentStars(courseRating)
-            setDifficultyStars(courseDifficulty)
-        }
-
-
-         */
-
-
-        /*
         follow_button.setOnClickListener {
-            if(isFollowed){
-                //TODO: unfollow course
-                Toast.makeText(this, "Hai smesso di seguire ${course_name_textview.text}",Toast.LENGTH_LONG).show()
-                follow_button.text = "Segui"
-                val imgResource: Int = R.drawable.ic_follow_themecolor_24dp
-                follow_button.setCompoundDrawablesWithIntrinsicBounds(imgResource, 0, 0, 0)
-                isFollowed = false
+            if( isFollowed ) {
+                CoursesRequests(this, app.auth).unfollowCourse(
+                    course.id,
+                    {
+                        setBottoneFollow(false)
+                    }, {}
+                )
             } else {
-                //TODO: follow course
-                Toast.makeText(this, "Hai seguito ${course_name_textview.text}",Toast.LENGTH_LONG).show()
-                follow_button.text = "Non seguire"
-                val imgResource: Int = R.drawable.ic_unfollow_themecolor_24dp
-                follow_button.setCompoundDrawablesWithIntrinsicBounds(imgResource, 0, 0, 0)
-                isFollowed = true
+                CoursesRequests(this, app.auth).followCourse(
+                    course.id,
+                    {
+                        setBottoneFollow(true)
+                    }, {}
+                )
             }
         }
-
-         */
 
         val rotateClockwise = AnimationUtils.loadAnimation(this, R.anim.rotate_clockwise)
         val rotateAnticlockwise = AnimationUtils.loadAnimation(this, R.anim.rotate_anticlockwise)
@@ -181,6 +153,20 @@ class CourseActivity : BasicActivity() {
         }
     }
 
+    fun setBottoneFollow(isCourseFollowed: Boolean) {
+        if(!isCourseFollowed){
+            follow_button.text = "Segui"
+            val imgResource: Int = R.drawable.ic_follow_themecolor_24dp
+            follow_button.setCompoundDrawablesWithIntrinsicBounds(imgResource, 0, 0, 0)
+            isFollowed = isCourseFollowed
+        } else {
+            follow_button.text = "Non seguire"
+            val imgResource: Int = R.drawable.ic_unfollow_themecolor_24dp
+            follow_button.setCompoundDrawablesWithIntrinsicBounds(imgResource, 0, 0, 0)
+            isFollowed = isCourseFollowed
+        }
+    }
+
     fun onClickNewPost(course: Course) {
         val intent = Intent(this, NewPostActivity::class.java)
         intent.putExtra("id_group", course.id)
@@ -197,21 +183,11 @@ class CourseActivity : BasicActivity() {
 
     private inner class ScreenSlidePagerAdapter(activity: BasicActivity) : FragmentStateAdapter(activity) {
         override fun getItemCount(): Int = 2
-
         override fun createFragment(position: Int): Fragment {
             return when( position ) {
-                0 -> {
-                    Log.d(TAG, "POSTS FRAGMENT REQUESTED")
-                    fragmentPosts
-                }
-                1 -> {
-                    Log.d(TAG, "REVIEWS FRAGMENT REQUESTED")
-                    fragmentReviews
-                }
-                else -> {
-                    Log.d(TAG, "error --------- in else ----------------------")
-                    Fragment()
-                }
+                0 -> fragmentPosts
+                1 -> fragmentReviews
+                else ->Fragment()
             }
         }
     }
