@@ -57,7 +57,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".android.SettingsActivity" />
         <activity
-            android:name=".android.UserActivity"
+            android:name=".android.UserContentActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="it.uniparthenope.parthenopeddit.android.UserActivity" />

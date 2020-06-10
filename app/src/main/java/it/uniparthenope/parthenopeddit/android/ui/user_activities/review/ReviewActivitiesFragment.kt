@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,26 +14,28 @@ import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.CourseActivity
-import it.uniparthenope.parthenopeddit.android.UserActivity
+import it.uniparthenope.parthenopeddit.android.ReviewCommentsActivity
+import it.uniparthenope.parthenopeddit.android.UserContentActivity
 import it.uniparthenope.parthenopeddit.android.adapters.ReviewAdapter
+import it.uniparthenope.parthenopeddit.api.requests.ReviewsRequests
 import it.uniparthenope.parthenopeddit.api.requests.UserRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Course
+import it.uniparthenope.parthenopeddit.model.LikeDislikeScore
 import it.uniparthenope.parthenopeddit.model.Review
+import it.uniparthenope.parthenopeddit.util.toGson
+import kotlinx.android.synthetic.main.cardview_post.*
 
-class ReviewActivitiesFragment : Fragment(), ReviewAdapter.CourseReviewItemClickListeners {
+class ReviewActivitiesFragment(private val user_id: String) : Fragment(), ReviewAdapter.CourseReviewItemClickListeners {
 
     private lateinit var authManager: AuthManager
     private lateinit var recycler_view: RecyclerView
-    private lateinit var reviewViewModel: ReviewActivitiesViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        reviewViewModel =
-            ViewModelProviders.of(this).get(ReviewActivitiesViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_review_activities, container, false)
         val no_reviews_textview = root.findViewById<TextView>(R.id.no_reviews_textview)
 
@@ -45,22 +48,40 @@ class ReviewActivitiesFragment : Fragment(), ReviewAdapter.CourseReviewItemClick
         recycler_view.setHasFixedSize(true)
 
         authManager = (activity as BasicActivity).app.auth
-        val user_id = (activity as UserActivity).user_id
 
-        UserRequests(requireContext(), authManager).getUserPublishedReviews( user_id, 1, 20, {it: ArrayList<Review> ->
-            if(it.isNotEmpty()){
-                no_reviews_textview.visibility = View.GONE
-                recycler_view.visibility = View.VISIBLE
-                reviewAdapter.aggiungiReview(it)
-            }
-        },{it: String ->
-        })
+        UserRequests(requireContext(), authManager).getUserPublishedReviews(
+            user_id,
+            1,
+            20,
+            {
+                if(it.isNotEmpty()){
+                    no_reviews_textview.visibility = View.GONE
+                    recycler_view.visibility = View.VISIBLE
+                    reviewAdapter.aggiungiReview(it)
+                }
+            }, {}
+        )
 
         return root
     }
 
+    private fun updateLike(upvote_textview: TextView, downvote_textview: TextView, scores: LikeDislikeScore) {
+        upvote_textview.text = scores.likes_num.toString()
+        downvote_textview.text = scores.dislikes_num.toString()
+    }
+
     override fun onClickLike(id_review: Int, upvote_textview: TextView, downvote_textview: TextView) {
-        //TODO("Not yet implemented")
+        ReviewsRequests(requireContext(), authManager).likeReview(
+            id_review, {
+                updateLike(upvote_textview, downvote_textview, it)
+            }, {
+                updateLike(upvote_textview, downvote_textview, it)
+            }, {
+                updateLike(upvote_textview, downvote_textview, it)
+            }, {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+            }
+        )
     }
 
     override fun onClickDislike(
@@ -68,21 +89,37 @@ class ReviewActivitiesFragment : Fragment(), ReviewAdapter.CourseReviewItemClick
         upvote_textview: TextView,
         downvote_textview: TextView
     ) {
-        //TODO("Not yet implemented")
+        ReviewsRequests(requireContext(), authManager).dislikeReview(
+            id_review, {
+                updateLike(upvote_textview, downvote_textview, it)
+            }, {
+                updateLike(upvote_textview, downvote_textview, it)
+            }, {
+                updateLike(upvote_textview, downvote_textview, it)
+            }, {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+            }
+        )
     }
 
     override fun onClickCourse(id_course: Int, course: Course) {
         val intent = Intent(requireContext(), CourseActivity::class.java)
         intent.putExtra("id_course", id_course)
-        intent.putExtra("course", course)
+        intent.putExtra("course", course.toGson())
         startActivity(intent)
     }
 
     override fun onReviewClick(id_review: Int, review: Review) {
-        TODO("Not yet implemented")
+        val intent = Intent(requireContext(), ReviewCommentsActivity::class.java)
+        intent.putExtra("idReview", id_review)
+        intent.putExtra("review", review.toGson())
+        startActivity(intent)
     }
 
     override fun onClickComments(id_review: Int, review: Review) {
-        TODO("Not yet implemented")
+        val intent = Intent(requireContext(), ReviewCommentsActivity::class.java)
+        intent.putExtra("idReview", id_review)
+        intent.putExtra("review", review.toGson())
+        startActivity(intent)
     }
 }

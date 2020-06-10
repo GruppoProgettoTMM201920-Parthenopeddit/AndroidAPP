@@ -49,8 +49,8 @@ class UserCourseAdapter : RecyclerView.Adapter<UserCourseAdapter.UserCourseViewH
         holder.course_name_textview.text = currentItem.name
         holder.course_enjoyment_rating.text = "%2.1f/5".format(currentItem.average_liking_score)
         holder.course_difficulty_rating.text = "%2.1f/5".format(currentItem.average_difficulty_score)
-        holder.liking_rating_bar.rating = currentItem.average_liking_score!!.toFloat()
-        holder.difficulty_rating_bar.rating = currentItem.average_difficulty_score!!.toFloat()
+        holder.liking_rating_bar.rating = currentItem.average_liking_score?.toFloat()?:(0).toFloat()
+        holder.difficulty_rating_bar.rating = currentItem.average_difficulty_score?.toFloat()?:(0).toFloat()
         
         if( listener != null ) {
             holder.cardLayout.setOnClickListener {

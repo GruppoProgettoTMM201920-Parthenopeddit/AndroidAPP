@@ -39,10 +39,9 @@ class UserProfileActivity : LoginRequiredActivity() {
 
 
         user_activity_button.setOnClickListener {
-            val intent = Intent(this, UserActivity()::class.java)
+            val intent = Intent(this, UserContentActivity()::class.java)
             intent.putExtra("user_id", user.id)
             startActivity(intent)
-
         }
 
         user_chat_button.setOnClickListener {
