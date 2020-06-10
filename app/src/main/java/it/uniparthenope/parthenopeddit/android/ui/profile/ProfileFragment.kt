@@ -45,6 +45,8 @@ class ProfileFragment : Fragment() {
     private lateinit var logout_label: TextView
     private lateinit var logout_button: ImageButton
     private lateinit var settings_button: ImageButton
+    private lateinit var info_label: TextView
+    private lateinit var info_button: ImageButton
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -94,6 +96,8 @@ class ProfileFragment : Fragment() {
         logout_label = root.findViewById(R.id.logout_label)
         logout_button = root.findViewById(R.id.logout_button)
         settings_button = root.findViewById(R.id.settings_button)
+        info_label = root.findViewById(R.id.info_label)
+        info_button = root.findViewById(R.id.info_button)
 
         if (user_id == auth.username!!) {
             user_boards_layout.visibility = View.VISIBLE
@@ -120,6 +124,8 @@ class ProfileFragment : Fragment() {
             logout_label.visibility = View.VISIBLE
             logout_button.visibility = View.VISIBLE
             settings_button.visibility = View.VISIBLE
+            info_label.visibility = View.VISIBLE
+            info_button.visibility = View.VISIBLE
 
             logout_label.setOnClickListener {
                 auth.logout()
@@ -135,6 +141,12 @@ class ProfileFragment : Fragment() {
             }
             settings_button.setOnClickListener {
                 //TODO
+            }
+            info_label.setOnClickListener {
+                (activity as BasicActivity).goToActivity(AboutActivity::class.java)
+            }
+            info_button.setOnClickListener {
+                (activity as BasicActivity).goToActivity(AboutActivity::class.java)
             }
         } else {
             user_boards_layout.visibility = View.GONE
@@ -153,6 +165,8 @@ class ProfileFragment : Fragment() {
             logout_label.visibility = View.GONE
             logout_button.visibility = View.GONE
             settings_button.visibility = View.GONE
+            info_label.visibility = View.GONE
+            info_button.visibility = View.GONE
         }
         return root
     }
