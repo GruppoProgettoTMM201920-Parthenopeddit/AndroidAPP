@@ -1,10 +1,15 @@
 package it.uniparthenope.parthenopeddit.android
 
 import android.os.Bundle
+import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.LoginRequiredActivity
 import it.uniparthenope.parthenopeddit.R
+import it.uniparthenope.parthenopeddit.android.ui.chat.ChatFromItem
+import it.uniparthenope.parthenopeddit.android.ui.chat.ChatToItem
 import it.uniparthenope.parthenopeddit.android.ui.chat.UserChatFragment
+import it.uniparthenope.parthenopeddit.api.requests.MessagesRequests
 import it.uniparthenope.parthenopeddit.model.User
+import it.uniparthenope.parthenopeddit.model.UsersChat
 import it.uniparthenope.parthenopeddit.util.toObject
 import kotlinx.android.synthetic.main.activity_chat.*
 
@@ -20,7 +25,13 @@ class ChatActivity() : LoginRequiredActivity() {
         val type = "user"//= intent.getParcelableExtra<String>(NewMessageActivity.USER_KEY)
         val groupID = null//intent.getParcelableExtra<Int>(NewMessageActivity.USER_KEY)
 
-        username_chat_textview.text = user?.display_name
+        username_chat_textview.text = user?.display_name?:user?.id
+
+        MessagesRequests(this, app.auth).getChatLogWithUser(user!!.id,{ it: UsersChat ->
+            last_login_chat_textview.text = it.last_opened_on
+        },{
+
+        })
 
         if(user==null){
             finish()

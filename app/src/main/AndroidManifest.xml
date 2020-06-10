@@ -8,12 +8,14 @@
     <application
         android:name=".App"
         android:allowBackup="true"
-        android:label="@string/app_name"
         android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".android.NewChatActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service
             android:name=".firebase.FCMService"
@@ -28,7 +30,6 @@
             android:name=".android.SearchActivity"
             android:label="@string/title_activity_search"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity android:name=".android.UserGroupInviteActivity" />
         <activity android:name=".android.AddMemberActivity" />
         <activity android:name=".android.PrivacyActivity" />

@@ -261,9 +261,7 @@ class ExpandableUserListAdapter(private val context: Context, private val glide:
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT
             )
 
-            Log.d("DEBUG", "NIGHTTIME1")
         } else {
-            Log.d("DEBUG", "NIGHTTIME")
             container.visibility = View.GONE
             container.layoutParams = FrameLayout.LayoutParams(0, 0)
         }

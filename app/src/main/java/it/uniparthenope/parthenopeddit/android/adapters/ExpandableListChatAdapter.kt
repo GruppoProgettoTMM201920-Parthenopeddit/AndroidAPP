@@ -210,12 +210,9 @@ class ExpandableListChatAdapter (private val context: Context, private val glide
     }
 
     private fun bindContent(holder: ContentViewHolder, item: Item) {
-        //var currentItem = chatList[position]
-
 
         resizeContent(holder, item.isOpened)
 
-        Log.d("DEBUG", "NIGHTTIME1")
         glide.load(item.thumbnailUrl)
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(holder.thumbnail)
@@ -223,16 +220,6 @@ class ExpandableListChatAdapter (private val context: Context, private val glide
         holder.latest_message.text = item.latest_message
         holder.date.text = item.date
         holder.container.setOnClickListener {
-            val snackBar = Snackbar.make(
-                it,
-                context.resources.getString(R.string.click, holder.username.text.toString()),
-                Snackbar.LENGTH_LONG
-            )
-            snackBar.setActionTextColor(ContextCompat.getColor(context, R.color.red))
-            snackBar.setAction("Hide") {
-                snackBar.dismiss()
-            }
-            snackBar.show()
             listener!!.onChatClick(item.user!!)
         }
     }
@@ -248,19 +235,6 @@ class ExpandableListChatAdapter (private val context: Context, private val glide
         holder.group_user_latest.text = item.group_user_latest + ":"
         holder.latest_message.text = item.latest_message
         holder.date.text = item.date
-        holder.container.setOnClickListener {
-            val snackBar = Snackbar.make(
-                it,
-                context.resources.getString(R.string.click, holder.groupname.text.toString()),
-                Snackbar.LENGTH_LONG
-            )
-            snackBar.setActionTextColor(ContextCompat.getColor(context, R.color.red))
-            snackBar.setAction("Hide") {
-                snackBar.dismiss()
-            }
-            snackBar.show()
-            //listener!!.onChatClick(item.user!!)
-        }
     }
 
     /**
