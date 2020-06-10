@@ -24,6 +24,7 @@ import it.uniparthenope.parthenopeddit.android.adapters.ChatListAdapter
 import it.uniparthenope.parthenopeddit.android.adapters.ExpandableListChatAdapter
 import it.uniparthenope.parthenopeddit.android.adapters.ExpandableUserListAdapter
 import it.uniparthenope.parthenopeddit.api.MockApiData
+import it.uniparthenope.parthenopeddit.api.requests.MessagesRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.GroupChat
 import it.uniparthenope.parthenopeddit.model.User
@@ -79,15 +80,11 @@ class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners,
         var chatList: ArrayList<UsersChat> = ArrayList<UsersChat>()
         var groupChatList: ArrayList<GroupChat> = ArrayList<GroupChat>()
 
-        MockApiData().getChat( authManager.token!!, 1) { chatItemList, error ->
-            if( error != null ) {
-                Toast.makeText(requireContext(),"Errore : $error", Toast.LENGTH_LONG).show()
-            } else {
-                chatItemList!!
-
-                chatList = chatItemList!!
-            }
-        }
+        MessagesRequests(requireContext(), authManager).getOpenChats({it: ArrayList<UsersChat> ->
+            chatList = it!!
+        },{it: String ->
+            Toast.makeText(requireContext(),"Errore : $it", Toast.LENGTH_LONG).show()
+        })
 
         MockApiData().getGroupChat( authManager.token!!, 1) { chatItemList, error ->
             if( error != null ) {

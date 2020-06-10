@@ -20,7 +20,7 @@ class ChatActivity() : LoginRequiredActivity() {
         val type = "user"//= intent.getParcelableExtra<String>(NewMessageActivity.USER_KEY)
         val groupID = null//intent.getParcelableExtra<Int>(NewMessageActivity.USER_KEY)
 
-        username_chat_textview.text = user?.display_name
+        username_chat_textview.text = user?.display_name?:user?.id
 
         if(user==null){
             finish()
