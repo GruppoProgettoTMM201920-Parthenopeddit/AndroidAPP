@@ -7,6 +7,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -16,10 +18,12 @@ import androidx.recyclerview.widget.ItemTouchUIUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.ChatActivity
+import it.uniparthenope.parthenopeddit.android.NewChatActivity
 import it.uniparthenope.parthenopeddit.android.adapters.ChatListAdapter
 import it.uniparthenope.parthenopeddit.android.adapters.ExpandableListChatAdapter
 import it.uniparthenope.parthenopeddit.android.adapters.ExpandableUserListAdapter
@@ -45,13 +49,13 @@ class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners,
 
     private val charList : List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
 
+    var isOpen = false
 
     private lateinit var adapter: ExpandableListChatAdapter
 
     private lateinit var recyclerview_latest_messages: RecyclerView
     private lateinit var messagesViewModel: MessagesViewModel
     private lateinit var authManager: AuthManager
-    //val adapter = GroupAdapter<GroupieViewHolder>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,10 +72,12 @@ class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners,
 
         recyclerview_latest_messages = root.findViewById(R.id.recyclerview_latest_messages)
         recyclerview_latest_messages.layoutManager = LinearLayoutManager(requireContext())
-        /*recyclerview_latest_messages.adapter = chatListAdapter
-        recyclerview_latest_messages.layoutManager = LinearLayoutManager(requireContext())
-        recyclerview_latest_messages.setHasFixedSize(true)*/
 
+        val fab = root.findViewById(R.id.fab) as FloatingActionButton
+        val fab_new_chat = root.findViewById(R.id.fab_new_chat) as FloatingActionButton
+        val fab_new_chat_textview = root.findViewById(R.id.fab_new_chat_textview) as TextView
+        val rotateClockwise = AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_clockwise)
+        val rotateAnticlockwise = AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_anticlockwise)
 
         recyclerview_latest_messages.adapter = adapter
 
@@ -90,7 +96,38 @@ class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners,
             Toast.makeText(requireContext(),"Errore : $it", Toast.LENGTH_LONG).show()
         })
 
+        fab.setOnClickListener{
+            if(isOpen){
+                fab.startAnimation(rotateClockwise)
+
+                fab_new_chat.animate().translationY(200F)
+                fab_new_chat_textview.animate().translationY(200F)
+                fab_new_chat_textview.animate().alpha(0F)
+                fab_new_chat_textview.visibility = View.GONE
+
+
+
+                isOpen = false
+            } else{
+                fab.startAnimation(rotateAnticlockwise)
+
+                fab_new_chat.animate().translationY(-200F)
+                fab_new_chat_textview.animate().translationY(-200F)
+                fab_new_chat_textview.visibility = View.VISIBLE
+                fab_new_chat_textview.animate().alpha(1F)
+                isOpen = true
+            }
+        }
+
+        fab_new_chat.setOnClickListener{ onClickNewChat() }
+        fab_new_chat_textview.setOnClickListener{ onClickNewChat() }
+
         return root
+    }
+
+    fun onClickNewChat(){
+        val intent = Intent(requireContext(), NewChatActivity()::class.java)
+        startActivity(intent)
     }
 
     override fun onChatClick(user: User) {
