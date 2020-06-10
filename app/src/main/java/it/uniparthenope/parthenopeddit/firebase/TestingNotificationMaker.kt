@@ -11,7 +11,6 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.RemoteMessage
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.TestingActivity3
 
 class TestingNotificationMaker : MessagesHandler.NotificationMaker {
     override fun make(
@@ -19,6 +18,7 @@ class TestingNotificationMaker : MessagesHandler.NotificationMaker {
         notificationManager: NotificationManager,
         remoteMessage: RemoteMessage
     ) : Notification {
+        /*
         val intent = Intent(ctx, TestingActivity3::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         val pendingIntent = PendingIntent.getActivity(ctx, 0 /* Request code */, intent,
@@ -44,6 +44,9 @@ class TestingNotificationMaker : MessagesHandler.NotificationMaker {
         }
 
         return notificationBuilder.build()
+
+         */
+        TODO()
     }
 
 }
