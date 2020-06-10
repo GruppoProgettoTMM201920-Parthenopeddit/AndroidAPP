@@ -32,7 +32,7 @@ class ChatNotificationMaker : MessagesHandler.NotificationMaker {
         val obj: UsersChat = remoteMessage.data["OBJECT"]?.toObject()?:throw RuntimeException()
         val user = obj.other_user_chat!!.of_user!!
         val body = obj.last_message!!.body
-        
+
         intent.putExtra("user",user.toJSON())
 
         val notificationBuilder = NotificationCompat.Builder(ctx, channelId)
