@@ -58,27 +58,6 @@ class UserChatFragment(private val user: User) : Fragment() {
 
         })
 
-
-
-/*
-        MockApiData().getChatMessages( auth.token!!, "user1", user.id) { userChat: UsersChat, error ->
-            if( error != null ) {
-                Toast.makeText(requireContext(),"Errore : $error", Toast.LENGTH_LONG).show()
-            } else {
-                myMessageList = userChat.chat_log!!
-
-                for(message in myMessageList){                     //PER OGNI MESSAGGIO RICEVUTO
-                    if(message.sender_id==auth.username){                              //CONTROLLA SE E' IL TUO
-                        adapter.add(ChatToItem(message))
-                    } else{                                             //ALTRIMENTI E' DELL'ALTRO UTENTE
-                        adapter.add(ChatFromItem(message))
-                    }
-
-                }
-            }
-        }
-        */
-
         recyclerview_chat_log = view.findViewById(R.id.recyclerview_chat_log) as RecyclerView
 
         recyclerview_chat_log.adapter = adapter
