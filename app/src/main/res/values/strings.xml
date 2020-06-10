@@ -30,6 +30,9 @@
     <string name="hint_group_name_it">Nome gruppo</string>
     <string name="username_user">Username</string>
 
+    <string name="member_removed">Hai cacciato %1$s dal gruppo</string>
+    <string name="invite_removed">Hai annullato l\' invito di %1$s al gruppo</string>
+
     <!--PROFILE FRAGMENT-->
     <string name="user_activity_text_it">Visualizza le tue attività</string>
     <string name="darkmode">Dark mode</string>

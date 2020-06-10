@@ -22,7 +22,7 @@ import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.ChatActivity
 import it.uniparthenope.parthenopeddit.android.adapters.ChatListAdapter
 import it.uniparthenope.parthenopeddit.android.adapters.ExpandableListChatAdapter
-import it.uniparthenope.parthenopeddit.android.adapters.ExpandableSwipeAdapter
+import it.uniparthenope.parthenopeddit.android.adapters.ExpandableUserListAdapter
 import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.GroupChat
@@ -114,14 +114,14 @@ class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners,
         val ret = ArrayList<ExpandableListChatAdapter.Item>()
 
         val userchat_header = ExpandableListChatAdapter.Item.Builder()
-            .type(ExpandableSwipeAdapter.HEADER)
+            .type(ExpandableUserListAdapter.HEADER)
             .title("Utenti")
             .num(userChatItemList.size.toString())
             .build()
 
 
         val groupchat_header = ExpandableListChatAdapter.Item.Builder()
-            .type(ExpandableSwipeAdapter.HEADER)
+            .type(ExpandableUserListAdapter.HEADER)
             .title("Gruppi")
             .num( if(groupChatItemList.isNotEmpty()) groupChatItemList.size.toString() else "0" )
             .build()
@@ -145,7 +145,7 @@ class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners,
         if(userChatItemList.isNotEmpty()) {
             for (j in 0..(userChatItemList.size!! - 1)) {
                 val content = ExpandableListChatAdapter.Item.Builder()
-                    .type(ExpandableSwipeAdapter.CONTENT)
+                    .type(ExpandableUserListAdapter.CONTENT)
                     .thumbnailUrl(generateRandomImageUrl(MAX_IMAGE_SIZE))
                     .username(userChatItemList?.get(j)?.of_user?.display_name!!)
                     .latest_message(userChatItemList?.get(j)?.last_message?.body?:"")
@@ -165,7 +165,7 @@ class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners,
         if(groupChatItemList.isNotEmpty()) {
             for (j in 0..(groupChatItemList.size!! - 1)) {
                 val content = ExpandableListChatAdapter.Item.Builder()
-                    .type(ExpandableSwipeAdapter.GROUP_CONTENT)
+                    .type(ExpandableUserListAdapter.GROUP_CONTENT)
                     .thumbnailUrl(generateRandomImageUrl(MAX_IMAGE_SIZE))
                     .username(groupChatItemList?.get(j)?.of_group!!.name)
                     .group_user_latest(groupChatItemList?.get(j)?.last_message?.sender_user?.display_name)
@@ -196,18 +196,18 @@ class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners,
 
     override fun onSwiped(holder: RecyclerView.ViewHolder, direction: Int) {
 
-        if(holder is ExpandableSwipeAdapter.ContentViewHolder) {
+        if(holder is ExpandableUserListAdapter.ContentViewHolder) {
             val swipedIndex = holder.adapterPosition
             val removedItem = adapter.remove(swipedIndex)
 
             val snackBar = Snackbar.make(recyclerview_latest_messages, resources.getString(R.string.remove, removedItem.title), Snackbar.LENGTH_LONG)
             snackBar.setActionTextColor(ContextCompat.getColor(requireContext(), R.color.red))
-            if(removedItem.type == ExpandableSwipeAdapter.CONTENT) {
+            if(removedItem.type == ExpandableUserListAdapter.CONTENT) {
 
                 snackBar.setAction("Undo") {
                     adapter.add(swipedIndex, removedItem)
                 }
-            } else if(removedItem.type == ExpandableSwipeAdapter.HEADER) {
+            } else if(removedItem.type == ExpandableUserListAdapter.HEADER) {
                 snackBar.setText(resources.getString(R.string.header, removedItem.title))
                 snackBar.setAction("XD") {
                     snackBar.dismiss()
@@ -221,7 +221,7 @@ class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners,
     override fun onSelectedChanged(holder: RecyclerView.ViewHolder?, actionState: Int, uiUtil: ItemTouchUIUtil) {
         when(actionState) {
             ItemTouchHelper.ACTION_STATE_SWIPE -> {
-                if(holder is ExpandableSwipeAdapter.ContentViewHolder) {
+                if(holder is ExpandableUserListAdapter.ContentViewHolder) {
                     uiUtil.onSelected(holder.container)
                 }
             }
@@ -240,7 +240,7 @@ class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners,
     ) {
         when(actionState) {
             ItemTouchHelper.ACTION_STATE_SWIPE -> {
-                if(holder is ExpandableSwipeAdapter.ContentViewHolder) {
+                if(holder is ExpandableUserListAdapter.ContentViewHolder) {
                     uiUtil.onDraw(c, recyclerView, holder.container, dX, dY, actionState, isCurrentlyActive)
                 }
             }
@@ -259,7 +259,7 @@ class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners,
     ) {
         when(actionState) {
             ItemTouchHelper.ACTION_STATE_SWIPE -> {
-                if(holder is ExpandableSwipeAdapter.ContentViewHolder) {
+                if(holder is ExpandableUserListAdapter.ContentViewHolder) {
                     uiUtil.onDrawOver(c, recyclerView, holder.container, dX, dY, actionState, isCurrentlyActive)
                 }
             }
@@ -267,7 +267,7 @@ class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners,
     }
 
     override fun clearView(recyclerView: RecyclerView, holder: RecyclerView.ViewHolder, uiUtil: ItemTouchUIUtil) {
-        if(holder is ExpandableSwipeAdapter.ContentViewHolder) {
+        if(holder is ExpandableUserListAdapter.ContentViewHolder) {
             uiUtil.clearView(holder.container)
         }
     }

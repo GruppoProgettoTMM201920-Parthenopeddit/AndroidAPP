@@ -18,6 +18,7 @@ import it.uniparthenope.parthenopeddit.android.ui.group.BackdropFragment
 import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
 import it.uniparthenope.parthenopeddit.api.requests.GroupsRequests
 import it.uniparthenope.parthenopeddit.model.Group
+import it.uniparthenope.parthenopeddit.model.GroupInvite
 import it.uniparthenope.parthenopeddit.model.GroupMember
 import it.uniparthenope.parthenopeddit.model.Post
 import it.uniparthenope.parthenopeddit.util.toObject
@@ -29,6 +30,7 @@ class GroupActivity : BasicActivity() {
     private var isOpen = false
     private lateinit var group: Group
     private lateinit var members: ArrayList<GroupMember>
+    private lateinit var invites: ArrayList<GroupInvite>
 
     private lateinit var fragment: BackdropFragment
     private lateinit var mBottomSheetBehavior: BottomSheetBehavior<View?>
@@ -100,6 +102,13 @@ class GroupActivity : BasicActivity() {
             Toast.makeText(this, "Errore ${it}", Toast.LENGTH_LONG).show()
         })
 
+        GroupsRequests(this, app.auth).getGroupInvites(id_group,{
+            invites = it
+            fragment.updateInvitesData(it)
+        },{it: String ->
+            Toast.makeText(this, "Errore ${it}", Toast.LENGTH_LONG).show()
+        })
+
         GroupsRequests(this, app.auth).getGroupPosts(id_group, 20, 1,{it: ArrayList<Post> ->
             postAdapter.aggiungiPost(it)
         },{it: String ->
@@ -150,17 +159,23 @@ class GroupActivity : BasicActivity() {
             GroupsRequests(this, app.auth).leaveGroup(
                 id_group, {
                     Toast.makeText(this,"Hai lasciato il gruppo ${group.name}", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, HomeActivity::class.java)
+                    startActivity(intent)
+                    finish()
                 },{
                     Toast.makeText(this,"Eri l'ultimo admin. Hai abbandonato la nave, sei peggio di Schettino", Toast.LENGTH_LONG).show()
+                    val intent = Intent(this, HomeActivity::class.java)
+                    startActivity(intent)
+                    finish()
                 },{
                     Toast.makeText(this,"Eri l'ultimo utente. Il gruppo ${group.name} è stato eliminato", Toast.LENGTH_LONG).show()
+                    val intent = Intent(this, HomeActivity::class.java)
+                    startActivity(intent)
+                    finish()
                 }, {
                     Toast.makeText(this,"Errore : ${it}", Toast.LENGTH_LONG).show()
                 }
             )
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
-            finish()
         }
     }
 
@@ -170,7 +185,7 @@ class GroupActivity : BasicActivity() {
         num_members.text = group.members_num.toString()
     }
 
-    fun onClickNewPost(id_group: Int, name_group: String){
+    private fun onClickNewPost(id_group: Int, name_group: String){
         val intent = Intent(this, NewPostActivity::class.java)
         intent.putExtra("id_group", id_group)
         intent.putExtra("name_group", name_group)

@@ -18,7 +18,7 @@ import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.snackbar.Snackbar
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.android.adapters.ExpandableSwipeAdapter.Companion.GROUP_CONTENT
+import it.uniparthenope.parthenopeddit.android.adapters.ExpandableUserListAdapter.Companion.GROUP_CONTENT
 import it.uniparthenope.parthenopeddit.android.ui.messages.MessagesFragment
 import it.uniparthenope.parthenopeddit.model.Group
 import it.uniparthenope.parthenopeddit.model.User
@@ -295,7 +295,7 @@ class ExpandableListChatAdapter (private val context: Context, private val glide
         }
     }
 
-    private fun bindFooter(holder: FooterViewHolder, item: ExpandableSwipeAdapter.Item) {
+    private fun bindFooter(holder: FooterViewHolder, item: ExpandableUserListAdapter.Item) {
 
     }
 

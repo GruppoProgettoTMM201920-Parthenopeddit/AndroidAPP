@@ -199,6 +199,34 @@ class GroupsRequests(private val ctx: Context, private val auth: AuthManager) {
         )
     }
 
+    fun undoInvite(
+        group_id: Int,
+        user_id: String,
+        onSuccess: () -> Unit,
+        onFail: (error: String) -> Unit
+    ) {
+        ApiClient(ctx).performRequest(
+            object : ApiRoute() {
+                override val url: String
+                    get() = "$baseUrl/groups/$group_id/invite/$user_id/undo"
+                override val httpMethod: Int
+                    get() = Request.Method.POST
+                override val params: HashMap<String, String>
+                    get() = getParamsMap()
+                override val headers: HashMap<String, String>
+                    get() = getHeadersMap(auth.token!!)
+            }, { resultCode: Int, resultJson: String ->
+                if( resultCode == 201 ) {
+                    onSuccess()
+                } else {
+                    onFail("Error : $resultCode")
+                }
+            }, { _, error: String ->
+                onFail.invoke(error)
+            }
+        )
+    }
+
     fun getGroupInvites(
         group_id: Int,
         onSuccess: (invites: ArrayList<GroupInvite>) -> Unit,
@@ -223,6 +251,34 @@ class GroupsRequests(private val ctx: Context, private val auth: AuthManager) {
                         Log.d(TAG, resultJson)
                         return@performRequest
                     }
+                } else {
+                    onFail("Error : $resultCode")
+                }
+            }, { _, error: String ->
+                onFail.invoke(error)
+            }
+        )
+    }
+
+    fun searchInvitableUser(
+        group_id: Int,
+        searched_user_id: String,
+        onSuccess: (users: ArrayList<User>) -> Unit,
+        onFail: (error: String) -> Unit
+    ) {
+        ApiClient(ctx).performRequest(
+            object : ApiRoute() {
+                override val url: String
+                    get() = "$baseUrl/groups/$group_id/invite/search/$searched_user_id"
+                override val httpMethod: Int
+                    get() = Request.Method.GET
+                override val params: HashMap<String, String>
+                    get() = getParamsMap()
+                override val headers: HashMap<String, String>
+                    get() = getHeadersMap(auth.token!!)
+            } , { resultCode: Int, resultJson: String ->
+                if( resultCode == 200 ) {
+                    onSuccess(JSONArray(resultJson).toArrayList())
                 } else {
                     onFail("Error : $resultCode")
                 }
@@ -308,7 +364,7 @@ class GroupsRequests(private val ctx: Context, private val auth: AuthManager) {
 
     fun getGroupMembers(
         group_id: Int,
-        onSuccess: (newOwners: ArrayList<GroupMember>) -> Unit,
+        onSuccess: (members: ArrayList<GroupMember>) -> Unit,
         onFail: (error: String) -> Unit
     ) {
         ApiClient(ctx).performRequest(
@@ -325,6 +381,34 @@ class GroupsRequests(private val ctx: Context, private val auth: AuthManager) {
             }, { resultCode: Int, resultJson: String ->
                 if( resultCode == 200 ) {
                     onSuccess(JSONArray(resultJson).toArrayList())
+                } else {
+                    onFail("Error : $resultCode")
+                }
+            }, { _, error: String ->
+                onFail.invoke(error)
+            }
+        )
+    }
+
+    fun removeFromGroup(
+        group_id: Int,
+        userId: String,
+        onSuccess: () -> Unit,
+        onFail: (error: String) -> Unit
+    ) {
+        ApiClient(ctx).performRequest(
+            object : ApiRoute() {
+                override val url: String
+                    get() = "$baseUrl/groups/$group_id/kick/$userId"
+                override val httpMethod: Int
+                    get() = Request.Method.POST
+                override val params: HashMap<String, String>
+                    get() = getParamsMap()
+                override val headers: HashMap<String, String>
+                    get() = getHeadersMap(auth.token!!)
+            }, { resultCode: Int, resultJson: String ->
+                if( resultCode == 201 ) {
+                    onSuccess()
                 } else {
                     onFail("Error : $resultCode")
                 }

@@ -27,6 +27,12 @@ class UserListAdapter() : RecyclerView.Adapter<UserListAdapter.AddMemberAdapterV
         notifyDataSetChanged()
     }
 
+    fun removeUser(user: User) {
+        val i = userList.indexOf(user)
+        userList.remove(user)
+        notifyItemRemoved(i)
+    }
+
     fun setItemClickListener(listener: UserListItemClickListeners) {
         this.listener = listener
     }
@@ -56,6 +62,7 @@ class UserListAdapter() : RecyclerView.Adapter<UserListAdapter.AddMemberAdapterV
             }
 
             holder.username_textview.setOnClickListener {
+                listener!!.onUserClick(currentItem)
             }
 
             holder.user_list_relativelayout.setOnClickListener {

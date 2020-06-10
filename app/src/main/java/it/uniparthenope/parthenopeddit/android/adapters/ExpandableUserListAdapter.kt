@@ -13,19 +13,21 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.google.android.material.snackbar.Snackbar
 import it.uniparthenope.parthenopeddit.R
 import java.lang.IllegalStateException
 import java.util.*
 
 
-class ExpandableSwipeAdapter(private val context: Context, private val glide: RequestManager) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ExpandableUserListAdapter(private val context: Context, private val glide: RequestManager, private var listener: UserClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var itemList: MutableList<Item> = Collections.emptyList()
+
+    interface UserClickListener {
+        fun onUserClicked(userId: String)
+    }
 
     companion object {
         const val HEADER = 0
@@ -94,6 +96,10 @@ class ExpandableSwipeAdapter(private val context: Context, private val glide: Re
         }
     }
 
+    fun getItem(position: Int) : Item{
+        return itemList[position]
+    }
+
     override fun getItemCount(): Int {
         return itemList.size
     }
@@ -110,6 +116,14 @@ class ExpandableSwipeAdapter(private val context: Context, private val glide: Re
     fun add(position: Int, item: Item) {
         itemList.add(position, item)
         notifyItemInserted(position)
+
+        var i = position - 1
+        while( itemList[i].type != HEADER ) {
+            i--
+        }
+
+        itemList[i].num = (itemList[i].num!!.toInt() + 1).toString()
+        notifyItemChanged(i)
     }
 
     fun remove(position: Int): Item {
@@ -117,12 +131,14 @@ class ExpandableSwipeAdapter(private val context: Context, private val glide: Re
         val removedItem = itemList.removeAt(position)
         notifyItemRemoved(position)
 
-        // if the last item swiped, remove header.
-        if (position - 1 >= 0 && itemList[position - 1].type == HEADER && itemList[position].type != CONTENT) {
-            val removedHeaderItem = itemList.removeAt(position - 1)
-            notifyItemRemoved(position - 1)
-            return removedHeaderItem
+        var i = position - 1
+        while( itemList[i].type != HEADER ) {
+            i--
         }
+
+        itemList[i].num = (itemList[i].num!!.toInt() - 1).toString()
+        notifyItemChanged(i)
+
         return removedItem
     }
 
@@ -205,31 +221,19 @@ class ExpandableSwipeAdapter(private val context: Context, private val glide: Re
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(holder.thumbnail)
         holder.username.text = item.username
-        holder.joindate.text = "E' entrato il "+ item.joindate
+        holder.joindate.text = "E' entrato il "+ item.date
         holder.container.setOnClickListener {
-            val snackBar = Snackbar.make(
-                it,
-                context.resources.getString(R.string.click, holder.username.text.toString()),
-                Snackbar.LENGTH_LONG
-            )
-            snackBar.setActionTextColor(ContextCompat.getColor(context, R.color.red))
-            snackBar.setAction("Hide") {
-                snackBar.dismiss()
-            }
-            snackBar.show()
+            item.username?.let { userId -> listener.onUserClicked(userId) }
         }
     }
 
     private fun bindGroupContent(holder: ContentGroupViewHolder, item: Item) {
-
         resizeGroupContent(holder, item.isOpened)
-
         glide.load(item.thumbnailUrl)
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(holder.thumbnail)
         holder.container.setOnClickListener{
         }
-
     }
 
     /**
@@ -266,7 +270,7 @@ class ExpandableSwipeAdapter(private val context: Context, private val glide: Re
         }
     }
 
-    private fun bindFooter(holder: FooterViewHolder, item: ExpandableSwipeAdapter.Item) {
+    private fun bindFooter(holder: FooterViewHolder, item: ExpandableUserListAdapter.Item) {
 
     }
 
@@ -312,10 +316,14 @@ class ExpandableSwipeAdapter(private val context: Context, private val glide: Re
      * Item object using builder pattern.
      */
     class Item(
-        internal val type: Int, internal val title: String?,
+        internal val type: Int,
+        internal val title: String?,
         internal var num: String? = null,
-        internal val thumbnailUrl: String?, internal val username: String?,
-        internal val joindate: String?, internal var isOpened: Boolean
+        internal val thumbnailUrl: String?,
+        internal val username: String?,
+        internal val dateMessage: String?,
+        internal val date: String?,
+        internal var isOpened: Boolean
     ) {
 
         data class Builder(
@@ -324,7 +332,8 @@ class ExpandableSwipeAdapter(private val context: Context, private val glide: Re
             private var num: String? = null,
             private var thumbnailUrl: String? = null,
             private var username: String? = null,
-            private var joindate: String? = null,
+            private var dateMessage: String? = null,
+            private var date: String? = null,
             private var isOpened: Boolean = true
         ) {
 
@@ -333,7 +342,8 @@ class ExpandableSwipeAdapter(private val context: Context, private val glide: Re
             fun num(num: String) = apply { this.num = num }
             fun thumbnailUrl(thumbnailUrl: String) = apply { this.thumbnailUrl = thumbnailUrl }
             fun username(username: String) = apply { this.username = username }
-            fun joindate(joindate: String) = apply { this.joindate = joindate }
+            fun dateMessage(dateMessage: String) = apply { this.dateMessage = dateMessage }
+            fun date(date: String) = apply { this.date = date }
             fun isOpened(isOpened: Boolean) = apply { this.isOpened = isOpened }
             fun build() = Item(
                 type,
@@ -341,7 +351,8 @@ class ExpandableSwipeAdapter(private val context: Context, private val glide: Re
                 num,
                 thumbnailUrl,
                 username,
-                joindate,
+                dateMessage,
+                date,
                 isOpened
             )
         }
