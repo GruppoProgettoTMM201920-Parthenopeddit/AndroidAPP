@@ -5,12 +5,13 @@ import com.android.volley.Request
 import it.uniparthenope.parthenopeddit.api.ApiClient
 import it.uniparthenope.parthenopeddit.api.ApiRoute
 import it.uniparthenope.parthenopeddit.auth.AuthManager
-import it.uniparthenope.parthenopeddit.model.*
+import it.uniparthenope.parthenopeddit.model.Course
+import it.uniparthenope.parthenopeddit.model.Post
+import it.uniparthenope.parthenopeddit.model.Review
+import it.uniparthenope.parthenopeddit.model.User
 import it.uniparthenope.parthenopeddit.util.toArrayList
 import it.uniparthenope.parthenopeddit.util.toObject
 import org.json.JSONArray
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
 
 class CoursesRequests(private val ctx: Context, private val auth: AuthManager) {
 
@@ -209,7 +210,7 @@ class CoursesRequests(private val ctx: Context, private val auth: AuthManager) {
         ApiClient(ctx).performRequest(
             object : ApiRoute() {
                 override val url: String
-                    get() = "$baseUrl/courses/$course_id/posts/$page/$perPage"
+                    get() = "$baseUrl/courses/$course_id/posts/$perPage/$page"
                 override val httpMethod: Int
                     get() = Request.Method.GET
                 override val params: HashMap<String, String>
@@ -280,7 +281,7 @@ class CoursesRequests(private val ctx: Context, private val auth: AuthManager) {
         ApiClient(ctx).performRequest(
             object : ApiRoute() {
                 override val url: String
-                    get() = "$baseUrl/courses/$course_id/reviews/$page/$perPage"
+                    get() = "$baseUrl/courses/$course_id/reviews/$perPage/$page"
                 override val httpMethod: Int
                     get() = Request.Method.GET
                 override val params: HashMap<String, String>

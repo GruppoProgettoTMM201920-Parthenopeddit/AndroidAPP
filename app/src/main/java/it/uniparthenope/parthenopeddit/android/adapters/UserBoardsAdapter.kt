@@ -5,7 +5,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import it.uniparthenope.parthenopeddit.android.ui.user_boards.course.CourseUserBoardFragment
 import it.uniparthenope.parthenopeddit.android.ui.user_boards.group.GroupUserBoardFragment
-import it.uniparthenope.parthenopeddit.api.MockDatabase
 
 class UserBoardsAdapter (fm: FragmentManager) : FragmentPagerAdapter(fm) {
     override fun getItem(position: Int): Fragment {

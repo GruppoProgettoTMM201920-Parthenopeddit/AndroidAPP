@@ -30,6 +30,9 @@
     <string name="hint_group_name_it">Nome gruppo</string>
     <string name="username_user">Username</string>
 
+    <string name="member_removed">Hai cacciato %1$s dal gruppo</string>
+    <string name="invite_removed">Hai annullato l\' invito di %1$s al gruppo</string>
+
     <!--PROFILE FRAGMENT-->
     <string name="user_activity_text_it">Visualizza le tue attività</string>
     <string name="darkmode">Dark mode</string>
@@ -38,7 +41,7 @@
     <string name="tab_text_1">Tab 1</string>
     <string name="tab_text_2">Tab 2</string>
     <string name="title_activity_review">ReviewActivity</string>
-
+    <string name="title_activity_search">SearchActivity</string>
 
     <!--TEMP-->
     <string name="random_image_url">https://picsum.photos/%1$d</string>
@@ -56,7 +59,6 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
-
 
     <!--FIREBASE-->
     <string name="msg_token_fmt"><![CDATA[test -> %s]]></string>

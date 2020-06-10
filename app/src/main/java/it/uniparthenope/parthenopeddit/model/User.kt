@@ -7,6 +7,7 @@ class User (
     val display_name: String? = null,
     val registered_on: String,
 
+    //TODO REMOVE TRANSIENT - CHECK CHAT
     @Transient var published_content: ArrayList<Content>? = null,
     @Transient var published_posts: ArrayList<Post>? = null,
     @Transient var published_comments: ArrayList<Comment>? = null,

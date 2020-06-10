@@ -13,17 +13,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.android.PostCommentsActivity
+import it.uniparthenope.parthenopeddit.android.*
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.ui.user_activities.post.PostActivitiesViewModel
+import it.uniparthenope.parthenopeddit.api.requests.PostsRequests
 import it.uniparthenope.parthenopeddit.api.requests.UserRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Board
+import it.uniparthenope.parthenopeddit.model.LikeDislikeScore
 import it.uniparthenope.parthenopeddit.model.Post
+import it.uniparthenope.parthenopeddit.util.toGson
 
 class PostActivitiesFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
-    private lateinit var authManager: AuthManager
+    private lateinit var auth: AuthManager
     private lateinit var recycler_view: RecyclerView
     private lateinit var postViewModel: PostActivitiesViewModel
 
@@ -35,6 +38,7 @@ class PostActivitiesFragment : Fragment(), PostAdapter.PostItemClickListeners {
         postViewModel =
             ViewModelProviders.of(this).get(PostActivitiesViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_post_activities, container, false)
+        val no_posts_textview = root.findViewById<TextView>(R.id.no_posts_textview)
 
         recycler_view = root.findViewById(R.id.recycler_view) as RecyclerView
 
@@ -44,36 +48,91 @@ class PostActivitiesFragment : Fragment(), PostAdapter.PostItemClickListeners {
         recycler_view.layoutManager = LinearLayoutManager(requireContext())
         recycler_view.setHasFixedSize(true)
 
-        authManager = (activity as BasicActivity).app.auth
+        auth = (activity as BasicActivity).app.auth
+        val user_id = (activity as UserActivity).user_id
 
-        UserRequests(requireContext(), authManager).getUserPublishedPosts( authManager.username!!, 1, 20, { it: ArrayList<Post> ->
-            postAdapter.aggiungiPost(it)
+        UserRequests(requireContext(), auth).getUserPublishedPosts( user_id, 1, 20, { it: ArrayList<Post> ->
+            if(it.isNotEmpty()){
+                no_posts_textview.visibility = View.GONE
+                recycler_view.visibility = View.VISIBLE
+                postAdapter.aggiungiPost(it)
+            }
         },{it: String ->
-            Toast.makeText(requireContext(),"Errore : $it", Toast.LENGTH_LONG).show()
         })
 
         return root
     }
 
+    private fun updateLike(upvote_textview: TextView, downvote_textview: TextView, scores: LikeDislikeScore) {
+        upvote_textview.text = scores.likes_num.toString()
+        downvote_textview.text = scores.dislikes_num.toString()
+    }
+
     override fun onClickLike(id_post: Int, upvote_textview: TextView, downvote_textview: TextView) {
-        //TODO("Not yet implemented")
+        PostsRequests(requireContext(), auth).likePost(
+            1, {
+                updateLike(upvote_textview, downvote_textview, it)
+            }, {
+                updateLike(upvote_textview, downvote_textview, it)
+            }, {
+                updateLike(upvote_textview, downvote_textview, it)
+            }, {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+            }
+        )
     }
 
     override fun onClickDislike(id_post: Int, upvote_textview: TextView, downvote_textview: TextView) {
-        //TODO("Not yet implemented")
+        PostsRequests(requireContext(), auth).dislikePost(
+            1, {
+                updateLike(upvote_textview, downvote_textview, it)
+            }, {
+                updateLike(upvote_textview, downvote_textview, it)
+            }, {
+                updateLike(upvote_textview, downvote_textview, it)
+            }, {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
+            }
+        )
     }
 
     override fun onClickComments(id_post: Int, post: Post) {
-        //TODO("Not yet implemented")
-    }
-
-    override fun onBoardClick(board_id: Int?, board: Board?) {
-        TODO("Not yet implemented")
+        val intent = Intent(requireContext(), PostCommentsActivity::class.java)
+        intent.putExtra("idPost", id_post)
+        intent.putExtra("post", post.toGson())
+        startActivity(intent)
     }
 
     override fun onPostClick(id_post: Int, post: Post) {
         val intent = Intent(requireContext(), PostCommentsActivity::class.java)
         intent.putExtra("idPost", id_post)
+        intent.putExtra("post", post.toGson())
         startActivity(intent)
+    }
+
+    override fun onUserClick(id_user: String) {
+        val intent = Intent(requireContext(), UserProfileActivity::class.java)
+        intent.putExtra("id_user", id_user)
+        startActivity(intent)
+    }
+
+    override fun onBoardClick(board_id: Int?, board: Board?) {
+        if (board_id == null || board_id == 0) {
+            (activity as BasicActivity).goToActivity(HomeActivity::class.java) //HOME
+        } else {
+            when (board?.type) {
+                "course" -> {
+                    val intent = Intent(requireContext(), CourseActivity::class.java)  //CORSO
+                    intent.putExtra("id_group", board_id)
+                    startActivity(intent)
+                }
+                "group" -> {
+                    val intent = Intent(requireContext(), GroupActivity::class.java)
+                    intent.putExtra("id_group", board_id)
+                    startActivity(intent)
+                }
+                else -> {  }
+            }
+        }
     }
 }

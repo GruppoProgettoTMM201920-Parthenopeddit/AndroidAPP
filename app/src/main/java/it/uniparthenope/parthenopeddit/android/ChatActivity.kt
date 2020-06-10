@@ -1,7 +1,7 @@
 package it.uniparthenope.parthenopeddit.android
 
 import android.os.Bundle
-import it.uniparthenope.parthenopeddit.BasicActivity
+import it.uniparthenope.parthenopeddit.LoginRequiredActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.ui.chat.UserChatFragment
 import it.uniparthenope.parthenopeddit.model.User
@@ -9,7 +9,7 @@ import it.uniparthenope.parthenopeddit.util.toObject
 import kotlinx.android.synthetic.main.activity_chat.*
 
 
-class ChatActivity() : BasicActivity() {
+class ChatActivity() : LoginRequiredActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

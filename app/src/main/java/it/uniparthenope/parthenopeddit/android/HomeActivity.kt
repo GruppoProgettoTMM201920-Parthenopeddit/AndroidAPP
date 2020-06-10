@@ -1,21 +1,15 @@
 package it.uniparthenope.parthenopeddit.android
 
 import android.os.Bundle
-import android.widget.ListView
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import it.uniparthenope.parthenopeddit.BasicActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import it.uniparthenope.parthenopeddit.LoginRequiredActivity
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.android.adapters.ExpandableListAdapter
-import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.android.synthetic.main.fragment_home.*
-import java.util.*
-import kotlin.collections.HashMap
 
-class HomeActivity : BasicActivity() {
+class HomeActivity : LoginRequiredActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

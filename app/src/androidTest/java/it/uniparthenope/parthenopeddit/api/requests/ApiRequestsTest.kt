@@ -3,7 +3,6 @@ package it.uniparthenope.parthenopeddit.api.requests
 import androidx.test.platform.app.InstrumentationRegistry
 import it.uniparthenope.parthenopeddit.App
 import it.uniparthenope.parthenopeddit.auth.AuthManager
-import it.uniparthenope.parthenopeddit.model.User
 import org.junit.After
 import org.junit.Before
 import java.util.concurrent.locks.ReentrantLock

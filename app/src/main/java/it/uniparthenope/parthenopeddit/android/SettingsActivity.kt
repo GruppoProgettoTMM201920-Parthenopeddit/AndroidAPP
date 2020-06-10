@@ -6,18 +6,15 @@ import android.net.Uri
 import android.os.Bundle
 import android.preference.RingtonePreference
 import android.text.TextUtils
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
-import it.uniparthenope.parthenopeddit.BasicActivity
+import it.uniparthenope.parthenopeddit.LoginRequiredActivity
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
 
 
-class SettingsActivity : BasicActivity() {
+class SettingsActivity : LoginRequiredActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,8 +22,6 @@ class SettingsActivity : BasicActivity() {
             .beginTransaction()
             .replace(android.R.id.content, SettingsFragment())
             .commit()
-
-
     }
 
 
@@ -130,5 +125,4 @@ class SettingsActivity : BasicActivity() {
                     .getString(preference.key, ""))
         }
     }
-
 }

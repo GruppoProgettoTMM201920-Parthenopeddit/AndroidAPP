@@ -1,7 +1,6 @@
 package it.uniparthenope.parthenopeddit.android.adapters
 
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,6 @@ import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.model.Board
 import it.uniparthenope.parthenopeddit.model.Post
 import kotlinx.android.synthetic.main.cardview_post.view.*
-import kotlinx.android.synthetic.main.cardview_post.view.upvote_textview
 
 class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
 
@@ -30,12 +28,19 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
         notifyDataSetChanged()
     }
 
+    fun setPostList(postItemList: List<Post>) {
+        this.postList.clear()
+        this.postList.addAll(postItemList)
+        notifyDataSetChanged()
+    }
+
     interface PostItemClickListeners {
         fun onClickLike(id_post:Int, upvote_textview: TextView, downvote_textview: TextView)
         fun onClickDislike(id_post:Int, upvote_textview: TextView, downvote_textview: TextView)
         fun onClickComments(id_post:Int, post:Post)
         fun onBoardClick(board_id: Int?, board: Board?)
         fun onPostClick(id_post: Int, post:Post)
+        fun onUserClick(id_user: String)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
@@ -90,6 +95,10 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
 
             holder.board_textview.setOnClickListener {
                 listener!!.onBoardClick(currentItem.posted_to_board_id, currentItem.posted_to_board)
+            }
+
+            holder.username_textview.setOnClickListener {
+                listener!!.onUserClick(currentItem.author_id)
             }
 
             holder.relativeLayout.setOnClickListener {

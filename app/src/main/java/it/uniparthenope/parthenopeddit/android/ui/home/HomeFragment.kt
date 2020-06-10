@@ -2,28 +2,20 @@ package it.uniparthenope.parthenopeddit.android.ui.home
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
-import android.widget.ArrayAdapter
-import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.gson.Gson
 import com.mancj.materialsearchbar.MaterialSearchBar
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.android.PostCommentsActivity
-import it.uniparthenope.parthenopeddit.android.CourseActivity
-import it.uniparthenope.parthenopeddit.android.GroupActivity
-import it.uniparthenope.parthenopeddit.android.HomeActivity
+import it.uniparthenope.parthenopeddit.android.*
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.ui.newGroup.NewGroupActivity
 import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
@@ -72,35 +64,18 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         val rotateClockwise = AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_clockwise)
         val rotateAnticlockwise = AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_anticlockwise)
 
-        //MATERIALSEARCHBAR
-        val lv = root.findViewById(R.id.search_listview) as ListView
         val searchBar = root.findViewById(R.id.searchBar) as MaterialSearchBar
-        searchBar.setHint("Ricerca...")
         searchBar.setSpeechMode(false)
-
-        var galaxies = arrayOf("Sombrero", "Cartwheel", "Pinwheel", "StarBust", "Whirlpool", "Ring Nebular", "Own Nebular", "Centaurus A", "Virgo Stellar Stream", "Canis Majos Overdensity", "Mayall's Object", "Leo", "Milky Way", "IC 1011", "Messier 81", "Andromeda", "Messier 87")
-
-        //ADAPTER
-        val adapter = ArrayAdapter<String>(requireContext(), android.R.layout.simple_list_item_1, galaxies)
-        lv.setAdapter(adapter)
-
         searchBar.setCardViewElevation(10)
-        searchBar.addTextChangeListener(object : TextWatcher {
-            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
-
-            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
-
-            override fun afterTextChanged(editable: Editable) {
-
-            }
-        })
         searchBar.setOnSearchActionListener(object : MaterialSearchBar.OnSearchActionListener {
-            override fun onSearchStateChanged(enabled: Boolean) {
-
-            }
+            override fun onSearchStateChanged(enabled: Boolean) {}
 
             override fun onSearchConfirmed(text: CharSequence) {
-
+                if(text.isNotBlank()){
+                    val intent = Intent(requireContext(), SearchActivity::class.java)
+                    intent.putExtra("query", text.toString())
+                    startActivity(intent)
+                }
             }
 
             override fun onButtonClicked(buttonCode: Int) {
@@ -136,13 +111,10 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
                 fab_new_post.animate().translationY(-200F)
                 fab_new_group.animate().translationY(-400F)
-
                 fab_new_post_textview.animate().translationY(-200F)
                 fab_new_group_textview.animate().translationY(-400F)
-
                 fab_new_post_textview.visibility = View.VISIBLE
                 fab_new_group_textview.visibility = View.VISIBLE
-
                 fab_new_post_textview.animate().alpha(1F)
                 fab_new_group_textview.animate().alpha(1F)
                 isOpen = true
@@ -164,7 +136,7 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
     override fun onClickLike(id_post: Int, upvote_textview: TextView, downvote_textview: TextView) {
         PostsRequests(requireContext(), auth).likePost(
-            1, {
+            id_post, {
                 updateLike(upvote_textview, downvote_textview, it)
             }, {
                 updateLike(upvote_textview, downvote_textview, it)
@@ -178,7 +150,7 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
     override fun onClickDislike(id_post: Int, upvote_textview: TextView, downvote_textview: TextView) {
         PostsRequests(requireContext(), auth).dislikePost(
-            1, {
+            id_post, {
                 updateLike(upvote_textview, downvote_textview, it)
             }, {
                 updateLike(upvote_textview, downvote_textview, it)
@@ -201,6 +173,12 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         val intent = Intent(requireContext(), PostCommentsActivity::class.java)
         intent.putExtra("idPost", id_post)
         intent.putExtra("post", post.toGson())
+        startActivity(intent)
+    }
+
+    override fun onUserClick(id_user: String) {
+        val intent = Intent(requireContext(), UserProfileActivity::class.java)
+        intent.putExtra("id_user", id_user)
         startActivity(intent)
     }
 

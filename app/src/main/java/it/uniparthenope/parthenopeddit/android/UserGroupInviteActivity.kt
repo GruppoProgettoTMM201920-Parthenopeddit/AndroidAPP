@@ -1,29 +1,21 @@
 package it.uniparthenope.parthenopeddit.android
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import it.uniparthenope.parthenopeddit.BasicActivity
+import it.uniparthenope.parthenopeddit.LoginRequiredActivity
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.android.adapters.UserActivityAdapter
 import it.uniparthenope.parthenopeddit.android.adapters.UserGroupInviteAdapter
-import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
-import it.uniparthenope.parthenopeddit.api.MockApiData
-import it.uniparthenope.parthenopeddit.api.MockDatabase
 import it.uniparthenope.parthenopeddit.api.requests.GroupsRequests
 import it.uniparthenope.parthenopeddit.model.GroupInvite
 import it.uniparthenope.parthenopeddit.model.GroupMember
 import kotlinx.android.synthetic.main.activity_user_group_invite.*
-import java.util.*
-import kotlin.collections.ArrayList
 
-class UserGroupInviteActivity : BasicActivity(), UserGroupInviteAdapter.UserGroupInviteItemClickListeners {
+class UserGroupInviteActivity : LoginRequiredActivity(), UserGroupInviteAdapter.UserGroupInviteItemClickListeners {
 
     private lateinit var invite_recyclerview: RecyclerView
     private lateinit var adapter: UserGroupInviteAdapter

@@ -1,6 +1,5 @@
 package it.uniparthenope.parthenopeddit.android.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,11 +8,10 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.android.AddMemberActivity
 import it.uniparthenope.parthenopeddit.model.User
 import kotlinx.android.synthetic.main.cardview_user.view.*
 
-class AddMemberAdapter() : RecyclerView.Adapter<AddMemberAdapter.AddMemberAdapterViewHolder>() {
+class UserListAdapter() : RecyclerView.Adapter<UserListAdapter.AddMemberAdapterViewHolder>() {
 
     private val userList: ArrayList<User> = ArrayList()
     private var listener: UserListItemClickListeners? = null
@@ -23,7 +21,19 @@ class AddMemberAdapter() : RecyclerView.Adapter<AddMemberAdapter.AddMemberAdapte
         notifyDataSetChanged()
     }
 
-    fun setItemClickListener(listener: AddMemberActivity) {
+    fun setUserList(userList: List<User>) {
+        this.userList.clear()
+        this.userList.addAll(userList)
+        notifyDataSetChanged()
+    }
+
+    fun removeUser(user: User) {
+        val i = userList.indexOf(user)
+        userList.remove(user)
+        notifyItemRemoved(i)
+    }
+
+    fun setItemClickListener(listener: UserListItemClickListeners) {
         this.listener = listener
     }
 
@@ -44,7 +54,7 @@ class AddMemberAdapter() : RecyclerView.Adapter<AddMemberAdapter.AddMemberAdapte
         val currentItem = userList[position]
 
         holder.user_imageview.setImageResource(R.drawable.default_user_image)
-        holder.username_textview.text = currentItem.display_name
+        holder.username_textview.text = currentItem.display_name?:currentItem.id
 
         if (listener != null) {
             holder.user_imageview.setOnClickListener {
@@ -52,6 +62,7 @@ class AddMemberAdapter() : RecyclerView.Adapter<AddMemberAdapter.AddMemberAdapte
             }
 
             holder.username_textview.setOnClickListener {
+                listener!!.onUserClick(currentItem)
             }
 
             holder.user_list_relativelayout.setOnClickListener {

@@ -1,13 +1,12 @@
 package it.uniparthenope.parthenopeddit.android
 
 import android.os.Bundle
-import it.uniparthenope.parthenopeddit.BasicActivity
+import it.uniparthenope.parthenopeddit.LoginRequiredActivity
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.android.ui.chat.GroupChatFragment
 import it.uniparthenope.parthenopeddit.model.Group
 import it.uniparthenope.parthenopeddit.util.toObject
 
-class GroupChatActivity : BasicActivity() {
+class GroupChatActivity : LoginRequiredActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

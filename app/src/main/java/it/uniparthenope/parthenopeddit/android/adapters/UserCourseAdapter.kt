@@ -3,12 +3,11 @@ package it.uniparthenope.parthenopeddit.android.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.RelativeLayout
+import android.widget.RatingBar
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.android.ui.user_boards.course.CourseUserBoardFragment
 import it.uniparthenope.parthenopeddit.model.Course
 import kotlinx.android.synthetic.main.cardview_course.view.*
 
@@ -17,7 +16,7 @@ class UserCourseAdapter : RecyclerView.Adapter<UserCourseAdapter.UserCourseViewH
     private val courseList: ArrayList<Course> = ArrayList()
     private var listener:UserCourseItemClickListeners? = null
 
-    fun setItemClickListener(listener: CourseUserBoardFragment) {
+    fun setItemClickListener(listener: UserCourseItemClickListeners) {
         this.listener = listener
     }
 
@@ -26,6 +25,12 @@ class UserCourseAdapter : RecyclerView.Adapter<UserCourseAdapter.UserCourseViewH
     }
 
     fun addCourse(courseItemList: List<Course>) {
+        this.courseList.addAll(courseItemList)
+        notifyDataSetChanged()
+    }
+
+    fun setCourseList(courseItemList: List<Course>) {
+        this.courseList.clear()
         this.courseList.addAll(courseItemList)
         notifyDataSetChanged()
     }
@@ -42,129 +47,13 @@ class UserCourseAdapter : RecyclerView.Adapter<UserCourseAdapter.UserCourseViewH
         val currentItem = courseList[position]
 
         holder.course_name_textview.text = currentItem.name
-        holder.course_enjoyment_rating.text = currentItem.average_liking_score.toString()+"/5"
-        holder.course_difficulty_rating.text = currentItem.average_difficulty_score.toString()+"/5"
-
-
-        //SET LIKING SCORE
-        if (currentItem.average_liking_score == 1.0) {
-            holder.star_enj_1.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_enj_2.setImageResource(R.drawable.ic_star_empty_24dp)
-            holder.star_enj_3.setImageResource(R.drawable.ic_star_empty_24dp)
-            holder.star_enj_4.setImageResource(R.drawable.ic_star_empty_24dp)
-            holder.star_enj_5.setImageResource(R.drawable.ic_star_empty_24dp)
-        } else if (currentItem.average_liking_score!! > 1 && currentItem.average_liking_score!! < 2) {
-            holder.star_enj_1.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_enj_2.setImageResource(R.drawable.ic_star_half_24dp)
-            holder.star_enj_3.setImageResource(R.drawable.ic_star_empty_24dp)
-            holder.star_enj_4.setImageResource(R.drawable.ic_star_empty_24dp)
-            holder.star_enj_5.setImageResource(R.drawable.ic_star_empty_24dp)
-        } else if (currentItem.average_liking_score == 2.0) {
-            holder.star_enj_1.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_enj_2.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_enj_3.setImageResource(R.drawable.ic_star_empty_24dp)
-            holder.star_enj_4.setImageResource(R.drawable.ic_star_empty_24dp)
-            holder.star_enj_5.setImageResource(R.drawable.ic_star_empty_24dp)
-        } else if (currentItem.average_liking_score!! > 2 && currentItem.average_liking_score!! < 3) {
-            holder.star_enj_1.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_enj_2.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_enj_3.setImageResource(R.drawable.ic_star_half_24dp)
-            holder.star_enj_4.setImageResource(R.drawable.ic_star_empty_24dp)
-            holder.star_enj_5.setImageResource(R.drawable.ic_star_empty_24dp)
-        } else if (currentItem.average_liking_score == 3.0) {
-            holder.star_enj_1.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_enj_2.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_enj_3.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_enj_4.setImageResource(R.drawable.ic_star_empty_24dp)
-            holder.star_enj_5.setImageResource(R.drawable.ic_star_empty_24dp)
-        } else if (currentItem.average_liking_score!! > 3 && currentItem.average_liking_score!! < 4) {
-            holder.star_enj_1.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_enj_2.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_enj_3.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_enj_4.setImageResource(R.drawable.ic_star_half_24dp)
-            holder.star_enj_5.setImageResource(R.drawable.ic_star_empty_24dp)
-        } else if (currentItem.average_liking_score == 4.0) {
-            holder.star_enj_1.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_enj_2.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_enj_3.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_enj_4.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_enj_5.setImageResource(R.drawable.ic_star_empty_24dp)
-        } else if (currentItem.average_liking_score!! > 4 && currentItem.average_liking_score!! < 5) {
-            holder.star_enj_1.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_enj_2.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_enj_3.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_enj_4.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_enj_5.setImageResource(R.drawable.ic_star_half_24dp)
-        } else if (currentItem.average_liking_score == 5.0) {
-            holder.star_enj_1.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_enj_2.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_enj_3.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_enj_4.setImageResource(R.drawable.ic_star_full_24dp)
-            holder.star_enj_5.setImageResource(R.drawable.ic_star_full_24dp)
-        }
-
-        //SET DIFFICULTY SCORE
-        if (currentItem.average_difficulty_score == 1.0) {
-                holder.star_dif_1.setImageResource(R.drawable.ic_star_full_24dp)
-                holder.star_dif_2.setImageResource(R.drawable.ic_star_empty_24dp)
-                holder.star_dif_3.setImageResource(R.drawable.ic_star_empty_24dp)
-                holder.star_dif_4.setImageResource(R.drawable.ic_star_empty_24dp)
-                holder.star_dif_5.setImageResource(R.drawable.ic_star_empty_24dp)
-            } else if (currentItem.average_difficulty_score!! > 1 && currentItem.average_difficulty_score!! < 2) {
-                holder.star_dif_1.setImageResource(R.drawable.ic_star_full_24dp)
-                holder.star_dif_2.setImageResource(R.drawable.ic_star_half_24dp)
-                holder.star_dif_3.setImageResource(R.drawable.ic_star_empty_24dp)
-                holder.star_dif_4.setImageResource(R.drawable.ic_star_empty_24dp)
-                holder.star_dif_5.setImageResource(R.drawable.ic_star_empty_24dp)
-            } else if (currentItem.average_difficulty_score == 2.0) {
-                holder.star_dif_1.setImageResource(R.drawable.ic_star_full_24dp)
-                holder.star_dif_2.setImageResource(R.drawable.ic_star_full_24dp)
-                holder.star_dif_3.setImageResource(R.drawable.ic_star_empty_24dp)
-                holder.star_dif_4.setImageResource(R.drawable.ic_star_empty_24dp)
-                holder.star_dif_5.setImageResource(R.drawable.ic_star_empty_24dp)
-            } else if (currentItem.average_difficulty_score!! > 2 && currentItem.average_difficulty_score!! < 3) {
-                holder.star_dif_1.setImageResource(R.drawable.ic_star_full_24dp)
-                holder.star_dif_2.setImageResource(R.drawable.ic_star_full_24dp)
-                holder.star_dif_3.setImageResource(R.drawable.ic_star_half_24dp)
-                holder.star_dif_4.setImageResource(R.drawable.ic_star_empty_24dp)
-                holder.star_dif_5.setImageResource(R.drawable.ic_star_empty_24dp)
-            } else if (currentItem.average_difficulty_score == 3.0) {
-                holder.star_dif_1.setImageResource(R.drawable.ic_star_full_24dp)
-                holder.star_dif_2.setImageResource(R.drawable.ic_star_full_24dp)
-                holder.star_dif_3.setImageResource(R.drawable.ic_star_full_24dp)
-                holder.star_dif_4.setImageResource(R.drawable.ic_star_empty_24dp)
-                holder.star_dif_5.setImageResource(R.drawable.ic_star_empty_24dp)
-            } else if (currentItem.average_difficulty_score!! > 3 && currentItem.average_difficulty_score!! < 4) {
-                holder.star_dif_1.setImageResource(R.drawable.ic_star_full_24dp)
-                holder.star_dif_2.setImageResource(R.drawable.ic_star_full_24dp)
-                holder.star_dif_3.setImageResource(R.drawable.ic_star_full_24dp)
-                holder.star_dif_4.setImageResource(R.drawable.ic_star_half_24dp)
-                holder.star_dif_5.setImageResource(R.drawable.ic_star_empty_24dp)
-            } else if (currentItem.average_difficulty_score == 4.0) {
-                holder.star_dif_1.setImageResource(R.drawable.ic_star_full_24dp)
-                holder.star_dif_2.setImageResource(R.drawable.ic_star_full_24dp)
-                holder.star_dif_3.setImageResource(R.drawable.ic_star_full_24dp)
-                holder.star_dif_4.setImageResource(R.drawable.ic_star_full_24dp)
-                holder.star_dif_5.setImageResource(R.drawable.ic_star_empty_24dp)
-            } else if (currentItem.average_difficulty_score!! > 4 && currentItem.average_difficulty_score!! < 5) {
-                holder.star_dif_1.setImageResource(R.drawable.ic_star_full_24dp)
-                holder.star_dif_2.setImageResource(R.drawable.ic_star_full_24dp)
-                holder.star_dif_3.setImageResource(R.drawable.ic_star_full_24dp)
-                holder.star_dif_4.setImageResource(R.drawable.ic_star_full_24dp)
-                holder.star_dif_5.setImageResource(R.drawable.ic_star_half_24dp)
-            } else if (currentItem.average_difficulty_score == 5.0) {
-                holder.star_dif_1.setImageResource(R.drawable.ic_star_full_24dp)
-                holder.star_dif_2.setImageResource(R.drawable.ic_star_full_24dp)
-                holder.star_dif_3.setImageResource(R.drawable.ic_star_full_24dp)
-                holder.star_dif_4.setImageResource(R.drawable.ic_star_full_24dp)
-                holder.star_dif_5.setImageResource(R.drawable.ic_star_full_24dp)
-            }
-
-        
+        holder.course_enjoyment_rating.text = "%2.1f/5".format(currentItem.average_liking_score)
+        holder.course_difficulty_rating.text = "%2.1f/5".format(currentItem.average_difficulty_score)
+        holder.liking_rating_bar.rating = currentItem.average_liking_score!!.toFloat()
+        holder.difficulty_rating_bar.rating = currentItem.average_difficulty_score!!.toFloat()
         
         if( listener != null ) {
-
-            holder.relativeLayout.setOnClickListener {
+            holder.cardLayout.setOnClickListener {
                 listener!!.onBoardClick(currentItem.id)
             }
         }
@@ -174,22 +63,11 @@ class UserCourseAdapter : RecyclerView.Adapter<UserCourseAdapter.UserCourseViewH
 
     class UserCourseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {     //SINGOLO ELEMENTO DELLA LISTA
         val course_name_textview: TextView = itemView.course_name_textview
-        val relativeLayout: RelativeLayout = itemView.course_cardview_relativelayout
+        val liking_rating_bar:RatingBar = itemView.liking_rating_bar
+        val course_enjoyment_rating: TextView = itemView.course_enjoyment_rating
+        val difficulty_rating_bar: RatingBar = itemView.difficulty_rating_bar
+        val course_difficulty_rating: TextView = itemView.course_difficulty_rating
 
-        var course_enjoyment_rating: TextView = itemView.course_enjoyment_rating
-        var course_difficulty_rating: TextView = itemView.course_difficulty_rating
-        var star_enj_1: ImageView = itemView.star_enj_1
-        var star_enj_2: ImageView = itemView.star_enj_2
-        var star_enj_3: ImageView = itemView.star_enj_3
-        var star_enj_4: ImageView = itemView.star_enj_4
-        var star_enj_5: ImageView = itemView.star_enj_5
-
-        var star_dif_1: ImageView = itemView.star_dif_1
-        var star_dif_2: ImageView = itemView.star_dif_2
-        var star_dif_3: ImageView = itemView.star_dif_3
-        var star_dif_4: ImageView = itemView.star_dif_4
-        var star_dif_5: ImageView = itemView.star_dif_5
-
-
+        val cardLayout: CardView = itemView.container
     }
 }

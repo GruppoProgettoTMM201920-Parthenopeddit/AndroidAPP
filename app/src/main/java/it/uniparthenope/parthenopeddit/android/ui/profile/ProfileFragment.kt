@@ -9,10 +9,10 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.Keep
 import androidx.appcompat.app.AlertDialog
@@ -26,7 +26,6 @@ import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.api.requests.UserRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
-import it.uniparthenope.parthenopeddit.model.Post
 import it.uniparthenope.parthenopeddit.model.User
 import kotlinx.android.synthetic.main.change_username_dialog.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -51,9 +50,13 @@ class ProfileFragment : Fragment(), PreferenceFragmentCompat.OnPreferenceStartFr
             ViewModelProviders.of(this).get(ProfileViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_profile, container, false)
 
+        auth = (activity as BasicActivity).app.auth
+
         sharedPreferences = requireContext().getSharedPreferences(sharedPrefFile,Context.MODE_PRIVATE)
         val sharedNameValue = sharedPreferences.getString("USERNAME","Username")
         val sharedImageValue = (sharedPreferences.getString("user_image_uri", "0"))
+        val username_textview = root.findViewById<TextView>(R.id.username_textview)
+        username_textview.text = auth.username
 
         val imageUri = Uri.parse(sharedImageValue?:"")
 

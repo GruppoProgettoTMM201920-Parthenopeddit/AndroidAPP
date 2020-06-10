@@ -1,26 +1,21 @@
 package it.uniparthenope.parthenopeddit.android
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.FrameLayout
-import androidx.preference.PreferenceManager
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.api.requests.AuthRequests
 import it.uniparthenope.parthenopeddit.util.TAG
 import it.uniparthenope.parthenopeddit.util.animateView
 import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.progress_overlay.*
 
 
 private val sharedPrefFile = "kotlinsharedpreference"
 
-class LoginActivity : BasicActivity(){
+class LoginActivity : BasicActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

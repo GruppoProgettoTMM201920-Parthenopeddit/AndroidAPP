@@ -3,8 +3,6 @@ package it.uniparthenope.parthenopeddit
 import android.app.Application
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.auth.SharedPreferencesAuth
-import java.lang.RuntimeException
-import java.net.URISyntaxException
 
 class App : Application() {
     var currentActivity: BasicActivity? = null

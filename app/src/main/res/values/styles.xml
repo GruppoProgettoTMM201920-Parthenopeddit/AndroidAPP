@@ -26,4 +26,12 @@
         <item name="android:alpha">0.1</item>
     </style>
 
+    <style name="RatingBar" parent="Widget.AppCompat.RatingBar.Indicator">
+        <item name="android:progressTint">@color/duskYellow</item>
+    </style>
+
+    <style name="RatingBarSmall" parent="Widget.AppCompat.RatingBar.Small">
+        <item name="android:progressTint">@color/duskYellow</item>
+    </style>
+
 </resources>

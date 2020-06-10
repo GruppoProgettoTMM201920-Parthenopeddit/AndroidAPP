@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.model.Comment
 import kotlinx.android.synthetic.main.cardview_commento.view.*
-import kotlinx.android.synthetic.main.cardview_post.view.*
 import kotlinx.android.synthetic.main.cardview_post.view.comments_btn
 import kotlinx.android.synthetic.main.cardview_post.view.downvote_btn
 import kotlinx.android.synthetic.main.cardview_post.view.downvote_textview

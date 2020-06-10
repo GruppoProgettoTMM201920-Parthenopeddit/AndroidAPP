@@ -2,42 +2,41 @@ package it.uniparthenope.parthenopeddit.android
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import it.uniparthenope.parthenopeddit.BasicActivity
+import it.uniparthenope.parthenopeddit.LoginRequiredActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.ui.group.BackdropFragment
 import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
-import it.uniparthenope.parthenopeddit.api.MockApiData
-import it.uniparthenope.parthenopeddit.api.MockDatabase
 import it.uniparthenope.parthenopeddit.api.requests.GroupsRequests
-import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Group
+import it.uniparthenope.parthenopeddit.model.GroupInvite
 import it.uniparthenope.parthenopeddit.model.GroupMember
 import it.uniparthenope.parthenopeddit.model.Post
 import it.uniparthenope.parthenopeddit.util.toObject
-import kotlinx.android.synthetic.main.activity_course.*
 import kotlinx.android.synthetic.main.activity_group.*
-import java.util.*
-import kotlin.collections.ArrayList
 
-class GroupActivity : BasicActivity() {
+class GroupActivity : LoginRequiredActivity() {
 
     private var isOpen = false
     private lateinit var group: Group
+    private lateinit var members: ArrayList<GroupMember>
+    private lateinit var invites: ArrayList<GroupInvite>
+
+    private lateinit var fragment: BackdropFragment
+    private lateinit var mBottomSheetBehavior: BottomSheetBehavior<View?>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group)
+        fragment = supportFragmentManager.findFragmentById(R.id.filter_fragment) as BackdropFragment
 
         val extras = intent.extras
         var id_group:Int = extras?.getInt("id_group")?:0
@@ -50,10 +49,26 @@ class GroupActivity : BasicActivity() {
             deserializedGroup = (extras?.getString("group")?:"").toObject()
         } catch(e:Exception) {}
 
-
         if( deserializedGroup != null ) {
             setGroup(deserializedGroup)
-            configureBackdrop(deserializedGroup)
+            fragment.updateGroupData(deserializedGroup)
+        }
+
+        fragment.let {
+            // Get the BottomSheetBehavior from the fragment view
+            BottomSheetBehavior.from(it.requireView()).let { bsb ->
+                // Set the initial state of the BottomSheetBehavior to HIDDEN
+                bsb.state = BottomSheetBehavior.STATE_HIDDEN
+
+                // Set the trigger that will expand your view
+                group_info_toolbar.setOnClickListener { bsb.state = BottomSheetBehavior.STATE_HALF_EXPANDED }
+                group_image.setOnClickListener { bsb.state = BottomSheetBehavior.STATE_HALF_EXPANDED }
+                group_name_textview.setOnClickListener { bsb.state = BottomSheetBehavior.STATE_HALF_EXPANDED }
+                num_members.setOnClickListener { bsb.state = BottomSheetBehavior.STATE_HALF_EXPANDED }
+
+                // Set the reference into class attribute (will be used latter)
+                mBottomSheetBehavior = bsb
+            }
         }
 
         val postAdapter = PostAdapter()
@@ -73,11 +88,21 @@ class GroupActivity : BasicActivity() {
         //BUON DIVERTIMENTO CON LE API, FRANCESCO
         GroupsRequests(this, app.auth).getGroup(id_group,{it: Group ->
             setGroup(it)
+            fragment.updateGroupData(it)
+        },{it: String ->
+            Toast.makeText(this, "Errore ${it}", Toast.LENGTH_LONG).show()
+        })
 
-            for(user in it.members?:arrayListOf())
-                Log.d("DEBUG", "admin is ${user.user_id}")
+        GroupsRequests(this, app.auth).getGroupMembers(id_group,{
+            members = it
+            fragment.updateMembersData(it)
+        },{it: String ->
+            Toast.makeText(this, "Errore ${it}", Toast.LENGTH_LONG).show()
+        })
 
-            configureBackdrop(it)
+        GroupsRequests(this, app.auth).getGroupInvites(id_group,{
+            invites = it
+            fragment.updateInvitesData(it)
         },{it: String ->
             Toast.makeText(this, "Errore ${it}", Toast.LENGTH_LONG).show()
         })
@@ -132,17 +157,23 @@ class GroupActivity : BasicActivity() {
             GroupsRequests(this, app.auth).leaveGroup(
                 id_group, {
                     Toast.makeText(this,"Hai lasciato il gruppo ${group.name}", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, HomeActivity::class.java)
+                    startActivity(intent)
+                    finish()
                 },{
                     Toast.makeText(this,"Eri l'ultimo admin. Hai abbandonato la nave, sei peggio di Schettino", Toast.LENGTH_LONG).show()
+                    val intent = Intent(this, HomeActivity::class.java)
+                    startActivity(intent)
+                    finish()
                 },{
                     Toast.makeText(this,"Eri l'ultimo utente. Il gruppo ${group.name} è stato eliminato", Toast.LENGTH_LONG).show()
+                    val intent = Intent(this, HomeActivity::class.java)
+                    startActivity(intent)
+                    finish()
                 }, {
                     Toast.makeText(this,"Errore : ${it}", Toast.LENGTH_LONG).show()
                 }
             )
-            val intent = Intent(this, HomeActivity::class.java)
-            startActivity(intent)
-            finish()
         }
     }
 
@@ -152,48 +183,21 @@ class GroupActivity : BasicActivity() {
         num_members.text = group.members_num.toString()
     }
 
-    fun onClickNewPost(id_group: Int, name_group: String){
+    private fun onClickNewPost(id_group: Int, name_group: String){
         val intent = Intent(this, NewPostActivity::class.java)
         intent.putExtra("id_group", id_group)
         intent.putExtra("name_group", name_group)
         startActivity(intent)
     }
 
-    private var mBottomSheetBehavior: BottomSheetBehavior<View?>? = null
-
-    private fun configureBackdrop(group: Group) {
-        // Get the fragment reference
-        Log.d("DEBUG", "before findfragment")
-        val fragment = supportFragmentManager.findFragmentById(R.id.filter_fragment) as BackdropFragment
-        fragment.updateData(group)
-
-
-        fragment.let {
-            // Get the BottomSheetBehavior from the fragment view
-            BottomSheetBehavior.from(it.requireView()).let { bsb ->
-                // Set the initial state of the BottomSheetBehavior to HIDDEN
-                bsb.state = BottomSheetBehavior.STATE_HIDDEN
-
-                // Set the trigger that will expand your view
-                group_info_toolbar.setOnClickListener { bsb.state = BottomSheetBehavior.STATE_HALF_EXPANDED }
-                group_image.setOnClickListener { bsb.state = BottomSheetBehavior.STATE_HALF_EXPANDED }
-                group_name_textview.setOnClickListener { bsb.state = BottomSheetBehavior.STATE_HALF_EXPANDED }
-                num_members.setOnClickListener { bsb.state = BottomSheetBehavior.STATE_HALF_EXPANDED }
-
-                // Set the reference into class attribute (will be used latter)
-                mBottomSheetBehavior = bsb
-            }
-        }
-    }
-
     override fun onBackPressed() {
         // With the reference of the BottomSheetBehavior stored
-        mBottomSheetBehavior?.let {
+        mBottomSheetBehavior.let {
             if (it.state == BottomSheetBehavior.STATE_EXPANDED || it.state == BottomSheetBehavior.STATE_HALF_EXPANDED) {
                 it.state = BottomSheetBehavior.STATE_COLLAPSED
             } else {
                 super.onBackPressed()
             }
-        } ?: super.onBackPressed()
+        }
     }
 }

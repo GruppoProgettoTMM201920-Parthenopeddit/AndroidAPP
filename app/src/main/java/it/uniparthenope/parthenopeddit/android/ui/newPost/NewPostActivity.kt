@@ -1,31 +1,18 @@
 package it.uniparthenope.parthenopeddit.android.ui.newPost
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.*
-import it.uniparthenope.parthenopeddit.BasicActivity
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
+import it.uniparthenope.parthenopeddit.LoginRequiredActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.HomeActivity
-import it.uniparthenope.parthenopeddit.api.MockApiData
-import it.uniparthenope.parthenopeddit.api.MockDatabase
 import it.uniparthenope.parthenopeddit.api.requests.PostsRequests
-import it.uniparthenope.parthenopeddit.api.requests.ReviewsRequests
-import it.uniparthenope.parthenopeddit.model.Board
-import it.uniparthenope.parthenopeddit.model.Group
-import it.uniparthenope.parthenopeddit.model.Post
-import it.uniparthenope.parthenopeddit.model.Review
 import kotlinx.android.synthetic.main.activity_new_post.*
-import kotlinx.android.synthetic.main.activity_new_post.empty_title_textview
-import kotlinx.android.synthetic.main.activity_new_post.title_edittext
-import kotlinx.android.synthetic.main.activity_new_review.*
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.ArrayList
 
-class NewPostActivity : BasicActivity(){
+class NewPostActivity : LoginRequiredActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

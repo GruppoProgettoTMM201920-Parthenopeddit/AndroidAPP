@@ -4,10 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.*
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import it.uniparthenope.parthenopeddit.BasicActivity
+import it.uniparthenope.parthenopeddit.LoginRequiredActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.adapters.CommentAdapter
 import it.uniparthenope.parthenopeddit.api.requests.CommentsRequests
@@ -28,7 +31,7 @@ import kotlinx.android.synthetic.main.cardview_post.upvote_textview
 import kotlinx.android.synthetic.main.cardview_post.username_textview
 import kotlinx.android.synthetic.main.cardview_review.*
 
-class ReviewCommentsActivity : BasicActivity(), CommentAdapter.CommentItemClickListeners {
+class ReviewCommentsActivity : LoginRequiredActivity(), CommentAdapter.CommentItemClickListeners {
 
     private lateinit var review: Review
     private lateinit var adapter: CommentAdapter
@@ -108,7 +111,7 @@ class ReviewCommentsActivity : BasicActivity(), CommentAdapter.CommentItemClickL
         review = newReview
 
 
-        image_view.setImageResource(R.drawable.ic_home_black_24dp)
+        image_view.setImageResource(R.drawable.default_user_image)
         username_textview.text = review.author?.display_name?:review.author_id
         timestamp_textview.text = review.timestamp
         posttext_textview.text = review.body

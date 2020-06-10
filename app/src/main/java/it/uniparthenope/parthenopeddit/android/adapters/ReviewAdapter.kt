@@ -4,13 +4,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.model.Post
+import it.uniparthenope.parthenopeddit.model.Course
 import it.uniparthenope.parthenopeddit.model.Review
-import kotlinx.android.synthetic.main.activity_course.view.*
-import kotlinx.android.synthetic.main.cardview_post.view.*
 import kotlinx.android.synthetic.main.cardview_post.view.downvote_btn
 import kotlinx.android.synthetic.main.cardview_post.view.downvote_textview
 import kotlinx.android.synthetic.main.cardview_post.view.image_view
@@ -30,16 +27,12 @@ class ReviewAdapter() : RecyclerView.Adapter<ReviewAdapter.CourseReviewViewHolde
         this.listener = listener
     }
 
-    fun aggiungiPost(reviewItemList: List<Review>) {
-        this.reviewList.addAll(reviewItemList)
-        notifyDataSetChanged()
-    }
-
     interface CourseReviewItemClickListeners {
         fun onClickLike(id_review:Int, upvote_textview: TextView, downvote_textview: TextView)
         fun onClickDislike(id_review:Int, upvote_textview: TextView, downvote_textview: TextView)
-        fun onReviewClick(id_course: Int)
-        fun onClickComments(id_review: Int)
+        fun onClickCourse(id_course: Int, course: Course)
+        fun onReviewClick(id_review: Int, review:Review)
+        fun onClickComments(id_review: Int, review:Review)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CourseReviewViewHolder {
@@ -52,7 +45,7 @@ class ReviewAdapter() : RecyclerView.Adapter<ReviewAdapter.CourseReviewViewHolde
     override fun onBindViewHolder(holder: CourseReviewViewHolder, position: Int) {
         val currentItem = reviewList[position]
 
-        holder.imageView.setImageResource(R.drawable.ic_home_black_24dp)
+        holder.imageView.setImageResource(R.drawable.default_user_image)
         holder.username_textview.text = currentItem.author?.display_name?:currentItem.author_id
         holder.timestamp_textview.text = currentItem.timestamp
         holder.posttext_textview.text = currentItem.body
@@ -62,6 +55,8 @@ class ReviewAdapter() : RecyclerView.Adapter<ReviewAdapter.CourseReviewViewHolde
 
         holder.liking_rating_bar.rating = currentItem.score_liking.toFloat()
         holder.difficulty_rating_bar.rating = currentItem.score_difficulty.toFloat()
+
+        holder.group_textview2.text = currentItem.reviewed_course?.name?:""
 
         if( listener != null ) {
             holder.upvote_btn.setOnClickListener {
@@ -73,11 +68,15 @@ class ReviewAdapter() : RecyclerView.Adapter<ReviewAdapter.CourseReviewViewHolde
             }
 
             holder.review_relativelayout.setOnClickListener {
-                listener!!.onReviewClick( currentItem.reviewed_course_id )
+                listener!!.onReviewClick( currentItem.id, currentItem )
             }
 
             holder.comments_btn.setOnClickListener {
-                listener!!.onClickComments( currentItem.id )
+                listener!!.onClickComments( currentItem.id, currentItem )
+            }
+
+            holder.group_textview2.setOnClickListener {
+                listener!!.onClickCourse( currentItem.reviewed_course_id, currentItem.reviewed_course!! )
             }
         }
     }
@@ -103,5 +102,6 @@ class ReviewAdapter() : RecyclerView.Adapter<ReviewAdapter.CourseReviewViewHolde
         val review_relativelayout: RelativeLayout = itemView.review_relativelayout
         val liking_rating_bar: RatingBar = itemView.liking_rating_bar
         val difficulty_rating_bar: RatingBar = itemView.difficulty_rating_bar
+        val group_textview2 : TextView = itemView.group_textview2
     }
 }
