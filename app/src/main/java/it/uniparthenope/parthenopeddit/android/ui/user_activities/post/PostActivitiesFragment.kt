@@ -15,7 +15,6 @@ import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.*
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
-import it.uniparthenope.parthenopeddit.android.ui.user_activities.post.PostActivitiesViewModel
 import it.uniparthenope.parthenopeddit.api.requests.PostsRequests
 import it.uniparthenope.parthenopeddit.api.requests.UserRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
@@ -24,19 +23,16 @@ import it.uniparthenope.parthenopeddit.model.LikeDislikeScore
 import it.uniparthenope.parthenopeddit.model.Post
 import it.uniparthenope.parthenopeddit.util.toGson
 
-class PostActivitiesFragment : Fragment(), PostAdapter.PostItemClickListeners {
+class PostActivitiesFragment(private val user_id: String) : Fragment(), PostAdapter.PostItemClickListeners {
 
     private lateinit var auth: AuthManager
     private lateinit var recycler_view: RecyclerView
-    private lateinit var postViewModel: PostActivitiesViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        postViewModel =
-            ViewModelProviders.of(this).get(PostActivitiesViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_post_activities, container, false)
         val no_posts_textview = root.findViewById<TextView>(R.id.no_posts_textview)
 
@@ -49,16 +45,19 @@ class PostActivitiesFragment : Fragment(), PostAdapter.PostItemClickListeners {
         recycler_view.setHasFixedSize(true)
 
         auth = (activity as BasicActivity).app.auth
-        val user_id = (activity as UserActivity).user_id
 
-        UserRequests(requireContext(), auth).getUserPublishedPosts( user_id, 1, 20, { it: ArrayList<Post> ->
-            if(it.isNotEmpty()){
-                no_posts_textview.visibility = View.GONE
-                recycler_view.visibility = View.VISIBLE
-                postAdapter.aggiungiPost(it)
-            }
-        },{it: String ->
-        })
+        UserRequests(requireContext(), auth).getUserPublishedPosts(
+            user_id,
+            1,
+            20,
+            {
+                if(it.isNotEmpty()){
+                    no_posts_textview.visibility = View.GONE
+                    recycler_view.visibility = View.VISIBLE
+                    postAdapter.aggiungiPost(it)
+                }
+            }, {}
+        )
 
         return root
     }
@@ -70,7 +69,8 @@ class PostActivitiesFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
     override fun onClickLike(id_post: Int, upvote_textview: TextView, downvote_textview: TextView) {
         PostsRequests(requireContext(), auth).likePost(
-            1, {
+            id_post,
+            {
                 updateLike(upvote_textview, downvote_textview, it)
             }, {
                 updateLike(upvote_textview, downvote_textview, it)
@@ -84,7 +84,8 @@ class PostActivitiesFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
     override fun onClickDislike(id_post: Int, upvote_textview: TextView, downvote_textview: TextView) {
         PostsRequests(requireContext(), auth).dislikePost(
-            1, {
+            id_post,
+            {
                 updateLike(upvote_textview, downvote_textview, it)
             }, {
                 updateLike(upvote_textview, downvote_textview, it)
@@ -123,7 +124,7 @@ class PostActivitiesFragment : Fragment(), PostAdapter.PostItemClickListeners {
             when (board?.type) {
                 "course" -> {
                     val intent = Intent(requireContext(), CourseActivity::class.java)  //CORSO
-                    intent.putExtra("id_group", board_id)
+                    intent.putExtra("id_course", board_id)
                     startActivity(intent)
                 }
                 "group" -> {

@@ -189,7 +189,7 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
             when (board?.type) {
                 "course" -> {
                     val intent = Intent(requireContext(), CourseActivity::class.java)  //CORSO
-                    intent.putExtra("id_group", board_id)
+                    intent.putExtra("id_course", board_id)
                     startActivity(intent)
                 }
                 "group" -> {

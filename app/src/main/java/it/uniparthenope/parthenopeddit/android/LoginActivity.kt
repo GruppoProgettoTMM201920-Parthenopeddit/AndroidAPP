@@ -9,7 +9,7 @@ import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.api.requests.AuthRequests
 import it.uniparthenope.parthenopeddit.util.TAG
-import it.uniparthenope.parthenopeddit.util.animateView
+import it.uniparthenope.parthenopeddit.android.animation.animateView
 import kotlinx.android.synthetic.main.activity_login.*
 
 
@@ -107,12 +107,22 @@ class LoginActivity : BasicActivity() {
 
     fun showProgressOverlay() {
         val progress_overlay = findViewById<FrameLayout>(R.id.progress_overlay)
-        animateView(progress_overlay, View.VISIBLE, 0.4f, 200)
+        animateView(
+            progress_overlay,
+            View.VISIBLE,
+            0.4f,
+            200
+        )
     }
 
     fun hideProgressOverlay() {
         val progress_overlay = findViewById<FrameLayout>(R.id.progress_overlay)
-        animateView(progress_overlay, View.GONE, 0f, 200)
+        animateView(
+            progress_overlay,
+            View.GONE,
+            0f,
+            200
+        )
     }
 }
 

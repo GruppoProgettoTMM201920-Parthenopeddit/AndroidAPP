@@ -1,4 +1,4 @@
-package it.uniparthenope.parthenopeddit.util
+package it.uniparthenope.parthenopeddit.android.animation
 
 import android.animation.Animator
 

@@ -31,7 +31,7 @@ class SettingsActivity : LoginRequiredActivity() {
 
             val userActivityPreference: Preference? = findPreference("useractivity")
             userActivityPreference?.onPreferenceClickListener = Preference.OnPreferenceClickListener {
-                val intent = Intent(requireContext(), UserActivity::class.java)
+                val intent = Intent(requireContext(), UserContentActivity::class.java)
                 startActivity(intent)
                 true
             }
