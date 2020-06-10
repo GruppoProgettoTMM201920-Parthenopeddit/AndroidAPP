@@ -9,4 +9,7 @@ interface AuthManager {
     var username: String?
     var token: String?
     var autoLogin: Boolean?
+
+    var privateKey: String?
+    var publicKey: String?
 }

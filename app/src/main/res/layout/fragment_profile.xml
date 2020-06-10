@@ -1,102 +1,286 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#595959"
+    android:orientation="horizontal"
     tools:context=".android.ui.profile.ProfileFragment">
 
-
-
-
-    <LinearLayout
-        android:id="@+id/user_detail_layout"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="10dp"
-        android:background="@drawable/settings_shape"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
 
-
-
-        <TextView
-            android:id="@+id/username_shown_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="250dp"
-            android:text="@string/username_user"
-            android:textStyle="bold"
-            android:textSize="24sp" />
-
-        <TextView
-            android:id="@+id/username_textview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/username_user"
-            android:textSize="15sp" />
-
-        <fragment
-            android:id="@+id/fragment"
-            android:name="it.uniparthenope.parthenopeddit.android.SettingsActivity$SettingsFragment"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:background="@drawable/settings_shape">
 
-    </LinearLayout>
+            <ImageButton
+                android:id="@+id/settings_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@android:color/transparent"
+                android:elevation="2dp"
+                android:src="@drawable/ic_settings_24dp"
+                android:tint="#272727"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/logout_button" />
 
-    <ImageView
-        android:id="@+id/user_image"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:foreground="@drawable/circle_user_image"
-        app:srcCompat="@drawable/ic_launcher_background"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="30dp"
-        tools:layout_editor_absoluteX="110dp"
-        tools:layout_editor_absoluteY="116dp"
-        android:scaleType="centerCrop"/>
+            <ImageButton
+                android:id="@+id/logout_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@android:color/transparent"
+                android:elevation="2dp"
+                android:src="@drawable/ic_logout_24dp"
+                android:tint="@color/red"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_user_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorPrimary"
-        app:layout_constraintStart_toEndOf="@id/user_image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="180dp"
-        android:layout_marginEnd="100dp"
-        android:contentDescription="hello"
-        android:elevation="2dp"
-        android:src="@drawable/ic_edit_white_24dp"
-        app:fabSize="mini"
-        tools:layout_editor_absoluteX="411dp"
-        tools:layout_editor_absoluteY="30dp" />
+            <TextView
+                android:id="@+id/logout_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:elevation="2dp"
+                android:text="Logout"
+                android:textColor="@color/red"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/logout_button"
+                app:layout_constraintEnd_toStartOf="@+id/logout_button"
+                app:layout_constraintTop_toTopOf="@+id/logout_button" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab_new_username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/colorPrimary"
-        app:layout_constraintStart_toEndOf="@id/user_image"
-        app:layout_constraintTop_toBottomOf="@id/fab_user_image"
-        android:layout_marginTop="35dp"
-        android:layout_marginEnd="100dp"
-        android:contentDescription="hello"
-        android:elevation="2dp"
-        android:src="@drawable/ic_edit_white_24dp"
-        app:fabSize="mini"
-        tools:layout_editor_absoluteX="411dp"
-        tools:layout_editor_absoluteY="30dp" />
+            <ImageButton
+                android:id="@+id/info_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:background="@android:color/transparent"
+                android:elevation="2dp"
+                android:src="@drawable/ic_info_themecolor_24dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/info_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:elevation="2dp"
+                android:text="Info"
+                android:textColor="@color/colorPrimary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/info_button"
+                app:layout_constraintStart_toEndOf="@+id/info_button"
+                app:layout_constraintTop_toTopOf="@+id/info_button" />
+
+            <ImageView
+                android:id="@+id/user_image"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="50dp"
+                android:foreground="@drawable/circle_user_image"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/default_user_image" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_user_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="172dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:contentDescription="hello"
+                android:elevation="2dp"
+                android:src="@drawable/ic_edit_white_24dp"
+                app:fabSize="mini"
+                app:layout_constraintBottom_toBottomOf="@+id/user_image"
+                app:layout_constraintStart_toStartOf="@+id/user_image"
+                app:layout_constraintTop_toTopOf="@+id/user_image"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_new_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:contentDescription="hello"
+                android:elevation="2dp"
+                android:src="@drawable/ic_edit_white_24dp"
+                app:fabSize="mini"
+                app:layout_constraintBottom_toBottomOf="@+id/username_shown_textview"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/username_shown_textview"
+                app:layout_constraintTop_toTopOf="@+id/username_shown_textview" />
+
+            <TextView
+                android:id="@+id/username_shown_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="62dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="62dp"
+                android:gravity="center"
+                android:text="@string/username"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/user_image" />
+
+            <TextView
+                android:id="@+id/username_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/username_user"
+                android:textSize="15sp"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/username_shown_textview" />
+
+            <LinearLayout
+                android:id="@+id/user_activities_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/username_textview">
+
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_margin="12dp"
+                    android:src="@drawable/ic_useractivity_themecolor_24dp"
+                    android:tint="@color/colorPrimary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"
+                    android:layout_weight="1"
+                    android:text="Visualizza i contenuti pubblicati"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/user_boards_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/user_activities_layout">
+
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_margin="12dp"
+                    android:src="@drawable/ic_group_themecolor_24dp"
+                    android:tint="@color/colorPrimary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"
+                    android:layout_weight="1"
+                    android:text="Visualizza i tuoi corsi e gruppi"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/user_invites_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/user_boards_layout">
+
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_margin="12dp"
+                    android:src="@drawable/ic_invite_themecolor_24dp"
+                    android:tint="@color/colorPrimary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"
+                    android:layout_weight="1"
+                    android:text="Visualizza gli inviti ai gruppi"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/user_chat_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/user_invites_layout">
+
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_margin="12dp"
+                    android:src="@drawable/ic_chat_24"
+                    android:tint="@color/colorPrimary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"
+                    android:layout_weight="1"
+                    android:text="Chatta con l'utente"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+</LinearLayout>

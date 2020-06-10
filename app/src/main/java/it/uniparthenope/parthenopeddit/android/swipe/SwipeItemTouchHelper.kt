@@ -1,11 +1,12 @@
-package it.uniparthenope.parthenopeddit.util
+package it.uniparthenope.parthenopeddit.android.swipe
 
 import android.graphics.Canvas
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
 class SwipeItemTouchHelper(dragDirs: Int, swipeDirs: Int,
-                           private val swipeItemTouchListener: SwipeItemTouchListener) : ItemTouchHelper.SimpleCallback(dragDirs, swipeDirs) {
+                           private val swipeItemTouchListener: SwipeItemTouchListener
+) : ItemTouchHelper.SimpleCallback(dragDirs, swipeDirs) {
 
     override fun onMove(
         recyclerView: RecyclerView,

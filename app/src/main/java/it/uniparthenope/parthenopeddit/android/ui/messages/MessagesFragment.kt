@@ -33,7 +33,7 @@ import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.GroupChat
 import it.uniparthenope.parthenopeddit.model.User
 import it.uniparthenope.parthenopeddit.model.UsersChat
-import it.uniparthenope.parthenopeddit.util.SwipeItemTouchListener
+import it.uniparthenope.parthenopeddit.android.swipe.SwipeItemTouchListener
 
 class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners,
     SwipeItemTouchListener, ExpandableListChatAdapter.ChatListItemClickListeners {

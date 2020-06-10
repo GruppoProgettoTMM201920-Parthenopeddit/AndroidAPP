@@ -27,8 +27,8 @@ import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Group
 import it.uniparthenope.parthenopeddit.model.GroupInvite
 import it.uniparthenope.parthenopeddit.model.GroupMember
-import it.uniparthenope.parthenopeddit.util.SwipeItemTouchHelper
-import it.uniparthenope.parthenopeddit.util.SwipeItemTouchListener
+import it.uniparthenope.parthenopeddit.android.swipe.SwipeItemTouchHelper
+import it.uniparthenope.parthenopeddit.android.swipe.SwipeItemTouchListener
 
 class BackdropFragment(): SwipeItemTouchListener, Fragment(),
     ExpandableUserListAdapter.UserClickListener {
@@ -59,7 +59,12 @@ class BackdropFragment(): SwipeItemTouchListener, Fragment(),
         members_recycler_view.layoutManager = LinearLayoutManager(requireContext())
         members_recycler_view.adapter = membersAdapter
 
-        val swipeHelper = SwipeItemTouchHelper(0, ItemTouchHelper.LEFT, this)
+        val swipeHelper =
+            SwipeItemTouchHelper(
+                0,
+                ItemTouchHelper.LEFT,
+                this
+            )
         ItemTouchHelper(swipeHelper).attachToRecyclerView(members_recycler_view)
 
         auth = (activity as BasicActivity).app.auth
