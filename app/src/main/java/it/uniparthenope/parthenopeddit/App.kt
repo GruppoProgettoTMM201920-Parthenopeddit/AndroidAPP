@@ -36,6 +36,6 @@ class App : Application(), AbstractAuthManager.logEventListener {
     }
 
     override fun onLogout() {
-        TODO("Not yet implemented")
+
     }
 }
