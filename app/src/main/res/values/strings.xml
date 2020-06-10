@@ -63,5 +63,6 @@
     <!--FIREBASE-->
     <string name="msg_token_fmt"><![CDATA[test -> %s]]></string>
     <string name="testing_notification_channel_id">TESTING_CHANNEL</string>
+    <string name="userchat_notification_channel_id">USERCHAT_CHANNEL</string>
 
 </resources>

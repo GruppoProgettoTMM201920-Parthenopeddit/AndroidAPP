@@ -4,6 +4,7 @@ import android.app.Notification
 import android.app.NotificationManager
 import android.content.Context
 import com.google.firebase.messaging.RemoteMessage
+import it.uniparthenope.parthenopeddit.model.UsersChat
 
 class MessagesHandler {
     companion object {
