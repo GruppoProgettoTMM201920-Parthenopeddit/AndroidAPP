@@ -3,7 +3,6 @@ package it.uniparthenope.parthenopeddit.android.swipe
 import android.graphics.Canvas
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import it.uniparthenope.parthenopeddit.android.swipe.SwipeItemTouchListener
 
 class SwipeItemTouchHelper(dragDirs: Int, swipeDirs: Int,
                            private val swipeItemTouchListener: SwipeItemTouchListener
