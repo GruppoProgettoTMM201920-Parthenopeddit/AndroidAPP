@@ -108,7 +108,7 @@ class ReviewCommentsActivity : BasicActivity(), CommentAdapter.CommentItemClickL
         review = newReview
 
 
-        image_view.setImageResource(R.drawable.ic_home_black_24dp)
+        image_view.setImageResource(R.drawable.default_user_image)
         username_textview.text = review.author?.display_name?:review.author_id
         timestamp_textview.text = review.timestamp
         posttext_textview.text = review.body

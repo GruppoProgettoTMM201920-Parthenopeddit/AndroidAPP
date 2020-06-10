@@ -50,7 +50,7 @@ class ReviewAdapter() : RecyclerView.Adapter<ReviewAdapter.CourseReviewViewHolde
     override fun onBindViewHolder(holder: CourseReviewViewHolder, position: Int) {
         val currentItem = reviewList[position]
 
-        holder.imageView.setImageResource(R.drawable.ic_home_black_24dp)
+        holder.imageView.setImageResource(R.drawable.default_user_image)
         holder.username_textview.text = currentItem.author?.display_name?:currentItem.author_id
         holder.timestamp_textview.text = currentItem.timestamp
         holder.posttext_textview.text = currentItem.body
