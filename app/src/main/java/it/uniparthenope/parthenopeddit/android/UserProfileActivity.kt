@@ -1,17 +1,16 @@
 package it.uniparthenope.parthenopeddit.android
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import it.uniparthenope.parthenopeddit.BasicActivity
+import it.uniparthenope.parthenopeddit.LoginRequiredActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.api.requests.UserRequests
 import it.uniparthenope.parthenopeddit.model.User
 
-class UserProfileActivity : BasicActivity() {
+class UserProfileActivity : LoginRequiredActivity() {
 
     private lateinit var user: User
 

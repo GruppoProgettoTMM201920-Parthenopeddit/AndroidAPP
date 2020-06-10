@@ -2,7 +2,6 @@ package it.uniparthenope.parthenopeddit.android.ui.group
 
 import android.content.Intent
 import android.graphics.Canvas
-import it.uniparthenope.parthenopeddit.R
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,8 +17,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import it.uniparthenope.parthenopeddit.BasicActivity
+import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.AddMemberActivity
-import it.uniparthenope.parthenopeddit.android.GroupActivity
 import it.uniparthenope.parthenopeddit.android.HomeActivity
 import it.uniparthenope.parthenopeddit.android.UserProfileActivity
 import it.uniparthenope.parthenopeddit.android.adapters.ExpandableUserListAdapter

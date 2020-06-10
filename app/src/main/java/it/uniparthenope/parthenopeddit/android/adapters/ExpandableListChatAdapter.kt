@@ -23,7 +23,6 @@ import it.uniparthenope.parthenopeddit.android.ui.messages.MessagesFragment
 import it.uniparthenope.parthenopeddit.model.Group
 import it.uniparthenope.parthenopeddit.model.User
 import it.uniparthenope.parthenopeddit.model.UsersChat
-import java.lang.IllegalStateException
 import java.util.*
 
 class ExpandableListChatAdapter (private val context: Context, private val glide: RequestManager) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {

@@ -2,17 +2,13 @@ package it.uniparthenope.parthenopeddit.android
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
-import it.uniparthenope.parthenopeddit.BasicActivity
+import it.uniparthenope.parthenopeddit.LoginRequiredActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.adapters.UserActivityAdapter
-import it.uniparthenope.parthenopeddit.android.ui.main.SectionsPagerAdapter
 
-class UserActivity : BasicActivity() {
+class UserActivity : LoginRequiredActivity() {
 
     public lateinit var user_id: String
 

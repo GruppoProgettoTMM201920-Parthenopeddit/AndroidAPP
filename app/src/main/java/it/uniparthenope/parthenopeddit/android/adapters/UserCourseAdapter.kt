@@ -3,19 +3,13 @@ package it.uniparthenope.parthenopeddit.android.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.RatingBar
-import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.android.ui.user_boards.course.CourseUserBoardFragment
 import it.uniparthenope.parthenopeddit.model.Course
-import kotlinx.android.synthetic.main.activity_course.*
 import kotlinx.android.synthetic.main.cardview_course.view.*
-import kotlinx.android.synthetic.main.cardview_course.view.course_difficulty_rating
-import kotlinx.android.synthetic.main.cardview_course.view.course_enjoyment_rating
 
 class UserCourseAdapter : RecyclerView.Adapter<UserCourseAdapter.UserCourseViewHolder>() {
 

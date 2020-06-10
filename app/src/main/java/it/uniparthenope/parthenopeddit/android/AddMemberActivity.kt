@@ -1,24 +1,18 @@
 package it.uniparthenope.parthenopeddit.android
 
-import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.mancj.materialsearchbar.MaterialSearchBar
-import it.uniparthenope.parthenopeddit.BasicActivity
+import it.uniparthenope.parthenopeddit.LoginRequiredActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.adapters.UserListAdapter
-import it.uniparthenope.parthenopeddit.api.MockApiData
-import it.uniparthenope.parthenopeddit.api.MockDatabase
 import it.uniparthenope.parthenopeddit.api.requests.GroupsRequests
-import it.uniparthenope.parthenopeddit.api.requests.UserRequests
 import it.uniparthenope.parthenopeddit.model.GroupInvite
 import it.uniparthenope.parthenopeddit.model.User
 import kotlinx.android.synthetic.main.activity_add_member.*
 import java.util.*
 
-class AddMemberActivity : BasicActivity(), UserListAdapter.UserListItemClickListeners {
+class AddMemberActivity : LoginRequiredActivity(), UserListAdapter.UserListItemClickListeners {
 
     private var id_group:Int = 0
     private var name_group: String? = ""

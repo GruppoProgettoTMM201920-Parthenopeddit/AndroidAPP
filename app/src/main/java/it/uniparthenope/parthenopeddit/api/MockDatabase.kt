@@ -1,8 +1,6 @@
 package it.uniparthenope.parthenopeddit.api
 
 import it.uniparthenope.parthenopeddit.model.*
-import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * Contaner class for MOCK data

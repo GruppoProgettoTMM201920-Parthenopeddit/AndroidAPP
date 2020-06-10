@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,7 +15,6 @@ import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.CourseActivity
 import it.uniparthenope.parthenopeddit.android.UserActivity
 import it.uniparthenope.parthenopeddit.android.adapters.ReviewAdapter
-import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.api.requests.UserRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Course

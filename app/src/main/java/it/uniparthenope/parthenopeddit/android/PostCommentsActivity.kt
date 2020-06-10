@@ -5,10 +5,13 @@ import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.*
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import it.uniparthenope.parthenopeddit.BasicActivity
+import it.uniparthenope.parthenopeddit.LoginRequiredActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.adapters.CommentAdapter
 import it.uniparthenope.parthenopeddit.api.requests.CommentsRequests
@@ -20,10 +23,8 @@ import it.uniparthenope.parthenopeddit.util.toGson
 import it.uniparthenope.parthenopeddit.util.toObject
 import kotlinx.android.synthetic.main.activity_post_comments.*
 import kotlinx.android.synthetic.main.cardview_post.*
-import kotlinx.android.synthetic.main.cardview_post.posttext_textview
-import kotlinx.android.synthetic.main.cardview_post.title_textview
 
-class PostCommentsActivity : BasicActivity(), CommentAdapter.CommentItemClickListeners {
+class PostCommentsActivity : LoginRequiredActivity(), CommentAdapter.CommentItemClickListeners {
 
     private lateinit var post:Post
     private lateinit var adapter: CommentAdapter

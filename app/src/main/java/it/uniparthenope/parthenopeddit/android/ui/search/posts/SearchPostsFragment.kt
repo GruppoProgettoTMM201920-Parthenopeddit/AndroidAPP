@@ -9,27 +9,18 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.*
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
-import it.uniparthenope.parthenopeddit.android.adapters.UserCourseAdapter
-import it.uniparthenope.parthenopeddit.android.ui.newGroup.NewGroupActivity
-import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
-import it.uniparthenope.parthenopeddit.android.ui.user_activities.post.PostActivitiesViewModel
-import it.uniparthenope.parthenopeddit.api.MockApiData
-import it.uniparthenope.parthenopeddit.api.requests.CoursesRequests
 import it.uniparthenope.parthenopeddit.api.requests.PostsRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Board
 import it.uniparthenope.parthenopeddit.model.LikeDislikeScore
 import it.uniparthenope.parthenopeddit.model.Post
 import it.uniparthenope.parthenopeddit.util.toGson
-import kotlinx.android.synthetic.main.fragment_search_courses.recycler_view
-import kotlinx.android.synthetic.main.fragment_search_posts.*
 
 
 class SearchPostsFragment(private var searchQuery: String) : Fragment(), PostAdapter.PostItemClickListeners {

@@ -9,7 +9,6 @@ import android.widget.BaseExpandableListAdapter
 import androidx.appcompat.widget.AppCompatTextView
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.model.GroupMember
-import kotlinx.android.synthetic.main.list_header.view.*
 
 class ExpandableListAdapter(val context: Context, val listOfHeaderData: List<String>, val listOfChildData: HashMap<String,List<GroupMember>>) : BaseExpandableListAdapter() {
     override fun getGroup(position: Int): Any {

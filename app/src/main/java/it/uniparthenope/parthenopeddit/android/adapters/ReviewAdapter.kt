@@ -1,18 +1,13 @@
 package it.uniparthenope.parthenopeddit.android.adapters
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.model.Course
-import it.uniparthenope.parthenopeddit.model.Post
 import it.uniparthenope.parthenopeddit.model.Review
-import kotlinx.android.synthetic.main.activity_course.view.*
-import kotlinx.android.synthetic.main.cardview_post.view.*
 import kotlinx.android.synthetic.main.cardview_post.view.downvote_btn
 import kotlinx.android.synthetic.main.cardview_post.view.downvote_textview
 import kotlinx.android.synthetic.main.cardview_post.view.image_view

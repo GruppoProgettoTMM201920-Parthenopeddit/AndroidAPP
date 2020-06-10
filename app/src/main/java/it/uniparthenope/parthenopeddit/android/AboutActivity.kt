@@ -6,15 +6,14 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import it.uniparthenope.parthenopeddit.BasicActivity
+import it.uniparthenope.parthenopeddit.LoginRequiredActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.adapters.AboutDevsAdapter
 import it.uniparthenope.parthenopeddit.android.adapters.AboutTPAdapter
 import kotlinx.android.synthetic.main.activity_about.*
 
 
-class AboutActivity : BasicActivity() {
+class AboutActivity : LoginRequiredActivity() {
 
 
 

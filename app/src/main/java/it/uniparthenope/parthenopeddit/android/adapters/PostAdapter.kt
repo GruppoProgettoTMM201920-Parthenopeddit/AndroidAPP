@@ -1,7 +1,6 @@
 package it.uniparthenope.parthenopeddit.android.adapters
 
 import android.graphics.Color
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +13,6 @@ import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.model.Board
 import it.uniparthenope.parthenopeddit.model.Post
 import kotlinx.android.synthetic.main.cardview_post.view.*
-import kotlinx.android.synthetic.main.cardview_post.view.upvote_textview
 
 class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
 

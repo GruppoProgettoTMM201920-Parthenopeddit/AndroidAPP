@@ -12,16 +12,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.android.PostCommentsActivity
 import it.uniparthenope.parthenopeddit.android.ReviewCommentsActivity
-import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.adapters.ReviewAdapter
-import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.api.requests.CoursesRequests
 import it.uniparthenope.parthenopeddit.api.requests.PostsRequests
 import it.uniparthenope.parthenopeddit.api.requests.ReviewsRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
-import it.uniparthenope.parthenopeddit.model.*
+import it.uniparthenope.parthenopeddit.model.Course
+import it.uniparthenope.parthenopeddit.model.LikeDislikeScore
+import it.uniparthenope.parthenopeddit.model.Review
 import it.uniparthenope.parthenopeddit.util.toGson
 
 class CourseReviewFragment(private var courseID: Int) : Fragment(), ReviewAdapter.CourseReviewItemClickListeners {

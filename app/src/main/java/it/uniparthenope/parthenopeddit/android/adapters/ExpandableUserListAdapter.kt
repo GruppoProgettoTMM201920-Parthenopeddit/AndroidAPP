@@ -17,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import it.uniparthenope.parthenopeddit.R
-import java.lang.IllegalStateException
 import java.util.*
 
 

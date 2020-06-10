@@ -12,7 +12,6 @@ import com.xwray.groupie.GroupieViewHolder
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.model.Group
 import it.uniparthenope.parthenopeddit.model.Message
-import kotlin.collections.ArrayList
 
 class GroupChatFragment (private val group: Group) : Fragment() {
 

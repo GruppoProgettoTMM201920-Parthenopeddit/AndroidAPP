@@ -1,21 +1,16 @@
 package it.uniparthenope.parthenopeddit.android.adapters
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.model.Board
-import it.uniparthenope.parthenopeddit.model.Post
 import it.uniparthenope.parthenopeddit.model.User
 import it.uniparthenope.parthenopeddit.model.UsersChat
 import kotlinx.android.synthetic.main.cardview_chat.view.*
-import kotlinx.android.synthetic.main.cardview_post.view.*
 import kotlinx.android.synthetic.main.cardview_post.view.username_textview
 
 class ChatListAdapter() : RecyclerView.Adapter<ChatListAdapter.ChatListViewHolder>() {

@@ -1,6 +1,6 @@
 package it.uniparthenope.parthenopeddit.android.ui.messages
 
-import android.content.Intent
+//import it.uniparthenope.parthenopeddit.android.adapters.ChatListAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,19 +13,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.android.*
-//import it.uniparthenope.parthenopeddit.android.adapters.ChatListAdapter
+import it.uniparthenope.parthenopeddit.android.UserActivity
 import it.uniparthenope.parthenopeddit.android.adapters.CommentAdapter
 import it.uniparthenope.parthenopeddit.android.ui.user_activities.comment.CommentActivitiesViewModel
-import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.api.requests.PostsRequests
 import it.uniparthenope.parthenopeddit.api.requests.UserRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
-import it.uniparthenope.parthenopeddit.model.Board
 import it.uniparthenope.parthenopeddit.model.Comment
 import it.uniparthenope.parthenopeddit.model.LikeDislikeScore
-import it.uniparthenope.parthenopeddit.model.Post
-import it.uniparthenope.parthenopeddit.util.toGson
 
 class CommentActivitiesFragment : Fragment(), CommentAdapter.CommentItemClickListeners {
 

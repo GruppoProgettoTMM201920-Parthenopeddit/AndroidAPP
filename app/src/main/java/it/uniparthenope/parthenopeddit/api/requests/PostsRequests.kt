@@ -8,7 +8,6 @@ import it.uniparthenope.parthenopeddit.api.ApiRoute
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.LikeDislikeScore
 import it.uniparthenope.parthenopeddit.model.Post
-import it.uniparthenope.parthenopeddit.model.User
 import it.uniparthenope.parthenopeddit.util.TAG
 import it.uniparthenope.parthenopeddit.util.toArrayList
 import it.uniparthenope.parthenopeddit.util.toObject

@@ -2,7 +2,6 @@ package it.uniparthenope.parthenopeddit.android
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.Button
@@ -11,7 +10,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import it.uniparthenope.parthenopeddit.BasicActivity
+import it.uniparthenope.parthenopeddit.LoginRequiredActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.ui.group.BackdropFragment
@@ -23,9 +22,8 @@ import it.uniparthenope.parthenopeddit.model.GroupMember
 import it.uniparthenope.parthenopeddit.model.Post
 import it.uniparthenope.parthenopeddit.util.toObject
 import kotlinx.android.synthetic.main.activity_group.*
-import kotlin.collections.ArrayList
 
-class GroupActivity : BasicActivity() {
+class GroupActivity : LoginRequiredActivity() {
 
     private var isOpen = false
     private lateinit var group: Group

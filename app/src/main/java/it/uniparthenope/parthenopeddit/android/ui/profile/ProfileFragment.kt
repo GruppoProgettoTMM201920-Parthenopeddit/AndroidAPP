@@ -9,7 +9,6 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,7 +26,6 @@ import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.api.requests.UserRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
-import it.uniparthenope.parthenopeddit.model.Post
 import it.uniparthenope.parthenopeddit.model.User
 import kotlinx.android.synthetic.main.change_username_dialog.view.*
 import kotlinx.android.synthetic.main.fragment_profile.*

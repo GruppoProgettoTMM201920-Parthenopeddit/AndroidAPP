@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.CourseActivity
-import it.uniparthenope.parthenopeddit.android.adapters.CourseAdapter
 import it.uniparthenope.parthenopeddit.android.adapters.UserCourseAdapter
 import it.uniparthenope.parthenopeddit.api.requests.CoursesRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager

@@ -4,20 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import it.uniparthenope.parthenopeddit.BasicActivity
+import it.uniparthenope.parthenopeddit.LoginRequiredActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.CourseActivity
-import it.uniparthenope.parthenopeddit.android.HomeActivity
-import it.uniparthenope.parthenopeddit.api.MockDatabase
 import it.uniparthenope.parthenopeddit.api.requests.ReviewsRequests
 import it.uniparthenope.parthenopeddit.model.Review
 import kotlinx.android.synthetic.main.activity_new_review.*
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.util.*
 
-class NewReviewActivity : BasicActivity()  {
+class NewReviewActivity : LoginRequiredActivity()  {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

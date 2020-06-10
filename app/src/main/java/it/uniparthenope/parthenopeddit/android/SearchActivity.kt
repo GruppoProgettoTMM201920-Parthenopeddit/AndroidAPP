@@ -1,31 +1,19 @@
 package it.uniparthenope.parthenopeddit.android
 
-import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.tabs.TabLayout
-import androidx.viewpager.widget.ViewPager
-import android.view.Menu
-import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import com.mancj.materialsearchbar.MaterialSearchBar
-import it.uniparthenope.parthenopeddit.BasicActivity
+import it.uniparthenope.parthenopeddit.LoginRequiredActivity
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.android.ui.course.post.CoursePostFragment
-import it.uniparthenope.parthenopeddit.android.ui.course.review.CourseReviewFragment
-import it.uniparthenope.parthenopeddit.android.ui.main.SectionsPagerAdapter
 import it.uniparthenope.parthenopeddit.android.ui.search.courses.SearchCoursesFragment
 import it.uniparthenope.parthenopeddit.android.ui.search.posts.SearchPostsFragment
 import it.uniparthenope.parthenopeddit.android.ui.search.users.SearchUsersFragment
-import it.uniparthenope.parthenopeddit.model.Post
-import it.uniparthenope.parthenopeddit.util.toObject
 import kotlinx.android.synthetic.main.activity_search.*
 
-class SearchActivity : BasicActivity() {
+class SearchActivity : LoginRequiredActivity() {
 
     private lateinit var viewPager: ViewPager2
 
@@ -93,7 +81,7 @@ class SearchActivity : BasicActivity() {
         })
     }
 
-    private inner class ScreenSlidePagerAdapter(activity: BasicActivity) : FragmentStateAdapter(activity) {
+    private inner class ScreenSlidePagerAdapter(activity: LoginRequiredActivity) : FragmentStateAdapter(activity) {
         override fun getItemCount(): Int = 3
         override fun createFragment(position: Int): Fragment {
             return when( position ) {

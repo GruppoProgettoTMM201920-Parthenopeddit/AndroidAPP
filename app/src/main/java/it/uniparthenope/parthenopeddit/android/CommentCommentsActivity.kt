@@ -1,22 +1,21 @@
 package it.uniparthenope.parthenopeddit.android
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.*
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.TextView
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import it.uniparthenope.parthenopeddit.BasicActivity
+import it.uniparthenope.parthenopeddit.LoginRequiredActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.adapters.CommentAdapter
-import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
 import it.uniparthenope.parthenopeddit.api.requests.CommentsRequests
-import it.uniparthenope.parthenopeddit.api.requests.PostsRequests
 import it.uniparthenope.parthenopeddit.model.Comment
 import it.uniparthenope.parthenopeddit.model.LikeDislikeScore
-import it.uniparthenope.parthenopeddit.model.Post
 import it.uniparthenope.parthenopeddit.util.toGson
 import it.uniparthenope.parthenopeddit.util.toObject
 import kotlinx.android.synthetic.main.activity_post_comments.*
@@ -26,12 +25,11 @@ import kotlinx.android.synthetic.main.cardview_post.downvote_btn
 import kotlinx.android.synthetic.main.cardview_post.downvote_textview
 import kotlinx.android.synthetic.main.cardview_post.image_view
 import kotlinx.android.synthetic.main.cardview_post.posttext_textview
-import kotlinx.android.synthetic.main.cardview_post.title_textview
 import kotlinx.android.synthetic.main.cardview_post.upvote_btn
 import kotlinx.android.synthetic.main.cardview_post.upvote_textview
 import kotlinx.android.synthetic.main.cardview_post.username_textview
 
-class CommentCommentsActivity : BasicActivity(), CommentAdapter.CommentItemClickListeners {
+class CommentCommentsActivity : LoginRequiredActivity(), CommentAdapter.CommentItemClickListeners {
 
     private lateinit var comment:Comment
     private lateinit var adapter: CommentAdapter

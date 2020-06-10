@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
@@ -14,14 +13,10 @@ import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Message
 import it.uniparthenope.parthenopeddit.model.User
-import it.uniparthenope.parthenopeddit.model.UsersChat
 import kotlinx.android.synthetic.main.cardview_message_received.view.*
-import kotlinx.android.synthetic.main.chat_fragment.*
-import java.text.SimpleDateFormat
 import java.util.*
 
 class UserChatFragment(private val user: User) : Fragment() {
