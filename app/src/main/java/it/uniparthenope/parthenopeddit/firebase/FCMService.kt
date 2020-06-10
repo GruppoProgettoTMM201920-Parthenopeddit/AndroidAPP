@@ -163,11 +163,14 @@ class FCMService : FirebaseMessagingService() {
         Log.d(TAG, "From: ${remoteMessage.from}")
 
         // Check if message contains a data payload.
+        /* TODO MUST BE FIXED
         remoteMessage.data.isNotEmpty().let {
             Log.d(TAG, "Message data payload: " + remoteMessage.data)
 
             MessagesHandler.handleMessage(this, remoteMessage)
         }
+
+         */
 
         // Check if message contains a notification payload.
         remoteMessage.notification?.let {

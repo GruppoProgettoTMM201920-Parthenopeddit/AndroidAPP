@@ -23,7 +23,8 @@ class MessagesHandler {
         }
 
         enum class NotificationType(val maker: NotificationMaker) {
-            TEST(TestingNotificationMaker())
+            TEST(TestingNotificationMaker()),
+            CHAT(ChatNotificationMaker())
         }
     }
 
