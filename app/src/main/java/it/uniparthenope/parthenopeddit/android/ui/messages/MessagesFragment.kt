@@ -88,9 +88,6 @@ class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners,
 
         MessagesRequests(requireContext(), authManager).getOpenChats({it: ArrayList<UsersChat> ->
             chatList = it
-            for(i in chatList)
-                Log.d("DEBUG", "chat with user id ${i.other_user_chat_id}")
-
             adapter.setData(getData(chatList, groupChatList))
         },{it: String ->
             Toast.makeText(requireContext(),"Errore : $it", Toast.LENGTH_LONG).show()
