@@ -3,6 +3,7 @@ package it.uniparthenope.parthenopeddit.firebase
 import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import it.uniparthenope.parthenopeddit.App
 import it.uniparthenope.parthenopeddit.api.requests.AuthRequests
 import it.uniparthenope.parthenopeddit.auth.SharedPreferencesAuth
 import it.uniparthenope.parthenopeddit.util.TAG
@@ -176,17 +177,4 @@ class FCMService : FirebaseMessagingService() {
         }
     }
     // [END receive_message]
-
-    override fun onNewToken(token: String) {
-        Log.d(TAG, "Refreshed token: $token")
-
-        // If you want to send messages to this application instance or
-        // manage this apps subscriptions on the server side, send the
-        // Instance ID token to your app server.
-        val auth = SharedPreferencesAuth.getInstance(this)
-        if( auth.isUserLogged() ) {
-            //TODO HANDLE FAILURE
-            AuthRequests(this, auth).registerDeviceToken(token, {}, {}, {})
-        }
-    }
 }
