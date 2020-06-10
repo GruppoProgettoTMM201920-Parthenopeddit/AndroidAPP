@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -39,6 +40,8 @@ class BackdropFragment(): SwipeItemTouchListener, Fragment(),
     private var admin_arraylist: ArrayList<GroupMember> = ArrayList()
     private var user_arraylist: ArrayList<GroupMember> = ArrayList()
 
+    private lateinit var backdrop_group_name_textview: TextView
+    private lateinit var creation_date_textview: TextView
     private lateinit var auth: AuthManager
     private var isUserAdmin: Boolean = false
 
@@ -52,7 +55,8 @@ class BackdropFragment(): SwipeItemTouchListener, Fragment(),
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_backdrop, container, false)
-
+        backdrop_group_name_textview = root.findViewById<TextView>(R.id.backdrop_group_name_textview)
+        creation_date_textview = root.findViewById<TextView>(R.id.creation_date_textview)
         membersAdapter = ExpandableUserListAdapter(requireContext(), Glide.with(this), this)
 
         members_recycler_view = root.findViewById(R.id.members_recycler_view)
@@ -332,6 +336,8 @@ class BackdropFragment(): SwipeItemTouchListener, Fragment(),
 
     fun updateGroupData(group: Group){
         this.group = group
+        backdrop_group_name_textview.text = group.name
+        creation_date_textview.text = group.created_on
     }
 
     fun updateMembersData(members: ArrayList<GroupMember>){
