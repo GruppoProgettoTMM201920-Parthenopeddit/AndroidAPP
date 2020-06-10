@@ -1,4 +1,4 @@
-package it.uniparthenope.parthenopeddit.util
+package it.uniparthenope.parthenopeddit.android.swipe
 
 import android.graphics.Canvas
 import androidx.recyclerview.widget.ItemTouchUIUtil
