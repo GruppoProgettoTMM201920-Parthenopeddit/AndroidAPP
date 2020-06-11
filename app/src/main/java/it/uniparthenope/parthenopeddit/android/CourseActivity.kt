@@ -48,10 +48,10 @@ class CourseActivity : LoginRequiredActivity() {
 
                 course_name_textview.text = course.name
                 num_reviews_textview.text = "${course.reviews_count} recensioni"
-                rating_enj_bar.rating = course.average_liking_score!!.toFloat()
-                course_enjoyment_rating.text = "%2.1f/5".format(course.average_liking_score)
-                rating_diff_bar.rating = course.average_difficulty_score!!.toFloat()
-                course_difficulty_rating.text = "%2.1f/5".format(course.average_difficulty_score)
+                rating_enj_bar.rating = (course.average_liking_score?:0).toFloat()
+                course_enjoyment_rating.text = "%2.1f/5".format(course.average_liking_score?:0)
+                rating_diff_bar.rating = (course.average_difficulty_score?:0).toFloat()
+                course_difficulty_rating.text = "%2.1f/5".format(course.average_difficulty_score?:0)
             }, {}
         )
 
