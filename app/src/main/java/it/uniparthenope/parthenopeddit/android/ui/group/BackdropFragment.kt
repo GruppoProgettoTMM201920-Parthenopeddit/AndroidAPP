@@ -140,7 +140,7 @@ class BackdropFragment(): SwipeItemTouchListener, Fragment(),
                     .type(ExpandableUserListAdapter.CONTENT)
                     .thumbnailUrl(generateRandomImageUrl(MAX_IMAGE_SIZE))
                     .username(member.user!!.display_name?:member.user_id)
-                    .dateMessage("Entrato il : ")
+                    .dateMessage("Entrato : ")
                     .date(member.join_date)
                     .build()
 
@@ -155,7 +155,7 @@ class BackdropFragment(): SwipeItemTouchListener, Fragment(),
                     .type(ExpandableUserListAdapter.CONTENT)
                     .thumbnailUrl(generateRandomImageUrl(MAX_IMAGE_SIZE))
                     .username(invite.invited?.display_name?:invite.invited_id)
-                    .dateMessage("Invitato il : ")
+                    .dateMessage("Invitato : ")
                     .date(invite.timestamp)
                     .build()
 

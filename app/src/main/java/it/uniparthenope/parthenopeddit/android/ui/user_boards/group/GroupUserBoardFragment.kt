@@ -54,8 +54,7 @@ class GroupUserBoardFragment : Fragment(), UserGroupAdapter.UserGroupItemClickLi
             }, { it: String ->
             Toast.makeText(requireContext(), "Errore ${it}", Toast.LENGTH_LONG).show()
 
-        }
-        )
+        })
 
         return root
     }

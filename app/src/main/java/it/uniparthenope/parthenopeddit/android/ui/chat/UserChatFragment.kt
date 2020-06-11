@@ -19,6 +19,7 @@ import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Message
 import it.uniparthenope.parthenopeddit.model.User
 import it.uniparthenope.parthenopeddit.model.UsersChat
+import it.uniparthenope.parthenopeddit.util.DateParser
 import kotlinx.android.synthetic.main.cardview_message_received.view.*
 import kotlinx.android.synthetic.main.chat_fragment.*
 import java.util.*
@@ -94,7 +95,7 @@ class UserChatFragment(private val user: User) : Fragment() {
 class ChatFromItem(private val message: Message): Item<GroupieViewHolder>() {
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.itemView.message_textview.text = message.body
-        viewHolder.itemView.date_textview.text = message.timestamp
+        viewHolder.itemView.date_textview.text = DateParser.parse(message.timestamp)
 
     }
 
@@ -106,7 +107,7 @@ class ChatFromItem(private val message: Message): Item<GroupieViewHolder>() {
 class ChatToItem(private val message: Message): Item<GroupieViewHolder>() {
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.itemView.message_textview.text = message.body
-        viewHolder.itemView.date_textview.text = message.timestamp
+        viewHolder.itemView.date_textview.text = DateParser.parse(message.timestamp)
 
     }
 

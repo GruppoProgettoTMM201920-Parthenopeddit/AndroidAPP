@@ -221,7 +221,7 @@ class ExpandableUserListAdapter(private val context: Context, private val glide:
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(holder.thumbnail)
         holder.username.text = item.username
-        holder.joindate.text = "E' entrato : "+ DateParser.parse(item.date!!)
+        holder.joindate.text = "${item.dateMessage} ${DateParser.parse(item.date!!)}"
         holder.container.setOnClickListener {
             item.username?.let { userId -> listener.onUserClicked(userId) }
         }

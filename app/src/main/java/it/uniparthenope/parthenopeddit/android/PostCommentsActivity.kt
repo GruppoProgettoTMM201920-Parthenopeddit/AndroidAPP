@@ -19,6 +19,7 @@ import it.uniparthenope.parthenopeddit.api.requests.PostsRequests
 import it.uniparthenope.parthenopeddit.model.Comment
 import it.uniparthenope.parthenopeddit.model.LikeDislikeScore
 import it.uniparthenope.parthenopeddit.model.Post
+import it.uniparthenope.parthenopeddit.util.DateParser
 import it.uniparthenope.parthenopeddit.util.toGson
 import it.uniparthenope.parthenopeddit.util.toObject
 import kotlinx.android.synthetic.main.activity_post_comments.*
@@ -109,7 +110,7 @@ class PostCommentsActivity : LoginRequiredActivity(), CommentAdapter.CommentItem
         username_textview.text = post.author?.display_name?:post.author_id
         title_textview.text = post.title
         group_textview.text = post.posted_to_board?.name?:"Generale"
-        timestamp_textview.text = post.timestamp
+        timestamp_textview.text = DateParser.parse(post.timestamp)
         posttext_textview.text = post.body
         upvote_textview.text = post.likes_num.toString()
         downvote_textview.text = post.dislikes_num.toString()

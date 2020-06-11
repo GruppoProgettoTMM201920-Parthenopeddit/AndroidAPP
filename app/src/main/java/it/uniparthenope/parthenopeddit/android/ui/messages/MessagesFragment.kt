@@ -102,8 +102,6 @@ class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners,
                 fab_new_chat_textview.animate().alpha(0F)
                 fab_new_chat_textview.visibility = View.GONE
 
-
-
                 isOpen = false
             } else{
                 fab.startAnimation(rotateAnticlockwise)
@@ -112,6 +110,7 @@ class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners,
                 fab_new_chat_textview.animate().translationY(-200F)
                 fab_new_chat_textview.visibility = View.VISIBLE
                 fab_new_chat_textview.animate().alpha(1F)
+
                 isOpen = true
             }
         }

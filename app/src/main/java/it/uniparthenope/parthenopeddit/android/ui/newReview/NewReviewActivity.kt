@@ -18,7 +18,7 @@ class NewReviewActivity : LoginRequiredActivity()  {
         setContentView(R.layout.activity_new_review)
 
         var courseId : Int = intent.getIntExtra("id_course",0)
-        var course_name : String = intent.getStringExtra("name_course")
+        var course_name : String = intent.getStringExtra("name_course")!!
 
         var enjoy_rating = 0
         var difficulty_rating = 0
