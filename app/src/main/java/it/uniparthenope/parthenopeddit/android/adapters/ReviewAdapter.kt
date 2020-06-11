@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.model.Course
 import it.uniparthenope.parthenopeddit.model.Review
+import it.uniparthenope.parthenopeddit.util.DateParser
 import kotlinx.android.synthetic.main.cardview_post.view.downvote_btn
 import kotlinx.android.synthetic.main.cardview_post.view.downvote_textview
 import kotlinx.android.synthetic.main.cardview_post.view.image_view
@@ -47,7 +48,7 @@ class ReviewAdapter() : RecyclerView.Adapter<ReviewAdapter.CourseReviewViewHolde
 
         holder.imageView.setImageResource(R.drawable.default_user_image)
         holder.username_textview.text = currentItem.author?.display_name?:currentItem.author_id
-        holder.timestamp_textview.text = currentItem.timestamp
+        holder.timestamp_textview.text = DateParser.parse(currentItem.timestamp)
         holder.posttext_textview.text = currentItem.body
         holder.upvote_textview.text = currentItem.likes_num.toString()
         holder.downvote_textview.text = currentItem.dislikes_num.toString()

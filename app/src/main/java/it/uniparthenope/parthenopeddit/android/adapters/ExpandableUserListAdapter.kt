@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import it.uniparthenope.parthenopeddit.R
+import it.uniparthenope.parthenopeddit.util.DateParser
 import java.util.*
 
 
@@ -220,7 +221,7 @@ class ExpandableUserListAdapter(private val context: Context, private val glide:
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(holder.thumbnail)
         holder.username.text = item.username
-        holder.joindate.text = "E' entrato il "+ item.date
+        holder.joindate.text = "E' entrato : "+ DateParser.parse(item.date!!)
         holder.container.setOnClickListener {
             item.username?.let { userId -> listener.onUserClicked(userId) }
         }

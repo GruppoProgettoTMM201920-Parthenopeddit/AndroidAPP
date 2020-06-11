@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.model.User
 import it.uniparthenope.parthenopeddit.model.UsersChat
+import it.uniparthenope.parthenopeddit.util.DateParser
 import kotlinx.android.synthetic.main.cardview_chat.view.*
 import kotlinx.android.synthetic.main.cardview_post.view.username_textview
 
@@ -47,7 +48,7 @@ class ChatListAdapter() : RecyclerView.Adapter<ChatListAdapter.ChatListViewHolde
         val other_user = currentItem.other_user_chat!!.of_user!!
         holder.username_textview.text = other_user.display_name?:other_user.id
         holder.latest_message_textview.text = currentItem.last_message!!.body
-        holder.date_textview.text = "10:00"
+        holder.date_textview.text = DateParser.parse(currentItem.last_message!!.timestamp)
 
         if( listener != null ) {
             holder.user_imageview.setOnClickListener {

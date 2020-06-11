@@ -23,6 +23,7 @@ import it.uniparthenope.parthenopeddit.android.ui.messages.MessagesFragment
 import it.uniparthenope.parthenopeddit.model.Group
 import it.uniparthenope.parthenopeddit.model.User
 import it.uniparthenope.parthenopeddit.model.UsersChat
+import it.uniparthenope.parthenopeddit.util.DateParser
 import java.util.*
 
 class ExpandableListChatAdapter (private val context: Context, private val glide: RequestManager) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -218,7 +219,7 @@ class ExpandableListChatAdapter (private val context: Context, private val glide
             .into(holder.thumbnail)
         holder.username.text = item.username
         holder.latest_message.text = item.latest_message
-        holder.date.text = item.date
+        holder.date.text = DateParser.parse(item.date!!)
         holder.container.setOnClickListener {
             listener!!.onChatClick(item.user!!)
         }
@@ -234,7 +235,7 @@ class ExpandableListChatAdapter (private val context: Context, private val glide
         holder.groupname.text = item.username
         holder.group_user_latest.text = item.group_user_latest + ":"
         holder.latest_message.text = item.latest_message
-        holder.date.text = item.date
+        holder.date.text = DateParser.parse(item.date!!)
     }
 
     /**
