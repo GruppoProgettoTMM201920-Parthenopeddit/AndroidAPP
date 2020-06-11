@@ -1,5 +1,6 @@
 package it.uniparthenope.parthenopeddit.android.ui.group
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Canvas
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -354,8 +356,32 @@ class BackdropFragment(): SwipeItemTouchListener, Fragment(),
     }
 
     override fun onUserClicked(userId: String) {
-        val intent = Intent(requireContext(), UserProfileActivity::class.java)
-        intent.putExtra("id_user", userId)
-        startActivity(intent)
+
+        if(isUserAdmin){
+            val builder = AlertDialog.Builder(requireContext())
+            builder.setMessage("Cosa vuoi fare?")
+                .setPositiveButton("Visita il profilo",
+                    DialogInterface.OnClickListener { dialog, id ->
+                        val intent = Intent(requireContext(), UserProfileActivity::class.java)
+                        intent.putExtra("id_user", userId)
+                        startActivity(intent)
+                    })
+                .setNegativeButton("Rendi amministratore",
+                    DialogInterface.OnClickListener { dialog, id ->
+                        GroupsRequests(requireContext(), auth).makeMembersOwners(group.id, listOf(userId),{
+                            Toast.makeText(requireContext(), "Ora ${userId} è un amministratore", Toast.LENGTH_SHORT).show()
+                        },{
+
+                        })
+                    })
+            // Create the AlertDialog object and return it
+            builder.create()
+            builder.show()
+
+        } else {
+            val intent = Intent(requireContext(), UserProfileActivity::class.java)
+            intent.putExtra("id_user", userId)
+            startActivity(intent)
+        }
     }
 }
