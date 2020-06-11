@@ -509,7 +509,7 @@ class GroupsRequests(private val ctx: Context, private val auth: AuthManager) {
                     get() = getHeadersMap(auth.token!!)
 
             }, { resultCode: Int, resultJson: String ->
-                if( resultCode == 200 ) {
+                if( resultCode == 201 ) {
                     onSuccess(resultJson.toObject())
                 } else {
                     onFail("Error : $resultCode")
