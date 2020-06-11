@@ -34,6 +34,7 @@ class ReviewAdapter() : RecyclerView.Adapter<ReviewAdapter.CourseReviewViewHolde
         fun onClickCourse(id_course: Int, course: Course)
         fun onReviewClick(id_review: Int, review:Review)
         fun onClickComments(id_review: Int, review:Review)
+        fun onUserClick(id_user: String)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CourseReviewViewHolder {

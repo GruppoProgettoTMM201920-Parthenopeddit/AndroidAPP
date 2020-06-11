@@ -30,6 +30,7 @@ import it.uniparthenope.parthenopeddit.model.GroupInvite
 import it.uniparthenope.parthenopeddit.model.GroupMember
 import it.uniparthenope.parthenopeddit.android.swipe.SwipeItemTouchHelper
 import it.uniparthenope.parthenopeddit.android.swipe.SwipeItemTouchListener
+import it.uniparthenope.parthenopeddit.util.DateParser
 
 class BackdropFragment(): SwipeItemTouchListener, Fragment(),
     ExpandableUserListAdapter.UserClickListener {
@@ -337,7 +338,7 @@ class BackdropFragment(): SwipeItemTouchListener, Fragment(),
     fun updateGroupData(group: Group){
         this.group = group
         backdrop_group_name_textview.text = group.name
-        creation_date_textview.text = group.created_on
+        creation_date_textview.text = DateParser.parse(group.created_on)
     }
 
     fun updateMembersData(members: ArrayList<GroupMember>){

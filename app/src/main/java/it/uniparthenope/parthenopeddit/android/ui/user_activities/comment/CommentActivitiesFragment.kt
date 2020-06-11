@@ -16,6 +16,7 @@ import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.CommentCommentsActivity
 import it.uniparthenope.parthenopeddit.android.UserContentActivity
+import it.uniparthenope.parthenopeddit.android.UserProfileActivity
 import it.uniparthenope.parthenopeddit.android.adapters.CommentAdapter
 import it.uniparthenope.parthenopeddit.api.requests.PostsRequests
 import it.uniparthenope.parthenopeddit.api.requests.UserRequests
@@ -106,5 +107,11 @@ class CommentActivitiesFragment(private val user_id: String) : Fragment(), Comme
                 Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
             }
         )
+    }
+
+    override fun onUserClick(id_user: String) {
+        val intent = Intent(requireContext(), UserProfileActivity::class.java)
+        intent.putExtra("id_user", id_user)
+        startActivity(intent)
     }
 }

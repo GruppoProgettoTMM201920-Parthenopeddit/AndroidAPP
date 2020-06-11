@@ -157,6 +157,10 @@ class ReviewCommentsActivity : LoginRequiredActivity(), CommentAdapter.CommentIt
         comments_btn2.setOnClickListener {
             //nothing
         }
+
+        username_textview.setOnClickListener {
+            onUserClick(review.author_id)
+        }
     }
 
     private fun updateLike(upvote_textview: TextView, downvote_textview: TextView, scores: LikeDislikeScore) {
@@ -206,6 +210,12 @@ class ReviewCommentsActivity : LoginRequiredActivity(), CommentAdapter.CommentIt
         val intent = Intent(this, CommentCommentsActivity::class.java)
         intent.putExtra("idComment", id_Commento)
         intent.putExtra("comment", comment.toGson())
+        startActivity(intent)
+    }
+
+    override fun onUserClick(id_user: String) {
+        val intent = Intent(this, UserProfileActivity::class.java)
+        intent.putExtra("id_user", id_user)
         startActivity(intent)
     }
 }

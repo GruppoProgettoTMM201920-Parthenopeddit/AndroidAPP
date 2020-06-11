@@ -10,6 +10,7 @@ import it.uniparthenope.parthenopeddit.android.ui.chat.UserChatFragment
 import it.uniparthenope.parthenopeddit.api.requests.MessagesRequests
 import it.uniparthenope.parthenopeddit.model.User
 import it.uniparthenope.parthenopeddit.model.UsersChat
+import it.uniparthenope.parthenopeddit.util.DateParser
 import it.uniparthenope.parthenopeddit.util.toObject
 import kotlinx.android.synthetic.main.activity_chat.*
 
@@ -28,7 +29,7 @@ class ChatActivity() : LoginRequiredActivity() {
         username_chat_textview.text = user?.display_name?:user?.id
 
         MessagesRequests(this, app.auth).getChatLogWithUser(user!!.id,{ it: UsersChat ->
-            last_login_chat_textview.text = it.last_opened_on
+            last_login_chat_textview.text = DateParser.parse(it.last_opened_on)
         },{
 
         })

@@ -16,6 +16,7 @@ import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.CourseActivity
 import it.uniparthenope.parthenopeddit.android.ReviewCommentsActivity
 import it.uniparthenope.parthenopeddit.android.UserContentActivity
+import it.uniparthenope.parthenopeddit.android.UserProfileActivity
 import it.uniparthenope.parthenopeddit.android.adapters.ReviewAdapter
 import it.uniparthenope.parthenopeddit.api.requests.ReviewsRequests
 import it.uniparthenope.parthenopeddit.api.requests.UserRequests
@@ -120,6 +121,12 @@ class ReviewActivitiesFragment(private val user_id: String) : Fragment(), Review
         val intent = Intent(requireContext(), ReviewCommentsActivity::class.java)
         intent.putExtra("idReview", id_review)
         intent.putExtra("review", review.toGson())
+        startActivity(intent)
+    }
+
+    override fun onUserClick(id_user: String) {
+        val intent = Intent(requireContext(), UserProfileActivity::class.java)
+        intent.putExtra("id_user", id_user)
         startActivity(intent)
     }
 }

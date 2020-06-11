@@ -38,6 +38,7 @@ class CommentAdapter(private val context: Context) : RecyclerView.Adapter<Commen
         fun onClickLike(id_Commento:Int, upvote_textview: TextView, downvote_textview: TextView)
         fun onClickDislike(id_Commento:Int, upvote_textview: TextView, downvote_textview: TextView)
         fun onClickComments(id_Commento:Int, comment: Comment)
+        fun onUserClick(id_user: String)
     }
 
     fun setItemClickListener( listener:CommentItemClickListeners? ) {
