@@ -34,7 +34,6 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="left"
                         android:layout_marginTop="20dp"
-                        android:inputType="textMultiLine"
                         android:maxWidth="250dp"
                         android:text="Nome corso"
                         android:textColor="@color/white"
