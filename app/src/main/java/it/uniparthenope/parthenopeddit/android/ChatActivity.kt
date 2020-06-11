@@ -29,7 +29,7 @@ class ChatActivity() : LoginRequiredActivity() {
         username_chat_textview.text = user?.display_name?:user?.id
 
         MessagesRequests(this, app.auth).getChatLogWithUser(user!!.id,{ it: UsersChat ->
-            last_login_chat_textview.text = DateParser.parse(it.last_opened_on)
+            last_login_chat_textview.text = DateParser.parse(it.other_user_chat!!.last_opened_on)
         },{
 
         })
