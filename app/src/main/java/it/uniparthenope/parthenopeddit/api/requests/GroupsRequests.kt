@@ -497,7 +497,7 @@ class GroupsRequests(private val ctx: Context, private val auth: AuthManager) {
                 override val url: String
                     get() = "$baseUrl/groups/$group_id/posts"
                 override val httpMethod: Int
-                    get() = Request.Method.GET
+                    get() = Request.Method.POST
                 override val params: HashMap<String, String>
                     get() {
                         val params = getParamsMap()

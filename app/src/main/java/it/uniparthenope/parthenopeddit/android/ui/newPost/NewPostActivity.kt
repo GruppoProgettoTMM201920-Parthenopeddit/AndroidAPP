@@ -9,6 +9,7 @@ import android.widget.Toast
 import it.uniparthenope.parthenopeddit.LoginRequiredActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.HomeActivity
+import it.uniparthenope.parthenopeddit.api.requests.GroupsRequests
 import it.uniparthenope.parthenopeddit.api.requests.PostsRequests
 import kotlinx.android.synthetic.main.activity_new_post.*
 
@@ -19,9 +20,10 @@ class NewPostActivity : LoginRequiredActivity(){
         setContentView(R.layout.activity_new_post)
         val actionBar = supportActionBar
         actionBar!!.title = "Nuovo post"
-        var boardId : Int = intent.getIntExtra("id_group",0)
-        var board_name : String = intent.extras!!.getString("name_group", "")
-        var board_name_textview : TextView = findViewById<TextView>(R.id.board_name_textview)
+        val boardId : Int = intent.getIntExtra("id_group",0)
+        if(boardId == 0) finish()
+        val board_name : String = intent.extras!!.getString("name_group", "")
+        val board_name_textview : TextView = findViewById<TextView>(R.id.board_name_textview)
         board_name_textview.text = board_name
 
         val publish_button = findViewById<Button>(R.id.publish_button)
@@ -42,10 +44,10 @@ class NewPostActivity : LoginRequiredActivity(){
                 empty_body_textview.visibility = View.GONE
             }
 
-            PostsRequests(this, app.auth).publishNewPost(
+            GroupsRequests(this, app.auth).publishPostToGroup(
+                boardId,
                 title_edittext.text.toString(),
                 user_post_edittext.text.toString(),
-                boardId,
                 {
                     Toast.makeText(this, "Post pubblicato", Toast.LENGTH_SHORT).show()
                 },{
