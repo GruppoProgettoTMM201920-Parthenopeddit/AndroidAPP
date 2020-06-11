@@ -53,7 +53,7 @@
             android:layout_marginTop="2dp"
             android:maxLength="20"
             android:textStyle="bold"
-            android:text="last message" />
+            android:text="username" />
 
     </RelativeLayout>
 

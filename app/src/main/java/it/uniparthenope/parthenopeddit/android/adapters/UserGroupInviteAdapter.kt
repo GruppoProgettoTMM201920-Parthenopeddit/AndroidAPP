@@ -46,7 +46,7 @@ class UserGroupInviteAdapter : RecyclerView.Adapter<UserGroupInviteAdapter.UserG
         val currentItem = InviteList[position]
 
         holder.group_name_textview.text = currentItem.group?.name
-        holder.invited_by_textview.text = currentItem.inviter?.display_name
+        holder.invited_by_textview.text = currentItem.inviter?.display_name?:currentItem.inviter?.id
 
 
 
