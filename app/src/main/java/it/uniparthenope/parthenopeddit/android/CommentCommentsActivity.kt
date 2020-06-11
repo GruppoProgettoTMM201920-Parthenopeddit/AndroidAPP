@@ -16,6 +16,7 @@ import it.uniparthenope.parthenopeddit.android.adapters.CommentAdapter
 import it.uniparthenope.parthenopeddit.api.requests.CommentsRequests
 import it.uniparthenope.parthenopeddit.model.Comment
 import it.uniparthenope.parthenopeddit.model.LikeDislikeScore
+import it.uniparthenope.parthenopeddit.util.DateParser
 import it.uniparthenope.parthenopeddit.util.toGson
 import it.uniparthenope.parthenopeddit.util.toObject
 import kotlinx.android.synthetic.main.activity_post_comments.*
@@ -115,7 +116,7 @@ class CommentCommentsActivity : LoginRequiredActivity(), CommentAdapter.CommentI
 
         image_view.setImageResource(R.drawable.default_user_image)
         username_textview.text = comment.author?.display_name?:comment.author_id
-        timestamp_comment_textview.text = comment.timestamp
+        timestamp_comment_textview.text = DateParser.parse(comment.timestamp)
         posttext_textview.text = comment.body
         upvote_textview.text = comment.likes_num.toString()
         downvote_textview.text = comment.dislikes_num.toString()

@@ -1,18 +1,25 @@
 package it.uniparthenope.parthenopeddit.android.adapters
 
 import android.graphics.Color
+import android.icu.text.SimpleDateFormat
+import android.icu.util.Calendar
+import android.icu.util.TimeZone
+import android.text.format.DateUtils
+import android.text.format.DateUtils.FORMAT_ABBREV_RELATIVE
+import android.text.format.DateUtils.MINUTE_IN_MILLIS
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.model.Board
 import it.uniparthenope.parthenopeddit.model.Post
+import it.uniparthenope.parthenopeddit.util.DateParser
 import kotlinx.android.synthetic.main.cardview_post.view.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
 
@@ -57,7 +64,7 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
         holder.username_textview.text = currentItem.author?.display_name?:currentItem.author_id
         holder.title_textview.text = currentItem.title
         holder.board_textview.text = currentItem.posted_to_board?.name?:"Generale"
-        holder.timestamp_textview.text = currentItem.timestamp
+        holder.timestamp_textview.text = DateParser.parse(currentItem.timestamp)
         holder.posttext_textview.text = currentItem.body
         holder.upvote_textview.text = currentItem.likes_num.toString()
         holder.downvote_textview.text = currentItem.dislikes_num.toString()

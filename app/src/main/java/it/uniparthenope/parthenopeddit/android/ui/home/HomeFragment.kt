@@ -32,7 +32,6 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
     private lateinit var auth : AuthManager
     private lateinit var recycler_view: RecyclerView
-    private lateinit var homeViewModel: HomeViewModel
     var isOpen = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
