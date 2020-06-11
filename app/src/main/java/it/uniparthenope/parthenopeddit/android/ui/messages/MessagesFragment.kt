@@ -34,6 +34,7 @@ import it.uniparthenope.parthenopeddit.model.GroupChat
 import it.uniparthenope.parthenopeddit.model.User
 import it.uniparthenope.parthenopeddit.model.UsersChat
 import it.uniparthenope.parthenopeddit.android.swipe.SwipeItemTouchListener
+import it.uniparthenope.parthenopeddit.util.DateParser
 
 class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners,
     SwipeItemTouchListener, ExpandableListChatAdapter.ChatListItemClickListeners {
@@ -159,7 +160,7 @@ class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners,
                     .thumbnailUrl(generateRandomImageUrl(MAX_IMAGE_SIZE))
                     .username(username)
                     .latest_message(userchat.last_message?.body?:"")
-                    .date(userchat.last_opened_on)
+                    .date(DateParser.parse(userchat.other_user_chat!!.last_opened_on))
                     .user(user)
                     .build()
 
