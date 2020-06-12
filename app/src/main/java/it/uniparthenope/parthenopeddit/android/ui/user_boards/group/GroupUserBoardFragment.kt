@@ -18,7 +18,6 @@ import it.uniparthenope.parthenopeddit.android.HomeActivity
 import it.uniparthenope.parthenopeddit.android.adapters.UserGroupAdapter
 import it.uniparthenope.parthenopeddit.api.requests.GroupsRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
-import it.uniparthenope.parthenopeddit.model.GroupMember
 
 class GroupUserBoardFragment : Fragment(), UserGroupAdapter.UserGroupItemClickListeners {
 
@@ -52,6 +51,7 @@ class GroupUserBoardFragment : Fragment(), UserGroupAdapter.UserGroupItemClickLi
                 if(it.isNotEmpty()) {
                     no_group_textview.visibility = View.GONE
                     recycler_view.visibility = View.VISIBLE
+
                     userGroupAdapter.addGroup(it)
                 }
             }, {
@@ -62,13 +62,13 @@ class GroupUserBoardFragment : Fragment(), UserGroupAdapter.UserGroupItemClickLi
         return root
     }
 
-    override fun onBoardClick(id_course: Int?) {
-        if(id_course==1){
+    override fun onBoardClick(board_id: Int?) {
+        if(board_id==1){
             val intent = Intent(requireContext(), HomeActivity::class.java)
             startActivity(intent)
         } else {
             val intent = Intent(requireContext(), GroupActivity::class.java)
-            intent.putExtra("id_group", id_course)
+            intent.putExtra("id_group", board_id)
             startActivity(intent)
         }
     }
