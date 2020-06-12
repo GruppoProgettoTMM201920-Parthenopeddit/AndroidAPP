@@ -51,6 +51,9 @@ class NewPostActivity : LoginRequiredActivity(){
                     Toast.makeText(this, "Errore ${it}", Toast.LENGTH_LONG).show()
                 }
             )
+            val intent = Intent(this, HomeActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(intent)
             finish()
         }
     }
