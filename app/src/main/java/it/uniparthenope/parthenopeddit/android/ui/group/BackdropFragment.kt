@@ -276,7 +276,7 @@ class BackdropFragment(): SwipeItemTouchListener, Fragment(),
                 remove_invite(invite, swipedIndex, removedItem)
             } else if (admin != null){
                 if(admin.user_id == auth.username) {
-                    leave_group(admin)
+                    onUserExit(admin, removedItem, swipedIndex)
                 } else {
                     Toast.makeText(requireContext(), "Non puoi cacciare un altro amministratore", Toast.LENGTH_LONG).show()
                     membersAdapter.add(swipedIndex, removedItem)
@@ -385,5 +385,22 @@ class BackdropFragment(): SwipeItemTouchListener, Fragment(),
             intent.putExtra("id_user", userId)
             startActivity(intent)
         }
+    }
+
+    fun onUserExit(user: GroupMember, removedItem: ExpandableUserListAdapter.Item, swipedIndex: Int){
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setMessage("Sei sicuro di voler uscire?")
+            .setPositiveButton("Esci",
+                DialogInterface.OnClickListener { dialog, id ->
+                    leave_group(user)
+                })
+            .setNegativeButton("Annulla",
+                DialogInterface.OnClickListener { dialog, id ->
+                    membersAdapter.add(swipedIndex, removedItem)
+                })
+
+        // Create the AlertDialog object and return it
+        builder.create()
+        builder.show()
     }
 }
