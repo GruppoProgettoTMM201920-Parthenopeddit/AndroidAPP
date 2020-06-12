@@ -219,7 +219,7 @@ class ExpandableUserListAdapter(private val context: Context, private val glide:
         glide.load(item.thumbnailUrl)
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(holder.thumbnail)
-        holder.username.text = item.username
+        holder.username.text = item.diplayed_name?:item.username
         holder.joindate.text = "${item.dateMessage} ${DateParser.prettyParse(item.date!!)}"
         holder.container.setOnClickListener {
             item.username?.let { userId -> listener.onUserClicked(userId) }
@@ -318,6 +318,7 @@ class ExpandableUserListAdapter(private val context: Context, private val glide:
         internal var num: String? = null,
         internal val thumbnailUrl: String?,
         internal val username: String?,
+        internal val diplayed_name: String?,
         internal val dateMessage: String?,
         internal val date: String?,
         internal var isOpened: Boolean
@@ -331,7 +332,8 @@ class ExpandableUserListAdapter(private val context: Context, private val glide:
             private var username: String? = null,
             private var dateMessage: String? = null,
             private var date: String? = null,
-            private var isOpened: Boolean = true
+            private var isOpened: Boolean = true,
+            private var diplayed_name: String? = null
         ) {
 
             fun type(type: Int) = apply { this.type = type }
@@ -339,6 +341,7 @@ class ExpandableUserListAdapter(private val context: Context, private val glide:
             fun num(num: String) = apply { this.num = num }
             fun thumbnailUrl(thumbnailUrl: String) = apply { this.thumbnailUrl = thumbnailUrl }
             fun username(username: String) = apply { this.username = username }
+            fun dispayName(name: String) = apply { this.diplayed_name = name }
             fun dateMessage(dateMessage: String) = apply { this.dateMessage = dateMessage }
             fun date(date: String) = apply { this.date = date }
             fun isOpened(isOpened: Boolean) = apply { this.isOpened = isOpened }
@@ -348,6 +351,7 @@ class ExpandableUserListAdapter(private val context: Context, private val glide:
                 num,
                 thumbnailUrl,
                 username,
+                diplayed_name,
                 dateMessage,
                 date,
                 isOpened
