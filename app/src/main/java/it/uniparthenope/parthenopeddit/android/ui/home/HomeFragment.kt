@@ -1,6 +1,7 @@
 package it.uniparthenope.parthenopeddit.android.ui.home
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,9 +9,11 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.mancj.materialsearchbar.MaterialSearchBar
 import it.uniparthenope.parthenopeddit.BasicActivity
@@ -27,6 +30,7 @@ import it.uniparthenope.parthenopeddit.model.Board
 import it.uniparthenope.parthenopeddit.model.LikeDislikeScore
 import it.uniparthenope.parthenopeddit.model.Post
 import it.uniparthenope.parthenopeddit.util.toGson
+import kotlinx.android.synthetic.main.fragment_home_content.*
 
 
 class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
@@ -34,6 +38,7 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
     private lateinit var auth : AuthManager
 
     private lateinit var recycler_view: RecyclerView
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
     private lateinit var adapter: PostAdapter
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var infiniteScroller: InfiniteScroller
@@ -62,6 +67,40 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         layoutManager = LinearLayoutManager(requireContext())
         recycler_view.layoutManager = layoutManager
 
+        swipeRefreshLayout = root.findViewById(R.id.swipe_refresh_layout)
+        swipeRefreshLayout.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+        swipeRefreshLayout.setColorSchemeColors(Color.WHITE)
+
+        swipeRefreshLayout.setOnRefreshListener {
+            recycler_view.clearOnScrollListeners()
+
+            UserRequests(requireContext(), auth).getUserFeed(
+                page = 1,
+                perPage = per_page,
+                onSuccess = {
+                    if(it.isNotEmpty()) {
+                        val newTimeStamp = it[0].timestamp
+                        if(!transactionStartDateTime.equals(newTimeStamp)) {
+                            transactionStartDateTime = newTimeStamp
+
+                            adapter.setPostList(it)
+
+                            infiniteScroller = InfiniteScroller(
+                                layoutManager, updater, per_page
+                            )
+                        }
+                        recycler_view.addOnScrollListener(infiniteScroller)
+                    }
+                },
+                onEndOfContent = {
+                    //nothing. list is empty.
+                },
+                onFail = { it: String ->
+                    Toast.makeText(requireContext(),it, Toast.LENGTH_LONG).show()
+                }
+            )
+        }
+
         updater = object : InfiniteScroller.Updater {
             override fun updateData(pageToLoad: Int, pageSize: Int) {
                 UserRequests(requireContext(), auth).getUserFeed(
@@ -80,9 +119,6 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
                 )
             }
         }
-        infiniteScroller = InfiniteScroller(
-            layoutManager, updater, per_page
-        )
 
         auth = (activity as BasicActivity).app.auth
 
@@ -90,9 +126,16 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
             page = 1,
             perPage = per_page,
             onSuccess = {
-                adapter.aggiungiPost( it )
-                if(it.isNotEmpty()) transactionStartDateTime = it[0].timestamp
-                recycler_view.addOnScrollListener(infiniteScroller)
+                if(it.isNotEmpty()) {
+                    transactionStartDateTime = it[0].timestamp
+
+                    adapter.aggiungiPost( it )
+
+                    infiniteScroller = InfiniteScroller(
+                        layoutManager, updater, per_page
+                    )
+                    recycler_view.addOnScrollListener(infiniteScroller)
+                }
             },
             onEndOfContent = {
                 //nothing. list is empty.
