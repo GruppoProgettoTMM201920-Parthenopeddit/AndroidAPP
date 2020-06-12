@@ -243,7 +243,7 @@ class UserRequests(private val ctx: Context, private val auth: AuthManager) {
         ApiClient.getInstance(ctx).performRequest(
             object : ApiRoute() {
                 override val url: String
-                    get() = "$baseUrl/user/$user_id/published_review/$perPage/$page"
+                    get() = "$baseUrl/user/$user_id/published_reviews/$perPage/$page"
                 override val httpMethod: Int
                     get() = Request.Method.GET
                 override val params: HashMap<String, String>
