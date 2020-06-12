@@ -9,7 +9,10 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.model.Course
+import kotlinx.android.synthetic.main.activity_course.*
 import kotlinx.android.synthetic.main.cardview_course.view.*
+import kotlinx.android.synthetic.main.cardview_course.view.course_difficulty_rating
+import kotlinx.android.synthetic.main.cardview_course.view.course_enjoyment_rating
 
 class UserCourseAdapter : RecyclerView.Adapter<UserCourseAdapter.UserCourseViewHolder>() {
 
@@ -47,10 +50,18 @@ class UserCourseAdapter : RecyclerView.Adapter<UserCourseAdapter.UserCourseViewH
         val currentItem = courseList[position]
 
         holder.course_name_textview.text = currentItem.name
-        holder.course_enjoyment_rating.text = "%2.1f/5".format(currentItem.average_liking_score)
-        holder.course_difficulty_rating.text = "%2.1f/5".format(currentItem.average_difficulty_score)
-        holder.liking_rating_bar.rating = currentItem.average_liking_score?.toFloat()?:(0).toFloat()
-        holder.difficulty_rating_bar.rating = currentItem.average_difficulty_score?.toFloat()?:(0).toFloat()
+
+        if(currentItem.reviews_count == 0) {
+            holder.liking_rating_bar.rating = (0.0).toFloat()
+            holder.course_enjoyment_rating.text = "%2.1f/5".format(0.0)
+            holder.difficulty_rating_bar.rating = (0.0).toFloat()
+            holder.course_difficulty_rating.text = "%2.1f/5".format(0.0)
+        } else {
+            holder.liking_rating_bar.rating = (currentItem.average_liking_score!!).toFloat()
+            holder.course_enjoyment_rating.text = "%2.1f/5".format(currentItem.average_liking_score!!)
+            holder.difficulty_rating_bar.rating = (currentItem.average_difficulty_score!!).toFloat()
+            holder.course_difficulty_rating.text = "%2.1f/5".format(currentItem.average_difficulty_score!!)
+        }
         
         if( listener != null ) {
             holder.cardLayout.setOnClickListener {
