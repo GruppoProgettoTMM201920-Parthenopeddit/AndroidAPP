@@ -53,13 +53,13 @@ class CoursePostFragment(private var courseID: Int) : Fragment(), PostAdapter.Po
 
         layoutManager = LinearLayoutManager(requireContext())
         recycler_view.layoutManager = layoutManager
-        recycler_view.setHasFixedSize(true)
 
         updater = object : InfiniteScroller.Updater {
             override fun updateData(pageToLoad: Int, pageSize: Int) {
-                UserRequests(requireContext(), auth).getUserFeed(
-                    page = pageToLoad,
-                    perPage = pageSize,
+                CoursesRequests(requireContext(), auth).getCoursePosts(
+                    page = 1,
+                    perPage = per_page,
+                    course_id = courseID,
                     transactionStartDateTime = transactionStartDateTime,
                     onSuccess = {
                         postAdapter.aggiungiPost(it)
