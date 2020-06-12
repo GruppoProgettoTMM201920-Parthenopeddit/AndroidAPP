@@ -8,13 +8,17 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import it.uniparthenope.parthenopeddit.LoginRequiredActivity
 import it.uniparthenope.parthenopeddit.R
+import it.uniparthenope.parthenopeddit.android.adapters.InfiniteScroller
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
+import it.uniparthenope.parthenopeddit.android.adapters.ReviewAdapter
 import it.uniparthenope.parthenopeddit.android.ui.group.BackdropFragment
 import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
+import it.uniparthenope.parthenopeddit.api.requests.CoursesRequests
 import it.uniparthenope.parthenopeddit.api.requests.GroupsRequests
 import it.uniparthenope.parthenopeddit.model.Group
 import it.uniparthenope.parthenopeddit.model.GroupInvite
@@ -32,6 +36,16 @@ class GroupActivity : LoginRequiredActivity() {
 
     private lateinit var fragment: BackdropFragment
     private lateinit var mBottomSheetBehavior: BottomSheetBehavior<View?>
+
+    private lateinit var recycler_view: RecyclerView
+    private lateinit var postAdapter: PostAdapter
+    private lateinit var layoutManager: LinearLayoutManager
+    private lateinit var infiniteScroller: InfiniteScroller
+    private lateinit var updater: InfiniteScroller.Updater
+
+    private lateinit var transactionStartDateTime: String
+
+    private val per_page = 20
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,13 +85,6 @@ class GroupActivity : LoginRequiredActivity() {
             }
         }
 
-        val postAdapter = PostAdapter()
-        postAdapter.setItemClickListener(null)
-        group_recyclerview.adapter = postAdapter
-        group_recyclerview.layoutManager = LinearLayoutManager(this)
-        group_recyclerview.setHasFixedSize(true)
-
-
         val fab = findViewById(R.id.fab) as FloatingActionButton
         val fab_group_chat = findViewById(R.id.fab_group_chat) as FloatingActionButton
         val fab_group_chat_textview = findViewById(R.id.fab_group_chat_textview) as TextView
@@ -107,11 +114,52 @@ class GroupActivity : LoginRequiredActivity() {
             Toast.makeText(this, "Errore ${it}", Toast.LENGTH_LONG).show()
         })
 
-        GroupsRequests(this, app.auth).getGroupPosts(id_group, 20, 1,{it: ArrayList<Post> ->
-            postAdapter.aggiungiPost(it)
-        },{it: String ->
-            Toast.makeText(this,"Errore : ${it}", Toast.LENGTH_LONG).show()
-        })
+        recycler_view = findViewById(R.id.group_recyclerview) as RecyclerView
+
+        postAdapter = PostAdapter()
+        postAdapter.setItemClickListener(null) //TODO add listener
+        recycler_view.adapter = postAdapter
+
+        layoutManager = LinearLayoutManager(this)
+        recycler_view.layoutManager = layoutManager
+
+        updater = object : InfiniteScroller.Updater {
+            override fun updateData(pageToLoad: Int, pageSize: Int) {
+                GroupsRequests(this@GroupActivity, app.auth).getGroupPosts(
+                    group_id = id_group,
+                    per_page = per_page,
+                    page = 1,
+                    transactionStartDateTime = transactionStartDateTime,
+                    onSuccess = {
+                        postAdapter.aggiungiPost(it)
+                    },
+                    onEndOfContent = {
+                        infiniteScroller.theresMore = false
+                    },
+                    onFail = {
+                        Toast.makeText(this@GroupActivity, "ERROR IN FETCHING NEW POSTS", Toast.LENGTH_SHORT).show()
+                    }
+                )
+            }
+        }
+        infiniteScroller = InfiniteScroller(
+            layoutManager, updater, per_page
+        )
+
+        GroupsRequests(this, app.auth).getGroupPosts(
+            group_id = id_group,
+            per_page = per_page,
+            page = 1,
+            onSuccess = {
+                postAdapter.aggiungiPost(it)
+            },
+            onEndOfContent = {
+                //nothing
+            },
+            onFail = {
+                Toast.makeText(this,"Errore : ${it}", Toast.LENGTH_LONG).show()
+            }
+        )
 
         fab.setOnClickListener{
             if(isOpen){
