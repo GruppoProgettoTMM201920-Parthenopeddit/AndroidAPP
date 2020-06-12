@@ -126,9 +126,9 @@ class GroupActivity : LoginRequiredActivity() {
         updater = object : InfiniteScroller.Updater {
             override fun updateData(pageToLoad: Int, pageSize: Int) {
                 GroupsRequests(this@GroupActivity, app.auth).getGroupPosts(
+                    page = pageToLoad,
+                    per_page = pageSize,
                     group_id = id_group,
-                    per_page = per_page,
-                    page = 1,
                     transactionStartDateTime = transactionStartDateTime,
                     onSuccess = {
                         postAdapter.aggiungiPost(it)

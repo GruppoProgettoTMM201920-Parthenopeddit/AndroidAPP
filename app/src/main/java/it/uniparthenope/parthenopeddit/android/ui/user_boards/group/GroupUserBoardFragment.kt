@@ -47,14 +47,17 @@ class GroupUserBoardFragment : Fragment(), UserGroupAdapter.UserGroupItemClickLi
 
 
 
-        GroupsRequests(requireContext(), auth).getUserGroups({it: ArrayList<GroupMember> ->
-            no_group_textview.visibility = View.GONE
-            recycler_view.visibility = View.VISIBLE
-            userGroupAdapter.addGroup(it)
-            }, { it: String ->
-            Toast.makeText(requireContext(), "Errore ${it}", Toast.LENGTH_LONG).show()
-
-        })
+        GroupsRequests(requireContext(), auth).getUserGroups(
+            {
+                if(it.isNotEmpty()) {
+                    no_group_textview.visibility = View.GONE
+                    recycler_view.visibility = View.VISIBLE
+                    userGroupAdapter.addGroup(it)
+                }
+            }, {
+                Toast.makeText(requireContext(), "Errore ${it}", Toast.LENGTH_LONG).show()
+            }
+        )
 
         return root
     }

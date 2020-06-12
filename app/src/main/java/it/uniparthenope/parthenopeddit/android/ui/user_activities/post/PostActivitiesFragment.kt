@@ -61,8 +61,8 @@ class PostActivitiesFragment(private val user_id: String) : Fragment(), PostAdap
         updater = object : InfiniteScroller.Updater {
             override fun updateData(pageToLoad: Int, pageSize: Int) {
                 UserRequests(requireContext(), auth).getUserPublishedPosts(
-                    page = 1,
-                    perPage = per_page,
+                    page = pageToLoad,
+                    perPage = pageSize,
                     user_id = user_id,
                     transactionStartDateTime = transactionStartDateTime,
                     onSuccess = {

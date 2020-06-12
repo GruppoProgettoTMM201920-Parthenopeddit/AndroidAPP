@@ -57,8 +57,8 @@ class CoursePostFragment(private var courseID: Int) : Fragment(), PostAdapter.Po
         updater = object : InfiniteScroller.Updater {
             override fun updateData(pageToLoad: Int, pageSize: Int) {
                 CoursesRequests(requireContext(), auth).getCoursePosts(
-                    page = 1,
-                    perPage = per_page,
+                    page = pageToLoad,
+                    perPage = pageSize,
                     course_id = courseID,
                     transactionStartDateTime = transactionStartDateTime,
                     onSuccess = {

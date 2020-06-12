@@ -8,7 +8,7 @@ abstract class ApiRoute {
 
     val baseUrl: String
         get() {
-            return "http://25.70.66.38:8000"
+            return "http:///10.0.2.2:8000"
         }
 
     abstract val url: String

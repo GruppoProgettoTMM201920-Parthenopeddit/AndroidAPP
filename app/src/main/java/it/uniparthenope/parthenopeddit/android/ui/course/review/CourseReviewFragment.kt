@@ -56,8 +56,8 @@ class CourseReviewFragment(private var courseID: Int) : Fragment(), ReviewAdapte
         updater = object : InfiniteScroller.Updater {
             override fun updateData(pageToLoad: Int, pageSize: Int) {
                 CoursesRequests(requireContext(), auth).getCourseReviews(
-                    page = 1,
-                    perPage = per_page,
+                    page = pageToLoad,
+                    perPage = pageSize,
                     course_id = courseID,
                     transactionStartDateTime = transactionStartDateTime,
                     onSuccess = {
