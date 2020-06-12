@@ -9,15 +9,16 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.CommentCommentsActivity
-import it.uniparthenope.parthenopeddit.android.UserContentActivity
 import it.uniparthenope.parthenopeddit.android.UserProfileActivity
 import it.uniparthenope.parthenopeddit.android.adapters.CommentAdapter
+import it.uniparthenope.parthenopeddit.android.adapters.CommentRecursiveAdapter
+import it.uniparthenope.parthenopeddit.android.adapters.InfiniteScroller
+import it.uniparthenope.parthenopeddit.android.adapters.ReviewAdapter
 import it.uniparthenope.parthenopeddit.api.requests.PostsRequests
 import it.uniparthenope.parthenopeddit.api.requests.UserRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
@@ -27,8 +28,17 @@ import it.uniparthenope.parthenopeddit.util.toGson
 
 class CommentActivitiesFragment(private val user_id: String) : Fragment(), CommentAdapter.CommentItemClickListeners {
 
-    private lateinit var auth: AuthManager
+    private lateinit var auth : AuthManager
+
     private lateinit var recycler_view: RecyclerView
+    private lateinit var commentsAdapter: CommentAdapter
+    private lateinit var layoutManager: LinearLayoutManager
+    private lateinit var infiniteScroller: InfiniteScroller
+    private lateinit var updater: InfiniteScroller.Updater
+
+    private lateinit var transactionStartDateTime: String
+
+    private val per_page = 20
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,28 +48,60 @@ class CommentActivitiesFragment(private val user_id: String) : Fragment(), Comme
         val root = inflater.inflate(R.layout.fragment_comment_activities, container, false)
         val no_comments_textview = root.findViewById<TextView>(R.id.no_comments_textview)
 
-        recycler_view = root.findViewById(R.id.recycler_view) as RecyclerView
-
-        val commentItemsList: ArrayList<Comment> = arrayListOf<Comment>()
-        val commentAdapter = CommentAdapter(requireContext(), commentItemsList, this)
-        commentAdapter.setItemClickListener(this)
-        recycler_view.adapter = commentAdapter
-        recycler_view.layoutManager = LinearLayoutManager(requireContext())
-        recycler_view.setHasFixedSize(true)
-
         auth = (activity as BasicActivity).app.auth
 
+        recycler_view = root.findViewById(R.id.recycler_view) as RecyclerView
+
+        commentsAdapter = CommentAdapter()
+        commentsAdapter.setItemClickListener(this)
+        recycler_view.adapter = commentsAdapter
+
+        layoutManager = LinearLayoutManager(requireContext())
+        recycler_view.layoutManager = layoutManager
+
+        updater = object : InfiniteScroller.Updater {
+            override fun updateData(pageToLoad: Int, pageSize: Int) {
+                UserRequests(requireContext(), auth).getUserPublishedComments(
+                    page = 1,
+                    perPage = per_page,
+                    user_id = user_id,
+                    transactionStartDateTime = transactionStartDateTime,
+                    onSuccess = {
+                        commentsAdapter.aggiungiCommenti(it)
+                    },
+                    onEndOfContent = {
+                        infiniteScroller.theresMore = false
+                    },
+                    onFail = {
+                        Toast.makeText(requireContext(), "ERROR IN FETCHING NEW REVIEWS", Toast.LENGTH_SHORT).show()
+                    }
+                )
+            }
+        }
+        infiniteScroller = InfiniteScroller(
+            layoutManager, updater, per_page
+        )
+
         UserRequests(requireContext(), auth).getUserPublishedComments(
-            user_id,
-            1,
-            20,
-            {
-                if(it.isNotEmpty()){
+            page = 1,
+            perPage = per_page,
+            user_id = user_id,
+            onSuccess = {
+                if(it.isNotEmpty()) {
+                    commentsAdapter.aggiungiCommenti(it)
+                    transactionStartDateTime = it[0].timestamp
+                    recycler_view.addOnScrollListener(infiniteScroller)
+
                     no_comments_textview.visibility = View.GONE
                     recycler_view.visibility = View.VISIBLE
-                    commentAdapter.aggiungiCommenti(it)
                 }
-            },{}
+            },
+            onEndOfContent = {
+                //nothing
+            },
+            onFail = {
+                Toast.makeText(requireContext(),it, Toast.LENGTH_LONG).show()
+            }
         )
 
         return root

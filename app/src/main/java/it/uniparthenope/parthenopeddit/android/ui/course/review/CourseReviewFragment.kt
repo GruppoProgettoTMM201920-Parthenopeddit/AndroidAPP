@@ -15,19 +15,17 @@ import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.ReviewCommentsActivity
 import it.uniparthenope.parthenopeddit.android.UserProfileActivity
 import it.uniparthenope.parthenopeddit.android.adapters.InfiniteScroller
-import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.adapters.ReviewAdapter
 import it.uniparthenope.parthenopeddit.api.requests.CoursesRequests
 import it.uniparthenope.parthenopeddit.api.requests.PostsRequests
 import it.uniparthenope.parthenopeddit.api.requests.ReviewsRequests
-import it.uniparthenope.parthenopeddit.api.requests.UserRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Course
 import it.uniparthenope.parthenopeddit.model.LikeDislikeScore
 import it.uniparthenope.parthenopeddit.model.Review
 import it.uniparthenope.parthenopeddit.util.toGson
 
-class CourseReviewFragment(private var courseID: Int) : Fragment(), ReviewAdapter.CourseReviewItemClickListeners {
+class CourseReviewFragment(private var courseID: Int) : Fragment(), ReviewAdapter.ReviewItemClickListeners {
 
     private lateinit var auth : AuthManager
 
@@ -83,9 +81,11 @@ class CourseReviewFragment(private var courseID: Int) : Fragment(), ReviewAdapte
             perPage = per_page,
             course_id = courseID,
             onSuccess = {
-                reviewAdapter.aggiungiReview(it)
-                if(it.isNotEmpty()) transactionStartDateTime = it[0].timestamp
-                recycler_view.addOnScrollListener(infiniteScroller)
+                if(it.isNotEmpty()) {
+                    reviewAdapter.aggiungiReview(it)
+                    transactionStartDateTime = it[0].timestamp
+                    recycler_view.addOnScrollListener(infiniteScroller)
+                }
             },
             onEndOfContent = {
                 //nothing

@@ -14,7 +14,9 @@ import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.*
+import it.uniparthenope.parthenopeddit.android.adapters.InfiniteScroller
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
+import it.uniparthenope.parthenopeddit.api.requests.CoursesRequests
 import it.uniparthenope.parthenopeddit.api.requests.PostsRequests
 import it.uniparthenope.parthenopeddit.api.requests.UserRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
@@ -25,8 +27,17 @@ import it.uniparthenope.parthenopeddit.util.toGson
 
 class PostActivitiesFragment(private val user_id: String) : Fragment(), PostAdapter.PostItemClickListeners {
 
-    private lateinit var auth: AuthManager
+    private lateinit var auth : AuthManager
+
     private lateinit var recycler_view: RecyclerView
+    private lateinit var postAdapter: PostAdapter
+    private lateinit var layoutManager: LinearLayoutManager
+    private lateinit var infiniteScroller: InfiniteScroller
+    private lateinit var updater: InfiniteScroller.Updater
+
+    private lateinit var transactionStartDateTime: String
+
+    private val per_page = 20
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,27 +47,60 @@ class PostActivitiesFragment(private val user_id: String) : Fragment(), PostAdap
         val root = inflater.inflate(R.layout.fragment_post_activities, container, false)
         val no_posts_textview = root.findViewById<TextView>(R.id.no_posts_textview)
 
-        recycler_view = root.findViewById(R.id.recycler_view) as RecyclerView
-
-        val postAdapter = PostAdapter()
-        postAdapter.setItemClickListener(this)
-        recycler_view.adapter = postAdapter
-        recycler_view.layoutManager = LinearLayoutManager(requireContext())
-        recycler_view.setHasFixedSize(true)
-
         auth = (activity as BasicActivity).app.auth
 
+        recycler_view = root.findViewById(R.id.recycler_view) as RecyclerView
+
+        postAdapter = PostAdapter()
+        postAdapter.setItemClickListener(this)
+        recycler_view.adapter = postAdapter
+
+        layoutManager = LinearLayoutManager(requireContext())
+        recycler_view.layoutManager = layoutManager
+
+        updater = object : InfiniteScroller.Updater {
+            override fun updateData(pageToLoad: Int, pageSize: Int) {
+                UserRequests(requireContext(), auth).getUserPublishedPosts(
+                    page = 1,
+                    perPage = per_page,
+                    user_id = user_id,
+                    transactionStartDateTime = transactionStartDateTime,
+                    onSuccess = {
+                        postAdapter.aggiungiPost(it)
+                    },
+                    onEndOfContent = {
+                        infiniteScroller.theresMore = false
+                    },
+                    onFail = {
+                        Toast.makeText(requireContext(), "ERROR IN FETCHING NEW POSTS", Toast.LENGTH_SHORT).show()
+                    }
+                )
+            }
+        }
+        infiniteScroller = InfiniteScroller(
+            layoutManager, updater, per_page
+        )
+
         UserRequests(requireContext(), auth).getUserPublishedPosts(
-            user_id,
-            1,
-            20,
-            {
-                if(it.isNotEmpty()){
+            page = 1,
+            perPage = per_page,
+            user_id = user_id,
+            onSuccess = {
+                if(it.isNotEmpty()) {
+                    postAdapter.aggiungiPost(it)
+                    transactionStartDateTime = it[0].timestamp
+                    recycler_view.addOnScrollListener(infiniteScroller)
+
                     no_posts_textview.visibility = View.GONE
                     recycler_view.visibility = View.VISIBLE
-                    postAdapter.aggiungiPost(it)
                 }
-            }, {}
+            },
+            onEndOfContent = {
+                //nothing. list is empty.
+            },
+            onFail = {
+                Toast.makeText(requireContext(),it, Toast.LENGTH_LONG).show()
+            }
         )
 
         return root

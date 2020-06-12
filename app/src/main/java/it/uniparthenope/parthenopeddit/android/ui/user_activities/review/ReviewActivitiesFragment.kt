@@ -8,15 +8,14 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.CourseActivity
 import it.uniparthenope.parthenopeddit.android.ReviewCommentsActivity
-import it.uniparthenope.parthenopeddit.android.UserContentActivity
 import it.uniparthenope.parthenopeddit.android.UserProfileActivity
+import it.uniparthenope.parthenopeddit.android.adapters.InfiniteScroller
 import it.uniparthenope.parthenopeddit.android.adapters.ReviewAdapter
 import it.uniparthenope.parthenopeddit.api.requests.ReviewsRequests
 import it.uniparthenope.parthenopeddit.api.requests.UserRequests
@@ -25,12 +24,20 @@ import it.uniparthenope.parthenopeddit.model.Course
 import it.uniparthenope.parthenopeddit.model.LikeDislikeScore
 import it.uniparthenope.parthenopeddit.model.Review
 import it.uniparthenope.parthenopeddit.util.toGson
-import kotlinx.android.synthetic.main.cardview_post.*
 
-class ReviewActivitiesFragment(private val user_id: String) : Fragment(), ReviewAdapter.CourseReviewItemClickListeners {
+class ReviewActivitiesFragment(private val user_id: String) : Fragment(), ReviewAdapter.ReviewItemClickListeners {
 
-    private lateinit var authManager: AuthManager
+    private lateinit var auth : AuthManager
+
     private lateinit var recycler_view: RecyclerView
+    private lateinit var reviewAdapter: ReviewAdapter
+    private lateinit var layoutManager: LinearLayoutManager
+    private lateinit var infiniteScroller: InfiniteScroller
+    private lateinit var updater: InfiniteScroller.Updater
+
+    private lateinit var transactionStartDateTime: String
+
+    private val per_page = 20
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,27 +47,60 @@ class ReviewActivitiesFragment(private val user_id: String) : Fragment(), Review
         val root = inflater.inflate(R.layout.fragment_review_activities, container, false)
         val no_reviews_textview = root.findViewById<TextView>(R.id.no_reviews_textview)
 
-        recycler_view = root.findViewById(R.id.recycler_view3) as RecyclerView
+        auth = (activity as BasicActivity).app.auth
 
-        val reviewAdapter = ReviewAdapter()
+        recycler_view = root.findViewById(R.id.recycler_view) as RecyclerView
+
+        reviewAdapter = ReviewAdapter()
         reviewAdapter.setItemClickListener(this)
         recycler_view.adapter = reviewAdapter
-        recycler_view.layoutManager = LinearLayoutManager(requireContext())
-        recycler_view.setHasFixedSize(true)
 
-        authManager = (activity as BasicActivity).app.auth
+        layoutManager = LinearLayoutManager(requireContext())
+        recycler_view.layoutManager = layoutManager
 
-        UserRequests(requireContext(), authManager).getUserPublishedReviews(
-            user_id,
-            1,
-            20,
-            {
-                if(it.isNotEmpty()){
+        updater = object : InfiniteScroller.Updater {
+            override fun updateData(pageToLoad: Int, pageSize: Int) {
+                UserRequests(requireContext(), auth).getUserPublishedReviews(
+                    page = 1,
+                    perPage = per_page,
+                    user_id = user_id,
+                    transactionStartDateTime = transactionStartDateTime,
+                    onSuccess = {
+                        reviewAdapter.aggiungiReview(it)
+                    },
+                    onEndOfContent = {
+                        infiniteScroller.theresMore = false
+                    },
+                    onFail = {
+                        Toast.makeText(requireContext(), "ERROR IN FETCHING NEW REVIEWS", Toast.LENGTH_SHORT).show()
+                    }
+                )
+            }
+        }
+        infiniteScroller = InfiniteScroller(
+            layoutManager, updater, per_page
+        )
+
+        UserRequests(requireContext(), auth).getUserPublishedReviews(
+            page = 1,
+            perPage = per_page,
+            user_id = user_id,
+            onSuccess = {
+                if(it.isNotEmpty()) {
+                    reviewAdapter.aggiungiReview(it)
+                    transactionStartDateTime = it[0].timestamp
+                    recycler_view.addOnScrollListener(infiniteScroller)
+
                     no_reviews_textview.visibility = View.GONE
                     recycler_view.visibility = View.VISIBLE
-                    reviewAdapter.aggiungiReview(it)
                 }
-            }, {}
+            },
+            onEndOfContent = {
+                //nothing
+            },
+            onFail = {
+                Toast.makeText(requireContext(),it, Toast.LENGTH_LONG).show()
+            }
         )
 
         return root
@@ -72,7 +112,7 @@ class ReviewActivitiesFragment(private val user_id: String) : Fragment(), Review
     }
 
     override fun onClickLike(id_review: Int, upvote_textview: TextView, downvote_textview: TextView) {
-        ReviewsRequests(requireContext(), authManager).likeReview(
+        ReviewsRequests(requireContext(), auth).likeReview(
             id_review, {
                 updateLike(upvote_textview, downvote_textview, it)
             }, {
@@ -90,7 +130,7 @@ class ReviewActivitiesFragment(private val user_id: String) : Fragment(), Review
         upvote_textview: TextView,
         downvote_textview: TextView
     ) {
-        ReviewsRequests(requireContext(), authManager).dislikeReview(
+        ReviewsRequests(requireContext(), auth).dislikeReview(
             id_review, {
                 updateLike(upvote_textview, downvote_textview, it)
             }, {

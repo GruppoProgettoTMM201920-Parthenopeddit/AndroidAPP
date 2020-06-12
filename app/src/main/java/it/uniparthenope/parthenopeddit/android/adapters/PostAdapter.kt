@@ -81,30 +81,28 @@ class PostAdapter() : RecyclerView.Adapter<PostAdapter.PostViewHolder>() {
             }
         }
 
-        if( listener != null ) {
-            holder.upvote_btn.setOnClickListener {
-                listener!!.onClickLike(currentItem.id, holder.upvote_textview, holder.downvote_textview)
-            }
+        holder.upvote_btn.setOnClickListener {
+            listener?.onClickLike(currentItem.id, holder.upvote_textview, holder.downvote_textview)
+        }
 
-            holder.downvote_btn.setOnClickListener {
-                listener!!.onClickDislike(currentItem.id, holder.upvote_textview, holder.downvote_textview)
-            }
+        holder.downvote_btn.setOnClickListener {
+            listener?.onClickDislike(currentItem.id, holder.upvote_textview, holder.downvote_textview)
+        }
 
-            holder.comment_btn.setOnClickListener {
-                listener!!.onClickComments(currentItem.id, currentItem)
-            }
+        holder.comment_btn.setOnClickListener {
+            listener?.onClickComments(currentItem.id, currentItem)
+        }
 
-            holder.board_textview.setOnClickListener {
-                listener!!.onBoardClick(currentItem.posted_to_board_id, currentItem.posted_to_board)
-            }
+        holder.board_textview.setOnClickListener {
+            listener?.onBoardClick(currentItem.posted_to_board_id, currentItem.posted_to_board)
+        }
 
-            holder.username_textview.setOnClickListener {
-                listener!!.onUserClick(currentItem.author_id)
-            }
+        holder.username_textview.setOnClickListener {
+            listener?.onUserClick(currentItem.author_id)
+        }
 
-            holder.relativeLayout.setOnClickListener {
-                listener!!.onPostClick(currentItem.id, currentItem)
-            }
+        holder.relativeLayout.setOnClickListener {
+            listener?.onPostClick(currentItem.id, currentItem)
         }
     }
 

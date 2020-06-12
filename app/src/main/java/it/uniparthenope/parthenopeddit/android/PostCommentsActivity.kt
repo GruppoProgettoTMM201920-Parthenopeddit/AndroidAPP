@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.LoginRequiredActivity
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.android.adapters.CommentAdapter
+import it.uniparthenope.parthenopeddit.android.adapters.CommentRecursiveAdapter
 import it.uniparthenope.parthenopeddit.api.requests.CommentsRequests
 import it.uniparthenope.parthenopeddit.api.requests.PostsRequests
 import it.uniparthenope.parthenopeddit.model.Comment
@@ -25,10 +25,10 @@ import it.uniparthenope.parthenopeddit.util.toObject
 import kotlinx.android.synthetic.main.activity_post_comments.*
 import kotlinx.android.synthetic.main.cardview_post.*
 
-class PostCommentsActivity : LoginRequiredActivity(), CommentAdapter.CommentItemClickListeners {
+class PostCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter.CommentItemClickListeners {
 
     private lateinit var post:Post
-    private lateinit var adapter: CommentAdapter
+    private lateinit var adapter: CommentRecursiveAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +50,7 @@ class PostCommentsActivity : LoginRequiredActivity(), CommentAdapter.CommentItem
             setPost(deserializedPost)
         }
 
-        adapter = CommentAdapter(this,this)
+        adapter = CommentRecursiveAdapter(this,this)
 
         PostsRequests(this, app.auth).getPostWithComments(id_post,
             {

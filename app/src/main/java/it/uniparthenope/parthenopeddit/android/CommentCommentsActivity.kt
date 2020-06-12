@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.LoginRequiredActivity
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.android.adapters.CommentAdapter
+import it.uniparthenope.parthenopeddit.android.adapters.CommentRecursiveAdapter
 import it.uniparthenope.parthenopeddit.api.requests.CommentsRequests
 import it.uniparthenope.parthenopeddit.model.Comment
 import it.uniparthenope.parthenopeddit.model.LikeDislikeScore
@@ -30,10 +30,10 @@ import kotlinx.android.synthetic.main.cardview_post.upvote_btn
 import kotlinx.android.synthetic.main.cardview_post.upvote_textview
 import kotlinx.android.synthetic.main.cardview_post.username_textview
 
-class CommentCommentsActivity : LoginRequiredActivity(), CommentAdapter.CommentItemClickListeners {
+class CommentCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter.CommentItemClickListeners {
 
     private lateinit var comment:Comment
-    private lateinit var adapter: CommentAdapter
+    private lateinit var adapter: CommentRecursiveAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +55,7 @@ class CommentCommentsActivity : LoginRequiredActivity(), CommentAdapter.CommentI
             setComment(deserializedComment)
         }
 
-        adapter = CommentAdapter(this,this)
+        adapter = CommentRecursiveAdapter(this,this)
 
         CommentsRequests(this, app.auth).getCommentWithComments(id_comment,
             {

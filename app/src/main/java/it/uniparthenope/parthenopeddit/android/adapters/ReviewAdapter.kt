@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.R
+import it.uniparthenope.parthenopeddit.model.Comment
 import it.uniparthenope.parthenopeddit.model.Course
 import it.uniparthenope.parthenopeddit.model.Review
 import it.uniparthenope.parthenopeddit.util.DateParser
@@ -22,13 +23,26 @@ import kotlinx.android.synthetic.main.cardview_review.view.*
 class ReviewAdapter() : RecyclerView.Adapter<ReviewAdapter.CourseReviewViewHolder>() {
 
     private val reviewList: ArrayList<Review> = ArrayList()
-    private var listener:CourseReviewItemClickListeners? = null
+    private var listener: ReviewItemClickListeners? = null
 
-    fun setItemClickListener( listener:CourseReviewItemClickListeners? ) {
+    fun setItemClickListener( listener:ReviewItemClickListeners? ) {
         this.listener = listener
     }
 
-    interface CourseReviewItemClickListeners {
+    fun aggiungiReview(reviewItemList: List<Review>) {
+        val initialSize = reviewList.size
+        this.reviewList.addAll(reviewItemList)
+        val updatedSize = reviewList.size
+        notifyItemRangeInserted(initialSize, updatedSize)
+    }
+
+    fun setCommentList(reviewItemList: List<Review>) {
+        this.reviewList.clear()
+        this.reviewList.addAll(reviewItemList)
+        notifyDataSetChanged()
+    }
+
+    interface ReviewItemClickListeners {
         fun onClickLike(id_review:Int, upvote_textview: TextView, downvote_textview: TextView)
         fun onClickDislike(id_review:Int, upvote_textview: TextView, downvote_textview: TextView)
         fun onClickCourse(id_course: Int, course: Course)
@@ -60,35 +74,32 @@ class ReviewAdapter() : RecyclerView.Adapter<ReviewAdapter.CourseReviewViewHolde
 
         holder.group_textview2.text = currentItem.reviewed_course?.name?:""
 
-        if( listener != null ) {
-            holder.upvote_btn.setOnClickListener {
-                listener!!.onClickLike(currentItem.id, holder.upvote_textview, holder.downvote_textview)
-            }
+        holder.upvote_btn.setOnClickListener {
+            listener?.onClickLike(currentItem.id, holder.upvote_textview, holder.downvote_textview)
+        }
 
-            holder.downvote_btn.setOnClickListener {
-                listener!!.onClickLike(currentItem.id, holder.upvote_textview, holder.downvote_textview)
-            }
+        holder.downvote_btn.setOnClickListener {
+            listener?.onClickLike(currentItem.id, holder.upvote_textview, holder.downvote_textview)
+        }
 
-            holder.review_relativelayout.setOnClickListener {
-                listener!!.onReviewClick( currentItem.id, currentItem )
-            }
+        holder.review_relativelayout.setOnClickListener {
+            listener?.onReviewClick( currentItem.id, currentItem )
+        }
 
-            holder.comments_btn.setOnClickListener {
-                listener!!.onClickComments( currentItem.id, currentItem )
-            }
+        holder.comments_btn.setOnClickListener {
+            listener?.onClickComments( currentItem.id, currentItem )
+        }
 
-            holder.group_textview2.setOnClickListener {
-                listener!!.onClickCourse( currentItem.reviewed_course_id, currentItem.reviewed_course!! )
-            }
+        holder.group_textview2.setOnClickListener {
+            listener?.onClickCourse( currentItem.reviewed_course_id, currentItem.reviewed_course!! )
+        }
+
+        holder.username_textview.setOnClickListener {
+            listener?.onUserClick(currentItem.author_id)
         }
     }
 
     override fun getItemCount() = reviewList.size
-
-    fun aggiungiReview(reviewList: List<Review>) {
-        this.reviewList.addAll(reviewList)
-        notifyDataSetChanged()
-    }
 
     class CourseReviewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {     //SINGOLO ELEMENTO DELLA LISTA
         val imageView: ImageView = itemView.image_view

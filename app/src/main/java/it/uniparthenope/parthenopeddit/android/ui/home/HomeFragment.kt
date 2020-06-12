@@ -90,9 +90,11 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
             page = 1,
             perPage = per_page,
             onSuccess = {
-                adapter.aggiungiPost( it )
-                if(it.isNotEmpty()) transactionStartDateTime = it[0].timestamp
-                recycler_view.addOnScrollListener(infiniteScroller)
+                if(it.isNotEmpty()) {
+                    adapter.aggiungiPost( it )
+                    transactionStartDateTime = it[0].timestamp
+                    recycler_view.addOnScrollListener(infiniteScroller)
+                }
             },
             onEndOfContent = {
                 //nothing. list is empty.

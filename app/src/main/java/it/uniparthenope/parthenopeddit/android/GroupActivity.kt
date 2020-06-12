@@ -151,7 +151,11 @@ class GroupActivity : LoginRequiredActivity() {
             per_page = per_page,
             page = 1,
             onSuccess = {
-                postAdapter.aggiungiPost(it)
+                if(it.isNotEmpty()) {
+                    postAdapter.aggiungiPost( it )
+                    transactionStartDateTime = it[0].timestamp
+                    recycler_view.addOnScrollListener(infiniteScroller)
+                }
             },
             onEndOfContent = {
                 //nothing

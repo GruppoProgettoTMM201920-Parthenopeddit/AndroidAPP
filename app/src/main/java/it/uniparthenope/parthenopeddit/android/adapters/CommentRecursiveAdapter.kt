@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.model.Comment
-import it.uniparthenope.parthenopeddit.model.Post
 import it.uniparthenope.parthenopeddit.util.DateParser
 import kotlinx.android.synthetic.main.cardview_commento.view.*
 import kotlinx.android.synthetic.main.cardview_post.view.comments_btn
@@ -22,26 +21,17 @@ import kotlinx.android.synthetic.main.cardview_post.view.upvote_btn
 import kotlinx.android.synthetic.main.cardview_post.view.upvote_textview
 import kotlinx.android.synthetic.main.cardview_post.view.username_textview
 
-class CommentAdapter() : RecyclerView.Adapter<CommentAdapter.CommentViewHolder>() {
+class CommentRecursiveAdapter(private val context: Context) : RecyclerView.Adapter<CommentRecursiveAdapter.CommentViewHolder>() {
 
-    private val commentList: ArrayList<Comment> = ArrayList()
-    private var listener: CommentItemClickListeners? = null
+    private var listener:CommentItemClickListeners? = null
+    private var commentItemsList: ArrayList<Comment> = arrayListOf()
 
-    fun setItemClickListener( listener:CommentItemClickListeners? ) {
+    constructor(context: Context, listener:CommentItemClickListeners?) : this(context) {
         this.listener = listener
     }
 
-    fun aggiungiCommenti(commentItemList: List<Comment>) {
-        val initialSize = commentList.size
-        this.commentList.addAll(commentItemList)
-        val updatedSize = commentList.size
-        notifyItemRangeInserted(initialSize, updatedSize)
-    }
-
-    fun setCommentList(commentItemList: List<Comment>) {
-        this.commentList.clear()
-        this.commentList.addAll(commentItemList)
-        notifyDataSetChanged()
+    constructor(context: Context, commentItemsList: ArrayList<Comment>, listener:CommentItemClickListeners?) : this(context, listener) {
+        this.commentItemsList = commentItemsList
     }
 
     interface CommentItemClickListeners {
@@ -49,6 +39,15 @@ class CommentAdapter() : RecyclerView.Adapter<CommentAdapter.CommentViewHolder>(
         fun onClickDislike(id_Commento:Int, upvote_textview: TextView, downvote_textview: TextView)
         fun onClickComments(id_Commento:Int, comment: Comment)
         fun onUserClick(id_user: String)
+    }
+
+    fun setItemClickListener( listener:CommentItemClickListeners? ) {
+        this.listener = listener
+    }
+
+    fun aggiungiCommenti(commentsList: List<Comment>) {
+        this.commentItemsList.addAll(commentsList)
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {
@@ -60,7 +59,7 @@ class CommentAdapter() : RecyclerView.Adapter<CommentAdapter.CommentViewHolder>(
     }
 
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
-        val currentItem = commentList[position]
+        val currentItem = commentItemsList[position]
 
         holder.imageView.setImageResource(R.drawable.default_user_image)
         holder.username_textview.text = currentItem.author?.display_name?:currentItem.author_id
@@ -86,11 +85,67 @@ class CommentAdapter() : RecyclerView.Adapter<CommentAdapter.CommentViewHolder>(
             listener?.onUserClick(currentItem.author_id)
         }
 
-        holder.commentsLayoutContainer.visibility = View.GONE
-        holder.comments_visible = false
+        holder.comment_relativelayout.setOnLongClickListener {
+            if(!holder.collapsed) {
+                holder.posttext_textview.visibility = View.GONE
+                holder.comments_textview.visibility = View.GONE
+                holder.comment_btn.visibility = View.GONE
+                holder.upvote_textview.visibility = View.GONE
+                holder.downvote_textview.visibility = View.GONE
+                holder.upvote_btn.visibility = View.GONE
+                holder.downvote_btn.visibility = View.GONE
+
+                holder.commentsLayoutContainer.visibility = View.GONE
+
+                holder.collapsed = true
+            } else {
+                holder.posttext_textview.visibility = View.VISIBLE
+                holder.comments_textview.visibility = View.VISIBLE
+                holder.comment_btn.visibility = View.VISIBLE
+                holder.upvote_textview.visibility = View.VISIBLE
+                holder.downvote_textview.visibility = View.VISIBLE
+                holder.upvote_btn.visibility = View.VISIBLE
+                holder.downvote_btn.visibility = View.VISIBLE
+
+                if(holder.comments_visible)
+                    holder.commentsLayoutContainer.visibility = View.VISIBLE
+                else
+                    holder.commentsLayoutContainer.visibility = View.GONE
+
+                holder.collapsed = false
+            }
+            return@setOnLongClickListener true
+        }
+
+        Log.d("DEBUG","settando la lista di commenti del commento ${currentItem.id}")
+        Log.d("DEBUG","comments num : ${currentItem.comments_num?:0}")
+
+        if( currentItem.comments?.size?:0 > 0 ) {
+            Log.d("DEBUG","Creo l'adapter")
+            val commentAdapter = CommentRecursiveAdapter(context, currentItem.comments!!, listener)
+
+
+            Log.d("DEBUG","Imposto la recyclerview")
+            holder.commentsListContainer.adapter = commentAdapter
+            holder.commentsListContainer.layoutManager = LinearLayoutManager(context)
+            holder.commentsListContainer.setHasFixedSize(true)
+
+            holder.commentsLayoutContainer.visibility = View.VISIBLE
+            holder.comments_visible = true
+        } else {
+
+            Log.d("DEBUG","no comments to show")
+            holder.commentsLayoutContainer.visibility = View.GONE
+            holder.comments_visible = false
+        }
     }
 
-    override fun getItemCount() = commentList.size
+    override fun getItemCount() = commentItemsList.size
+
+    fun aggiornaLista(commentItemList: ArrayList<Comment>) {
+        commentItemsList = commentItemList
+        notifyDataSetChanged()
+    }
 
     class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {     //SINGOLO ELEMENTO DELLA LISTA
         val imageView: ImageView = itemView.image_view
