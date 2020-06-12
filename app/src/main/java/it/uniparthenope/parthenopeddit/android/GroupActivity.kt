@@ -208,52 +208,50 @@ class GroupActivity : LoginRequiredActivity() {
         }
 
         follow_button.setOnClickListener {
-                val builder = AlertDialog.Builder(this)
-                builder.setMessage("Sei sicuro di voler uscire?")
-                    .setPositiveButton("Esci",
-                        DialogInterface.OnClickListener { dialog, id ->
-
-                            GroupsRequests(this, app.auth).leaveGroup(
-                                id_group, {
-                                    Toast.makeText(
-                                        this,
-                                        "Hai lasciato il gruppo ${group.name}",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-                                    val intent = Intent(this, HomeActivity::class.java)
-                                    startActivity(intent)
-                                    finish()
-                                }, {
-                                    Toast.makeText(
-                                        this,
-                                        "Eri l'ultimo admin. Hai abbandonato la nave, sei peggio di Schettino",
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                    val intent = Intent(this, HomeActivity::class.java)
-                                    startActivity(intent)
-                                    finish()
-                                }, {
-                                    Toast.makeText(
-                                        this,
-                                        "Eri l'ultimo utente. Il gruppo ${group.name} è stato eliminato",
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                    val intent = Intent(this, HomeActivity::class.java)
-                                    startActivity(intent)
-                                    finish()
-                                }, {
-                                    Toast.makeText(this, "Errore : ${it}", Toast.LENGTH_LONG).show()
-                                }
-                            )
-                        })
-                    .setNegativeButton("Annulla",
-                        DialogInterface.OnClickListener { dialog, id ->
-                        })
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage("Sei sicuro di voler uscire?")
+                .setPositiveButton("Esci",
+                    DialogInterface.OnClickListener { dialog, id ->
+                        GroupsRequests(this, app.auth).leaveGroup(
+                            id_group, {
+                                Toast.makeText(
+                                    this,
+                                    "Hai lasciato il gruppo ${group.name}",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                val intent = Intent(this, HomeActivity::class.java)
+                                startActivity(intent)
+                                finish()
+                            }, {
+                                Toast.makeText(
+                                    this,
+                                    "Eri l'ultimo admin. Hai abbandonato la nave, sei peggio di Schettino",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                val intent = Intent(this, HomeActivity::class.java)
+                                startActivity(intent)
+                                finish()
+                            }, {
+                                Toast.makeText(
+                                    this,
+                                    "Eri l'ultimo utente. Il gruppo ${group.name} è stato eliminato",
+                                    Toast.LENGTH_LONG
+                                ).show()
+                                val intent = Intent(this, HomeActivity::class.java)
+                                startActivity(intent)
+                                finish()
+                            }, {
+                                Toast.makeText(this, "Errore : ${it}", Toast.LENGTH_LONG).show()
+                            }
+                        )
+                    })
+                .setNegativeButton("Annulla",
+                    DialogInterface.OnClickListener { dialog, id ->
+                    })
 
                 // Create the AlertDialog object and return it
                 builder.create()
                 builder.show()
-
             }
         }
 
