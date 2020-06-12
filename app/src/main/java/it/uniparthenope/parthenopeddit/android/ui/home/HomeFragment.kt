@@ -61,17 +61,10 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         recycler_view.layoutManager = layoutManager
 
         updater = object : InfiniteScroller.Updater {
-            override fun updateData(totalItemCount: Int) {
-                if( totalItemCount != 0 && (totalItemCount%per_page) != 0 ) {
-                    infiniteScroller.theresMore = false
-                    return
-                }
-
-                infiniteScroller.currentPage += 1
-
+            override fun updateData(pageToLoad: Int, pageSize: Int) {
                 UserRequests(requireContext(), auth).getUserFeed(
-                    page = infiniteScroller.currentPage,
-                    perPage = per_page,
+                    page = pageToLoad,
+                    perPage = pageSize,
                     onSuccess = {
                         adapter.aggiungiPost(it)
                     },
@@ -85,7 +78,7 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
             }
         }
         infiniteScroller = InfiniteScroller(
-            layoutManager, updater
+            layoutManager, updater, per_page
         )
 
         auth = (activity as BasicActivity).app.auth

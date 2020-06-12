@@ -6,8 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 class InfiniteScroller(
     private val layoutManager: LinearLayoutManager,
     private val updater: Updater,
-    val page_size: Int,
+    val pageSize: Int,
     val visibleThreshold: Int = 10
+
 ) : RecyclerView.OnScrollListener() {
     var previousTotal = 0
     var loading = true
@@ -18,7 +19,7 @@ class InfiniteScroller(
     var currentPage = 1
 
     interface Updater {
-        fun updateData(totalItemCount: Int)
+        fun updateData(pageToLoad: Int, pageSize: Int)
     }
 
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -36,7 +37,13 @@ class InfiniteScroller(
         }
 
         if (!loading && theresMore && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
-            updater.updateData(totalItemCount)
+            if( totalItemCount != 0 && (totalItemCount%pageSize) != 0 ) {
+                theresMore = false
+                return
+            }
+
+            currentPage += 1
+            updater.updateData(currentPage, pageSize)
             loading = true
         }
     }
