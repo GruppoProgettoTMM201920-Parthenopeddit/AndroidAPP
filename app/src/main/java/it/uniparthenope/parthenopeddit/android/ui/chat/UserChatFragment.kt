@@ -95,7 +95,7 @@ class UserChatFragment(private val user: User) : Fragment() {
 class ChatFromItem(private val message: Message): Item<GroupieViewHolder>() {
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.itemView.message_textview.text = message.body
-        viewHolder.itemView.date_textview.text = DateParser.parse(message.timestamp)
+        viewHolder.itemView.date_textview.text = DateParser.prettyParse(message.timestamp)
 
     }
 
@@ -107,7 +107,7 @@ class ChatFromItem(private val message: Message): Item<GroupieViewHolder>() {
 class ChatToItem(private val message: Message): Item<GroupieViewHolder>() {
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         viewHolder.itemView.message_textview.text = message.body
-        viewHolder.itemView.date_textview.text = DateParser.parse(message.timestamp)
+        viewHolder.itemView.date_textview.text = DateParser.prettyParse(message.timestamp)
 
     }
 

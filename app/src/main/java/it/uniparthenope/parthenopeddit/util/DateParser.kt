@@ -23,8 +23,12 @@ class DateParser {
             temp.timeZone = tz;
             temp
         }
-
-        fun parse(timestamp: String): String {
+//
+        //fun getNow(): String {
+//
+        //}
+//
+        fun prettyParse(timestamp: String): String {
             lateinit var res: String
             try {
                 res = DateUtils.getRelativeTimeSpanString(sdf.parse(timestamp).time, cal.timeInMillis,

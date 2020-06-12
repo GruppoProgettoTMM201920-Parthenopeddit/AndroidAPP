@@ -124,6 +124,7 @@ class UserRequests(private val ctx: Context, private val auth: AuthManager) {
         page: Int = 1,
         perPage: Int = 20,
         onSuccess: (postList: ArrayList<Post>) -> Unit,
+        onEndOfContent: () -> Unit,
         onFail: (error: String) -> Unit
     ) {
         ApiClient.getInstance(ctx).performRequest(
@@ -145,6 +146,8 @@ class UserRequests(private val ctx: Context, private val auth: AuthManager) {
                         Log.d(TAG, resultJson)
                         return@performRequest
                     }
+                } else if( resultCode == 470 ) {
+                    onEndOfContent()
                 } else {
                     onFail("Error : $resultCode")
                 }

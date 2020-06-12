@@ -340,7 +340,7 @@ class BackdropFragment(): SwipeItemTouchListener, Fragment(),
     fun updateGroupData(group: Group){
         this.group = group
         backdrop_group_name_textview.text = group.name
-        creation_date_textview.text = DateParser.parse(group.created_on)
+        creation_date_textview.text = DateParser.prettyParse(group.created_on)
     }
 
     fun updateMembersData(members: ArrayList<GroupMember>){

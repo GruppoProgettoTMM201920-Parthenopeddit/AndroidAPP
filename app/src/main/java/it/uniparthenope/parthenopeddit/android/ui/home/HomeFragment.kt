@@ -16,6 +16,7 @@ import com.mancj.materialsearchbar.MaterialSearchBar
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.*
+import it.uniparthenope.parthenopeddit.android.adapters.InfiniteScroller
 import it.uniparthenope.parthenopeddit.android.adapters.PostAdapter
 import it.uniparthenope.parthenopeddit.android.ui.newGroup.NewGroupActivity
 import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
@@ -31,7 +32,15 @@ import it.uniparthenope.parthenopeddit.util.toGson
 class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
     private lateinit var auth : AuthManager
+
     private lateinit var recycler_view: RecyclerView
+    private lateinit var adapter: PostAdapter
+    private lateinit var layoutManager: LinearLayoutManager
+    private lateinit var infiniteScroller: InfiniteScroller
+    private lateinit var updater: InfiniteScroller.Updater
+
+    private val per_page = 20
+
     var isOpen = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -44,18 +53,54 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
 
         recycler_view = root.findViewById(R.id.recycler_view) as RecyclerView
 
-        val postAdapter = PostAdapter()
-        postAdapter.setItemClickListener(this)
-        recycler_view.adapter = postAdapter
-        recycler_view.layoutManager = LinearLayoutManager(requireContext())
-        recycler_view.setHasFixedSize(true)
+        adapter = PostAdapter()
+        adapter.setItemClickListener(this)
+        recycler_view.adapter = adapter
+
+        layoutManager = LinearLayoutManager(requireContext())
+        recycler_view.layoutManager = layoutManager
+
+        updater = object : InfiniteScroller.Updater {
+            override fun updateData(totalItemCount: Int) {
+                if( totalItemCount != 0 && (totalItemCount%per_page) != 0 ) {
+                    infiniteScroller.theresMore = false
+                    return
+                }
+
+                infiniteScroller.currentPage += 1
+
+                UserRequests(requireContext(), auth).getUserFeed(
+                    page = infiniteScroller.currentPage,
+                    perPage = per_page,
+                    onSuccess = {
+                        adapter.aggiungiPost(it)
+                    },
+                    onEndOfContent = {
+                        infiniteScroller.theresMore = false
+                    },
+                    onFail = {
+                        Toast.makeText(requireContext(), "ERROR IN FETCHING NEW POSTS", Toast.LENGTH_SHORT).show()
+                    }
+                )
+            }
+        }
+        infiniteScroller = InfiniteScroller(
+            layoutManager, updater
+        )
 
         auth = (activity as BasicActivity).app.auth
 
         UserRequests(requireContext(), auth).getUserFeed(
-            1, 20, {it: ArrayList<Post> ->
-                postAdapter.aggiungiPost( it )
-            }, { it: String ->
+            page = 1,
+            perPage = per_page,
+            onSuccess = {
+                adapter.aggiungiPost( it )
+                recycler_view.addOnScrollListener(infiniteScroller)
+            },
+            onEndOfContent = {
+                //nothing. list is empty.
+            },
+            onFail = { it: String ->
                 Toast.makeText(requireContext(),it, Toast.LENGTH_LONG).show()
             }
         )
@@ -92,7 +137,6 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         fab.setOnClickListener{
             if(isOpen){
                 fab.startAnimation(rotateClockwise)
-
                 fab_new_post.animate().translationY(200F)
                 fab_new_group.animate().translationY(400F)
                 fab_new_post_textview.animate().translationY(200F)
@@ -101,13 +145,9 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
                 fab_new_group_textview.animate().alpha(0F)
                 fab_new_post_textview.visibility = View.GONE
                 fab_new_group_textview.visibility = View.GONE
-
-
-
                 isOpen = false
             } else{
                 fab.startAnimation(rotateAnticlockwise)
-
                 fab_new_post.animate().translationY(-200F)
                 fab_new_group.animate().translationY(-400F)
                 fab_new_post_textview.animate().translationY(-200F)

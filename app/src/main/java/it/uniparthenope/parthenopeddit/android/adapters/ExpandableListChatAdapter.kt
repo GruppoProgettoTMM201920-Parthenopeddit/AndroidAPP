@@ -1,7 +1,6 @@
 package it.uniparthenope.parthenopeddit.android.adapters
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,11 +11,9 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.google.android.material.snackbar.Snackbar
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.adapters.ExpandableUserListAdapter.Companion.GROUP_CONTENT
 import it.uniparthenope.parthenopeddit.android.ui.messages.MessagesFragment
@@ -219,7 +216,7 @@ class ExpandableListChatAdapter (private val context: Context, private val glide
             .into(holder.thumbnail)
         holder.username.text = item.username
         holder.latest_message.text = item.latest_message
-        holder.date.text = DateParser.parse(item.date!!)
+        holder.date.text = DateParser.prettyParse(item.date!!)
         holder.container.setOnClickListener {
             listener!!.onChatClick(item.user!!)
         }
@@ -235,7 +232,7 @@ class ExpandableListChatAdapter (private val context: Context, private val glide
         holder.groupname.text = item.username
         holder.group_user_latest.text = item.group_user_latest + ":"
         holder.latest_message.text = item.latest_message
-        holder.date.text = DateParser.parse(item.date!!)
+        holder.date.text = DateParser.prettyParse(item.date!!)
     }
 
     /**

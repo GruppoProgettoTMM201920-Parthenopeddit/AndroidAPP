@@ -1,11 +1,8 @@
 package it.uniparthenope.parthenopeddit.android
 
 import android.os.Bundle
-import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.LoginRequiredActivity
 import it.uniparthenope.parthenopeddit.R
-import it.uniparthenope.parthenopeddit.android.ui.chat.ChatFromItem
-import it.uniparthenope.parthenopeddit.android.ui.chat.ChatToItem
 import it.uniparthenope.parthenopeddit.android.ui.chat.UserChatFragment
 import it.uniparthenope.parthenopeddit.api.requests.MessagesRequests
 import it.uniparthenope.parthenopeddit.model.User
@@ -29,7 +26,7 @@ class ChatActivity() : LoginRequiredActivity() {
         username_chat_textview.text = user?.display_name?:user?.id
 
         MessagesRequests(this, app.auth).getChatLogWithUser(user!!.id,{ it: UsersChat ->
-            last_login_chat_textview.text = DateParser.parse(it.other_user_chat!!.last_opened_on)
+            last_login_chat_textview.text = DateParser.prettyParse(it.other_user_chat!!.last_opened_on)
         },{
 
         })

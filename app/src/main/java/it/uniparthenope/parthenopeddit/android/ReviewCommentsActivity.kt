@@ -114,7 +114,7 @@ class ReviewCommentsActivity : LoginRequiredActivity(), CommentAdapter.CommentIt
 
         image_view.setImageResource(R.drawable.default_user_image)
         username_textview.text = review.author?.display_name?:review.author_id
-        timestamp_textview.text = DateParser.parse(review.timestamp)
+        timestamp_textview.text = DateParser.prettyParse(review.timestamp)
         posttext_textview.text = review.body
         upvote_textview.text = review.likes_num.toString()
         downvote_textview.text = review.dislikes_num.toString()

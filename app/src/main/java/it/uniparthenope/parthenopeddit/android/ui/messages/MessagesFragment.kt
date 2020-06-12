@@ -3,7 +3,6 @@ package it.uniparthenope.parthenopeddit.android.ui.messages
 import android.content.Intent
 import android.graphics.Canvas
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,7 +26,6 @@ import it.uniparthenope.parthenopeddit.android.NewChatActivity
 import it.uniparthenope.parthenopeddit.android.adapters.ChatListAdapter
 import it.uniparthenope.parthenopeddit.android.adapters.ExpandableListChatAdapter
 import it.uniparthenope.parthenopeddit.android.adapters.ExpandableUserListAdapter
-import it.uniparthenope.parthenopeddit.api.MockApiData
 import it.uniparthenope.parthenopeddit.api.requests.MessagesRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.GroupChat
@@ -160,7 +158,7 @@ class MessagesFragment : Fragment(), ChatListAdapter.ChatListItemClickListeners,
                     .thumbnailUrl(generateRandomImageUrl(MAX_IMAGE_SIZE))
                     .username(username)
                     .latest_message(userchat.last_message?.body?:"")
-                    .date(DateParser.parse(userchat.other_user_chat!!.last_opened_on))
+                    .date(DateParser.prettyParse(userchat.other_user_chat!!.last_opened_on))
                     .user(user)
                     .build()
 

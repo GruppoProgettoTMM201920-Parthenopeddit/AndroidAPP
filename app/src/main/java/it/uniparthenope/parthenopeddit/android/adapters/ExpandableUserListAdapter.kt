@@ -2,7 +2,6 @@ package it.uniparthenope.parthenopeddit.android.adapters
 
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -221,7 +220,7 @@ class ExpandableUserListAdapter(private val context: Context, private val glide:
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(holder.thumbnail)
         holder.username.text = item.username
-        holder.joindate.text = "${item.dateMessage} ${DateParser.parse(item.date!!)}"
+        holder.joindate.text = "${item.dateMessage} ${DateParser.prettyParse(item.date!!)}"
         holder.container.setOnClickListener {
             item.username?.let { userId -> listener.onUserClicked(userId) }
         }

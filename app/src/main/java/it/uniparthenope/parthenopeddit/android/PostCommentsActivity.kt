@@ -110,7 +110,7 @@ class PostCommentsActivity : LoginRequiredActivity(), CommentAdapter.CommentItem
         username_textview.text = post.author?.display_name?:post.author_id
         title_textview.text = post.title
         group_textview.text = post.posted_to_board?.name?:"Generale"
-        timestamp_textview.text = DateParser.parse(post.timestamp)
+        timestamp_textview.text = DateParser.prettyParse(post.timestamp)
         posttext_textview.text = post.body
         upvote_textview.text = post.likes_num.toString()
         downvote_textview.text = post.dislikes_num.toString()
