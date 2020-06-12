@@ -455,7 +455,9 @@ class GroupsRequests(private val ctx: Context, private val auth: AuthManager) {
         group_id: Int,
         per_page: Int?,
         page: Int?,
+        transactionStartDateTime: String? = null,
         onSuccess: (posts: ArrayList<Post>) -> Unit,
+        onEndOfContent: () -> Unit,
         onFail: (error: String) -> Unit
     ) {
         ApiClient(ctx).performRequest(
@@ -471,11 +473,24 @@ class GroupsRequests(private val ctx: Context, private val auth: AuthManager) {
                 override val params: HashMap<String, String>
                     get() = getParamsMap()
                 override val headers: HashMap<String, String>
-                    get() = getHeadersMap(auth.token!!)
+                    get() {
+                        val headers = getHeadersMap(auth.token!!)
+                        if(transactionStartDateTime != null)
+                            headers["transaction_start_datetime"] = transactionStartDateTime
+                        return headers
+                    }
 
             }, { resultCode: Int, resultJson: String ->
                 if( resultCode == 200 ) {
-                    onSuccess(JSONArray(resultJson).toArrayList())
+                    try {
+                        onSuccess(JSONArray(resultJson).toArrayList())
+                    } catch (e: Exception) {
+                        onFail("Could not parse request result as posts data")
+                        Log.d(TAG, resultJson)
+                        return@performRequest
+                    }
+                } else if( resultCode == 470 ) {
+                    onEndOfContent()
                 } else {
                     onFail("Error : $resultCode")
                 }

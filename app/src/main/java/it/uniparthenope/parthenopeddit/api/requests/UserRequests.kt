@@ -167,7 +167,9 @@ class UserRequests(private val ctx: Context, private val auth: AuthManager) {
         user_id: String = auth.username!!,
         page: Int = 1,
         perPage: Int = 20,
+        transactionStartDateTime: String? = null,
         onSuccess: (postList: ArrayList<Comment>) -> Unit,
+        onEndOfContent: () -> Unit,
         onFail: (error: String) -> Unit
     ) {
         ApiClient.getInstance(ctx).performRequest(
@@ -179,7 +181,12 @@ class UserRequests(private val ctx: Context, private val auth: AuthManager) {
                 override val params: HashMap<String, String>
                     get() = getParamsMap()
                 override val headers: HashMap<String, String>
-                    get() = getHeadersMap(auth.token!!)
+                    get() {
+                        val headers = getHeadersMap(auth.token!!)
+                        if(transactionStartDateTime != null)
+                            headers["transaction_start_datetime"] = transactionStartDateTime
+                        return headers
+                    }
             }, { resultCode: Int, resultJson: String ->
                 if( resultCode == 200 ) {
                     try {
@@ -189,6 +196,8 @@ class UserRequests(private val ctx: Context, private val auth: AuthManager) {
                         Log.d(TAG, resultJson)
                         return@performRequest
                     }
+                } else if( resultCode == 470 ) {
+                    onEndOfContent()
                 } else {
                     onFail("Error : $resultCode")
                 }
@@ -202,7 +211,9 @@ class UserRequests(private val ctx: Context, private val auth: AuthManager) {
         user_id: String = auth.username!!,
         page: Int = 1,
         perPage: Int = 20,
+        transactionStartDateTime: String? = null,
         onSuccess: (postList: ArrayList<Post>) -> Unit,
+        onEndOfContent: () -> Unit,
         onFail: (error: String) -> Unit
     ) {
         ApiClient.getInstance(ctx).performRequest(
@@ -214,7 +225,12 @@ class UserRequests(private val ctx: Context, private val auth: AuthManager) {
                 override val params: HashMap<String, String>
                     get() = getParamsMap()
                 override val headers: HashMap<String, String>
-                    get() = getHeadersMap(auth.token!!)
+                    get() {
+                        val headers = getHeadersMap(auth.token!!)
+                        if(transactionStartDateTime != null)
+                            headers["transaction_start_datetime"] = transactionStartDateTime
+                        return headers
+                    }
             }, { resultCode: Int, resultJson: String ->
                 if( resultCode == 200 ) {
                     try {
@@ -224,6 +240,8 @@ class UserRequests(private val ctx: Context, private val auth: AuthManager) {
                         Log.d(TAG, resultJson)
                         return@performRequest
                     }
+                } else if( resultCode == 470 ) {
+                    onEndOfContent()
                 } else {
                     onFail("Error : $resultCode")
                 }
@@ -237,7 +255,9 @@ class UserRequests(private val ctx: Context, private val auth: AuthManager) {
         user_id: String = auth.username!!,
         page: Int = 1,
         perPage: Int = 20,
+        transactionStartDateTime: String? = null,
         onSuccess: (postList: ArrayList<Review>) -> Unit,
+        onEndOfContent: () -> Unit,
         onFail: (error: String) -> Unit
     ) {
         ApiClient.getInstance(ctx).performRequest(
@@ -249,7 +269,12 @@ class UserRequests(private val ctx: Context, private val auth: AuthManager) {
                 override val params: HashMap<String, String>
                     get() = getParamsMap()
                 override val headers: HashMap<String, String>
-                    get() = getHeadersMap(auth.token!!)
+                    get() {
+                        val headers = getHeadersMap(auth.token!!)
+                        if(transactionStartDateTime != null)
+                            headers["transaction_start_datetime"] = transactionStartDateTime
+                        return headers
+                    }
             }, { resultCode: Int, resultJson: String ->
                 if( resultCode == 200 ) {
                     try {
@@ -259,6 +284,8 @@ class UserRequests(private val ctx: Context, private val auth: AuthManager) {
                         Log.d(TAG, resultJson)
                         return@performRequest
                     }
+                } else if( resultCode == 470 ) {
+                    onEndOfContent()
                 } else {
                     onFail("Error : $resultCode")
                 }

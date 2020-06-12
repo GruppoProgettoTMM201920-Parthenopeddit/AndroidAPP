@@ -204,7 +204,9 @@ class CoursesRequests(private val ctx: Context, private val auth: AuthManager) {
         course_id: Int,
         page: Int = 1,
         perPage: Int = 20,
+        transactionStartDateTime: String? = null,
         onSuccess: (posts: ArrayList<Post>) -> Unit,
+        onEndOfContent: () -> Unit,
         onFail: (error: String) -> Unit
     ) {
         ApiClient(ctx).performRequest(
@@ -216,7 +218,12 @@ class CoursesRequests(private val ctx: Context, private val auth: AuthManager) {
                 override val params: HashMap<String, String>
                     get() = getParamsMap()
                 override val headers: HashMap<String, String>
-                    get() = getHeadersMap(auth.token!!)
+                    get() {
+                        val headers = getHeadersMap(auth.token!!)
+                        if(transactionStartDateTime != null)
+                            headers["transaction_start_datetime"] = transactionStartDateTime
+                        return headers
+                    }
             }, { resultCode: Int, resultJson: String ->
                 if( resultCode == 200 ) {
                     try {
@@ -224,6 +231,8 @@ class CoursesRequests(private val ctx: Context, private val auth: AuthManager) {
                     } catch (e: Exception) {
                         return@performRequest
                     }
+                } else if( resultCode == 470 ) {
+                    onEndOfContent()
                 } else {
                     onFail("Error : $resultCode")
                 }
@@ -275,7 +284,9 @@ class CoursesRequests(private val ctx: Context, private val auth: AuthManager) {
         course_id: Int,
         page: Int = 1,
         perPage: Int = 20,
+        transactionStartDateTime: String? = null,
         onSuccess: (posts: ArrayList<Review>) -> Unit,
+        onEndOfContent: () -> Unit,
         onFail: (error: String) -> Unit
     ) {
         ApiClient(ctx).performRequest(
@@ -287,7 +298,12 @@ class CoursesRequests(private val ctx: Context, private val auth: AuthManager) {
                 override val params: HashMap<String, String>
                     get() = getParamsMap()
                 override val headers: HashMap<String, String>
-                    get() = getHeadersMap(auth.token!!)
+                    get() {
+                        val headers = getHeadersMap(auth.token!!)
+                        if(transactionStartDateTime != null)
+                            headers["transaction_start_datetime"] = transactionStartDateTime
+                        return headers
+                    }
             }, { resultCode: Int, resultJson: String ->
                 if( resultCode == 200 ) {
                     try {
@@ -295,6 +311,8 @@ class CoursesRequests(private val ctx: Context, private val auth: AuthManager) {
                     } catch (e: Exception) {
                         return@performRequest
                     }
+                } else if( resultCode == 470 ) {
+                    onEndOfContent()
                 } else {
                     onFail("Error : $resultCode")
                 }
