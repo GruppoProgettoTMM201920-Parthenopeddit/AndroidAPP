@@ -39,6 +39,8 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
     private lateinit var infiniteScroller: InfiniteScroller
     private lateinit var updater: InfiniteScroller.Updater
 
+    private lateinit var transactionStartDateTime: String
+
     private val per_page = 20
 
     var isOpen = false
@@ -65,6 +67,7 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
                 UserRequests(requireContext(), auth).getUserFeed(
                     page = pageToLoad,
                     perPage = pageSize,
+                    transactionStartDateTime = transactionStartDateTime,
                     onSuccess = {
                         adapter.aggiungiPost(it)
                     },
@@ -88,6 +91,7 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
             perPage = per_page,
             onSuccess = {
                 adapter.aggiungiPost( it )
+                if(it.isNotEmpty()) transactionStartDateTime = it[0].timestamp
                 recycler_view.addOnScrollListener(infiniteScroller)
             },
             onEndOfContent = {
