@@ -6,41 +6,30 @@ without requiring a registration.
 
 ## Getting Started
 
-Just download this repository and the "RESTplusAPI" in order to run the server-side.
+* Have a running instance of [Parthenopeddit API](https://github.com/GruppoProgettoTMM201920-Parthenopeddit/RESTPlusAPI)
+* Clone or download [this repository](https://github.com/GruppoProgettoTMM201920-Parthenopeddit/AndroidAPP.git)
+* On android studio, build apk and install on Emulator / device of choice
+
+If you're using the app on a physical device, or running the API on a different machine, you need to change the IP used by the app to send requests to that of the machine you are running the server on.  
+This can be done in file ApiRoute.kt in package:
+```
+it.uniparthenope.parthenopeddit.apireturn "http:///10.0.2.2:8000"
+```
+on line 11: 
+```
+from 
+      return "http:///10.0.2.2:8000"
+to
+      return "http:///YOUR_SERVER_IP:8000"
+Example:
+      return "http:///192.168.0.10:8000"
+```
 
 ### Prerequisites
-
-Installing the APK and executing the server will not be enough to login in Parthenopeddit.
-First: you must be a Parthenope student.
-Plus, you might be able to run a Docker container from the RESTPlusAPI Phyton project. Download is below.
-So you need:
-
 ```
+A server running the Parthenopeddit API
 Android Studio (Gradle 4.x, Min API 26)
-PyCharm
-Docker
 ```
-
-### Installing
-
-If you need a step-by-step guide, here you go:
-
-```
--Copy this repo in your Android Studio workspace
--Download the API repo from here
-https://github.com/GruppoProgettoTMM201920-Parthenopeddit/RESTPlusAPI
-
-```
-After you downloaded Docker, open Windows PowerShell in the directory of RESTPLusAPI repo and give those commands:
-
-```
-docker-compose up -d --build
-//WAIT 1 MIN
-docker-compose exec web flask populatedb
-```
-Now you must see "restplusapi" container in docker. Be sure it's running.
-Then open Parthenopeddit on your Android emulator and login with your Esse3 credentials.
-
 ## Built With
 
 * [Material SearchBar](https://github.com/mancj/MaterialSearchBar) - The searchbar used
