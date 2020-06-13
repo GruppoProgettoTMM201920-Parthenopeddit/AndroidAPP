@@ -102,8 +102,6 @@ class UserChatFragment(private val user: User) : Fragment() {
                     }
                 }
                 itemsswipetorefresh.isRefreshing = false
-                Toast.makeText(requireContext(), "Errore nell'inoltro del messaggio. ${it}", Toast.LENGTH_SHORT).show()
-
             },{
 
             })
