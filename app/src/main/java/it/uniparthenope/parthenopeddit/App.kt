@@ -11,6 +11,19 @@ import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.auth.SharedPreferencesAuth
 import it.uniparthenope.parthenopeddit.util.TAG
 
+/*
+MEME INFORMATICO 1:
+
+Ragazza: Vieni a casa da me?
+
+Dijkstra: Ma ci sono così tante strade, non saprei quale sarebbe più veloce
+
+Ragazza: i miei non sono a casa
+
+Dijkstra : https://it.wikipedia.org/wiki/Algoritmo_di_Dijkstra
+ */
+
+
 class App : Application(), AbstractAuthManager.logEventListener {
     var currentActivity: BasicActivity? = null
 
