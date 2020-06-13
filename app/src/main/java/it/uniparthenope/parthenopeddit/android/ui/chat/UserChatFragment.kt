@@ -44,10 +44,6 @@ class UserChatFragment(private val user: User) : Fragment() {
         val view: View = inflater.inflate(R.layout.chat_fragment, container, false)
         val adapter = GroupAdapter<GroupieViewHolder>()
         val send_button_chat_log = view.findViewById<ImageButton>(R.id.send_button_chat_log)
-        val itemsswipetorefresh = view.findViewById(R.id.itemsswipetorefresh) as SwipeRefreshLayout
-
-        itemsswipetorefresh.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
-        itemsswipetorefresh.setColorSchemeColors(ContextCompat.getColor(requireContext(), R.color.white))
 
         auth = (activity as BasicActivity).app.auth
 
@@ -86,6 +82,10 @@ class UserChatFragment(private val user: User) : Fragment() {
             }
         }
 
+        val itemsswipetorefresh = view.findViewById(R.id.itemsswipetorefresh) as SwipeRefreshLayout
+
+        itemsswipetorefresh.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+        itemsswipetorefresh.setColorSchemeColors(ContextCompat.getColor(requireContext(), R.color.white))
         itemsswipetorefresh.setOnRefreshListener {
             itemsswipetorefresh.isRefreshing = true
 

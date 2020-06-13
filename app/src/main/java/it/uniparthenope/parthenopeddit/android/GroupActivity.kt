@@ -62,12 +62,6 @@ class GroupActivity : LoginRequiredActivity() {
 
         if(id_group == 0) finish()
 
-        val itemsswipetorefresh = findViewById(R.id.itemsswipetorefresh) as SwipeRefreshLayout
-
-        itemsswipetorefresh.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(this, R.color.colorPrimary))
-        itemsswipetorefresh.setColorSchemeColors(ContextCompat.getColor(this, R.color.white))
-
-
         var deserializedGroup:Group? = null
 
         try {
@@ -263,6 +257,10 @@ class GroupActivity : LoginRequiredActivity() {
                 builder.show()
             }
 
+        val itemsswipetorefresh = findViewById(R.id.itemsswipetorefresh) as SwipeRefreshLayout
+
+        itemsswipetorefresh.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(this, R.color.colorPrimary))
+        itemsswipetorefresh.setColorSchemeColors(ContextCompat.getColor(this, R.color.white))
         itemsswipetorefresh.setOnRefreshListener {
             itemsswipetorefresh.isRefreshing = true
 
@@ -292,10 +290,8 @@ class GroupActivity : LoginRequiredActivity() {
                     Toast.makeText(this,"Errore : ${it}", Toast.LENGTH_LONG).show()
                 }
             )
-
         }
-        }
-
+    }
 
     private fun setGroup(newGroup: Group) {
         group = newGroup

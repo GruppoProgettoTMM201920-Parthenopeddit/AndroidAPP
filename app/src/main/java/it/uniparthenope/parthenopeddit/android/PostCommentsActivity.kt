@@ -39,10 +39,6 @@ class PostCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter.Co
 
         val extras = intent.extras
         val id_post:Int = extras?.getInt("idPost")?:0
-        val itemsswipetorefresh = findViewById(R.id.itemsswipetorefresh) as SwipeRefreshLayout
-
-        itemsswipetorefresh.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(this, R.color.colorPrimary))
-        itemsswipetorefresh.setColorSchemeColors(ContextCompat.getColor(this, R.color.white))
 
         if(id_post == 0) finish()
 
@@ -51,7 +47,6 @@ class PostCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter.Co
         try {
             deserializedPost = (extras?.getString("post")?:"").toObject()
         } catch(e:Exception) {}
-
 
         if( deserializedPost != null ) {
             setPost(deserializedPost)
@@ -103,6 +98,10 @@ class PostCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter.Co
             }
         }
 
+        val itemsswipetorefresh = findViewById(R.id.itemsswipetorefresh) as SwipeRefreshLayout
+
+        itemsswipetorefresh.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(this, R.color.colorPrimary))
+        itemsswipetorefresh.setColorSchemeColors(ContextCompat.getColor(this, R.color.white))
         itemsswipetorefresh.setOnRefreshListener {
             itemsswipetorefresh.isRefreshing = true
 

@@ -8,12 +8,15 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import it.uniparthenope.parthenopeddit.LoginRequiredActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.adapters.CommentRecursiveAdapter
 import it.uniparthenope.parthenopeddit.api.requests.CommentsRequests
+import it.uniparthenope.parthenopeddit.api.requests.PostsRequests
 import it.uniparthenope.parthenopeddit.api.requests.ReviewsRequests
 import it.uniparthenope.parthenopeddit.model.Comment
 import it.uniparthenope.parthenopeddit.model.LikeDislikeScore
@@ -69,8 +72,6 @@ class ReviewCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter.
                 } else {
                     listaCommenti.visibility = View.VISIBLE
 
-                    Log.d("DEBUG","initializing comments layout")
-
                     val listaCommenti:RecyclerView = findViewById(R.id.listaCommenti)
 
                     adapter.aggiornaLista(commenti)
@@ -78,8 +79,6 @@ class ReviewCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter.
                     listaCommenti.adapter = adapter
                     listaCommenti.layoutManager = LinearLayoutManager(this)
                     listaCommenti.setHasFixedSize(true)
-
-                    Log.d("DEBUG","done")
                 }
             }, {
                 //nothing
@@ -105,6 +104,40 @@ class ReviewCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter.
             } else{
                 Toast.makeText(this,"Non hai scritto alcun commento.",Toast.LENGTH_SHORT).show()
             }
+        }
+
+        val itemsswipetorefresh = findViewById(R.id.itemsswipetorefresh) as SwipeRefreshLayout
+
+        itemsswipetorefresh.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(this, R.color.colorPrimary))
+        itemsswipetorefresh.setColorSchemeColors(ContextCompat.getColor(this, R.color.white))
+        itemsswipetorefresh.setOnRefreshListener {
+            itemsswipetorefresh.isRefreshing = true
+
+            ReviewsRequests(this, app.auth).getReviewWithComments(id_review,
+                {
+                    setReview(it)
+
+                    val commenti = it.comments
+                    if(commenti == null) {
+                        listaCommenti.visibility = View.GONE
+                    } else {
+                        listaCommenti.visibility = View.VISIBLE
+
+                        val listaCommenti:RecyclerView = findViewById(R.id.listaCommenti)
+
+                        adapter.aggiornaLista(commenti)
+
+                        listaCommenti.adapter = adapter
+                        listaCommenti.layoutManager = LinearLayoutManager(this)
+                        listaCommenti.setHasFixedSize(true)
+                    }
+
+                    itemsswipetorefresh.isRefreshing = false
+                }, {
+                    //nothing
+                    itemsswipetorefresh.isRefreshing = false
+                }
+            )
         }
     }
 

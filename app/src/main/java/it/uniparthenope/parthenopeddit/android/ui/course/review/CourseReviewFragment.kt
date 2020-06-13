@@ -43,10 +43,6 @@ class CourseReviewFragment(private var courseID: Int) : Fragment(), ReviewAdapte
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_course_post, container, false)
-        val itemsswipetorefresh = root.findViewById(R.id.itemsswipetorefresh) as SwipeRefreshLayout
-
-        itemsswipetorefresh.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
-        itemsswipetorefresh.setColorSchemeColors(ContextCompat.getColor(requireContext(), R.color.white))
 
         auth = (activity as BasicActivity).app.auth
 
@@ -101,6 +97,10 @@ class CourseReviewFragment(private var courseID: Int) : Fragment(), ReviewAdapte
             }
         )
 
+        val itemsswipetorefresh = root.findViewById(R.id.itemsswipetorefresh) as SwipeRefreshLayout
+
+        itemsswipetorefresh.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+        itemsswipetorefresh.setColorSchemeColors(ContextCompat.getColor(requireContext(), R.color.white))
         itemsswipetorefresh.setOnRefreshListener {
             itemsswipetorefresh.isRefreshing = true
 

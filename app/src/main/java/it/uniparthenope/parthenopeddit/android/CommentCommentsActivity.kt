@@ -124,12 +124,10 @@ class CommentCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter
         }
 
         itemsswipetorefresh.setOnRefreshListener {
-
             itemsswipetorefresh.isRefreshing = true
+
             CommentsRequests(this, app.auth).getCommentWithComments(id_comment,
                 {
-                    Log.d("DEBUG","Fetched post ${id_comment}")
-
                     setComment(it)
 
                     val commenti = it.comments
@@ -138,8 +136,6 @@ class CommentCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter
                     } else {
                         listaCommenti.visibility = View.VISIBLE
 
-                        Log.d("DEBUG","initializing comments layout")
-
                         val listaCommenti:RecyclerView = findViewById(R.id.listaCommenti)
 
                         adapter.aggiornaLista(commenti)
@@ -147,18 +143,15 @@ class CommentCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter
                         listaCommenti.adapter = adapter
                         listaCommenti.layoutManager = LinearLayoutManager(this)
                         listaCommenti.setHasFixedSize(true)
-                        itemsswipetorefresh.isRefreshing = false
-                        Toast.makeText(this,"Feed commenti aggiornato", Toast.LENGTH_SHORT).show()
-
-                        Log.d("DEBUG","done")
                     }
+
+                    itemsswipetorefresh.isRefreshing = false
                 }, {
                     //nothing
+                    itemsswipetorefresh.isRefreshing = false
                 }
             )
         }
-
-
     }
 
     private fun setComment(newComment: Comment) {

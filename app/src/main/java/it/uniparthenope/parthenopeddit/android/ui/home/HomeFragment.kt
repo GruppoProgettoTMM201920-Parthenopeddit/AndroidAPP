@@ -54,11 +54,6 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         val fab_new_group = root.findViewById(R.id.fab_new_group) as FloatingActionButton
         val fab_new_post_textview = root.findViewById(R.id.fab_new_post_textview) as TextView
         val fab_new_group_textview = root.findViewById(R.id.fab_new_group_textview) as TextView
-        val itemsswipetorefresh = root.findViewById(R.id.itemsswipetorefresh) as SwipeRefreshLayout
-
-        itemsswipetorefresh.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
-        itemsswipetorefresh.setColorSchemeColors(ContextCompat.getColor(requireContext(), R.color.white))
-
 
         recycler_view = root.findViewById(R.id.recycler_view) as RecyclerView
 
@@ -139,6 +134,10 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
             }
         })
 
+        val itemsswipetorefresh = root.findViewById(R.id.itemsswipetorefresh) as SwipeRefreshLayout
+
+        itemsswipetorefresh.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+        itemsswipetorefresh.setColorSchemeColors(ContextCompat.getColor(requireContext(), R.color.white))
         itemsswipetorefresh.setOnRefreshListener {
             itemsswipetorefresh.isRefreshing = true
 
@@ -168,7 +167,6 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
                 }
             )
         }
-
 
         fab.setOnClickListener{
             if(isOpen){
