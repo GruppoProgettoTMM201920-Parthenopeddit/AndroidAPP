@@ -11,6 +11,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -47,11 +48,6 @@ class CommentCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter
         val extras = intent.extras
         val id_comment:Int = extras?.getInt("idComment")?:0
 
-        val itemsswipetorefresh = findViewById(R.id.itemsswipetorefresh) as SwipeRefreshLayout
-
-        itemsswipetorefresh.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(this, R.color.colorPrimary))
-        itemsswipetorefresh.setColorSchemeColors(ContextCompat.getColor(this, R.color.white))
-
 
         if(id_comment == 0) finish()
 
@@ -67,6 +63,8 @@ class CommentCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter
         }
 
         adapter = CommentRecursiveAdapter(this,this)
+
+        ViewCompat.setNestedScrollingEnabled(listaCommenti, false)
 
         CommentsRequests(this, app.auth).getCommentWithComments(id_comment,
             {
@@ -97,11 +95,9 @@ class CommentCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter
             }
         )
 
-        var message_edittext = findViewById<EditText>(R.id.message_edittext)
+        val message_edittext = findViewById<EditText>(R.id.message_edittext)
         val send_btn = findViewById<ImageButton>(R.id.send_btn)
         var message: String
-
-
 
         send_btn.setOnClickListener {
             message = message_edittext.text.toString()
@@ -123,6 +119,12 @@ class CommentCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter
             }
         }
 
+        val itemsswipetorefresh: MySwipeRefreshLayout = findViewById(R.id.itemsswipetorefresh)
+
+        itemsswipetorefresh.child = commentsScrollContainer
+
+        itemsswipetorefresh.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(this, R.color.colorPrimary))
+        itemsswipetorefresh.setColorSchemeColors(ContextCompat.getColor(this, R.color.white))
         itemsswipetorefresh.setOnRefreshListener {
             itemsswipetorefresh.isRefreshing = true
 

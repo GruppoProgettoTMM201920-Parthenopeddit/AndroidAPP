@@ -10,6 +10,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -54,6 +55,8 @@ class PostCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter.Co
 
         adapter = CommentRecursiveAdapter(this,this)
 
+        ViewCompat.setNestedScrollingEnabled(listaCommenti, false)
+
         PostsRequests(this, app.auth).getPostWithComments(id_post,
             {
                 setPost(it)
@@ -77,7 +80,7 @@ class PostCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter.Co
             }
         )
 
-        var message_edittext = findViewById<EditText>(R.id.message_edittext)
+        val message_edittext = findViewById<EditText>(R.id.message_edittext)
         val send_btn = findViewById<ImageButton>(R.id.send_btn)
         var message: String
 
@@ -98,7 +101,9 @@ class PostCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter.Co
             }
         }
 
-        val itemsswipetorefresh = findViewById(R.id.itemsswipetorefresh) as SwipeRefreshLayout
+        val itemsswipetorefresh: MySwipeRefreshLayout = findViewById(R.id.itemsswipetorefresh)
+
+        itemsswipetorefresh.child = commentsScrollContainer
 
         itemsswipetorefresh.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(this, R.color.colorPrimary))
         itemsswipetorefresh.setColorSchemeColors(ContextCompat.getColor(this, R.color.white))

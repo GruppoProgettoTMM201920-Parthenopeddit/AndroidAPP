@@ -1,73 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".android.ReviewCommentsActivity"
-    android:background="#595959">
+    android:background="#595959"
+    tools:context=".android.PostCommentsActivity">
 
-
-    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-        android:id="@+id/itemsswipetorefresh"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent"
+        android:background="#595959"
+        tools:context=".android.CommentCommentsActivity">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <it.uniparthenope.parthenopeddit.android.MySwipeRefreshLayout
+            android:id="@+id/itemsswipetorefresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".android.CommentCommentsActivity"
-            android:background="#595959">
+            android:layout_height="0dp"
+            android:layout_margin="6dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-
-            <include
-                android:id="@+id/include"
-                layout="@layout/cardview_review"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="6dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/listaCommenti"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/include"
-                tools:listitem="@layout/cardview_commento" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                <include
+                    android:id="@+id/include"
+                    layout="@layout/cardview_review"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:elevation="5dp" />
 
-    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                <androidx.core.widget.NestedScrollView
+                    android:id="@+id/commentsScrollContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fillViewport="true"
+                    android:overScrollMode="never"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/itemsswipetorefresh">
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/listaCommenti"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:listitem="@layout/cardview_commento" />
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="58dp" />
+                    </LinearLayout>
+                </androidx.core.widget.NestedScrollView>
+            </LinearLayout>
+
+        </it.uniparthenope.parthenopeddit.android.MySwipeRefreshLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:layout_gravity="bottom|fill_horizontal"
         android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingStart="20dp"
-        android:paddingTop="10dp"
-        android:paddingEnd="20dp"
-        android:paddingBottom="10dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:orientation="horizontal">
 
         <EditText
             android:id="@+id/message_edittext"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
             android:layout_weight="1"
             android:background="@drawable/message_shape"
-            android:elevation="50dp"
+            android:elevation="5dp"
             android:ems="10"
             android:gravity="center_vertical"
             android:inputType="textMultiLine"
@@ -83,7 +99,10 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="10dp"
-            android:background="@drawable/send_shape" />
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/send_shape"
+            android:elevation="5dp" />
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
