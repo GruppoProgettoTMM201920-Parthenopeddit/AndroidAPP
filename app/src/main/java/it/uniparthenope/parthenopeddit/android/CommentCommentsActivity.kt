@@ -1,5 +1,6 @@
 package it.uniparthenope.parthenopeddit.android
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -14,15 +15,14 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import it.uniparthenope.parthenopeddit.LoginRequiredActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.adapters.CommentRecursiveAdapter
 import it.uniparthenope.parthenopeddit.api.requests.CommentsRequests
-import it.uniparthenope.parthenopeddit.api.requests.UserRequests
 import it.uniparthenope.parthenopeddit.model.Comment
 import it.uniparthenope.parthenopeddit.model.LikeDislikeScore
 import it.uniparthenope.parthenopeddit.util.DateParser
+import it.uniparthenope.parthenopeddit.util.hideKeyboard
 import it.uniparthenope.parthenopeddit.util.toGson
 import it.uniparthenope.parthenopeddit.util.toObject
 import kotlinx.android.synthetic.main.activity_post_comments.*
@@ -35,6 +35,7 @@ import kotlinx.android.synthetic.main.cardview_post.posttext_textview
 import kotlinx.android.synthetic.main.cardview_post.upvote_btn
 import kotlinx.android.synthetic.main.cardview_post.upvote_textview
 import kotlinx.android.synthetic.main.cardview_post.username_textview
+
 
 class CommentCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter.CommentItemClickListeners {
 
@@ -102,14 +103,14 @@ class CommentCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter
         send_btn.setOnClickListener {
             message = message_edittext.text.toString()
             if(message.isNotEmpty()) {
-                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
+                (this@CommentCommentsActivity).hideKeyboard()
+                message_edittext.text.clear()
+
                 CommentsRequests(this, app.auth).publishNewComment(
                     message,
                     comment.id,
                     {
                         adapter.aggiungiCommenti(listOf(it))
-                        message_edittext.text.clear()
                     }, {
                         Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
                     }

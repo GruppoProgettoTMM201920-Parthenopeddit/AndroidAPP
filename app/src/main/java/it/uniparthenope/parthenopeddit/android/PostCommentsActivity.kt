@@ -24,6 +24,7 @@ import it.uniparthenope.parthenopeddit.model.Comment
 import it.uniparthenope.parthenopeddit.model.LikeDislikeScore
 import it.uniparthenope.parthenopeddit.model.Post
 import it.uniparthenope.parthenopeddit.util.DateParser
+import it.uniparthenope.parthenopeddit.util.hideKeyboard
 import it.uniparthenope.parthenopeddit.util.toGson
 import it.uniparthenope.parthenopeddit.util.toObject
 import kotlinx.android.synthetic.main.activity_post_comments.*
@@ -87,6 +88,9 @@ class PostCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter.Co
         send_btn.setOnClickListener {
             message = message_edittext.text.toString()
             if(message.isNotEmpty()) {
+                (this@PostCommentsActivity).hideKeyboard()
+                message_edittext.text.clear()
+
                 CommentsRequests(this, app.auth).publishNewComment(
                     message,
                     post.id,
