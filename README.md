@@ -47,7 +47,7 @@ See also the list of [contributors](https://github.com/orgs/GruppoProgettoTMM201
 
 ## License
 
-This project is licensed under the Licensed under the Apache License, Version 2.0.
+This project is licensed under the Apache License, Version 2.0.
 
 ## Acknowledgments
 
