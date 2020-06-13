@@ -44,10 +44,6 @@ class CoursePostFragment(private var courseID: Int) : Fragment(), PostAdapter.Po
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val root = inflater.inflate(R.layout.fragment_course_post, container, false)
-        val itemsswipetorefresh = root.findViewById(R.id.itemsswipetorefresh) as SwipeRefreshLayout
-
-        itemsswipetorefresh.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
-        itemsswipetorefresh.setColorSchemeColors(ContextCompat.getColor(requireContext(), R.color.white))
 
         auth = (activity as BasicActivity).app.auth
 
@@ -100,25 +96,38 @@ class CoursePostFragment(private var courseID: Int) : Fragment(), PostAdapter.Po
             }
         )
 
-        itemsswipetorefresh.setOnRefreshListener {
+        val itemsswipetorefresh = root.findViewById(R.id.itemsswipetorefresh) as SwipeRefreshLayout
 
+        itemsswipetorefresh.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+        itemsswipetorefresh.setColorSchemeColors(ContextCompat.getColor(requireContext(), R.color.white))
+        itemsswipetorefresh.setOnRefreshListener {
             itemsswipetorefresh.isRefreshing = true
+
             CoursesRequests(requireContext(), auth).getCoursePosts(
                 page = 1,
                 perPage = per_page,
                 course_id = courseID,
                 onSuccess = {
-                    postAdapter.setPostList(it)
-                    if(it.isNotEmpty()) transactionStartDateTime = it[0].timestamp
-                    recycler_view.addOnScrollListener(infiniteScroller)
+                    if(it.isNotEmpty()) {
+                        postAdapter.setPostList(it)
+                        transactionStartDateTime = it[0].timestamp
+
+                        infiniteScroller = InfiniteScroller(
+                            layoutManager, updater, per_page
+                        )
+
+                        recycler_view.addOnScrollListener(infiniteScroller)
+                    }
+
                     itemsswipetorefresh.isRefreshing = false
-                    Toast.makeText(requireContext(),"Feed aggiornato", Toast.LENGTH_SHORT).show()
                 },
                 onEndOfContent = {
                     //nothing. list is empty.
+                    itemsswipetorefresh.isRefreshing = false
                 },
                 onFail = {
                     Toast.makeText(requireContext(),it, Toast.LENGTH_LONG).show()
+                    itemsswipetorefresh.isRefreshing = false
                 }
             )
         }

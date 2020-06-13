@@ -10,6 +10,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -39,11 +40,6 @@ class PostCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter.Co
 
         val extras = intent.extras
         val id_post:Int = extras?.getInt("idPost")?:0
-        val itemsswipetorefresh = findViewById(R.id.itemsswipetorefresh) as SwipeRefreshLayout
-
-        itemsswipetorefresh.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(this, R.color.colorPrimary))
-        itemsswipetorefresh.setColorSchemeColors(ContextCompat.getColor(this, R.color.white))
-
 
         if(id_post == 0) finish()
 
@@ -53,17 +49,16 @@ class PostCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter.Co
             deserializedPost = (extras?.getString("post")?:"").toObject()
         } catch(e:Exception) {}
 
-
         if( deserializedPost != null ) {
             setPost(deserializedPost)
         }
 
         adapter = CommentRecursiveAdapter(this,this)
 
+        ViewCompat.setNestedScrollingEnabled(listaCommenti, false)
+
         PostsRequests(this, app.auth).getPostWithComments(id_post,
             {
-                Log.d("DEBUG","Fetched post ${id_post}")
-
                 setPost(it)
 
                 val commenti = it.comments
@@ -72,8 +67,6 @@ class PostCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter.Co
                 } else {
                     listaCommenti.visibility = View.VISIBLE
 
-                    Log.d("DEBUG","initializing comments layout")
-
                     val listaCommenti:RecyclerView = findViewById(R.id.listaCommenti)
 
                     adapter.aggiornaLista(commenti)
@@ -81,15 +74,13 @@ class PostCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter.Co
                     listaCommenti.adapter = adapter
                     listaCommenti.layoutManager = LinearLayoutManager(this)
                     listaCommenti.setHasFixedSize(true)
-
-                    Log.d("DEBUG","done")
                 }
             }, {
                 //nothing
             }
         )
 
-        var message_edittext = findViewById<EditText>(R.id.message_edittext)
+        val message_edittext = findViewById<EditText>(R.id.message_edittext)
         val send_btn = findViewById<ImageButton>(R.id.send_btn)
         var message: String
 
@@ -110,12 +101,17 @@ class PostCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter.Co
             }
         }
 
-        itemsswipetorefresh.setOnRefreshListener {
+        val itemsswipetorefresh: MySwipeRefreshLayout = findViewById(R.id.itemsswipetorefresh)
 
+        itemsswipetorefresh.child = commentsScrollContainer
+
+        itemsswipetorefresh.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(this, R.color.colorPrimary))
+        itemsswipetorefresh.setColorSchemeColors(ContextCompat.getColor(this, R.color.white))
+        itemsswipetorefresh.setOnRefreshListener {
             itemsswipetorefresh.isRefreshing = true
+
             PostsRequests(this, app.auth).getPostWithComments(id_post,
                 {
-
                     setPost(it)
 
                     val commenti = it.comments
@@ -131,14 +127,13 @@ class PostCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter.Co
                         listaCommenti.adapter = adapter
                         listaCommenti.layoutManager = LinearLayoutManager(this)
                         listaCommenti.setHasFixedSize(true)
-                        itemsswipetorefresh.isRefreshing = false
-                        Toast.makeText(this,"Feed aggiornato", Toast.LENGTH_SHORT).show()
                     }
+
+                    itemsswipetorefresh.isRefreshing = false
                 }, {
-                    //nothing
+                    itemsswipetorefresh.isRefreshing = false
                 }
             )
-
         }
     }
 

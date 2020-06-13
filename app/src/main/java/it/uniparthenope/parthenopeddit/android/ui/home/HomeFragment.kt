@@ -54,11 +54,6 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         val fab_new_group = root.findViewById(R.id.fab_new_group) as FloatingActionButton
         val fab_new_post_textview = root.findViewById(R.id.fab_new_post_textview) as TextView
         val fab_new_group_textview = root.findViewById(R.id.fab_new_group_textview) as TextView
-        val itemsswipetorefresh = root.findViewById(R.id.itemsswipetorefresh) as SwipeRefreshLayout
-
-        itemsswipetorefresh.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
-        itemsswipetorefresh.setColorSchemeColors(ContextCompat.getColor(requireContext(), R.color.white))
-
 
         recycler_view = root.findViewById(R.id.recycler_view) as RecyclerView
 
@@ -139,9 +134,13 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
             }
         })
 
-        itemsswipetorefresh.setOnRefreshListener {
+        val itemsswipetorefresh = root.findViewById(R.id.itemsswipetorefresh) as SwipeRefreshLayout
 
+        itemsswipetorefresh.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+        itemsswipetorefresh.setColorSchemeColors(ContextCompat.getColor(requireContext(), R.color.white))
+        itemsswipetorefresh.setOnRefreshListener {
             itemsswipetorefresh.isRefreshing = true
+
             UserRequests(requireContext(), auth).getUserFeed(
                 page = 1,
                 perPage = per_page,
@@ -149,20 +148,25 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
                     if(it.isNotEmpty()) {
                         adapter.setPostList(it)
                         transactionStartDateTime = it[0].timestamp
+
+                        infiniteScroller = InfiniteScroller(
+                            layoutManager, updater, per_page
+                        )
+
                         recycler_view.addOnScrollListener(infiniteScroller)
-                        itemsswipetorefresh.isRefreshing = false
-                        Toast.makeText(requireContext(),"Feed aggiornato", Toast.LENGTH_SHORT).show()
                     }
+                    itemsswipetorefresh.isRefreshing = false
                 },
                 onEndOfContent = {
                     //nothing. list is empty.
+                    itemsswipetorefresh.isRefreshing = true
                 },
                 onFail = { it: String ->
                     Toast.makeText(requireContext(),it, Toast.LENGTH_LONG).show()
+                    itemsswipetorefresh.isRefreshing = true
                 }
             )
         }
-
 
         fab.setOnClickListener{
             if(isOpen){

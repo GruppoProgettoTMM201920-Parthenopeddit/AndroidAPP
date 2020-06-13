@@ -62,12 +62,6 @@ class GroupActivity : LoginRequiredActivity() {
 
         if(id_group == 0) finish()
 
-        val itemsswipetorefresh = findViewById(R.id.itemsswipetorefresh) as SwipeRefreshLayout
-
-        itemsswipetorefresh.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(this, R.color.colorPrimary))
-        itemsswipetorefresh.setColorSchemeColors(ContextCompat.getColor(this, R.color.white))
-
-
         var deserializedGroup:Group? = null
 
         try {
@@ -263,8 +257,11 @@ class GroupActivity : LoginRequiredActivity() {
                 builder.show()
             }
 
-        itemsswipetorefresh.setOnRefreshListener {
+        val itemsswipetorefresh = findViewById(R.id.itemsswipetorefresh) as SwipeRefreshLayout
 
+        itemsswipetorefresh.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(this, R.color.colorPrimary))
+        itemsswipetorefresh.setColorSchemeColors(ContextCompat.getColor(this, R.color.white))
+        itemsswipetorefresh.setOnRefreshListener {
             itemsswipetorefresh.isRefreshing = true
 
             GroupsRequests(this, app.auth).getGroupPosts(
@@ -275,22 +272,26 @@ class GroupActivity : LoginRequiredActivity() {
                     if(it.isNotEmpty()) {
                         postAdapter.setPostList( it )
                         transactionStartDateTime = it[0].timestamp
+
+                        infiniteScroller = InfiniteScroller(
+                            layoutManager, updater, per_page
+                        )
+
                         recycler_view.addOnScrollListener(infiniteScroller)
-                        itemsswipetorefresh.isRefreshing = false
-                        Toast.makeText(this,"Feed aggiornato", Toast.LENGTH_SHORT).show()
                     }
+                    itemsswipetorefresh.isRefreshing = false
                 },
                 onEndOfContent = {
                     //nothing
+                    itemsswipetorefresh.isRefreshing = false
                 },
                 onFail = {
+                    itemsswipetorefresh.isRefreshing = false
                     Toast.makeText(this,"Errore : ${it}", Toast.LENGTH_LONG).show()
                 }
             )
-
         }
-        }
-
+    }
 
     private fun setGroup(newGroup: Group) {
         group = newGroup
