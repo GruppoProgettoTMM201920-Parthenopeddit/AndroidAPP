@@ -1,6 +1,6 @@
 # Parthenopeddit
-
-<img src="https://github.com/GruppoProgettoTMM201920-Parthenopeddit/AndroidAPP/blob/master/app/src/main/res/drawable/parthenopeddit_logo_transparent.png" height="100">
+<div style="text-align:center">
+<img src="https://github.com/GruppoProgettoTMM201920-Parthenopeddit/AndroidAPP/blob/master/app/src/main/res/drawable/parthenopeddit_logo_transparent.png" height="100"></div>
 
 Parthenopeddit is a platform where students of Università degli Studi di Napoli Parthenope can meet.
 This app uses Esse3 API (Esse3 is a hub from Cineca) so students can login with their credentials 
