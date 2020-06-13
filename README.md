@@ -36,7 +36,7 @@ Android Studio (Gradle 4.x, Min API 26)
 * [Maven](https://maven.apache.org/) - Dependency Management
 * [ExpandableSwipeRecyclerView](https://github.com/hyunstyle/ExpandableSwipeRecyclerView) - Used to get a properly expandable listview with swipe feature
 * [Glide](https://github.com/bumptech/glide/) - Image loading framework
-* [Picsum Photos](https://github.com/DMarby/picsum-photos/) - USed to get random mock user images
+* [Picsum Photos](https://github.com/DMarby/picsum-photos/) - Used to get random mock user images
 
 ## Authors
 
