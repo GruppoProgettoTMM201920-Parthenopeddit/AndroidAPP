@@ -1,19 +1,24 @@
 package it.uniparthenope.parthenopeddit.android
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import it.uniparthenope.parthenopeddit.LoginRequiredActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.adapters.CommentRecursiveAdapter
 import it.uniparthenope.parthenopeddit.api.requests.CommentsRequests
+import it.uniparthenope.parthenopeddit.api.requests.UserRequests
 import it.uniparthenope.parthenopeddit.model.Comment
 import it.uniparthenope.parthenopeddit.model.LikeDislikeScore
 import it.uniparthenope.parthenopeddit.util.DateParser
@@ -41,6 +46,12 @@ class CommentCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter
 
         val extras = intent.extras
         val id_comment:Int = extras?.getInt("idComment")?:0
+
+        val itemsswipetorefresh = findViewById(R.id.itemsswipetorefresh) as SwipeRefreshLayout
+
+        itemsswipetorefresh.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(this, R.color.colorPrimary))
+        itemsswipetorefresh.setColorSchemeColors(ContextCompat.getColor(this, R.color.white))
+
 
         if(id_comment == 0) finish()
 
@@ -95,11 +106,14 @@ class CommentCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter
         send_btn.setOnClickListener {
             message = message_edittext.text.toString()
             if(message.isNotEmpty()) {
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
                 CommentsRequests(this, app.auth).publishNewComment(
                     message,
                     comment.id,
                     {
                         adapter.aggiungiCommenti(listOf(it))
+                        message_edittext.text.clear()
                     }, {
                         Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
                     }
@@ -108,6 +122,43 @@ class CommentCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter
                 Toast.makeText(this,"Non hai scritto alcun commento.",Toast.LENGTH_SHORT).show()
             }
         }
+
+        itemsswipetorefresh.setOnRefreshListener {
+
+            itemsswipetorefresh.isRefreshing = true
+            CommentsRequests(this, app.auth).getCommentWithComments(id_comment,
+                {
+                    Log.d("DEBUG","Fetched post ${id_comment}")
+
+                    setComment(it)
+
+                    val commenti = it.comments
+                    if(commenti == null) {
+                        listaCommenti.visibility = View.GONE
+                    } else {
+                        listaCommenti.visibility = View.VISIBLE
+
+                        Log.d("DEBUG","initializing comments layout")
+
+                        val listaCommenti:RecyclerView = findViewById(R.id.listaCommenti)
+
+                        adapter.aggiornaLista(commenti)
+
+                        listaCommenti.adapter = adapter
+                        listaCommenti.layoutManager = LinearLayoutManager(this)
+                        listaCommenti.setHasFixedSize(true)
+                        itemsswipetorefresh.isRefreshing = false
+                        Toast.makeText(this,"Feed commenti aggiornato", Toast.LENGTH_SHORT).show()
+
+                        Log.d("DEBUG","done")
+                    }
+                }, {
+                    //nothing
+                }
+            )
+        }
+
+
     }
 
     private fun setComment(newComment: Comment) {
