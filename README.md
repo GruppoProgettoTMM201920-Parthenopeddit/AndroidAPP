@@ -8,7 +8,7 @@ without requiring a registration.
 
 * Have a running instance of [Parthenopeddit API](https://github.com/GruppoProgettoTMM201920-Parthenopeddit/RESTPlusAPI)
 * Clone or download [this repository](https://github.com/GruppoProgettoTMM201920-Parthenopeddit/AndroidAPP.git)
-* On android studio, build apk and install on Emulator / device of choice
+* On Android Studio, build apk and install on emulator / device of choice
 
 If you're using the app on a physical device, or running the API on a different machine, you need to change the IP used by the app to send requests to that of the machine you are running the server on.  
 This can be done in file ApiRoute.kt in package:
