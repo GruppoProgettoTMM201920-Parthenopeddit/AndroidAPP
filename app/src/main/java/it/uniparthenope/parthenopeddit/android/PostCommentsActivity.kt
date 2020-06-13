@@ -9,13 +9,16 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import it.uniparthenope.parthenopeddit.LoginRequiredActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.android.adapters.CommentRecursiveAdapter
 import it.uniparthenope.parthenopeddit.api.requests.CommentsRequests
 import it.uniparthenope.parthenopeddit.api.requests.PostsRequests
+import it.uniparthenope.parthenopeddit.api.requests.UserRequests
 import it.uniparthenope.parthenopeddit.model.Comment
 import it.uniparthenope.parthenopeddit.model.LikeDislikeScore
 import it.uniparthenope.parthenopeddit.model.Post
@@ -36,6 +39,11 @@ class PostCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter.Co
 
         val extras = intent.extras
         val id_post:Int = extras?.getInt("idPost")?:0
+        val itemsswipetorefresh = findViewById(R.id.itemsswipetorefresh) as SwipeRefreshLayout
+
+        itemsswipetorefresh.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(this, R.color.colorPrimary))
+        itemsswipetorefresh.setColorSchemeColors(ContextCompat.getColor(this, R.color.white))
+
 
         if(id_post == 0) finish()
 
@@ -100,6 +108,37 @@ class PostCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter.Co
             } else{
                 Toast.makeText(this,"Non hai scritto alcun commento.",Toast.LENGTH_SHORT).show()
             }
+        }
+
+        itemsswipetorefresh.setOnRefreshListener {
+
+            itemsswipetorefresh.isRefreshing = true
+            PostsRequests(this, app.auth).getPostWithComments(id_post,
+                {
+
+                    setPost(it)
+
+                    val commenti = it.comments
+                    if(commenti == null) {
+                        listaCommenti.visibility = View.GONE
+                    } else {
+                        listaCommenti.visibility = View.VISIBLE
+
+                        val listaCommenti:RecyclerView = findViewById(R.id.listaCommenti)
+
+                        adapter.aggiornaLista(commenti)
+
+                        listaCommenti.adapter = adapter
+                        listaCommenti.layoutManager = LinearLayoutManager(this)
+                        listaCommenti.setHasFixedSize(true)
+                        itemsswipetorefresh.isRefreshing = false
+                        Toast.makeText(this,"Feed aggiornato", Toast.LENGTH_SHORT).show()
+                    }
+                }, {
+                    //nothing
+                }
+            )
+
         }
     }
 

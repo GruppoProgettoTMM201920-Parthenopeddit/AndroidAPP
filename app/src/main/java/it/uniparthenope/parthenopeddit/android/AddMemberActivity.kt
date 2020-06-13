@@ -1,6 +1,7 @@
 package it.uniparthenope.parthenopeddit.android
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mancj.materialsearchbar.MaterialSearchBar
 import it.uniparthenope.parthenopeddit.LoginRequiredActivity
@@ -76,6 +77,7 @@ class AddMemberActivity : LoginRequiredActivity(), UserListAdapter.UserListItemC
                             invite.invited_id == user.id
                         } != null) {
                         adapter.removeUser(user)
+                        Toast.makeText(this,"Utente invitato", Toast.LENGTH_SHORT).show()
                     }
                 }
             }, {}

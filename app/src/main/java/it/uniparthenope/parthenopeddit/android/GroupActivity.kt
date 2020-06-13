@@ -9,8 +9,10 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import it.uniparthenope.parthenopeddit.LoginRequiredActivity
@@ -22,6 +24,7 @@ import it.uniparthenope.parthenopeddit.android.ui.group.BackdropFragment
 import it.uniparthenope.parthenopeddit.android.ui.newPost.NewPostActivity
 import it.uniparthenope.parthenopeddit.api.requests.CoursesRequests
 import it.uniparthenope.parthenopeddit.api.requests.GroupsRequests
+import it.uniparthenope.parthenopeddit.api.requests.UserRequests
 import it.uniparthenope.parthenopeddit.model.Group
 import it.uniparthenope.parthenopeddit.model.GroupInvite
 import it.uniparthenope.parthenopeddit.model.GroupMember
@@ -58,6 +61,12 @@ class GroupActivity : LoginRequiredActivity() {
         var id_group:Int = extras?.getInt("id_group")?:0
 
         if(id_group == 0) finish()
+
+        val itemsswipetorefresh = findViewById(R.id.itemsswipetorefresh) as SwipeRefreshLayout
+
+        itemsswipetorefresh.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(this, R.color.colorPrimary))
+        itemsswipetorefresh.setColorSchemeColors(ContextCompat.getColor(this, R.color.white))
+
 
         var deserializedGroup:Group? = null
 
@@ -253,6 +262,33 @@ class GroupActivity : LoginRequiredActivity() {
                 builder.create()
                 builder.show()
             }
+
+        itemsswipetorefresh.setOnRefreshListener {
+
+            itemsswipetorefresh.isRefreshing = true
+
+            GroupsRequests(this, app.auth).getGroupPosts(
+                group_id = id_group,
+                per_page = per_page,
+                page = 1,
+                onSuccess = {
+                    if(it.isNotEmpty()) {
+                        postAdapter.setPostList( it )
+                        transactionStartDateTime = it[0].timestamp
+                        recycler_view.addOnScrollListener(infiniteScroller)
+                        itemsswipetorefresh.isRefreshing = false
+                        Toast.makeText(this,"Feed aggiornato", Toast.LENGTH_SHORT).show()
+                    }
+                },
+                onEndOfContent = {
+                    //nothing
+                },
+                onFail = {
+                    Toast.makeText(this,"Errore : ${it}", Toast.LENGTH_LONG).show()
+                }
+            )
+
+        }
         }
 
 

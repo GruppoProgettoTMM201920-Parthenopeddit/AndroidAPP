@@ -7,6 +7,11 @@
     tools:context=".android.ui.course.review.CourseReviewFragment"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/itemsswipetorefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view2"
         android:layout_width="match_parent"
@@ -16,4 +21,6 @@
         app:layout_constraintTop_toTopOf="parent"
         android:padding="4dp"
         tools:listitem="@layout/cardview_review"/>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

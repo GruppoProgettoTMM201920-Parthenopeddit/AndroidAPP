@@ -92,12 +92,19 @@
             android:textStyle="bold"
             android:visibility="gone" />
 
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/itemsswipetorefresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/group_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="4dp"
             tools:listitem="@layout/cardview_post" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

@@ -6,15 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.api.requests.MessagesRequests
+import it.uniparthenope.parthenopeddit.api.requests.UserRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Message
 import it.uniparthenope.parthenopeddit.model.User
@@ -42,6 +45,10 @@ class UserChatFragment(private val user: User) : Fragment() {
         val view: View = inflater.inflate(R.layout.chat_fragment, container, false)
         val adapter = GroupAdapter<GroupieViewHolder>()
         var send_button_chat_log = view.findViewById<ImageButton>(R.id.send_button_chat_log)
+        val itemsswipetorefresh = view.findViewById(R.id.itemsswipetorefresh) as SwipeRefreshLayout
+
+        itemsswipetorefresh.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
+        itemsswipetorefresh.setColorSchemeColors(ContextCompat.getColor(requireContext(), R.color.white))
 
         auth = (activity as BasicActivity).app.auth
 
@@ -79,6 +86,27 @@ class UserChatFragment(private val user: User) : Fragment() {
 
                 })
             }
+        }
+
+        itemsswipetorefresh.setOnRefreshListener {
+
+            itemsswipetorefresh.isRefreshing = true
+
+            MessagesRequests(requireContext(), auth).getChatLogWithUser(user.id,{it: UsersChat ->
+                myMessageList = it.chat_log!!
+                for(message in myMessageList){                     //PER OGNI MESSAGGIO RICEVUTO
+                    if(message.sender_id==auth.username){               //CONTROLLA SE E' IL TUO
+                        adapter.add(ChatToItem(message))
+                    } else{                                             //ALTRIMENTI E' DELL'ALTRO UTENTE
+                        adapter.add(ChatFromItem(message))
+                    }
+                }
+                itemsswipetorefresh.isRefreshing = false
+                Toast.makeText(requireContext(), "Errore nell'inoltro del messaggio. ${it}", Toast.LENGTH_SHORT).show()
+
+            },{
+
+            })
         }
 
         return view
