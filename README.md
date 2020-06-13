@@ -62,7 +62,7 @@ This project is licensed under the Licensed under the Apache License, Version 2.
 
 ## Acknowledgments
 
-* Thanks to Prof. R. Montella for his lessons, for his advices and his passion for computer science.
+* Thanks to Prof. R. Montella for his lessons, his advices and his passion for computer science.
 
 ## Google Slides
 
