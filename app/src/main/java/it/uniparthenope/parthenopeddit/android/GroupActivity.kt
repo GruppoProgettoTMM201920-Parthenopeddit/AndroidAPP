@@ -264,7 +264,6 @@ class GroupActivity : LoginRequiredActivity() {
             }
 
         itemsswipetorefresh.setOnRefreshListener {
-
             itemsswipetorefresh.isRefreshing = true
 
             GroupsRequests(this, app.auth).getGroupPosts(
@@ -275,15 +274,21 @@ class GroupActivity : LoginRequiredActivity() {
                     if(it.isNotEmpty()) {
                         postAdapter.setPostList( it )
                         transactionStartDateTime = it[0].timestamp
+
+                        infiniteScroller = InfiniteScroller(
+                            layoutManager, updater, per_page
+                        )
+
                         recycler_view.addOnScrollListener(infiniteScroller)
-                        itemsswipetorefresh.isRefreshing = false
-                        Toast.makeText(this,"Feed aggiornato", Toast.LENGTH_SHORT).show()
                     }
+                    itemsswipetorefresh.isRefreshing = false
                 },
                 onEndOfContent = {
                     //nothing
+                    itemsswipetorefresh.isRefreshing = false
                 },
                 onFail = {
+                    itemsswipetorefresh.isRefreshing = false
                     Toast.makeText(this,"Errore : ${it}", Toast.LENGTH_LONG).show()
                 }
             )

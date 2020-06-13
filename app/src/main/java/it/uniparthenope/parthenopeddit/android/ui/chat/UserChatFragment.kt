@@ -17,7 +17,6 @@ import com.xwray.groupie.Item
 import it.uniparthenope.parthenopeddit.BasicActivity
 import it.uniparthenope.parthenopeddit.R
 import it.uniparthenope.parthenopeddit.api.requests.MessagesRequests
-import it.uniparthenope.parthenopeddit.api.requests.UserRequests
 import it.uniparthenope.parthenopeddit.auth.AuthManager
 import it.uniparthenope.parthenopeddit.model.Message
 import it.uniparthenope.parthenopeddit.model.User
@@ -44,7 +43,7 @@ class UserChatFragment(private val user: User) : Fragment() {
     ): View {
         val view: View = inflater.inflate(R.layout.chat_fragment, container, false)
         val adapter = GroupAdapter<GroupieViewHolder>()
-        var send_button_chat_log = view.findViewById<ImageButton>(R.id.send_button_chat_log)
+        val send_button_chat_log = view.findViewById<ImageButton>(R.id.send_button_chat_log)
         val itemsswipetorefresh = view.findViewById(R.id.itemsswipetorefresh) as SwipeRefreshLayout
 
         itemsswipetorefresh.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(requireContext(), R.color.colorPrimary))
@@ -56,9 +55,9 @@ class UserChatFragment(private val user: User) : Fragment() {
             myMessageList = it.chat_log!!
 
             for(message in myMessageList){                     //PER OGNI MESSAGGIO RICEVUTO
-                if(message.sender_id==auth.username){               //CONTROLLA SE E' IL TUO
+                if(message.sender_id==auth.username){                   //CONTROLLA SE E' IL TUO
                     adapter.add(ChatToItem(message))
-                } else{                                             //ALTRIMENTI E' DELL'ALTRO UTENTE
+                } else{                                                 //ALTRIMENTI E' DELL'ALTRO UTENTE
                     adapter.add(ChatFromItem(message))
                 }
             }
@@ -81,41 +80,40 @@ class UserChatFragment(private val user: User) : Fragment() {
                     adapter.notifyItemInserted(adapter.itemCount)
                     recyclerview_chat_log.scrollToPosition(adapter.itemCount - 1)
                     edittext_chat_log.text.clear()
-                },{it: String ->
+                },{
                     Toast.makeText(requireContext(), "Errore nell'inoltro del messaggio. ${it}", Toast.LENGTH_SHORT).show()
-
                 })
             }
         }
 
         itemsswipetorefresh.setOnRefreshListener {
-
             itemsswipetorefresh.isRefreshing = true
 
-            MessagesRequests(requireContext(), auth).getChatLogWithUser(user.id,{it: UsersChat ->
-                myMessageList = it.chat_log!!
-                for(message in myMessageList){                     //PER OGNI MESSAGGIO RICEVUTO
-                    if(message.sender_id==auth.username){               //CONTROLLA SE E' IL TUO
-                        adapter.add(ChatToItem(message))
-                    } else{                                             //ALTRIMENTI E' DELL'ALTRO UTENTE
-                        adapter.add(ChatFromItem(message))
-                    }
-                }
-                itemsswipetorefresh.isRefreshing = false
-            },{
+            MessagesRequests(requireContext(), auth).getChatLogWithUser(
+                other_user_id = user.id,
+                onSuccess = {
+                    myMessageList = it.chat_log!!
 
-            })
+                    adapter.clear()
+
+                    for(message in myMessageList) {                     //PER OGNI MESSAGGIO RICEVUTO
+                        if(message.sender_id==auth.username){                   //CONTROLLA SE E' IL TUO
+                            adapter.add(ChatToItem(message))
+                        } else{                                                 //ALTRIMENTI E' DELL'ALTRO UTENTE
+                            adapter.add(ChatFromItem(message))
+                        }
+                    }
+
+                    itemsswipetorefresh.isRefreshing = false
+                },
+                onFail = {
+                    itemsswipetorefresh.isRefreshing = true
+                }
+            )
         }
 
         return view
     }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(UserChatViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
-
 }
 
 class ChatFromItem(private val message: Message): Item<GroupieViewHolder>() {

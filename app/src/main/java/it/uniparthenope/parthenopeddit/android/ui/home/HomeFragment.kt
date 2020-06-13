@@ -140,8 +140,8 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
         })
 
         itemsswipetorefresh.setOnRefreshListener {
-
             itemsswipetorefresh.isRefreshing = true
+
             UserRequests(requireContext(), auth).getUserFeed(
                 page = 1,
                 perPage = per_page,
@@ -149,16 +149,22 @@ class HomeFragment : Fragment(), PostAdapter.PostItemClickListeners {
                     if(it.isNotEmpty()) {
                         adapter.setPostList(it)
                         transactionStartDateTime = it[0].timestamp
+
+                        infiniteScroller = InfiniteScroller(
+                            layoutManager, updater, per_page
+                        )
+
                         recycler_view.addOnScrollListener(infiniteScroller)
-                        itemsswipetorefresh.isRefreshing = false
-                        Toast.makeText(requireContext(),"Feed aggiornato", Toast.LENGTH_SHORT).show()
                     }
+                    itemsswipetorefresh.isRefreshing = false
                 },
                 onEndOfContent = {
                     //nothing. list is empty.
+                    itemsswipetorefresh.isRefreshing = true
                 },
                 onFail = { it: String ->
                     Toast.makeText(requireContext(),it, Toast.LENGTH_LONG).show()
+                    itemsswipetorefresh.isRefreshing = true
                 }
             )
         }

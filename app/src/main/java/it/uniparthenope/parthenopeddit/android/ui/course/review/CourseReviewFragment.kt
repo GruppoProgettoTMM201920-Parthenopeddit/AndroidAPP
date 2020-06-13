@@ -102,8 +102,8 @@ class CourseReviewFragment(private var courseID: Int) : Fragment(), ReviewAdapte
         )
 
         itemsswipetorefresh.setOnRefreshListener {
-
             itemsswipetorefresh.isRefreshing = true
+
             CoursesRequests(requireContext(), auth).getCourseReviews(
                 page = 1,
                 perPage = per_page,
@@ -112,16 +112,23 @@ class CourseReviewFragment(private var courseID: Int) : Fragment(), ReviewAdapte
                     if(it.isNotEmpty()) {
                         reviewAdapter.setCommentList(it)
                         transactionStartDateTime = it[0].timestamp
+
+                        infiniteScroller = InfiniteScroller(
+                            layoutManager, updater, per_page
+                        )
+
                         recycler_view.addOnScrollListener(infiniteScroller)
-                        itemsswipetorefresh.isRefreshing = false
-                        Toast.makeText(requireContext(),"Feed aggiornato", Toast.LENGTH_SHORT).show()
                     }
+
+                    itemsswipetorefresh.isRefreshing = false
                 },
                 onEndOfContent = {
                     //nothing
+                    itemsswipetorefresh.isRefreshing = false
                 },
                 onFail = {
                     Toast.makeText(requireContext(),it, Toast.LENGTH_LONG).show()
+                    itemsswipetorefresh.isRefreshing = false
                 }
             )
         }

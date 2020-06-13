@@ -44,7 +44,6 @@ class PostCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter.Co
         itemsswipetorefresh.setProgressBackgroundColorSchemeColor(ContextCompat.getColor(this, R.color.colorPrimary))
         itemsswipetorefresh.setColorSchemeColors(ContextCompat.getColor(this, R.color.white))
 
-
         if(id_post == 0) finish()
 
         var deserializedPost:Post? = null
@@ -62,8 +61,6 @@ class PostCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter.Co
 
         PostsRequests(this, app.auth).getPostWithComments(id_post,
             {
-                Log.d("DEBUG","Fetched post ${id_post}")
-
                 setPost(it)
 
                 val commenti = it.comments
@@ -72,8 +69,6 @@ class PostCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter.Co
                 } else {
                     listaCommenti.visibility = View.VISIBLE
 
-                    Log.d("DEBUG","initializing comments layout")
-
                     val listaCommenti:RecyclerView = findViewById(R.id.listaCommenti)
 
                     adapter.aggiornaLista(commenti)
@@ -81,8 +76,6 @@ class PostCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter.Co
                     listaCommenti.adapter = adapter
                     listaCommenti.layoutManager = LinearLayoutManager(this)
                     listaCommenti.setHasFixedSize(true)
-
-                    Log.d("DEBUG","done")
                 }
             }, {
                 //nothing
@@ -111,11 +104,10 @@ class PostCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter.Co
         }
 
         itemsswipetorefresh.setOnRefreshListener {
-
             itemsswipetorefresh.isRefreshing = true
+
             PostsRequests(this, app.auth).getPostWithComments(id_post,
                 {
-
                     setPost(it)
 
                     val commenti = it.comments
@@ -131,14 +123,13 @@ class PostCommentsActivity : LoginRequiredActivity(), CommentRecursiveAdapter.Co
                         listaCommenti.adapter = adapter
                         listaCommenti.layoutManager = LinearLayoutManager(this)
                         listaCommenti.setHasFixedSize(true)
-                        itemsswipetorefresh.isRefreshing = false
-                        Toast.makeText(this,"Feed aggiornato", Toast.LENGTH_SHORT).show()
                     }
+
+                    itemsswipetorefresh.isRefreshing = false
                 }, {
-                    //nothing
+                    itemsswipetorefresh.isRefreshing = false
                 }
             )
-
         }
     }
 
