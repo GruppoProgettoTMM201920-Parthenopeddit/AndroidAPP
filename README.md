@@ -15,7 +15,7 @@ without requiring a registration.
 If you're using the app on a physical device, or running the API on a different machine, you need to change the IP used by the app to send requests to that of the machine you are running the server on.  
 This can be done in file ApiRoute.kt in package:
 ```
-it.uniparthenope.parthenopeddit.apireturn "http:///10.0.2.2:8000"
+it.uniparthenope.parthenopeddit.api
 ```
 on line 11: 
 ```
